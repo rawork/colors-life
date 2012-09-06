@@ -154,7 +154,7 @@
 					($aUser ? $aUser['id'] : 0).
 					",'".$_SESSION['number'].
 					"','".$_SESSION['summa'].
-					"','Новый','".CUtils::_sessionVar('deliveryPerson').
+					"','РќРѕРІС‹Р№','".CUtils::_sessionVar('deliveryPerson').
 					"','".$GLOBALS['uauth']->getLogin().
 					"','".CUtils::_sessionVar('deliveryPhone').
 					"','".CUtils::_sessionVar('deliveryPhoneAdd').
@@ -178,7 +178,7 @@
 			  $mail->Password   = "97474004207";        // SMTP account password
 			  $mail->AddAddress($this->getOrderEmail());
 			  $mail->SetFrom($this->getOrderEmail(), 'Colors-life.ru Site Administrator');
-			  $mail->Subject = 'Заказ товаров на сайте '.$_SERVER['SERVER_NAME'];
+			  $mail->Subject = 'Р—Р°РєР°Р· С‚РѕРІР°СЂРѕРІ РЅР° СЃР°Р№С‚Рµ '.$_SERVER['SERVER_NAME'];
 			  $mail->AltBody = $this->getOrderText();
 			  $mail->MsgHTML($this->getOrderText());
 			  $mail->Send();
@@ -194,14 +194,14 @@
             inc_lib('libmail.php');
 			$oMail = new Mail();
             $oMail->From($this->getOrderEmail());
-            $oMail->Subject('Заказ №'.$iCurrentOrderNumber.' от '.date('d.m.Y H:i'));
-            $oMail->Html("Заказ №$iCurrentOrderNumber от ".date('d.m.Y H:i')."<br>".$sOrderText, "windows-1251");
+            $oMail->Subject('Р—Р°РєР°Р· в„–'.$iCurrentOrderNumber.' РѕС‚ '.date('d.m.Y H:i'));
+            $oMail->Html("Р—Р°РєР°Р· в„–$iCurrentOrderNumber РѕС‚ ".date('d.m.Y H:i')."<br>".$sOrderText, "UTF-8");
             $oMail->To($this->getOrderEmail());
             $oMail->Send();
 			$sEmail = CUtils::_sessionVar('deliveryEmail');
 			if ($sEmail) {
-				$oMail->Subject('Цвета жизни - заказ №'.$iCurrentOrderNumber.' принят к обработке');
-				$oMail->Html($sOrderText, 'windows-1251');
+				$oMail->Subject('Р¦РІРµС‚Р° Р¶РёР·РЅРё - Р·Р°РєР°Р· в„–'.$iCurrentOrderNumber.' РїСЂРёРЅСЏС‚ Рє РѕР±СЂР°Р±РѕС‚РєРµ');
+				$oMail->Html($sOrderText, 'UTF-8');
 				$oMail->To(array($sEmail));
 				$oMail->Send();
 			}
@@ -212,7 +212,7 @@
 			$stuff_ids = array();
             $sItemList = '';
 			foreach ($cart as $i) {
-                $sItemList .= "[".$i['stuff']['id']."] ".$i['stuff']['name']." ".(!isset($i['priceEntity']['id']) ? '' : "(Вариант исполнения:{$i['priceEntity']['size_id_name']} - {$i['priceEntity']['color_id_name']})")." \tПроизводитель: ".$i['stuff']['producer_id_name']."\t".number_format($i['price'], 2, ',', ' ')." руб.\t".$i['counter']."\n";
+                $sItemList .= "[".$i['stuff']['id']."] ".$i['stuff']['name']." ".(!isset($i['priceEntity']['id']) ? '' : "(Р’Р°СЂРёР°РЅС‚ РёСЃРїРѕР»РЅРµРЅРёСЏ:{$i['priceEntity']['size_id_name']} - {$i['priceEntity']['color_id_name']})")." \tРџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ: ".$i['stuff']['producer_id_name']."\t".number_format($i['price'], 2, ',', ' ')." СЂСѓР±.\t".$i['counter']."\n";
 				$stuff_ids[] = $i['stuff']['id'];
             }
 //          $gifts = $GLOBALS['rtti']->getItems('catalog_gifts', "stuff_id IN (".implode(',', $stuff_ids).")");
@@ -221,7 +221,7 @@
 //			$gifts = array_merge($gifts, $gifts2);
 //			$discount = $GLOBALS['rtti']->getItem('cart_discount', "publish='on' AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
 //			$this->smarty->assign('discount', $discount);
-//			$ret .= "Подарки:\n";
+//			$ret .= "РџРѕРґР°СЂРєРё:\n";
 //			foreach ($gifts as $gift) {
 //                $ret .= $gift['gift_id_name']."\n";
 //          }

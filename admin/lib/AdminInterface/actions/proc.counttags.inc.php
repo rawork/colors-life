@@ -107,7 +107,7 @@
 			$this->buildShopYML('shop.yml');
 
 
-			$this->messageAction(false ? 'Ошибка расчета тегов' : 'Расчет тегов завершен');
+			$this->messageAction(false ? 'РћС€РёР±РєР° СЂР°СЃС‡РµС‚Р° С‚РµРіРѕРІ' : 'Р Р°СЃС‡РµС‚ С‚РµРіРѕРІ Р·Р°РІРµСЂС€РµРЅ');
         }
 
 		function getEntities($sTableName) {
@@ -218,32 +218,32 @@ EOD;
 
 		function buildShopYML($filename) {
 			global $PRJ_DIR, $db;
-			$filepath = $PRJ_DIR."/yml/"; // Путь к файлу
-			$ymlcontent = ""; // контент yml файла
-			$f = fopen($filepath.$filename, "w") or die("Error opening file"); // открываем файл на запись
+			$filepath = $PRJ_DIR."/yml/"; // РџСѓС‚СЊ Рє С„Р°Р№Р»Сѓ
+			$ymlcontent = ""; // РєРѕРЅС‚РµРЅС‚ yml С„Р°Р№Р»Р°
+			$f = fopen($filepath.$filename, "w") or die("Error opening file"); // РѕС‚РєСЂС‹РІР°РµРј С„Р°Р№Р» РЅР° Р·Р°РїРёСЃСЊ
 
 			$aCategories = $this->getTreeEntities('catalog_categories');
-			// блок создания контента
-			$ymlcontent = "<?xml version=\"1.0\" encoding=\"windows-1251\"?>\n";   // файл формата XML 1.0
-			$ymlcontent .= "<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">\n";   //  тип файла - файл Yandex Маркета
-			$ymlcontent .= "<yml_catalog date=\"".date("Y-m-d H:i")."\">\n";   // дата создания файла
-			$ymlcontent .= "<shop>\n";    // начинаем описывать структуру. Основа структуры файла - элемент shop
-			$ymlcontent .= "<name>Цвета жизни</name>\n";  //  название магазина
-			$ymlcontent .= "<company>Цвета жизни</company>\n";  // title  - заголовок вашего магазина
-			$ymlcontent .= "<url>http://colors-life.ru/</url>\n"; // url адрес магазина
-			$ymlcontent .= "<currencies><currency id=\"RUR\" rate=\"1\"/></currencies>\n";   // список валют, в нашем случае только рубли
-			$ymlcontent .= "<categories>\n";  // описываем категории продукции, у каждой категории свой уникальный ID
+			// Р±Р»РѕРє СЃРѕР·РґР°РЅРёСЏ РєРѕРЅС‚РµРЅС‚Р°
+			$ymlcontent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";   // С„Р°Р№Р» С„РѕСЂРјР°С‚Р° XML 1.0
+			$ymlcontent .= "<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">\n";   //  С‚РёРї С„Р°Р№Р»Р° - С„Р°Р№Р» Yandex РњР°СЂРєРµС‚Р°
+			$ymlcontent .= "<yml_catalog date=\"".date("Y-m-d H:i")."\">\n";   // РґР°С‚Р° СЃРѕР·РґР°РЅРёСЏ С„Р°Р№Р»Р°
+			$ymlcontent .= "<shop>\n";    // РЅР°С‡РёРЅР°РµРј РѕРїРёСЃС‹РІР°С‚СЊ СЃС‚СЂСѓРєС‚СѓСЂСѓ. РћСЃРЅРѕРІР° СЃС‚СЂСѓРєС‚СѓСЂС‹ С„Р°Р№Р»Р° - СЌР»РµРјРµРЅС‚ shop
+			$ymlcontent .= "<name>Р¦РІРµС‚Р° Р¶РёР·РЅРё</name>\n";  //  РЅР°Р·РІР°РЅРёРµ РјР°РіР°Р·РёРЅР°
+			$ymlcontent .= "<company>Р¦РІРµС‚Р° Р¶РёР·РЅРё</company>\n";  // title  - Р·Р°РіРѕР»РѕРІРѕРє РІР°С€РµРіРѕ РјР°РіР°Р·РёРЅР°
+			$ymlcontent .= "<url>http://colors-life.ru/</url>\n"; // url Р°РґСЂРµСЃ РјР°РіР°Р·РёРЅР°
+			$ymlcontent .= "<currencies><currency id=\"RUR\" rate=\"1\"/></currencies>\n";   // СЃРїРёСЃРѕРє РІР°Р»СЋС‚, РІ РЅР°С€РµРј СЃР»СѓС‡Р°Рµ С‚РѕР»СЊРєРѕ СЂСѓР±Р»Рё
+			$ymlcontent .= "<categories>\n";  // РѕРїРёСЃС‹РІР°РµРј РєР°С‚РµРіРѕСЂРёРё РїСЂРѕРґСѓРєС†РёРё, Сѓ РєР°Р¶РґРѕР№ РєР°С‚РµРіРѕСЂРёРё СЃРІРѕР№ СѓРЅРёРєР°Р»СЊРЅС‹Р№ ID
 			foreach ($aCategories as $aCategory) {
 				$iId		= $aCategory['id'];
 				$iParentId	= $aCategory['p_id'];
 				$sName		= htmlspecialchars(strip_tags($aCategory['name']));
-				$ymlcontent .= "<category id=\"$iId\" parentId=\"$iParentId\">$sName</category>\n";  // у нас всего одна категория
+				$ymlcontent .= "<category id=\"$iId\" parentId=\"$iParentId\">$sName</category>\n";  // Сѓ РЅР°СЃ РІСЃРµРіРѕ РѕРґРЅР° РєР°С‚РµРіРѕСЂРёСЏ
 			}
 			$ymlcontent .= "</categories>\n";
 			$ymlcontent .= "<offers>\n";
 
-			$aStuff = $GLOBALS['rtti']->getItems('catalog_stuff', "publish='on' AND price<>'0.00'"); // выбираем все товары
-			foreach ($aStuff as $aRow) // в цикле обрабатываем каждый товар
+			$aStuff = $GLOBALS['rtti']->getItems('catalog_stuff', "publish='on' AND price<>'0.00'"); // РІС‹Р±РёСЂР°РµРј РІСЃРµ С‚РѕРІР°СЂС‹
+			foreach ($aStuff as $aRow) // РІ С†РёРєР»Рµ РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РєР°Р¶РґС‹Р№ С‚РѕРІР°СЂ
 			{
 				$sName			= htmlspecialchars(strip_tags($aRow['name']));
 				$sProducer		= htmlspecialchars(strip_tags($aRow['producer_id_name']));
@@ -251,27 +251,27 @@ EOD;
 				$sDescription	= str_replace('&raquo;', '&quot;', $sDescription);
 				$sAvailable		= $aRow['is_exist'] ? 'true' : 'false';
 
-				$ymlcontent .= "<offer id=\"".$aRow['id']."\" available=\"".$sAvailable."\">\n";  // id товара
-				$ymlcontent .= "<url>http://colors-life.ru/catalog/stuff.".$aRow['id'].".htm</url>\n";  // ссылка на страницу товара ( полностью )
-				$ymlcontent .= "<price>".$aRow['price']."</price>\n";  // стоимость продукта
-				$ymlcontent .= "<currencyId>RUR</currencyId>\n"; // валюта
-				$ymlcontent .= "<categoryId>".$aRow['c_id']."</categoryId>\n"; // ID категории
-				$ymlcontent .= "<picture>http://colors-life.ru".$aRow['image']."</picture>\n";  // ссылка на картинку ( полностью )
+				$ymlcontent .= "<offer id=\"".$aRow['id']."\" available=\"".$sAvailable."\">\n";  // id С‚РѕРІР°СЂР°
+				$ymlcontent .= "<url>http://colors-life.ru/catalog/stuff.".$aRow['id'].".htm</url>\n";  // СЃСЃС‹Р»РєР° РЅР° СЃС‚СЂР°РЅРёС†Сѓ С‚РѕРІР°СЂР° ( РїРѕР»РЅРѕСЃС‚СЊСЋ )
+				$ymlcontent .= "<price>".$aRow['price']."</price>\n";  // СЃС‚РѕРёРјРѕСЃС‚СЊ РїСЂРѕРґСѓРєС‚Р°
+				$ymlcontent .= "<currencyId>RUR</currencyId>\n"; // РІР°Р»СЋС‚Р°
+				$ymlcontent .= "<categoryId>".$aRow['c_id']."</categoryId>\n"; // ID РєР°С‚РµРіРѕСЂРёРё
+				$ymlcontent .= "<picture>http://colors-life.ru".$aRow['image']."</picture>\n";  // СЃСЃС‹Р»РєР° РЅР° РєР°СЂС‚РёРЅРєСѓ ( РїРѕР»РЅРѕСЃС‚СЊСЋ )
 				$ymlcontent .= "<delivery>true</delivery>\n";
 				//$ymlcontent .= "<local_delivery_cost>375</local_delivery_cost>\n";
-				$ymlcontent .= "<name>".$sName."</name>\n";  // название товара
+				$ymlcontent .= "<name>".$sName."</name>\n";  // РЅР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР°
 				$ymlcontent .= "<vendor>".$sProducer."</vendor>\n";
 				$ymlcontent .= "<vendorCode>".$aRow['articul']."</vendorCode>\n";
-				$ymlcontent .= "<description>$sDescription</description>\n"; // описание продукта
+				$ymlcontent .= "<description>$sDescription</description>\n"; // РѕРїРёСЃР°РЅРёРµ РїСЂРѕРґСѓРєС‚Р°
 				$ymlcontent .= "<country_of_origin>".$aRow['producer_id_country']."</country_of_origin>\n";
 				$ymlcontent .= "</offer>\n";
 			}
-			$ymlcontent .= "</offers>\n";  // дописываем закрывающие тэги
+			$ymlcontent .= "</offers>\n";  // РґРѕРїРёСЃС‹РІР°РµРј Р·Р°РєСЂС‹РІР°СЋС‰РёРµ С‚СЌРіРё
 			$ymlcontent .= "</shop>\n";
 			$ymlcontent .= "</yml_catalog>";
 
 
-			fputs($f, $ymlcontent);  // записываем наш контент в файл
+			fputs($f, $ymlcontent);  // Р·Р°РїРёСЃС‹РІР°РµРј РЅР°С€ РєРѕРЅС‚РµРЅС‚ РІ С„Р°Р№Р»
 			fclose($f);
 		}
 

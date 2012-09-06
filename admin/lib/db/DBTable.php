@@ -173,7 +173,7 @@
 					}
 				}	
             }
-			// Îáíîâëåíèå çíà÷åíèé äîïîëíèòåëüíûõ ñâîéñòâ
+			// ĞĞ±Ğ½Ğ¾Ğ²Ğ»ĞµĞ½Ğ¸Ğµ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğ¹ Ğ´Ğ¾Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚ĞµĞ»ÑŒĞ½Ñ‹Ñ… ÑĞ²Ğ¾Ğ¹ÑÑ‚Ğ²
 			if ($this->getDBTableName() == 'catalog_stuff1') {
 				$aCategory = $GLOBALS['db']->getItem('get_cat', 'SELECT id, name,filters from catalog_categories where id='.$iCategoryId);
 				if ($aCategory) {
@@ -196,7 +196,7 @@
 			if (($this->getDBTableName() == 'users_users' || $this->getDBTableName() == 'users_groups') && !$GLOBALS['auth']->isSuperuser())
 				$where = ' AND id<>1';
 
-			CLog::write("Èçìåíåíèå çàïèñè $iEntityId òàáëèöû ".$this->getDBTableName());
+			CLog::write("Ğ˜Ğ·Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ğµ Ğ·Ğ°Ğ¿Ğ¸ÑĞ¸ $iEntityId Ñ‚Ğ°Ğ±Ğ»Ğ¸Ñ†Ñ‹ ".$this->getDBTableName());
             return $this->update($sql.' WHERE id='.$iEntityId.$where);
         }
         
@@ -244,12 +244,12 @@
         }
         function drop() {
 		global $db;
-			CLog::write('Óäàëåíèå òàáëèöû '.$this->getDBTableName());
+			CLog::write('Ğ£Ğ´Ğ°Ğ»ĞµĞ½Ğ¸Ğµ Ñ‚Ğ°Ğ±Ğ»Ğ¸Ñ†Ñ‹ '.$this->getDBTableName());
 			return $db->execQuery($this->getDBTableName().'_droptable', 'DROP TABLE '.$this->getDBTableName());
         }
         function truncate() {
 			global $db;
-			CLog::write('Î÷èñòêà òàáëèöû '.$this->getDBTableName());
+			CLog::write('ĞÑ‡Ğ¸ÑÑ‚ĞºĞ° Ñ‚Ğ°Ğ±Ğ»Ğ¸Ñ†Ñ‹ '.$this->getDBTableName());
             return $db->execQuery($this->getDBTableName().'truncateclass', 'TRUNCATE TABLE '.$this->getDBTableName());
         }
         function alter() {
@@ -266,8 +266,8 @@
         	            $sql .= 'ALTER TABLE '.$this->getDBTableName().' ADD COLUMN '.$ft->getSQL().';#|#|#';
 					if (isset($fields[$f['name']]) && $fields[$f['name']]['Type'] != $db->getFieldRealType($f['type']))
 						$sql .= 'ALTER TABLE '.$this->getDBTableName().' CHANGE '.$f['name'].' '.$ft->getSQL().';#|#|#';
-				// Äîğàáîòàòü èçìåíåíèå òèïà str to int
-				// Äîğàáîòàòü èçìåíåíèå èìåíè ïî ñğàâíåíèè ñòàğîãî èìåíè
+				// Ğ”Ğ¾Ñ€Ğ°Ğ±Ğ¾Ñ‚Ğ°Ñ‚ÑŒ Ğ¸Ğ·Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ğµ Ñ‚Ğ¸Ğ¿Ğ° str to int
+				// Ğ”Ğ¾Ñ€Ğ°Ğ±Ğ¾Ñ‚Ğ°Ñ‚ÑŒ Ğ¸Ğ·Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ğµ Ğ¸Ğ¼ĞµĞ½Ğ¸ Ğ¿Ğ¾ ÑÑ€Ğ°Ğ²Ğ½ĞµĞ½Ğ¸Ğ¸ ÑÑ‚Ğ°Ñ€Ğ¾Ğ³Ğ¾ Ğ¸Ğ¼ĞµĞ½Ğ¸
 				}
             }
             foreach ($fields as $k => $f) {
@@ -414,12 +414,12 @@
 					$sUpdate
 			";
 			//die($sQuery);
-			CLog::write("Îáíîâëåíèå çàïèñåé ñ óñëîâèåì \"$sQuery\" â òàáëèöå ".$this->getDBTableName());
+			CLog::write("ĞĞ±Ğ½Ğ¾Ğ²Ğ»ĞµĞ½Ğ¸Ğµ Ğ·Ğ°Ğ¿Ğ¸ÑĞµĞ¹ Ñ ÑƒÑĞ»Ğ¾Ğ²Ğ¸ĞµĞ¼ \"$sQuery\" Ğ² Ñ‚Ğ°Ğ±Ğ»Ğ¸Ñ†Ğµ ".$this->getDBTableName());
 			return $db->execQuery($sDBTableName, $sQuery);
         }
         function delete($sQuery) {
 		global $db;
-			CLog::write("Óäàëåíèå çàïèñåé ñ óñëîâèåì \"$sQuery\" èç òàáëèöû ".$this->getDBTableName());
+			CLog::write("Ğ£Ğ´Ğ°Ğ»ĞµĞ½Ğ¸Ğµ Ğ·Ğ°Ğ¿Ğ¸ÑĞµĞ¹ Ñ ÑƒÑĞ»Ğ¾Ğ²Ğ¸ĞµĞ¼ \"$sQuery\" Ğ¸Ğ· Ñ‚Ğ°Ğ±Ğ»Ğ¸Ñ†Ñ‹ ".$this->getDBTableName());
 			return $db->execQuery($this->getDBTableName().'_deleterecords', 'DELETE FROM '.$this->getDBTableName().' WHERE '.$sQuery);
         }
         function select($a = null) {
@@ -579,7 +579,7 @@
 			if ($this->props['is_sort']) {
 				$this->fields['ord'] = array(
    	       			'name' => 'ord',
-		            'title' => 'Ñîğò.',
+		            'title' => 'Ğ¡Ğ¾Ñ€Ñ‚.',
 		            'type' => 'number',
 	    	    	'width' => '5%',
 					'defvalue' => '500',
@@ -589,7 +589,7 @@
 			if ($this->props['is_publish']) {
 				$this->fields['publish'] = array (
 		            'name' => 'publish',
-		            'title' => 'Àêò.',
+		            'title' => 'ĞĞºÑ‚.',
 		            'type' => 'checkbox',
 	    	        'search' => true,
 	        	    'group_update'  => true,
@@ -599,20 +599,20 @@
 			if ($this->props['is_lang']) {
 				$this->fields['lang'] = array (
 		            'name'  => 'lang',
-        			'title' => 'ßçûê',
+        			'title' => 'Ğ¯Ğ·Ñ‹Ğº',
 		            'type'  => 'string',
 					'readonly' => true
 	        	);
 			}
 			$this->fields['credate'] = array (
 	            'name'  => 'credate',
-   	   			'title' => 'Äàòà ñîçäàíèÿ',
+   	   			'title' => 'Ğ”Ğ°Ñ‚Ğ° ÑĞ¾Ğ·Ğ´Ğ°Ğ½Ğ¸Ñ',
 	            'type'  => 'datetime',
 				'readonly' => true
 	       	);
 			$this->fields['change_date'] = array (
 		        'name'  => 'change_date',
-   	    		'title' => 'Äàòà èçìåíåíèÿ',
+   	    		'title' => 'Ğ”Ğ°Ñ‚Ğ° Ğ¸Ğ·Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ñ',
 		        'type'  => 'datetime',
 				'readonly' => true
 	        );

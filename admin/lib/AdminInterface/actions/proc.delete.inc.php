@@ -7,7 +7,7 @@
         }
         function getText() {
 			$q = 'id='.CUtils::_getVar('id', true, 0);
-            $this->messageAction($GLOBALS['rtti']->deleteItem($this->t->getDBTableName(), $q) ? '”‰‡ÎÂÌÓ' : 'Œ¯Ë·Í‡ Û‰‡ÎÂÌËˇ');
+            $this->messageAction($GLOBALS['rtti']->deleteItem($this->t->getDBTableName(), $q) ? '–£–¥–∞–ª–µ–Ω–æ' : '–û—à–∏–±–∫–∞ —É–¥–∞–ª–µ–Ω–∏—è');
         }
     }
 

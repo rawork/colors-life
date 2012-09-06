@@ -67,9 +67,9 @@ for ($i = 0; $i < $files_count-1; $i++) {
 	//@unlink($_FILES[$fileElementName][$i]);		
 	}
 	if ($error) {
-		echo iconv('UTF-8','windows-1251',$error."<br/>"."\n");
+		echo $error."<br/>"."\n";
 	} else {
-		echo iconv('UTF-8','windows-1251',"Добавлен файл: ".$msg."\n");	
+		echo "Добавлен файл: ".$msg."\n";	
 	}
 }
 ?>

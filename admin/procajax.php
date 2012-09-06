@@ -23,7 +23,7 @@
 	$xajax->registerFunction('updatePrices');
 	$xajax->registerFunction('delPrice');
 	
-	// Смена Меню компонентов при выборе группы функций
+	// РЎРјРµРЅР° РњРµРЅСЋ РєРѕРјРїРѕРЅРµРЅС‚РѕРІ РїСЂРё РІС‹Р±РѕСЂРµ РіСЂСѓРїРїС‹ С„СѓРЅРєС†РёР№
 	function getComponentList($state, $unit = '') {
 	global $smarty;
 		$objResponse = new xajaxResponse();
@@ -47,7 +47,7 @@
 				}
 			}
 		} else {
-			$objResponse->script("alert('Ошибка сессии')");
+			$objResponse->script("alert('РћС€РёР±РєР° СЃРµСЃСЃРёРё')");
 		}
 		$smarty->assign('units', $units);
 		$text = $smarty->fetch('admin/mainmenu.tpl');
@@ -56,7 +56,7 @@
 		return $objResponse;
 	}
 	
-	// Показать Меню таблиц для модуля
+	// РџРѕРєР°Р·Р°С‚СЊ РњРµРЅСЋ С‚Р°Р±Р»РёС† РґР»СЏ РјРѕРґСѓР»СЏ
 	function getTableList($component_name, $state) {
 	global $smarty;
 		inc_lib('AdminInterface/UnitAdminInterface.php');
@@ -77,7 +77,7 @@
 			$objResponse->script("showDiv('tableMenu_".$component_name."', 0, 0);");
 			$objResponse->script("hideDiv('waiting');");
 		} else {
-			$objResponse->script("alert('Ошибка сессии');");
+			$objResponse->script("alert('РћС€РёР±РєР° СЃРµСЃСЃРёРё');");
 		}
 		return $objResponse;
 	}
@@ -103,7 +103,7 @@
 		$trees = $GLOBALS['rtti']->getItems($f['l_table'], 'p_id='.$p_id.$lang_where, $f['l_sort']);
 		$fields = explode(',', $f['l_field']);
         foreach ($trees as $a) {
-            // ограничение на себя, в качестве родителя
+            // РѕРіСЂР°РЅРёС‡РµРЅРёРµ РЅР° СЃРµР±СЏ, РІ РєР°С‡РµСЃС‚РІРµ СЂРѕРґРёС‚РµР»СЏ
             if ($a['id'] != $exclude) {
 				$vname = '';
 				foreach ($fields as $fi)
@@ -150,7 +150,7 @@
 		return $ret;
     }
 	
-	// Выбор из дерева разделов
+	// Р’С‹Р±РѕСЂ РёР· РґРµСЂРµРІР° СЂР°Р·РґРµР»РѕРІ
 	function show_tree_popup($input_id, $table_name, $field_name, $dbid, $zero_title, $value) {
 		$t = $GLOBALS['rtti']->getTable($table_name);
 		$real_field_name = str_replace($dbid, '', $field_name);
@@ -163,13 +163,13 @@
 		$objResponse = new xajaxResponse();
 		$objResponse->script("marked_choice($value)");
 		$objResponse->assign('popup_title', 'innerHTML', $f['title']);
-		$objResponse->assign('popup_button', 'innerHTML', '<input type="button" class="adm-btn" value="Выбрать" onclick="make_tree_choice('."'".$input_id."'".')">');
+		$objResponse->assign('popup_button', 'innerHTML', '<input type="button" class="adm-btn" value="Р’С‹Р±СЂР°С‚СЊ" onclick="make_tree_choice('."'".$input_id."'".')">');
 		$objResponse->assign('popup_body', 'innerHTML', $text);
 		$objResponse->script("showPopup()");
 		return $objResponse;
 	}
 	
-	// Множественный выбор
+	// РњРЅРѕР¶РµСЃС‚РІРµРЅРЅС‹Р№ РІС‹Р±РѕСЂ
 	function show_list_popup($input_id, $table_name, $field_name, $dbid, $value) {
 		$values = !empty($value) ? explode(',', $value) : array();
 		$t = $GLOBALS['rtti']->getTable($table_name);
@@ -179,20 +179,20 @@
 		$text .= '</table>';
 		$objResponse = new xajaxResponse();
 		$objResponse->assign('popup_title', 'innerHTML', $f['title']);
-		$objResponse->assign('popup_button', 'innerHTML', '<input type="button" class="adm-btn" value="Выбрать" onclick="make_list_choice('."'".$input_id."'".')">');
+		$objResponse->assign('popup_button', 'innerHTML', '<input type="button" class="adm-btn" value="Р’С‹Р±СЂР°С‚СЊ" onclick="make_list_choice('."'".$input_id."'".')">');
 		$objResponse->assign('popup_body', 'innerHTML', $text);
 		$objResponse->script("showPopup()");
 		return $objResponse;
 	}
 	
-	// Окно с версиями шаблона
+	// РћРєРЅРѕ СЃ РІРµСЂСЃРёСЏРјРё С€Р°Р±Р»РѕРЅР°
 	function showTemplateVersion($ver_id) {
 	global $PRJ_DIR;
 		$ver = $GLOBALS['rtti']->getItem('templates_version', $ver_id);
 		$text = @file_get_contents($PRJ_DIR.$ver['file']);
 		$objResponse = new xajaxResponse();
-		$objResponse->assign('popup_title', 'innerHTML', 'Версия шаблона');
-		$objResponse->assign('popup_button', 'innerHTML', '<input type="button" class="adm-btn" value="Закрыть" onclick="hidePopup()">');
+		$objResponse->assign('popup_title', 'innerHTML', 'Р’РµСЂСЃРёСЏ С€Р°Р±Р»РѕРЅР°');
+		$objResponse->assign('popup_button', 'innerHTML', '<input type="button" class="adm-btn" value="Р—Р°РєСЂС‹С‚СЊ" onclick="hidePopup()">');
 		$objResponse->assign('popup_body', 'innerHTML', '<textarea wrap="off" name="mytemplatetemp" readonly style="height:99%; width:100%" rows="15" cols="45">'.htmlspecialchars($text).'</textarea>');
 		$objResponse->script("showPopup()");
 		return $objResponse;
@@ -201,9 +201,9 @@
 	function showDuplicateSettings($ref) {
 	global $PRJ_DIR;
 		$objResponse = new xajaxResponse();
-		$objResponse->assign('popup_title', 'innerHTML', 'Копирование записи');
-		$objResponse->assign('popup_button', 'innerHTML', '<input type="button" class="adm-btn" value="Копировать" onclick="goDuplicate(\''.$ref.'\')">');
-		$objResponse->assign('popup_body', 'innerHTML', 'Количество новых <br /><input name="DuplicateQuantity" id="DuplicateQuantity" value="1" />');
+		$objResponse->assign('popup_title', 'innerHTML', 'РљРѕРїРёСЂРѕРІР°РЅРёРµ Р·Р°РїРёСЃРё');
+		$objResponse->assign('popup_button', 'innerHTML', '<input type="button" class="adm-btn" value="РљРѕРїРёСЂРѕРІР°С‚СЊ" onclick="goDuplicate(\''.$ref.'\')">');
+		$objResponse->assign('popup_body', 'innerHTML', 'РљРѕР»РёС‡РµСЃС‚РІРѕ РЅРѕРІС‹С… <br /><input name="DuplicateQuantity" id="DuplicateQuantity" value="1" />');
 		$objResponse->script("showPopup()");
 		return $objResponse;
 	}
@@ -211,8 +211,8 @@
 	function editField($field_id, $fD = array()) {
 		$objResponse = new xajaxResponse();
 		if (count($fD)) {
-			$objResponse->assign('popup_title', 'innerHTML', 'Редактирование поля: '.$field['title']);
-			$objResponse->assign('popup_button', 'innerHTML', '<input type="button" class="adm-btn" value="Сохранить" onclick="xajax_updateField(xajax)">&nbsp;<input type="button" class="adm-btn" value="Закрыть" onclick="hidePopup()">');
+			$objResponse->assign('popup_title', 'innerHTML', 'Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РїРѕР»СЏ: '.$field['title']);
+			$objResponse->assign('popup_button', 'innerHTML', '<input type="button" class="adm-btn" value="РЎРѕС…СЂР°РЅРёС‚СЊ" onclick="xajax_updateField(xajax)">&nbsp;<input type="button" class="adm-btn" value="Р—Р°РєСЂС‹С‚СЊ" onclick="hidePopup()">');
 			$objResponse->assign('popup_body', 'innerHTML', $GLOBALS['rtti']->updateField($field_id, $fD));
 			$objResponse->script("showPopup()");
 		} else {
@@ -255,11 +255,11 @@
 		$test->create_archive();
 		
 		$text = '';
-		$text .= 'Количество файлов: '.$cfiles;
+		$text .= 'РљРѕР»РёС‡РµСЃС‚РІРѕ С„Р°Р№Р»РѕРІ: '.$cfiles;
 		$text .= '<br>';
-		$text .= 'Размер неупакованых файлов: '.CUtils::getSize($sfiles, 2);
+		$text .= 'Р Р°Р·РјРµСЂ РЅРµСѓРїР°РєРѕРІР°РЅС‹С… С„Р°Р№Р»РѕРІ: '.CUtils::getSize($sfiles, 2);
 		$text .= '<br>';
-		$text .= 'Размер архива: '.CUtils::getFileSize('/'.$filename, 2);
+		$text .= 'Р Р°Р·РјРµСЂ Р°СЂС…РёРІР°: '.CUtils::getFileSize('/'.$filename, 2);
 		//$text = 'test';
 		@unlink($GLOBALS['PRJ_DIR'].'/'.$filename_sql);
 		@unlink($GLOBALS['PRJ_DIR'].'/'.$filename_sql2);
@@ -278,7 +278,7 @@
 			$sql = "DELETE FROM system_files WHERE name='$name' AND table_name='".$table_name."' AND record_id=".$record_id;
 			$GLOBALS['db']->execQuery('delfile', $sql);
 		} else {
-			$objResponse->alert("Ошибка удаления файла");
+			$objResponse->alert("РћС€РёР±РєР° СѓРґР°Р»РµРЅРёСЏ С„Р°Р№Р»Р°");
 		}
 		return $objResponse;
 	}
@@ -291,14 +291,14 @@
 		$ret = '';
 		$ret .= '<table width="100%" cellpadding="0" cellspacing="0" class="tfields">';
 		$ret .= '<tr>';
-    $ret .= '<th width="85%">Файл</th>';
-		$ret .= '<th width="10%">Размер</th>';
-		$ret .= '<th style="text-align:center;"><img alt="Действия" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
+    $ret .= '<th width="85%">Р¤Р°Р№Р»</th>';
+		$ret .= '<th width="10%">Р Р°Р·РјРµСЂ</th>';
+		$ret .= '<th style="text-align:center;"><img alt="Р”РµР№СЃС‚РІРёСЏ" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
     $ret .= '</tr>';
 		foreach ($my_files as $fileitem) {
 			$ret .= '<tr id="file_'.$fileitem['id'].'">';
 		  $ret .= '<td><a href="'.$fileitem['file'].'">'.$fileitem['name'].'</a></td>';
-			$ret .= '<td>'.$fileitem['filesize'].' байт</td>';
+			$ret .= '<td>'.$fileitem['filesize'].' Р±Р°Р№С‚</td>';
 			$ret .= '<td><a href="#" onClick="delFile(\''.$fileitem['id'].'\',\''.$fileitem['name'].'\',\''.$table_name.'\',\''.$record_id.'\'); return false"><img src="'.$THEME_REF.'/img/icons/icon_delete.gif" border="0"></a></td>'."\n";
 			$ret .= '</tr>';	
 		}
@@ -311,12 +311,12 @@
 	global $THEME_REF;		
 		$ret = '<table width="100%" cellpadding="0" cellspacing="0" class="tfields">';
 		$ret .= '<tr>';
-    	$ret .= '<th width="30%">Размер</th>';
-		$ret .= '<th width="30%">Цвет</th>';
-		$ret .= '<th width="30%">Цена</th>';
-		$ret .= '<th width="5%">Порядок</th>';
-		$ret .= '<th width="1%">Акт</th>';
-		$ret .= '<th style="text-align:center;"><img alt="Действия" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
+    	$ret .= '<th width="30%">Р Р°Р·РјРµСЂ</th>';
+		$ret .= '<th width="30%">Р¦РІРµС‚</th>';
+		$ret .= '<th width="30%">Р¦РµРЅР°</th>';
+		$ret .= '<th width="5%">РџРѕСЂСЏРґРѕРє</th>';
+		$ret .= '<th width="1%">РђРєС‚</th>';
+		$ret .= '<th style="text-align:center;"><img alt="Р”РµР№СЃС‚РІРёСЏ" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
     	$ret .= '</tr>';
 				
 		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.ord, p.publish FROM catalog_prices p JOIN catalog_sizes s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.stuff_id=".$stuff_id." ORDER BY p.price";

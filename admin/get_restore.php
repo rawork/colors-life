@@ -7,13 +7,13 @@ if (!file_exists($filename)) {
   header ("HTTP/1.0 404 Not Found");
   die();
 }
-// сообщаем размер файла
+// СЃРѕРѕР±С‰Р°РµРј СЂР°Р·РјРµСЂ С„Р°Р№Р»Р°
 header( 'Content-Length: '.filesize($filename) );
-// дата модификации файла для кеширования
+// РґР°С‚Р° РјРѕРґРёС„РёРєР°С†РёРё С„Р°Р№Р»Р° РґР»СЏ РєРµС€РёСЂРѕРІР°РЅРёСЏ
 header( 'Last-Modified: '.date("D, d M Y H:i:s T", filemtime($filename)) );
-// сообщаем тип данных - zip-архив
+// СЃРѕРѕР±С‰Р°РµРј С‚РёРї РґР°РЅРЅС‹С… - zip-Р°СЂС…РёРІ
 header('Content-type: text/rtf');
-// файл будет получен с именем $filename
+// С„Р°Р№Р» Р±СѓРґРµС‚ РїРѕР»СѓС‡РµРЅ СЃ РёРјРµРЅРµРј $filename
 header('Content-Disposition: attachment; filename="'.$sfilename.'"');
-// начинаем передачу содержимого файла
+// РЅР°С‡РёРЅР°РµРј РїРµСЂРµРґР°С‡Сѓ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С„Р°Р№Р»Р°
 readfile($filename);

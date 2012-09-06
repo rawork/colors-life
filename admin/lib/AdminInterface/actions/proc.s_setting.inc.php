@@ -10,7 +10,7 @@
 			$ret .= '<form enctype="multipart/form-data" method="post" name="frmInsert" id="frmInsert" action="'.$this->fullRef.'&action=setting">';
 			$ret .= $this->getTableHeader();
 			$ret .= '<tr>';
-			$ret .= '<th nowrap><b>Настройки компонента</b></th>';
+			$ret .= '<th nowrap><b>РќР°СЃС‚СЂРѕР№РєРё РєРѕРјРїРѕРЅРµРЅС‚Р°</b></th>';
 			$ret .= '<th><b>&nbsp;</b></th></tr>';
 			$params = $db->getItems('get_settings', "SELECT * FROM config_settings WHERE komponent='".$this->uai->unit->ocomponent['name']."'");
 
@@ -30,7 +30,7 @@
 				}
 				$ret .= '</td></tr>';
 			} 
-            $ret .= '</table><input type="submit" value="Изменить"></form>';
+            $ret .= '</table><input type="submit" value="РР·РјРµРЅРёС‚СЊ"></form>';
 			return $ret;
         }
     }

@@ -3,20 +3,20 @@
     $forms_tables[] = array(
 		'name' => 'forms',
 		'component' => 'forms',
-		'title' => 'Âåá ôîðìû',
+		'title' => 'Ð’ÐµÐ± Ñ„Ð¾Ñ€Ð¼Ñ‹',
 		'order_by' => 'name', 
 		'is_lang' => true,
 		'fieldset' => array (
         'title' => array (
             'name' => 'title',
-            'title' => 'Íàçâàíèå',
+            'title' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ',
             'type' => 'string',
         	'width' => '19%',
             'search' => true
         ),
 		'name' => array (
             'name' => 'name',
-            'title' => 'Èìÿ (àíãë.)',
+            'title' => 'Ð˜Ð¼Ñ (Ð°Ð½Ð³Ð».)',
             'type' => 'string',
         	'width' => '19%',
         ),
@@ -28,13 +28,13 @@
         ),
 		'submit_text' => array (
             'name' => 'submit_text',
-            'title' => 'Submit êíîïêà',
+            'title' => 'Submit ÐºÐ½Ð¾Ð¿ÐºÐ°',
             'type' => 'string',
         	'width' => '19%'
         ),
 		'template' => array (
             'name' => 'template',
-            'title' => 'Øàáëîí',
+            'title' => 'Ð¨Ð°Ð±Ð»Ð¾Ð½',
             'type' => 'template'
         ),
 		'is_defense' => array (
@@ -49,7 +49,7 @@
     $forms_tables[] = array(
 		'name' => 'fields',
 		'component' => 'forms',
-		'title' => 'Ïîëÿ ôîðìû',
+		'title' => 'ÐŸÐ¾Ð»Ñ Ñ„Ð¾Ñ€Ð¼Ñ‹',
 		'order_by' => 'form_id,ord', 
 		'is_sort' => true, 
 		'is_lang' => true,
@@ -57,20 +57,20 @@
 		'fieldset' => array (
         'title' => array (
             'name' => 'title',
-            'title' => 'Íàçâàíèå',
+            'title' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ',
             'type' => 'string',
             'width' => '45%'
         ),
         'name' => array (
             'name' => 'name',
-            'title' => 'Èìÿ (àíãë.)',
+            'title' => 'Ð˜Ð¼Ñ (Ð°Ð½Ð³Ð».)',
             'type' => 'string',
             'width' => '30%',
             'search' => true
         ),
 		'form_id' => array (
             'name' => 'form_id',
-            'title' => 'Ôîðìà',
+            'title' => 'Ð¤Ð¾Ñ€Ð¼Ð°',
             'type' => 'select',
             'l_table' => 'forms_forms',
             'l_field' => 'title',
@@ -80,47 +80,47 @@
         ),
         'type' => array (
             'name' => 'type',
-            'title' => 'Òèï',
+            'title' => 'Ð¢Ð¸Ð¿',
             'type' => 'enum',
-            'select_values' => 'Ñòðîêà|string;Òåêñò|text;Ñïèñîê|select;Ôëàã|checkbox;Ôàéë|file;Ïàðîëü|password',
+            'select_values' => 'Ð¡Ñ‚Ñ€Ð¾ÐºÐ°|string;Ð¢ÐµÐºÑÑ‚|text;Ð¡Ð¿Ð¸ÑÐ¾Ðº|select;Ð¤Ð»Ð°Ð³|checkbox;Ð¤Ð°Ð¹Ð»|file;ÐŸÐ°Ñ€Ð¾Ð»ÑŒ|password',
             'width' => '30%'
         ),
 		'select_table' => array (
             'name' => 'select_table',
-            'title' => 'Òàáëèöà çíà÷åíèé',
+            'title' => 'Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ð¹',
             'type' => 'string',
-			'help' => 'Òàáëèöà çíà÷åíèé'
+			'help' => 'Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ð¹'
         ),
 		'select_name' => array (
             'name' => 'select_name',
-            'title' => 'Ïîëå çàëîãîâêà',
+            'title' => 'ÐŸÐ¾Ð»Ðµ Ð·Ð°Ð»Ð¾Ð³Ð¾Ð²ÐºÐ°',
             'type' => 'string',
         ),
 		'select_value' => array (
             'name' => 'select_value',
-            'title' => 'Ïîëå çíà÷åíèÿ',
+            'title' => 'ÐŸÐ¾Ð»Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ',
             'type' => 'string',
         ),
 		'select_filter' => array (
             'name' => 'select_filter',
-            'title' => 'Çàïðîñ',
+            'title' => 'Ð—Ð°Ð¿Ñ€Ð¾Ñ',
             'type' => 'string',
         ),
 		'select_values' => array (
             'name' => 'select_values',
-            'title' => 'Çíà÷åíèÿ',
+            'title' => 'Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ',
             'type' => 'string'
         ),
 		'not_empty' => array (
             'name' => 'not_empty',
-            'title' => 'Îáÿç.',
+            'title' => 'ÐžÐ±ÑÐ·.',
             'type' => 'checkbox',
             'group_update'  => true,
             'width' => '1%'
         ),
 		'is_check' => array (
             'name' => 'is_check',
-            'title' => 'Ïðîâåðêà ïîëÿ',
+            'title' => 'ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð¿Ð¾Ð»Ñ',
             'type' => 'checkbox',
             'group_update'  => true,
             'width' => '1%'

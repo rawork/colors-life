@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>{$title}</title>
 <link rel="stylesheet" href="/css/style.css" type="text/css" title="style" />
 <script type="text/javascript">

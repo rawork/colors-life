@@ -35,33 +35,33 @@
 
 		/* file size formatting */
 		public static function getSize($bytes, $precision = 2) {
-		    $units = array('б', 'кб', 'мб', 'гб', 'тб');
+		    $units = array('Р±', 'РєР±', 'РјР±', 'РіР±', 'С‚Р±');
 		    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
 		    $pow = min($pow, count($units) - 1);
 		 	$bytes /= pow(1024, $pow);
 		    return round($bytes, $precision) . '&nbsp;' . $units[$pow];
 		} 
 
-		/*** Заливка одноименных файлов */
+		/*** Р—Р°Р»РёРІРєР° РѕРґРЅРѕРёРјРµРЅРЅС‹С… С„Р°Р№Р»РѕРІ */
 		public static function getNextFileName($name, $counter = 0) {
 		    preg_match('/([^\.]+).(.+)/', $name, $regs);
 		    $newName = $counter ? $regs[1].'_'.$counter.'.'.$regs[2] : $name;
 		    return @file_exists($GLOBALS['PRJ_DIR'].$newName) ? CUtils::getNextFileName($name, $counter + 1) : $newName;
 		}
 
-		/*** транслитерация строки (например, имя файла) */
+		/*** С‚СЂР°РЅСЃР»РёС‚РµСЂР°С†РёСЏ СЃС‚СЂРѕРєРё (РЅР°РїСЂРёРјРµСЂ, РёРјСЏ С„Р°Р№Р»Р°) */
 		public static function translitStr($s) {
-			// Сначала заменяем "односимвольные" фонемы.
-		    $s=strtr($s,"абвгдеёзийклмнопрстуфхъыэ_ ", "abvgdeeziyklmnoprstufh_iei_");
-		    $s=strtr($s,"АБВГДЕЁЗИЙКЛМНОПРСТУФХЪЫЭ_ ", "ABVGDEEZIYKLMNOPRSTUFH_IEI_");
-		    // Затем - "многосимвольные".
+			// РЎРЅР°С‡Р°Р»Р° Р·Р°РјРµРЅСЏРµРј "РѕРґРЅРѕСЃРёРјРІРѕР»СЊРЅС‹Рµ" С„РѕРЅРµРјС‹.
+		    $s=strtr($s,"Р°Р±РІРіРґРµС‘Р·РёР№РєР»РјРЅРѕРїСЂСЃС‚СѓС„С…СЉС‹СЌ_ ", "abvgdeeziyklmnoprstufh_iei_");
+		    $s=strtr($s,"РђР‘Р’Р“Р”Р•РЃР—РР™РљР›РњРќРћРџР РЎРўРЈР¤РҐРЄР«Р­_ ", "ABVGDEEZIYKLMNOPRSTUFH_IEI_");
+		    // Р—Р°С‚РµРј - "РјРЅРѕРіРѕСЃРёРјРІРѕР»СЊРЅС‹Рµ".
 		    $s=strtr($s, 
 		        array(
-		            "ж"=>"zh", "ц"=>"ts", "ч"=>"ch", "ш"=>"sh", 
-		            "щ"=>"shch","ь"=>"", "ю"=>"yu", "я"=>"ya",
-		            "Ж"=>"ZH", "Ц"=>"TS", "Ч"=>"CH", "Ш"=>"SH", 
-		            "Щ"=>"SHCH","Ь"=>"", "Ю"=>"YU", "Я"=>"YA",
-		            "ї"=>"i", "Ї"=>"Yi", "є"=>"ie", "Є"=>"Ye"
+		            "Р¶"=>"zh", "С†"=>"ts", "С‡"=>"ch", "С€"=>"sh", 
+		            "С‰"=>"shch","СЊ"=>"", "СЋ"=>"yu", "СЏ"=>"ya",
+		            "Р–"=>"ZH", "Р¦"=>"TS", "Р§"=>"CH", "РЁ"=>"SH", 
+		            "Р©"=>"SHCH","Р¬"=>"", "Р®"=>"YU", "РЇ"=>"YA",
+		            "С—"=>"i", "Р‡"=>"Yi", "С”"=>"ie", "Р„"=>"Ye"
 		        )
 		    );
 		    return $s;
@@ -72,26 +72,26 @@
 		    $lang = CUtils::_sessionVar('lang', false, 'ru');
 		    if ($lang != 'en') {
 		        $smonth = array(
-		        	'ru' => array('Jan' => 'января', 'Feb' => 'февраля', 'Mar' => 'марта', 'Apr' => 'апреля', 'May' => 'мая', 'Jun' => 'июня', 
-		        	'Jul' => 'июля', 'Aug' => 'августа', 'Sep' => 'сентября', 'Oct' => 'октября', 'Nov'  => 'ноября', 'Dec' => 'декабря'),
+		        	'ru' => array('Jan' => 'СЏРЅРІР°СЂСЏ', 'Feb' => 'С„РµРІСЂР°Р»СЏ', 'Mar' => 'РјР°СЂС‚Р°', 'Apr' => 'Р°РїСЂРµР»СЏ', 'May' => 'РјР°СЏ', 'Jun' => 'РёСЋРЅСЏ', 
+		        	'Jul' => 'РёСЋР»СЏ', 'Aug' => 'Р°РІРіСѓСЃС‚Р°', 'Sep' => 'СЃРµРЅС‚СЏР±СЂСЏ', 'Oct' => 'РѕРєС‚СЏР±СЂСЏ', 'Nov'  => 'РЅРѕСЏР±СЂСЏ', 'Dec' => 'РґРµРєР°Р±СЂСЏ'),
 		            'fr' => array(),
 		            'it' => array()
 		        );
 		        $month = array(
-		        	'ru' => array('January' => 'января', 'February' => 'февраля', 'March' => 'марта', 'April' => 'апреля', 'May' => 'мая', 'June' => 'июня', 
-		        	'July' => 'июля', 'August' => 'августа', 'September' => 'сентября', 'October' => 'октября', 'November'  => 'ноября', 'December' => 'декабря'),
+		        	'ru' => array('January' => 'СЏРЅРІР°СЂСЏ', 'February' => 'С„РµРІСЂР°Р»СЏ', 'March' => 'РјР°СЂС‚Р°', 'April' => 'Р°РїСЂРµР»СЏ', 'May' => 'РјР°СЏ', 'June' => 'РёСЋРЅСЏ', 
+		        	'July' => 'РёСЋР»СЏ', 'August' => 'Р°РІРіСѓСЃС‚Р°', 'September' => 'СЃРµРЅС‚СЏР±СЂСЏ', 'October' => 'РѕРєС‚СЏР±СЂСЏ', 'November'  => 'РЅРѕСЏР±СЂСЏ', 'December' => 'РґРµРєР°Р±СЂСЏ'),
 		            'fr' => array(),
 		            'it' => array()
 		        );
 		        $weekday = array(
-		        	'ru' => array('Monday' => 'понедельник', 'Tuesday' => 'вторник', 'Wednesday' => 'среда', 'Thursday' => 'четверг',
-		            'Friday' => 'пятница', 'Saturday' => 'суббота', 'Sunday' => 'воскресенье'),
+		        	'ru' => array('Monday' => 'РїРѕРЅРµРґРµР»СЊРЅРёРє', 'Tuesday' => 'РІС‚РѕСЂРЅРёРє', 'Wednesday' => 'СЃСЂРµРґР°', 'Thursday' => 'С‡РµС‚РІРµСЂРі',
+		            'Friday' => 'РїСЏС‚РЅРёС†Р°', 'Saturday' => 'СЃСѓР±Р±РѕС‚Р°', 'Sunday' => 'РІРѕСЃРєСЂРµСЃРµРЅСЊРµ'),
 		            'fr' => array(),
 		            'it' => array()
 		        );
 		        $sweekday = array(
-		        	'ru' => array('Mon' => 'понедельник', 'Tue' => 'вторник', 'Wed' => 'среда', 'Thu' => 'четверг',
-		            'Fri' => 'пятница', 'Sat' => 'суббота', 'Sun' => 'воскресенье'),
+		        	'ru' => array('Mon' => 'РїРѕРЅРµРґРµР»СЊРЅРёРє', 'Tue' => 'РІС‚РѕСЂРЅРёРє', 'Wed' => 'СЃСЂРµРґР°', 'Thu' => 'С‡РµС‚РІРµСЂРі',
+		            'Fri' => 'РїСЏС‚РЅРёС†Р°', 'Sat' => 'СЃСѓР±Р±РѕС‚Р°', 'Sun' => 'РІРѕСЃРєСЂРµСЃРµРЅСЊРµ'),
 		            'fr' => array(),
 		            'it' => array()
 		        );
@@ -100,7 +100,7 @@
 		    return $dstr;
 		}
 
-		/* Валидация email */
+		/* Р’Р°Р»РёРґР°С†РёСЏ email */
 		public static function valid_email($email) {
 		    return preg_match('/^[a-z0-9]+([-_\.]?[a-z0-9])*@[a-z0-9]+([-_\.]?[a-z0-9])+\.[a-z]{2,4}$/i', $email);
 		}
@@ -133,15 +133,15 @@
 		    }
 		}
 
-		// Сумма прописью - доработал - Alexander Selifonov
+		// РЎСѓРјРјР° РїСЂРѕРїРёСЃСЊСЋ - РґРѕСЂР°Р±РѕС‚Р°Р» - Alexander Selifonov
 		// last updated: 15.01.2007
-		// echo SumProp(2004.30, 'руб.', 'коп.');
-		// SumProp(nnnn,'USD'|'RUR'|'EUR')-полный вывод со спряжением "долларов"-"центов"
+		// echo SumProp(2004.30, 'СЂСѓР±.', 'РєРѕРї.');
+		// SumProp(nnnn,'USD'|'RUR'|'EUR')-РїРѕР»РЅС‹Р№ РІС‹РІРѕРґ СЃРѕ СЃРїСЂСЏР¶РµРЅРёРµРј "РґРѕР»Р»Р°СЂРѕРІ"-"С†РµРЅС‚РѕРІ"
 		public static function sumProp($srcsumm,$val_rub='', $val_kop=''){
-			$cifir= Array('од','дв','три','четыр','пят','шест','сем','восем','девят');
-			$sotN = Array('сто','двести','триста','четыреста','пятьсот','шестьсот','семьсот','восемьсот','девятьсот');
-			$milion= Array('триллион','миллиард','миллион','тысяч');
-			$anDan = Array('','','','сорок','','','','','девяносто');
+			$cifir= Array('РѕРґ','РґРІ','С‚СЂРё','С‡РµС‚С‹СЂ','РїСЏС‚','С€РµСЃС‚','СЃРµРј','РІРѕСЃРµРј','РґРµРІСЏС‚');
+			$sotN = Array('СЃС‚Рѕ','РґРІРµСЃС‚Рё','С‚СЂРёСЃС‚Р°','С‡РµС‚С‹СЂРµСЃС‚Р°','РїСЏС‚СЊСЃРѕС‚','С€РµСЃС‚СЊСЃРѕС‚','СЃРµРјСЊСЃРѕС‚','РІРѕСЃРµРјСЊСЃРѕС‚','РґРµРІСЏС‚СЊСЃРѕС‚');
+			$milion= Array('С‚СЂРёР»Р»РёРѕРЅ','РјРёР»Р»РёР°СЂРґ','РјРёР»Р»РёРѕРЅ','С‚С‹СЃСЏС‡');
+			$anDan = Array('','','','СЃРѕСЂРѕРє','','','','','РґРµРІСЏРЅРѕСЃС‚Рѕ');
 			$scet=4;
 			$cifR='';
 			$cfR='';
@@ -151,7 +151,7 @@
 			if(sizeof($splt)<2) $splt = explode(',', $srcsumm);
 			$xx = $splt[0];
 			$xx1 = (empty($splt[1])? '00': $splt[1]);
-			$xx1 = str_pad($xx1, 2, '0', STR_PAD_RIGHT); // 2345.1 -> 10 копеек
+			$xx1 = str_pad($xx1, 2, '0', STR_PAD_RIGHT); // 2345.1 -> 10 РєРѕРїРµРµРє
 			//  $xx1 = round(($srcsumm-floor($srcsumm))*100);
 			if ($xx>999999999999999) { $cfR=$srcsumm; return $cfR; }
 			while($xx/1000>0){
@@ -162,22 +162,22 @@
 				$des=(floor($delen-$sot)>9? floor(($delen-$sot)/10)*10:0);
 				$ed= floor($delen-$sot)-floor(($delen-$sot)/10)*10;
 
-				$forDes=($des/10==2?'а':'');
-				$forEd= ($ed==1 ? 'ин': ($ed==2?'е':'') );
-				if ( floor($yy/1000)>=1000 ) { // делаю "единицы" для тысяч, миллионов...
-					$ffD=($ed>4?'ь': ($ed==1 || $scet<3? ($ed<2?'ин': ($scet==3?'на': ($scet<4? ($ed==2?'а':( $ed==4?'е':'')) :'на') ) ) : ($ed==2 || $ed==4?'е':'') ) );
-				} else { // единицы для "единиц
-					$ffD=($ed>4?'ь': ($ed==1 || $scet<3? ($scet<3 && $ed<2?'ин': ($scet==3?'на': ($scet<4? ($ed==2?'а':( $ed==4?'е':'')) :'ин') ) ) : ( $ed==4?'е':($ed==2?'а':'')) ) );
+				$forDes=($des/10==2?'Р°':'');
+				$forEd= ($ed==1 ? 'РёРЅ': ($ed==2?'Рµ':'') );
+				if ( floor($yy/1000)>=1000 ) { // РґРµР»Р°СЋ "РµРґРёРЅРёС†С‹" РґР»СЏ С‚С‹СЃСЏС‡, РјРёР»Р»РёРѕРЅРѕРІ...
+					$ffD=($ed>4?'СЊ': ($ed==1 || $scet<3? ($ed<2?'РёРЅ': ($scet==3?'РЅР°': ($scet<4? ($ed==2?'Р°':( $ed==4?'Рµ':'')) :'РЅР°') ) ) : ($ed==2 || $ed==4?'Рµ':'') ) );
+				} else { // РµРґРёРЅРёС†С‹ РґР»СЏ "РµРґРёРЅРёС†
+					$ffD=($ed>4?'СЊ': ($ed==1 || $scet<3? ($scet<3 && $ed<2?'РёРЅ': ($scet==3?'РЅР°': ($scet<4? ($ed==2?'Р°':( $ed==4?'Рµ':'')) :'РёРЅ') ) ) : ( $ed==4?'Рµ':($ed==2?'Р°':'')) ) );
 				}
-				if($ed==2) $ffD = ($scet==3)?'е':'а'; // два рубля-миллиона-миллиарда, но две тысячи
+				if($ed==2) $ffD = ($scet==3)?'Рµ':'Р°'; // РґРІР° СЂСѓР±Р»СЏ-РјРёР»Р»РёРѕРЅР°-РјРёР»Р»РёР°СЂРґР°, РЅРѕ РґРІРµ С‚С‹СЃСЏС‡Рё
 
-				$forTys=($des/10==1? ($scet<3?'ов':'') : ($scet<3? ($ed==1?'': ($ed>1 && $ed<5?'а':'ов') ) : ($ed==1? 'а': ($ed>1 && $ed<5?'и':'') )) );
+				$forTys=($des/10==1? ($scet<3?'РѕРІ':'') : ($scet<3? ($ed==1?'': ($ed>1 && $ed<5?'Р°':'РѕРІ') ) : ($ed==1? 'Р°': ($ed>1 && $ed<5?'Рё':'') )) );
 				$nnn = floor($sot/100)-1;
 				$oprSot=(!empty($sotN[$nnn]) ? $sotN[$nnn]:'');
 				$nnn = floor($des/10);
-				$oprDes=(!empty($cifir[$nnn-1])? ($nnn==1?'': ($nnn==4 || $nnn==9? $anDan[$nnn-1]:($nnn==2 || $nnn==3?$cifir[$nnn-1].$forDes.'дцать':$cifir[$nnn-1].'ьдесят') ) ) :'');
+				$oprDes=(!empty($cifir[$nnn-1])? ($nnn==1?'': ($nnn==4 || $nnn==9? $anDan[$nnn-1]:($nnn==2 || $nnn==3?$cifir[$nnn-1].$forDes.'РґС†Р°С‚СЊ':$cifir[$nnn-1].'СЊРґРµСЃСЏС‚') ) ) :'');
 	
-				$oprEd=(!empty($cifir[$ed-1])? $cifir[$ed-1].(floor($des/10)==1?$forEd.'надцать' : $ffD ) : ($des==10?'десять':'') );
+				$oprEd=(!empty($cifir[$ed-1])? $cifir[$ed-1].(floor($des/10)==1?$forEd.'РЅР°РґС†Р°С‚СЊ' : $ffD ) : ($des==10?'РґРµСЃСЏС‚СЊ':'') );
 				$oprTys=(!empty($milion[$scet]) && $delen>0) ? $milion[$scet].$forTys : '';
 
 				$cifR= (strlen($oprSot) ? ' '.$oprSot:'').
@@ -194,7 +194,7 @@
 				$probel = strlen($cfR)>0 ? ' ':'';
 				$cfR .= (($oboR[$i]!='' && $cfR!='') ? $probel:'') . $oboR[$i];
 			}
-			if (strlen($cfR)<3) $cfR='ноль';
+			if (strlen($cfR)<3) $cfR='РЅРѕР»СЊ';
 
 			$intsrc = $splt[0];
 			$kopeiki = $xx1;
@@ -206,35 +206,35 @@
 			$sum22 = substr($sum2, strlen($sum2)-1,1); // 676571-> '1'
 			$kop1  = substr($kop2,0,1);
 			$kop2  = substr($kop2,1,1);
-			$ar234 = array('2','3','4'); // доллар-А, рубл-Я...
-			// делаю спряжения у слова рубл-ей|я|ь / доллар-ов... / евро
+			$ar234 = array('2','3','4'); // РґРѕР»Р»Р°СЂ-Рђ, СЂСѓР±Р»-РЇ...
+			// РґРµР»Р°СЋ СЃРїСЂСЏР¶РµРЅРёСЏ Сѓ СЃР»РѕРІР° СЂСѓР±Р»-РµР№|СЏ|СЊ / РґРѕР»Р»Р°СЂ-РѕРІ... / РµРІСЂРѕ
 			if($val_rub=='RUR') {
-				$val1 = 'рубл';
-				$val2 = 'копейка';
-				if($sum22=='1' && $sum21!='1') $val1 .= 'ь'; // 01,21...91 рубль
-				elseif(in_array($sum22, $ar234) && ($sum21!='1')) $val1 .= 'я';
-				else $val1 .= 'ей';
-				if(in_array($kop2, $ar234) && ($kop1!='1')) $val2 = 'копейки';
-				elseif($kop2=='1' && $kop1!='1') $val2 = 'копейка'; // 01,21...91 копейка
-				else $val2 = 'копеек';
+				$val1 = 'СЂСѓР±Р»';
+				$val2 = 'РєРѕРїРµР№РєР°';
+				if($sum22=='1' && $sum21!='1') $val1 .= 'СЊ'; // 01,21...91 СЂСѓР±Р»СЊ
+				elseif(in_array($sum22, $ar234) && ($sum21!='1')) $val1 .= 'СЏ';
+				else $val1 .= 'РµР№';
+				if(in_array($kop2, $ar234) && ($kop1!='1')) $val2 = 'РєРѕРїРµР№РєРё';
+				elseif($kop2=='1' && $kop1!='1') $val2 = 'РєРѕРїРµР№РєР°'; // 01,21...91 РєРѕРїРµР№РєР°
+				else $val2 = 'РєРѕРїРµРµРє';
 				$cfR .= ' '.$val1.' '.$kopeiki.' '.$val2;
 			} elseif($val_rub=='USD') {
-				$val1 = 'доллар';
-				$val2 = 'цент';
-				if($sum22=='1' && $sum21!='1') $val1 .= ''; // 01,21...91 доллар
+				$val1 = 'РґРѕР»Р»Р°СЂ';
+				$val2 = 'С†РµРЅС‚';
+				if($sum22=='1' && $sum21!='1') $val1 .= ''; // 01,21...91 РґРѕР»Р»Р°СЂ
 				elseif(in_array($sum22, $ar234) && ($sum21!='1')) $val1 .= 'a';
-				else $val1 .= 'ов';
-				if($kop2=='1' && $kop1!='1') $val2 .= ''; // 01,21...91 цент
+				else $val1 .= 'РѕРІ';
+				if($kop2=='1' && $kop1!='1') $val2 .= ''; // 01,21...91 С†РµРЅС‚
 				elseif(in_array($kop2, $ar234) && ($kop1!='1')) $val2 .= 'a';
-				else $val2 .= 'ов';
-				$val1 .= ' США';
+				else $val2 .= 'РѕРІ';
+				$val1 .= ' РЎРЁРђ';
 				$cfR .= ' '.$val1.' '.$kopeiki.' '.$val2;
 			} elseif($val_rub=='EUR') {
-				$val1 = 'евро';
-				$val2 = 'цент';
-				if($kop2=='1' && $kop1!='1') $val2 .= ''; // 01,21...91 цент
+				$val1 = 'РµРІСЂРѕ';
+				$val2 = 'С†РµРЅС‚';
+				if($kop2=='1' && $kop1!='1') $val2 .= ''; // 01,21...91 С†РµРЅС‚
 				elseif(in_array($kop2, $ar234) && ($kop1!='1')) $val2 .= 'a';
-				else $val2 .= 'ов';
+				else $val2 .= 'РѕРІ';
 				$cfR .= ' '.$val1.' '.$kopeiki.' '.$val2;
 			} else {
 				$cfR .= ' '.$val_rub;
@@ -244,7 +244,7 @@
 		} // SumProp() end
 
 
-		/* Обработка глобальных переменных  $_POST, $_GET, $_REQUEST, $_SESSION, $COOKIE */
+		/* РћР±СЂР°Р±РѕС‚РєР° РіР»РѕР±Р°Р»СЊРЅС‹С… РїРµСЂРµРјРµРЅРЅС‹С…  $_POST, $_GET, $_REQUEST, $_SESSION, $COOKIE */
 		public static function _postVar($key, $is_num = false, $default = ''){
 			if (isset($_POST[$key])) {
 				return $is_num ? intval($_POST[$key]) : (is_array($_POST[$key]) ? $_POST[$key] : addslashes($_POST[$key]));
@@ -285,7 +285,7 @@
 			}
 		}
 
-		/* Генерация Кеш-ключа */
+		/* Р“РµРЅРµСЂР°С†РёСЏ РљРµС€-РєР»СЋС‡Р° */
 		public static function genKey($n = 8) {
 			$pwd = ''; 
 			$k = 0; 
@@ -345,7 +345,7 @@
 						<tr>
 							<td valign="top"><div class="icon-'.$message['type'].'"></div></td>
 							<td>
-								<span class="message-title">'.($message['type'] == 'error' ? 'Ошибка' : 'Информация').'</span><br>
+								<span class="message-title">'.($message['type'] == 'error' ? 'РћС€РёР±РєР°' : 'РРЅС„РѕСЂРјР°С†РёСЏ').'</span><br>
 								<div class="empty" style="height:5px;"></div>'.$message['text'].'<br />
 							</td>
 						</tr>
@@ -361,12 +361,12 @@
 
 		public static function showError($sMessage) {
 			echo <<<EOD
-<div style="padding:15px;color:#990000;font-size:14px;"><b>Ошибка</b>:&nbsp;$sMessage</div>
+<div style="padding:15px;color:#990000;font-size:14px;"><b>РћС€РёР±РєР°</b>:&nbsp;$sMessage</div>
 EOD;
 		}
-		/* Обработка ошибок */
+		/* РћР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РѕРє */
 		public static function raiseError($message, $mode) {
-			echo '<div style="padding:15px;color:#990000;font-family:Arial;font-size:12px;"><b>Ошибка</b>:&nbsp;'.$message.'!</div>';
+			echo '<div style="padding:15px;color:#990000;font-family:Arial;font-size:12px;"><b>РћС€РёР±РєР°</b>:&nbsp;'.$message.'!</div>';
 		    if ($mode == ERROR_DIE)
 				exit;
 		}

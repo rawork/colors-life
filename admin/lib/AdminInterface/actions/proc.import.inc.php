@@ -5,7 +5,7 @@
             parent::__construct($unitAdminInterface);
         }
         function getText() {
-			$this->uai->messageAction($this->uai->unit->importCSV() ? 'Èìïîðò âûïîëíåí' : 'Îøèáêè ïðè èìïîðòå', $this->uai->getBaseRef().'&action=s_import');
+			$this->uai->messageAction($this->uai->unit->importCSV() ? 'Ð˜Ð¼Ð¿Ð¾Ñ€Ñ‚ Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½' : 'ÐžÑˆÐ¸Ð±ÐºÐ¸ Ð¿Ñ€Ð¸ Ð¸Ð¼Ð¿Ð¾Ñ€Ñ‚Ðµ', $this->uai->getBaseRef().'&action=s_import');
         }
     }
 ?>

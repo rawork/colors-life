@@ -1,4 +1,4 @@
-<div class="menu-catalog-title"><a href="javascript:toggleBlock('cat_block')">Каталог</a></div>
+<div class="menu-catalog-title"><a href="javascript:toggleBlock('cat_block')">РљР°С‚Р°Р»РѕРі</a></div>
 <div class="catsmenu-block" id="cat_block"{if $urlprops.node.name == 'articles'} style="display:none;"{/if}>
 {raItems var=items table=catalog_categories query="publish='on' AND p_id=0"}
 <table width="100%" cellpadding="0" cellspacing="0" border="0">

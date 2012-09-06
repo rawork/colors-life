@@ -1,13 +1,13 @@
-<h1>Адреса доставки</h1>
-<p class="cut">Вы можете изменить, удалить или <a href="/profile/address/?addNew">ввести новый адрес</a></p>
+<h1>РђРґСЂРµСЃР° РґРѕСЃС‚Р°РІРєРё</h1>
+<p class="cut">Р’С‹ РјРѕР¶РµС‚Рµ РёР·РјРµРЅРёС‚СЊ, СѓРґР°Р»РёС‚СЊ РёР»Рё <a href="/profile/address/?addNew">РІРІРµСЃС‚Рё РЅРѕРІС‹Р№ Р°РґСЂРµСЃ</a></p>
  <br>
  <table class="formTbl" width="100%">
  <colgroup><col><col width="100px"><col width="100px"></colgroup>
   <tbody><tr>
-   <td><b>Алякритский Роман</b></td>
-   <td><a href="/profile/address/?updAddress&amp;id=IAD0038740">изменить</a></td>
-   <td><a href="/profile/address/?delAddress&amp;id=IAD0038740">удалить</a></td>
+   <td><b>РђР»СЏРєСЂРёС‚СЃРєРёР№ Р РѕРјР°РЅ</b></td>
+   <td><a href="/profile/address/?updAddress&amp;id=IAD0038740">РёР·РјРµРЅРёС‚СЊ</a></td>
+   <td><a href="/profile/address/?delAddress&amp;id=IAD0038740">СѓРґР°Р»РёС‚СЊ</a></td>
 
-  </tr><tr><td>Москва, Байкальская, дом 37, тел.: +7 (916) 977-84-90</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+  </tr><tr><td>РњРѕСЃРєРІР°, Р‘Р°Р№РєР°Р»СЊСЃРєР°СЏ, РґРѕРј 37, С‚РµР».: +7 (916) 977-84-90</td><td>&nbsp;</td><td>&nbsp;</td></tr>
                 <tr><td colspan="3"><hr></td></tr>
                 </tbody></table>

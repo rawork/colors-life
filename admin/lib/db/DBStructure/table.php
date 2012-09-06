@@ -4,31 +4,31 @@
     $table_tables[] = array(
 		'name'			=> 'tables',
 		'component'		=> 'table',
-		'title'			=> 'Òàáëèöû',
+		'title'			=> 'Ð¢Ð°Ð±Ð»Ð¸Ñ†Ñ‹',
 		'order_by'		=> 'module_id,ord,name',
 		'is_sort'		=> true,
 		'is_publish'	=> true,
 		'fieldset'		=> array (
 			'title' => array (
 				'name'	=> 'title',
-				'title' => 'Çàãîëîâîê',
+				'title' => 'Ð—Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº',
 				'type'	=> 'string',
 				'width' => '10%',
 				'search'=> true
 			),
 			'name' => array (
 				'name'	=> 'name',
-				'title' => 'Ñèñò. èìÿ',
+				'title' => 'Ð¡Ð¸ÑÑ‚. Ð¸Ð¼Ñ',
 				'type'	=> 'string',
 				'width' => '10%',
-				'help'	=> 'Àíãë. áåç ïðîáåëîâ',
+				'help'	=> 'ÐÐ½Ð³Ð». Ð±ÐµÐ· Ð¿Ñ€Ð¾Ð±ÐµÐ»Ð¾Ð²',
 				'search' => true
 			),
 			'module_id' => array (
 				'name'	=> 'module_id',
-				'title' => 'Êîìïîíåíò',
+				'title' => 'ÐšÐ¾Ð¼Ð¿Ð¾Ð½ÐµÐ½Ñ‚',
 				'type'	=> 'select',
-				'help'	=> 'Ìîäóëü òàáëèöû',
+				'help'	=> 'ÐœÐ¾Ð´ÑƒÐ»ÑŒ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹',
 				'l_table' => 'config_modules',
 				'l_field' => 'title',
 				'width' => '20%'//,
@@ -36,31 +36,31 @@
 			),
 			'order_by' => array (
 				'name' => 'order_by',
-				'title' => 'Ñîðòèðîâêà',
+				'title' => 'Ð¡Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ°',
 				'type' => 'string'
 			),
 			'is_view'	=> array (
 				'name'	=> 'is_view',
-				'title' => 'Âèä',
+				'title' => 'Ð’Ð¸Ð´',
 				'type'	=> 'checkbox'
 			),
 			'is_lang'	=> array (
 				'name'	=> 'is_lang',
-				'title' => 'Çàâèñèò îò ÿçûêà',
+				'title' => 'Ð—Ð°Ð²Ð¸ÑÐ¸Ñ‚ Ð¾Ñ‚ ÑÐ·Ñ‹ÐºÐ°',
 				'type'	=> 'checkbox',
 				'width' => '1%',
 				'group_update' => true
 			),
 			'is_sort'	=> array (
 				'name'	=> 'is_sort',
-				'title'	=> 'Ïîëå ñîðò.',
+				'title'	=> 'ÐŸÐ¾Ð»Ðµ ÑÐ¾Ñ€Ñ‚.',
 				'type'	=> 'checkbox',
 				'width' => '1%',
 				'group_update' => true
 			),
 			'is_publish' => array (
 				'name'	=> 'is_publish',
-				'title'	=> 'Ïîëå àêò.',
+				'title'	=> 'ÐŸÐ¾Ð»Ðµ Ð°ÐºÑ‚.',
 				'type'	=> 'checkbox',
 				'width' => '1%',
 				'group_update' => true
@@ -85,24 +85,24 @@
 			),
 			'is_search' => array (
 				'name'	=> 'is_search',
-				'title' => 'ïîèñê',
+				'title' => 'Ð¿Ð¾Ð¸ÑÐº',
 				'type'	=> 'checkbox',
 				'width' => '1%',
 				'group_update' => true
 			),
 			'show_credate'	=> array (
 				'name'	=> 'show_credate',
-				'title' => 'Ïîêàçûâàòü äàòó ñîçäàíèÿ',
+				'title' => 'ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð´Ð°Ñ‚Ñƒ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ñ',
 				'type'	=> 'checkbox'
 			),
 			'multifile' => array (
 				'name'	=> 'multifile',
-				'title' => 'Äîï. ôàéëû',
+				'title' => 'Ð”Ð¾Ð¿. Ñ„Ð°Ð¹Ð»Ñ‹',
 				'type'	=> 'checkbox'
 			),
 			'search_prefix' => array (
 				'name'	=> 'search_prefix',
-				'title' => 'ïîèñê ïàðàì',
+				'title' => 'Ð¿Ð¾Ð¸ÑÐº Ð¿Ð°Ñ€Ð°Ð¼',
 				'type'	=> 'string',
 			)
 		)
@@ -111,30 +111,30 @@
    $table_tables[] = array(
 		'name'		=> 'attributes',
 		'component' => 'table',
-		'title'		=> 'Ïîëÿ',
+		'title'		=> 'ÐŸÐ¾Ð»Ñ',
 		'order_by'	=> 'table_id,ord',
 		'is_sort'	=> true,
 		'is_publish' => true,
 		'fieldset'	=> array (
         'title'		=> array (
             'name'  => 'title',
-            'title' => 'Çàãîëîâîê',
+            'title' => 'Ð—Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº',
             'type'  => 'string',
             'width' => '21%',
             'search'=> true
         ),
 		'name' => array (
             'name'		=> 'name',
-            'title'		=> 'Ñèñò. èìÿ',
+            'title'		=> 'Ð¡Ð¸ÑÑ‚. Ð¸Ð¼Ñ',
             'search'	=> true,
             'type'		=> 'string',
-        	'help'		=> 'Àíãë. íàçâàíèå ïîëÿ',
+        	'help'		=> 'ÐÐ½Ð³Ð». Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð¿Ð¾Ð»Ñ',
             'width'		=> '21%',
             'search'	=> true
         ),
         'table_id' => array (
             'name'		=> 'table_id',
-            'title'		=> 'Òàáëèöà',
+            'title'		=> 'Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð°',
             'type'		=> 'select',
             'l_table'	=> 'table_tables',
             'l_field'	=> 'title',
@@ -143,26 +143,26 @@
         ),
 		'type' => array (
             'name'		=> 'type',
-            'title'		=> 'Òèï ïîëÿ',
+            'title'		=> 'Ð¢Ð¸Ð¿ Ð¿Ð¾Ð»Ñ',
             'type'		=> 'enum',
-        	'select_values' => 'HTML|html;Âûáîð|select;Âûáîð èç äåðåâà|select_tree;Âûáîð ìíîæåñòâà|select_list;Äàòà|date;Äàòà è âðåìÿ|datetime;Äåíüãè|currency;Òåêñò|text;Ïàðîëü|password;Ïåðå÷èñëåíèå|enum;Ðèñóíîê|image;Ñòðîêà|string;Ôàéë|file;Ôëàæîê|checkbox;Öåëîå ÷èñëî|number;Øàáëîí|template',
+        	'select_values' => 'HTML|html;Ð’Ñ‹Ð±Ð¾Ñ€|select;Ð’Ñ‹Ð±Ð¾Ñ€ Ð¸Ð· Ð´ÐµÑ€ÐµÐ²Ð°|select_tree;Ð’Ñ‹Ð±Ð¾Ñ€ Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²Ð°|select_list;Ð”Ð°Ñ‚Ð°|date;Ð”Ð°Ñ‚Ð° Ð¸ Ð²Ñ€ÐµÐ¼Ñ|datetime;Ð”ÐµÐ½ÑŒÐ³Ð¸|currency;Ð¢ÐµÐºÑÑ‚|text;ÐŸÐ°Ñ€Ð¾Ð»ÑŒ|password;ÐŸÐµÑ€ÐµÑ‡Ð¸ÑÐ»ÐµÐ½Ð¸Ðµ|enum;Ð Ð¸ÑÑƒÐ½Ð¾Ðº|image;Ð¡Ñ‚Ñ€Ð¾ÐºÐ°|string;Ð¤Ð°Ð¹Ð»|file;Ð¤Ð»Ð°Ð¶Ð¾Ðº|checkbox;Ð¦ÐµÐ»Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾|number;Ð¨Ð°Ð±Ð»Ð¾Ð½|template',
 			'defvalue'	=> 'string',
 			'width'		=> '21%'
         ),
         'select_values' => array (
             'name'  => 'select_values',
-            'title' => 'Çíà÷åíèÿ',
+            'title' => 'Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ',
             'type'  => 'string',
-			'help'  => 'Çíàê-ðàçäåëüòåëü &laquo;;&raquo;'
+			'help'  => 'Ð—Ð½Ð°Ðº-Ñ€Ð°Ð·Ð´ÐµÐ»ÑŒÑ‚ÐµÐ»ÑŒ &laquo;;&raquo;'
         ),
         'params' => array (
             'name'  => 'params',
-            'title' => 'Ïàðàìåòðû',
+            'title' => 'ÐŸÐ°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹',
             'type'  => 'string'
         ),
         'width' => array (
             'name'  => 'width',
-            'title' => 'Øèðèíà',
+            'title' => 'Ð¨Ð¸Ñ€Ð¸Ð½Ð°',
             'type'  => 'string',
             'width' => '10%',
 			'defvalue' => '95%',
@@ -174,7 +174,7 @@
             'type'  => 'checkbox',
         	'width' => '1%',
         	'group_update' => true,
-			'help'  => 'Ãðóïïîâîå îáíîâëåíèå'
+			'help'  => 'Ð“Ñ€ÑƒÐ¿Ð¿Ð¾Ð²Ð¾Ðµ Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ðµ'
         ),
         'readonly' => array (
             'name'  => 'readonly',
@@ -182,7 +182,7 @@
             'type'  => 'checkbox',
         	'width' => '1%',
         	'group_update' => true,
-			'help' => 'Òîëüêî ÷òåíèå'
+			'help' => 'Ð¢Ð¾Ð»ÑŒÐºÐ¾ Ñ‡Ñ‚ÐµÐ½Ð¸Ðµ'
         ),
         'search' => array (
             'name'  => 'search',
@@ -190,18 +190,18 @@
             'type'  => 'checkbox',
         	'width' => '1%',
         	'group_update' => true,
-			'help' => 'Ïîèñê'
+			'help' => 'ÐŸÐ¾Ð¸ÑÐº'
         ),
 		'not_empty' => array (
             'name' => 'not_empty',
-            'title' => 'Îáÿç.',
+            'title' => 'ÐžÐ±ÑÐ·.',
             'type' => 'checkbox',
             'group_update'  => true,
             'width' => '1%'
         ),
 		'defvalue' => array (
             'name'  => 'defvalue',
-            'title' => 'Çíà÷åíèå ïî óìîë÷àíèþ',
+            'title' => 'Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ',
             'search' => true,
             'type'  => 'string'
         )

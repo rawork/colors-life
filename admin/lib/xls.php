@@ -1,13 +1,13 @@
 <?php
     inc_lib('xlsParser.php');
     class xls extends xlsParser {
-        /*** преобразует из xls-юникода в win1251 */
+        /*** РїСЂРµРѕР±СЂР°Р·СѓРµС‚ РёР· xls-СЋРЅРёРєРѕРґР° РІ win1251 */
         function uc2html($str) {
             $ret = '';
             for ($i = 0; $i < strlen($str) / 2; $i++) {
                 $charcode = ord($str[$i * 2]) + 256 * ord($str[$i * 2 + 1]);
                 if ($charcode == 1105) {
-                    $ret.= 'ё';
+                    $ret.= 'С‘';
                 } else {
                     if ($charcode > 175) {
                         $char = chr($charcode - 848);
@@ -19,7 +19,7 @@
             }
             return $ret;
         }
-        /*** возвращает нормализованные данные из xls-клетке */
+        /*** РІРѕР·РІСЂР°С‰Р°РµС‚ РЅРѕСЂРјР°Р»РёР·РѕРІР°РЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РёР· xls-РєР»РµС‚РєРµ */
         function process_cell(&$cell) {
             if (!is_array($cell)) {
                 return false; // empty cell

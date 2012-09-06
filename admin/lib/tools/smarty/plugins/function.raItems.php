@@ -18,10 +18,10 @@
 
 function smarty_function_raItems($params, &$smarty) {
 	if (empty($params['table']) && empty($params['nquery'])) {
-		$smarty->trigger_error('raItems: Íå óêàçàí ïàðàìåòð: table');
+		$smarty->trigger_error('raItems: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: table');
 	} else {
 		if (empty($params['var'])) {
-			$smarty->trigger_error('raItems: Íå óêàçàí ïàðàìåòð: var');
+			$smarty->trigger_error('raItems: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: var');
 		} else {
 			if (!empty($params['nquery'])) {
 				$smarty->assign($params['var'], $GLOBALS['rtti']->getNativeItems($params['nquery']));

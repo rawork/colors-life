@@ -17,10 +17,10 @@
 							$ret .= ($ret ? ' ' : '').$a[$field_name];
 					return $ret.' ['.$a['id'].']';
 				} else {
-					return 'Элемент ID:'.$a['id'];
+					return 'Р­Р»РµРјРµРЅС‚ ID:'.$a['id'];
 				}
 			}
-            return 'Корень';
+            return 'РљРѕСЂРµРЅСЊ';
         }
 		
         public function getInput($value = '', $name = '') {
@@ -31,14 +31,14 @@
             return $this->select_tree_getInput(parent::getSearchValue(), parent::getSearchName());
         }
 		
-        protected function select_tree_getInput($value, $name, $zeroTitle = 'Корень') {
+        protected function select_tree_getInput($value, $name, $zeroTitle = 'РљРѕСЂРµРЅСЊ') {
 			$name = $name ? $name : $this->getName();
 			$value = empty($value) ? intval($this->dbValue) : $value;
 			$unit = CUtils::_getVar('unit'); 
 			$table = CUtils::_getVar('table');
 			$id = empty($this->dbId) ? '-1' : $this->dbId;
             $input_id = strtr($name, '[]', '__');
-            // узнаем имя категории, для текстового поля
+            // СѓР·РЅР°РµРј РёРјСЏ РєР°С‚РµРіРѕСЂРёРё, РґР»СЏ С‚РµРєСЃС‚РѕРІРѕРіРѕ РїРѕР»СЏ
             $ret = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="100%"><input type="text" readonly style="width:100%;" value="'.$this->getStatic().'" size="62" id="'.$input_id.'_title">';
             $ret .= '<input type="hidden" name="'.$name.'" value="'.$value.'" id="'.$input_id.'"></td>';
             $ret .= '</td><td><input class="butt" type="button" value="&hellip;" onClick="show_tree_popup(\''.$input_id.'\',\''.$unit.'_'.$table.'\',\''.$name.'\', \''.$id.'\', \''.$zeroTitle.'\',\''.$value.'\');"></td></tr></table>';

@@ -2,10 +2,10 @@
 /*
  * Smarty plugin
  * -------------------------------------------------------------
- * Ôàéë:     resource.var.php
- * Òèï:     resource
- * Èìÿ:     var
- * Íàçíà÷åíèå:  Ïîëó÷àåò øàáëîí èç ïåðåìåííîé
+ * Ð¤Ð°Ð¹Ð»:     resource.var.php
+ * Ð¢Ð¸Ð¿:     resource
+ * Ð˜Ð¼Ñ:     var
+ * ÐÐ°Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ:  ÐŸÐ¾Ð»ÑƒÑ‡Ð°ÐµÑ‚ ÑˆÐ°Ð±Ð»Ð¾Ð½ Ð¸Ð· Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð¾Ð¹
  * -------------------------------------------------------------
  */
 function smarty_resource_var_source($tpl_name, &$tpl_source, &$smarty){
@@ -23,11 +23,11 @@ function smarty_resource_var_timestamp($tpl_name, &$tpl_timestamp, &$smarty) {
 }
 
 function smarty_resource_var_secure($tpl_name, &$smarty){
-    // ïðåäïîëàãàåì, ÷òî øàáëîíû áåçîïàñíû
+    // Ð¿Ñ€ÐµÐ´Ð¿Ð¾Ð»Ð°Ð³Ð°ÐµÐ¼, Ñ‡Ñ‚Ð¾ ÑˆÐ°Ð±Ð»Ð¾Ð½Ñ‹ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ñ‹
     return true;
 }
 
 function smarty_resource_var_trusted($tpl_name, &$smarty){
-    // íå èñïîëüçóåòñÿ äëÿ øàáëîíîâ
+    // Ð½Ðµ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ Ð´Ð»Ñ ÑˆÐ°Ð±Ð»Ð¾Ð½Ð¾Ð²
 }
 ?> 

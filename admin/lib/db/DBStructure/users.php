@@ -4,40 +4,40 @@
     $users_tables[] = array(
 	'name' => 'users',
 	'component' => 'users',
-	'title' => 'Ñïèñîê ïîëüçîâàòåëåé',
+	'title' => 'Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹',
 	'order_by' => 'syslogin',
 	'fieldset' => array (
         'syslogin' => array (
             'name' => 'syslogin',
-            'title' => 'Ëîãèí',
+            'title' => 'Ð›Ð¾Ð³Ð¸Ð½',
             'type' => 'string',
             'width' => '25%',
         ),
         'syspassword' => array (
             'name' => 'syspassword',
-            'title' => 'Ïàðîëü',
+            'title' => 'ÐŸÐ°Ñ€Ð¾Ð»ÑŒ',
             'type' => 'password',
         ),
         'hashkey' => array (
             'name' => 'hashkey',
-            'title' => 'Êëþ÷',
+            'title' => 'ÐšÐ»ÑŽÑ‡',
             'type' => 'string',
         ),
         'name' => array (
             'name' => 'name',
-            'title' => 'ÔÈÎ',
+            'title' => 'Ð¤Ð˜Ðž',
             'type' => 'string',
             'width' => '25%'
         ),
         'email' => array (
             'name' => 'email',
-            'title' => 'Ýë. ïî÷òà',
+            'title' => 'Ð­Ð». Ð¿Ð¾Ñ‡Ñ‚Ð°',
             'type' => 'string',
             'width' => '25%'
         ),
         'group_id' => array (
             'name' => 'group_id',
-            'title' => 'Ãðóïïà',
+            'title' => 'Ð“Ñ€ÑƒÐ¿Ð¿Ð°',
             'type' => 'select',
             'l_table' => 'users_groups',
             'l_field' => 'name',
@@ -46,14 +46,14 @@
         ),
 	'is_admin' => array (
             'name' => 'is_admin',
-            'title' => 'Àäìèí',
+            'title' => 'ÐÐ´Ð¼Ð¸Ð½',
             'type' => 'checkbox',
             'width' => '1%',
             'group_update' => true
         ),
         'is_active' => array (
             'name' => 'is_active',
-            'title' => 'Àêòèâåí',
+            'title' => 'ÐÐºÑ‚Ð¸Ð²ÐµÐ½',
             'type' => 'checkbox',
             'width' => '1%',
             'group_update' => true
@@ -63,18 +63,18 @@
     $users_tables[] = array(
 	'name' => 'groups',
 	'component' => 'users',
-	'title' => 'Ãðóïïû ïîëüçîâàòåëåé',
+	'title' => 'Ð“Ñ€ÑƒÐ¿Ð¿Ñ‹ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹',
 	'order_by' => 'name',
 	'fieldset' => array (
         'name' => array (
             'name' => 'name',
-            'title' => 'Íàçâàíèå',
+            'title' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ',
             'type' => 'string',
             'width' => '25%',
         ),
         'rules' => array (
             'name' => 'rules',
-            'title' => 'Ïðàâà',
+            'title' => 'ÐŸÑ€Ð°Ð²Ð°',
             'type' => 'select_list',
             'l_table' => 'config_modules',
             'l_field' => 'title',

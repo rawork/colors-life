@@ -3,5 +3,5 @@
 <h1>{$item.name}</h1>
 <div class="article-text">{$item.body}</div>
 {else}
-Статья не найдена
+РЎС‚Р°С‚СЊСЏ РЅРµ РЅР°Р№РґРµРЅР°
 {/if}

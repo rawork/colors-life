@@ -18,20 +18,20 @@
 
 function smarty_function_raPages($params, &$smarty) {
 	if (!isset($params['table'])) {
-		$smarty->trigger_error('raPages: Íå óêàçàí ïàðàìåòð: table');
+		$smarty->trigger_error('raPages: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: table');
 	} elseif (!isset($params['pref'])) {
-		$smarty->trigger_error('raPages: Íå óêàçàí ïàðàìåòð: pref');
+		$smarty->trigger_error('raPages: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: pref');
 	} else {
 		if (!isset($params['var'])) {
-			$smarty->trigger_error('raItems: Íå óêàçàí ïàðàìåòð: var');
+			$smarty->trigger_error('raItems: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: var');
 		} else {
 			inc_lib('Pages.php');
 			$pages = new Pages(
-					$GLOBALS['rtti']->getTable($params['table']), // Òàáëèöà ñ äàííûìè
-					$params['pref'], 							  //Áàçîâàÿ ññûëêà
-					array('where' => $params['query']), 		  // Çàïðîñ
-					empty($params['per_page']) ? 10 : $params['per_page'], //Ðåçóëüòàòîâ íà ñòðàíèöó
-					empty($params['page']) ? 1 : $params['page']  // Ñòðàíèöà
+					$GLOBALS['rtti']->getTable($params['table']), // Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ñ Ð´Ð°Ð½Ð½Ñ‹Ð¼Ð¸
+					$params['pref'], 							  //Ð‘Ð°Ð·Ð¾Ð²Ð°Ñ ÑÑÑ‹Ð»ÐºÐ°
+					array('where' => $params['query']), 		  // Ð—Ð°Ð¿Ñ€Ð¾Ñ
+					empty($params['per_page']) ? 10 : $params['per_page'], //Ð ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð² Ð½Ð° ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñƒ
+					empty($params['page']) ? 1 : $params['page']  // Ð¡Ñ‚Ñ€Ð°Ð½Ð¸Ñ†Ð°
 			);
 			if (!empty($params['tpl']))
 				$pages->template = 'service/'.$params['tpl'];

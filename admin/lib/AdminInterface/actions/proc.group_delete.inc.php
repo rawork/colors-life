@@ -11,7 +11,7 @@
                 if (stristr($sKey, 'cng'))
                     $sQuery .= ($sQuery ? ',' : '').$iEntityId;
             $sQuery = $sQuery ? 'id IN('.$sQuery.') ' : '';
-            $this->messageAction($GLOBALS['rtti']->deleteItem($this->t->getDBTableName(), $sQuery) ? '”‰‡ÎÂÌÓ' : 'Œ¯Ë·Í‡ „ÛÔÔÓ‚Ó„Ó Û‰‡ÎÂÌËˇ');
+            $this->messageAction($GLOBALS['rtti']->deleteItem($this->t->getDBTableName(), $sQuery) ? '–£–¥–∞–ª–µ–Ω–æ' : '–û—à–∏–±–∫–∞ –≥—Ä—É–ø–ø–æ–≤–æ–≥–æ —É–¥–∞–ª–µ–Ω–∏—è');
         }
     }
 

@@ -77,7 +77,7 @@
 			if (!empty($this->real_field_types[$fieldtype])) {
 				return $this->real_field_types[$fieldtype];
 			}
-			// надо правильней обработать
+			// РЅР°РґРѕ РїСЂР°РІРёР»СЊРЅРµР№ РѕР±СЂР°Р±РѕС‚Р°С‚СЊ
 			return '';
 		}
     }

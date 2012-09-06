@@ -8,9 +8,9 @@
         function getText() {
 			if (CUtils::_postVar('utype')) {
 				$path = str_replace(stristr($_SERVER['HTTP_REFERER'], '&message'), '', $_SERVER['HTTP_REFERER']);
-				header('location: '.$path.'&message='.($this->t->updateGlobals() ? urlencode('Обновлено') : urlencode('Ошибка обновления')));	
+				header('location: '.$path.'&message='.($this->t->updateGlobals() ? urlencode('РћР±РЅРѕРІР»РµРЅРѕ') : urlencode('РћС€РёР±РєР° РѕР±РЅРѕРІР»РµРЅРёСЏ')));	
 			} else {
-				$this->messageAction($this->t->updateGlobals() ? 'Обновлено' : 'Ошибка обновления');
+				$this->messageAction($this->t->updateGlobals() ? 'РћР±РЅРѕРІР»РµРЅРѕ' : 'РћС€РёР±РєР° РѕР±РЅРѕРІР»РµРЅРёСЏ');
 			}
         }
 		

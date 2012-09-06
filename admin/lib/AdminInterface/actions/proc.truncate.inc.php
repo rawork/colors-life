@@ -5,7 +5,7 @@
             parent::__construct($unitAdminInterface);
         }
         function getText() {
-            $this->messageAction($GLOBALS['rtti']->truncateClass($this->t->getDBTableName()) ? 'Âñå çàïèñè òàáëèöû óäàëåíû' : 'Îøèáêà óäàëåíèÿ çàïèñåé òàáëèöû');
+            $this->messageAction($GLOBALS['rtti']->truncateClass($this->t->getDBTableName()) ? 'Ð’ÑÐµ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ ÑƒÐ´Ð°Ð»ÐµÐ½Ñ‹' : 'ÐžÑˆÐ¸Ð±ÐºÐ° ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ Ð·Ð°Ð¿Ð¸ÑÐµÐ¹ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹');
         }
     }
 ?>

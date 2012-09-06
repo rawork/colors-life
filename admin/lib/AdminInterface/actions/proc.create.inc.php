@@ -6,7 +6,7 @@
             parent::__construct($unitAdminInterface);
         }
         function getText() {
-            $this->messageAction($this->t->create() ? 'Таблица создана' : 'Ошибка создания таблицы');
+            $this->messageAction($this->t->create() ? 'РўР°Р±Р»РёС†Р° СЃРѕР·РґР°РЅР°' : 'РћС€РёР±РєР° СЃРѕР·РґР°РЅРёСЏ С‚Р°Р±Р»РёС†С‹');
         }
     }
 

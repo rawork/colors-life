@@ -6,7 +6,7 @@
             parent::__construct($unitAdminInterface);
         }
         		
-        /* Форма добавления */
+        /* Р¤РѕСЂРјР° РґРѕР±Р°РІР»РµРЅРёСЏ */
 		function getSInsert() {
 		global $PRJ_DIR, $THEME_REF, $smarty;
 			if (file_exists($PRJ_DIR.'/templates/admin/components/'.CUtils::_getVar('unit').'.'.CUtils::_getVar('table').'.tpl')){
@@ -30,10 +30,10 @@
 				$ret .= '<input type="hidden" id="utype" name="utype" value="0">';
 				$ret .= $this->getTableHeader();
 				$ret .= '<tr">'."\n";
-				$ret .= '<td><b>Добавить</b><a name=add></a><br><img src="'.$THEME_REF.'/img/0.gif" width="150" height="1"></td>'."\n";
+				$ret .= '<td><b>Р”РѕР±Р°РІРёС‚СЊ</b><a name=add></a><br><img src="'.$THEME_REF.'/img/0.gif" width="150" height="1"></td>'."\n";
 				$ret .= '<td><div class="empty"></div></td></tr>'."\n";
 				$ret .= $fields;
-	           	$ret .= '</table><div class="ctlbtns"><input type="button" class="adm-btn" onClick="preSubmit(\'frmInsert\', 1)" value="Применить"><input type="button" class="adm-btn" onClick="preSubmit(\'frmInsert\', 0)" value="Сохранить"><input type="button" class="adm-btn" onClick="window.location = \''.(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->fullRef).'\'" value="Отменить"></div></form>'."\n";
+	           	$ret .= '</table><div class="ctlbtns"><input type="button" class="adm-btn" onClick="preSubmit(\'frmInsert\', 1)" value="РџСЂРёРјРµРЅРёС‚СЊ"><input type="button" class="adm-btn" onClick="preSubmit(\'frmInsert\', 0)" value="РЎРѕС…СЂР°РЅРёС‚СЊ"><input type="button" class="adm-btn" onClick="window.location = \''.(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->fullRef).'\'" value="РћС‚РјРµРЅРёС‚СЊ"></div></form>'."\n";
 	            return $ret;
 			}
         }
@@ -43,7 +43,7 @@
 			$links = array(
 				array(
 					'ref' => $this->fullRef,
-					'name' => 'Список элементов'
+					'name' => 'РЎРїРёСЃРѕРє СЌР»РµРјРµРЅС‚РѕРІ'
 				)
 			);
 			$ret .= $this->getOperationsBar($links);

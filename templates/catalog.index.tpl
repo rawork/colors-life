@@ -154,17 +154,17 @@
             {if count($items)}
 			<table class="stuff-selector" width="100%" cellpadding="5" cellspacing="0" border="0">
   <tr>
-                <td width="40%">Сортировать по: 
-      {if $param1 != 'price' && $param1 != 'name'} <a href="{raURL node=catalog method=$mname prms="`$param0`.price"}">цене</a> <a href="{raURL node=catalog method=$mname prms="`$param0`.name"}">названию</a> {elseif $param1 == 'price'} <span>цене</span> <a href="{raURL node=catalog method=$mname prms="`$param0`.name"}">названию</a> {else} <a href="{raURL node=catalog method=$mname prms="`$param0`.price"}">цене</a> <span>названию</span> {/if} </td>
-                <td width="60%" align="right">Показать товары: <span>таблицей</span> <a href="{raURL node=$urlprops.node.name method=list prms=$param0}">списком</a> по
+                <td width="40%">РЎРѕСЂС‚РёСЂРѕРІР°С‚СЊ РїРѕ: 
+      {if $param1 != 'price' && $param1 != 'name'} <a href="{raURL node=catalog method=$mname prms="`$param0`.price"}">С†РµРЅРµ</a> <a href="{raURL node=catalog method=$mname prms="`$param0`.name"}">РЅР°Р·РІР°РЅРёСЋ</a> {elseif $param1 == 'price'} <span>С†РµРЅРµ</span> <a href="{raURL node=catalog method=$mname prms="`$param0`.name"}">РЅР°Р·РІР°РЅРёСЋ</a> {else} <a href="{raURL node=catalog method=$mname prms="`$param0`.price"}">С†РµРЅРµ</a> <span>РЅР°Р·РІР°РЅРёСЋ</span> {/if} </td>
+                <td width="60%" align="right">РџРѕРєР°Р·Р°С‚СЊ С‚РѕРІР°СЂС‹: <span>С‚Р°Р±Р»РёС†РµР№</span> <a href="{raURL node=$urlprops.node.name method=list prms=$param0}">СЃРїРёСЃРєРѕРј</a> РїРѕ
       <select name="cpage" onChange="setCatalogRTT(this, {$rtt}, {$page})">
                     <option value="6"{if $rtt == 6} selected{/if}>6</option>
                     <option value="12"{if $rtt > 6 && $rtt <= 12} selected{/if}>12</option>
                     <option value="24"{if $rtt > 12 && $rtt <= 24} selected{/if}>24</option>
                     <option value="48"{if $rtt > 24 && $rtt <= 48} selected{/if}>48</option>
-                    <option value="1000"{if $rtt > 48 || $rtt < 6} selected{/if}>Все</option>
+                    <option value="1000"{if $rtt > 48 || $rtt < 6} selected{/if}>Р’СЃРµ</option>
                   </select>
-      на страницу </td>
+      РЅР° СЃС‚СЂР°РЅРёС†Сѓ </td>
               </tr>
 </table>
 {if is_object($pages)}{$pages->getText()}{/if}
@@ -195,17 +195,17 @@
                                     
                                     <div class="stuff-exist">{if $item.is_exist}<img src="/img/vnalich.png">{else}<img src="/img/zakaz.png">{/if}</div>
 									{if !$item.is_exist}<div class="know-when">
-									<a href="#" onclick="return showMailForm({$item.id})">Узнать, когда появится в продаже</a>
-									<div id="mailblock{$item.id}"><input type="text" onkeypress="checkEmailForm({$item.id})" onkeyup="checkEmailForm({$item.id})" onblur="procBlurEmail(this, 'Электронная почта', {$item.id})" onfocus="procFocus(this, 'Электронная почта')" value="Электронная почта" class="width-200" name="email{$item.id}" id="email{$item.id}"> <input type="button" class="btnEmail" id="btnEmail{$item.id}" onclick="sendStuffExist({$item.id})" disabled="true" value="Оставить заявку" /></div>
+									<a href="#" onclick="return showMailForm({$item.id})">РЈР·РЅР°С‚СЊ, РєРѕРіРґР° РїРѕСЏРІРёС‚СЃСЏ РІ РїСЂРѕРґР°Р¶Рµ</a>
+									<div id="mailblock{$item.id}"><input type="text" onkeypress="checkEmailForm({$item.id})" onkeyup="checkEmailForm({$item.id})" onblur="procBlurEmail(this, 'Р­Р»РµРєС‚СЂРѕРЅРЅР°СЏ РїРѕС‡С‚Р°', {$item.id})" onfocus="procFocus(this, 'Р­Р»РµРєС‚СЂРѕРЅРЅР°СЏ РїРѕС‡С‚Р°')" value="Р­Р»РµРєС‚СЂРѕРЅРЅР°СЏ РїРѕС‡С‚Р°" class="width-200" name="email{$item.id}" id="email{$item.id}"> <input type="button" class="btnEmail" id="btnEmail{$item.id}" onclick="sendStuffExist({$item.id})" disabled="true" value="РћСЃС‚Р°РІРёС‚СЊ Р·Р°СЏРІРєСѓ" /></div>
 									</div>{/if}
                                     {raItems var=prices table=catalog_prices query="stuff_id=`$item.id` AND publish='on'" sort="ord,size_id"}
                         {if count($prices)}
                         <div class="stuff-sizes">
-                        Размерный ряд:<br> 
+                        Р Р°Р·РјРµСЂРЅС‹Р№ СЂСЏРґ:<br> 
                         <select name="stuff_price_{$item.id}" id="stuff_price_{$item.id}" onchange="setPrice({$item.id})">
                         <option rel="{if $item.spec_price == '0.00'}{$item.price}{else}{$item.spec_price}{/if}" value="0">...</option>
                         {foreach from=$prices item=price}
-                        <option rel="{$price.price}" value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.</option>
+                        <option rel="{$price.price}" value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} СЂСѓР±.</option>
                         {/foreach} 
                         </div>
                         <br /><br /><br />
@@ -222,17 +222,17 @@
                                             <tr>
                                               <td colspan="2">
 											  {if $item.spec_price != '0.00'}
-											  <div class="stuff-price-no"><span>{$item.price}</span> руб.</div>
-											  <div class="stuff-price"><span id="price_{$item.id}">{$item.spec_price}</span> руб.</div>
+											  <div class="stuff-price-no"><span>{$item.price}</span> СЂСѓР±.</div>
+											  <div class="stuff-price"><span id="price_{$item.id}">{$item.spec_price}</span> СЂСѓР±.</div>
 											  {else}
-											  <div class="stuff-price"><span id="price_{$item.id}">{$item.price}</span> руб.</div>
+											  <div class="stuff-price"><span id="price_{$item.id}">{$item.price}</span> СЂСѓР±.</div>
 											  {/if}
 											  </td>
                                             </tr>
                                             <tr>
-                                              <td width="100%"> Кол-во
+                                              <td width="100%"> РљРѕР»-РІРѕ
                                                 <input type="text" name="amount_{$item.id}" id="amount_{$item.id}" style="width:30px;" value="1">
-                                                <a href="javascript:addToCart({$item.id})">Купить</a></td>
+                                                <a href="javascript:addToCart({$item.id})">РљСѓРїРёС‚СЊ</a></td>
                                               <td><a href="javascript:addToCart({$item.id})"><img src="/img/cart0.gif" style="margin:0;" border="0"></a></td>
                                             </tr>
                                           </table></td>

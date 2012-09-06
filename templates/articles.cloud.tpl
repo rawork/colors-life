@@ -1,4 +1,4 @@
-<div class="producers-title"><span>От А до Я</span></div>
+<div class="producers-title"><span>РћС‚ Рђ РґРѕ РЇ</span></div>
 
 {raItems var=items table=articles_tags sort=name limit=100}            
 {if count($items)}
@@ -8,8 +8,8 @@
 	<li><a class="w{$item.position}" rel="tag" href="{raURL node=articles method=index}?tag={$item.id}">{$item.name}</a></li>
 	{/foreach}
 	</ul>
-	<br><a href="{raURL node=articles method=tags}">все метки</a>
+	<br><a href="{raURL node=articles method=tags}">РІСЃРµ РјРµС‚РєРё</a>
     </div>
 {else}
-Данные не найдены.
+Р”Р°РЅРЅС‹Рµ РЅРµ РЅР°Р№РґРµРЅС‹.
 {/if}			

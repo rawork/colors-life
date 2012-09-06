@@ -8,14 +8,14 @@
             if (CUtils::_postVar('utype')) {
 				if ($this->t->insertGlobals()) {
                     $path = $this->fullRef.'&action=s_update&id='.$GLOBALS['db']->getInsertID();
-                    $path .= '&message='.urlencode('Добавлено');
+                    $path .= '&message='.urlencode('Р”РѕР±Р°РІР»РµРЅРѕ');
                 } else {
                     $path = $this->fullRef.'&action=s_insert';
-                    $path .= '&message='.urlencode('Ошибка добавления');
+                    $path .= '&message='.urlencode('РћС€РёР±РєР° РґРѕР±Р°РІР»РµРЅРёСЏ');
                 }
 				header('location: '.$path);	
 			} else {
-				$this->messageAction($this->t->insertGlobals() ? 'Добавлено' : 'Ошибка добавления');
+				$this->messageAction($this->t->insertGlobals() ? 'Р”РѕР±Р°РІР»РµРЅРѕ' : 'РћС€РёР±РєР° РґРѕР±Р°РІР»РµРЅРёСЏ');
 			}
         }
     }

@@ -27,11 +27,11 @@
 									{raItems var=prices table=catalog_prices query="stuff_id=`$item.id` AND publish='on'" sort="ord,size_id"}
                         {if count($prices)}
                         <div class="stuff-sizes">
-                        Размерный ряд:<br> 
+                        Р Р°Р·РјРµСЂРЅС‹Р№ СЂСЏРґ:<br> 
                         <select name="stuff_price_{$item.id}" id="stuff_price_{$item.id}" onchange="setPrice({$item.id})">
                         <option rel="{if $item.spec_price == '0.00'}{$item.price}{else}{$item.spec_price}{/if}" value="0">...</option>
                         {foreach from=$prices item=price}
-                        <option rel="{$price.price}" value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.</option>
+                        <option rel="{$price.price}" value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} СЂСѓР±.</option>
                         {/foreach} 
                         </div>
                         <br /><br /><br />
@@ -48,16 +48,16 @@
                                             <table class="stuff-cart" width="100%" cellpadding="0" cellspacing="0">
                                               <tr><td colspan="2">
 											  {if $item.spec_price != '0.00'}
-											  <div class="stuff-price-no"><span>{$item.price}</span> руб.</div>
-											  <div class="stuff-price"><span id="price_{$item.id}">{$item.spec_price}</span> руб.</div>
+											  <div class="stuff-price-no"><span>{$item.price}</span> СЂСѓР±.</div>
+											  <div class="stuff-price"><span id="price_{$item.id}">{$item.spec_price}</span> СЂСѓР±.</div>
 											  {else}
-											  <div class="stuff-price"><span id="price_{$item.id}">{$item.price}</span> руб.</div>
+											  <div class="stuff-price"><span id="price_{$item.id}">{$item.price}</span> СЂСѓР±.</div>
 											  {/if}
 											  </td></tr>
 											  <tr>
-                                                <td width="100%"> Кол-во
+                                                <td width="100%"> РљРѕР»-РІРѕ
                                                   <input type="text" name="amount_{$item.id}" id="amount_{$item.id}" style="width:30px;" value="1">
-                                                  <a href="javascript:addToCart({$item.id})">Купить</a></td>
+                                                  <a href="javascript:addToCart({$item.id})">РљСѓРїРёС‚СЊ</a></td>
                                                 <td><a href="javascript:addToCart({$item.id})"><img src="/img/cart0.gif" style="margin:0;" border="0"></a></td>
                                               </tr>
                                             </table>

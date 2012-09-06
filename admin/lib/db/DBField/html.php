@@ -25,7 +25,7 @@
             $value = !$value ? $this->dbValue : $value;
             $name = !$name ? $this->getName() : $name;
 			$r_ = rand(0, getrandmax());
-            $field = '<input type="checkbox" id="'.$r_.'" checked onClick="controlEditor(this, \''.$name.'\')"><label for="'.$r_.'" style="position:relative; top:-2px;">Редактор</label>';
+            $field = '<input type="checkbox" id="'.$r_.'" checked onClick="controlEditor(this, \''.$name.'\')"><label for="'.$r_.'" style="position:relative; top:-2px;">Р РµРґР°РєС‚РѕСЂ</label>';
 			$field .= '<textarea class="mceEditor" id="'.$name.'" name="'.$name.'" rows="6" cols="40" style="height:300px;width:100%">
 '.htmlspecialchars($value).'</textarea>';
             return $field;

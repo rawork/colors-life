@@ -6,7 +6,7 @@
             parent::__construct($unitAdminInterface);
         }
         function getText() {
-            $this->messageAction($GLOBALS['rtti']->deleteClass($this->t->getDBTableName()) ? '“‡·ÎËˆ‡ Û‰‡ÎÂÌ‡' : 'Œ¯Ë·Í‡ Û‰‡ÎÂÌËˇ Ú‡·ÎËˆ˚');
+            $this->messageAction($GLOBALS['rtti']->deleteClass($this->t->getDBTableName()) ? '–¢–∞–±–ª–∏—Ü–∞ —É–¥–∞–ª–µ–Ω–∞' : '–û—à–∏–±–∫–∞ —É–¥–∞–ª–µ–Ω–∏—è —Ç–∞–±–ª–∏—Ü—ã');
         }
     }
 

@@ -6,7 +6,7 @@
 		protected $year, $month, $day; 
         public function __construct(&$props, $dbArray = null) {
             parent::__construct($props, $dbArray);
-            // немного уменьшаем геморой...
+            // РЅРµРјРЅРѕРіРѕ СѓРјРµРЅСЊС€Р°РµРј РіРµРјРѕСЂРѕР№...
             $this->arr = array(
                 'year' => 4,
                 'month' => 2,
@@ -60,7 +60,7 @@
 			} else {
 				$date_end = '';//date('Y-m-d');
 			}
-			return 'c '.$this->dateFieldType_getInput(parent::getSearchName('beg'), $date_beg, false).' по '.$this->dateFieldType_getInput(parent::getSearchName('end'), $date_end, false).' <a href="#" onClick="emptyDateSearch(\''.parent::getSearchName().'\')">Обнулить</a>';
+			return 'c '.$this->dateFieldType_getInput(parent::getSearchName('beg'), $date_beg, false).' РїРѕ '.$this->dateFieldType_getInput(parent::getSearchName('end'), $date_end, false).' <a href="#" onClick="emptyDateSearch(\''.parent::getSearchName().'\')">РћР±РЅСѓР»РёС‚СЊ</a>';
         }
 
         public function getSearchSQL() {

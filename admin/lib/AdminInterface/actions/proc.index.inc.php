@@ -14,21 +14,21 @@
 			$this->_oPageNavigation = new CPageNavigation($this->t, $this->searchRef.'&page=###', $this->search_sql, $this->_iRowPerPage, CUtils::_getVar('page', true, 1), 20);
 		}
         		
-		/* Кнопки управления записью */
+		/* РљРЅРѕРїРєРё СѓРїСЂР°РІР»РµРЅРёСЏ Р·Р°РїРёСЃСЊСЋ */
 		private function _getUpdateDelete($id) {
 			global $THEME_REF, $auth;
 			$ret = '<td width="1">'."\n";
 			$ret .= '<a href="javascript:void(0);" onclick="this.blur();admin_menu.ShowMenu(this, [';
 			if (empty($this->t->props['noupdate']) || $auth->isSuperuser()) {
-				$ret .= "{'DEFAULT':true,'ICONCLASS':'btn_edit','TEXT':'Изменить','ONCLICK':'admin_menu.PopupHide(); javascript: window.location = \'".$this->fullRef.'&amp;action=s_update&amp;id='.$id."\';'}";
+				$ret .= "{'DEFAULT':true,'ICONCLASS':'btn_edit','TEXT':'РР·РјРµРЅРёС‚СЊ','ONCLICK':'admin_menu.PopupHide(); javascript: window.location = \'".$this->fullRef.'&amp;action=s_update&amp;id='.$id."\';'}";
 			}
 			if (empty($this->t->props['nodelete']) || $auth->isSuperuser()) {
-				$ret .= ",{'ICONCLASS':'btn_delete','TEXT':'Удалить','ONCLICK':'admin_menu.PopupHide(); javascript: startDelete(\'".$this->fullRef.'&amp;action=delete&amp;id='.$id."\');'}";
+				$ret .= ",{'ICONCLASS':'btn_delete','TEXT':'РЈРґР°Р»РёС‚СЊ','ONCLICK':'admin_menu.PopupHide(); javascript: startDelete(\'".$this->fullRef.'&amp;action=delete&amp;id='.$id."\');'}";
 			}
 			if (empty($this->t->props['noinsert']) || $auth->isSuperuser()) {
-				$ret .= ",{'ICONCLASS':'btn_duplicate','TEXT':'Копировать','ONCLICK':'admin_menu.PopupHide(); javascript: xajax_showDuplicateSettings(\'".$this->fullRef.'&amp;action=duplicate&amp;id='.$id."\');'}";
+				$ret .= ",{'ICONCLASS':'btn_duplicate','TEXT':'РљРѕРїРёСЂРѕРІР°С‚СЊ','ONCLICK':'admin_menu.PopupHide(); javascript: xajax_showDuplicateSettings(\'".$this->fullRef.'&amp;action=duplicate&amp;id='.$id."\');'}";
 			}
-			$ret .= ']);" title="Действия" class="action context-button icon">'."\n";
+			$ret .= ']);" title="Р”РµР№СЃС‚РІРёСЏ" class="action context-button icon">'."\n";
 			$ret .= '<img src="'.$THEME_REF.'/img/arr_down.gif" class="arrow" alt=""></a></td>'."\n";
 			return $ret;
 		}
@@ -46,9 +46,9 @@
 				}
 			}
 			if ($this->t->props['show_credate']) {
-				$ret .= '<th width="10%">Дата создания</th>';
+				$ret .= '<th width="10%">Р”Р°С‚Р° СЃРѕР·РґР°РЅРёСЏ</th>';
 			}
-			$ret .= '<th style="text-align:center;"><img alt="Действия" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
+			$ret .= '<th style="text-align:center;"><img alt="Р”РµР№СЃС‚РІРёСЏ" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
 			$ret .= '</tr>';
 			return $ret;
 		}
@@ -62,12 +62,12 @@
 			global $THEME_REF;
 			$sTableControlPanel = '<div class="ctlbtns"><table class="contextmenu3" cellspacing="0" cellpadding="3" border="0"><tr>';
 			if (!empty($this->_bShowGroupSubmit)) {
-				$sTableControlPanel .= '<td><a onclick="document.frmGroupUpdate.submit();return false;" class="context-button" title="Сохранить"><img border="0" src="'.$THEME_REF.'/img/icons/icon_save.gif"></a></td>';
+				$sTableControlPanel .= '<td><a onclick="document.frmGroupUpdate.submit();return false;" class="context-button" title="РЎРѕС…СЂР°РЅРёС‚СЊ"><img border="0" src="'.$THEME_REF.'/img/icons/icon_save.gif"></a></td>';
 			}
-			$sTableControlPanel .= '<td>с выделенными:&nbsp;</td><td><a class="context-button" onclick="startGroupUpdate(\''.$this->fullRef.'\');return false;" title="Редактировать"><img border="0" src="'.$THEME_REF.'/img/icons/icon_edit.gif"></a></td><td><a class="context-button" onclick="startGroupDelete(\''.$this->fullRef.'\');return false;" title="Удалить"><img border="0" src="'.$THEME_REF.'/img/icons/icon_delete.gif"></a></td>';
+			$sTableControlPanel .= '<td>СЃ РІС‹РґРµР»РµРЅРЅС‹РјРё:&nbsp;</td><td><a class="context-button" onclick="startGroupUpdate(\''.$this->fullRef.'\');return false;" title="Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ"><img border="0" src="'.$THEME_REF.'/img/icons/icon_edit.gif"></a></td><td><a class="context-button" onclick="startGroupDelete(\''.$this->fullRef.'\');return false;" title="РЈРґР°Р»РёС‚СЊ"><img border="0" src="'.$THEME_REF.'/img/icons/icon_delete.gif"></a></td>';
 			if (empty($this->t->props['is_view'])) {
 				$rpps = array(10,25,50,100,200);
-				$sTableControlPanel .= '<td>&nbsp;&nbsp;Показывать записей:<input type="hidden" id="ref" name="ref" value="'.$this->fullRef0.'"> <select name="rpp" onChange="updateRpp(this)">';
+				$sTableControlPanel .= '<td>&nbsp;&nbsp;РџРѕРєР°Р·С‹РІР°С‚СЊ Р·Р°РїРёСЃРµР№:<input type="hidden" id="ref" name="ref" value="'.$this->fullRef0.'"> <select name="rpp" onChange="updateRpp(this)">';
 				foreach ($rpps as $rpp) {
 					$sTableControlPanel .= '<option value="'.$rpp.'"'.($this->_iRowPerPage == $rpp ? ' selected' : '').'>'.$rpp.'</option>';
 				}
@@ -160,7 +160,7 @@ EOD;
 							if ($this->t->getDBTableName() == 'tree_tree') {
 								$aModule = $GLOBALS['rtti']->getComponentById($aEntity['module_id']);
 								if ( $aModule ) {
-									$ret .= ' [компонент:'.$aModule['title'].']';
+									$ret .= ' [РєРѕРјРїРѕРЅРµРЅС‚:'.$aModule['title'].']';
 								}
 							}
 						}
@@ -179,46 +179,46 @@ EOD;
 		}
 		
 		private function _getFilterForm() {
-			// обрабатываем возможные поля для поиска
+			// РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РІРѕР·РјРѕР¶РЅС‹Рµ РїРѕР»СЏ РґР»СЏ РїРѕРёСЃРєР°
 			$ret = '';
 			$ret .= '<form method="post" action="'.$this->baseRef.'">';
 			$ret .= $this->getTableHeader();
-			$ret .= '<tr><th>Фильтр</th><th><div class="empty"></div></th></tr>';
+			$ret .= '<tr><th>Р¤РёР»СЊС‚СЂ</th><th><div class="empty"></div></th></tr>';
 			$ret .= '<tr><td align="left" width="100">ID&nbsp;</td><td>';
    			$ret .= '<input name="search_filter_id" style="width: 100%;" value="'.(isset($_REQUEST['search_filter_id']) ? $_REQUEST['search_filter_id'] : '').'" size="60" type="text">';
 			$ret .= '</td></tr>'."\n";
       		foreach ($this->t->fields as $aField) {
         		if (!empty($aField['search'])) {
           			$ret .= '<tr><td align="left" width="100">'.$aField['title'].'&nbsp;</td><td>';
-          			// выводим соответствующий инпут
+          			// РІС‹РІРѕРґРёРј СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёР№ РёРЅРїСѓС‚
           			$ft = $this->t->createFieldType($aField);
           			$ret .= $ft->getSearchInput();
           			$ret .= '</td></tr>'."\n";
         		}
       		}
-			return $ret.'</table><div class="ctlbtns"><input class="adm-btn" type="submit" value="Искать"></div></form>'; 
+			return $ret.'</table><div class="ctlbtns"><input class="adm-btn" type="submit" value="РСЃРєР°С‚СЊ"></div></form>'; 
 		}
 		
 		public function getText() {
 			$links = array(
 				array(
 					'ref' => $this->fullRef.'&amp;action=s_insert',
-					'name' => 'Добавить запись'
+					'name' => 'Р”РѕР±Р°РІРёС‚СЊ Р·Р°РїРёСЃСЊ'
 				)
 			);
 			if ($GLOBALS['auth']->isDeveloper() && __SHOW_NEW_DEV) {
 				$links[] =	array(
 					'ref' => $this->fullRef.'&amp;action=s_table',
-					'name' => 'Настройка таблицы'
+					'name' => 'РќР°СЃС‚СЂРѕР№РєР° С‚Р°Р±Р»РёС†С‹'
 				);
 			}
 			$links[] =	array(
 				'ref' => $this->fullRef.'&amp;action=create',
-				'name' => 'Создать таблицу'
+				'name' => 'РЎРѕР·РґР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ'
 			);
 			$links[] =	array(
 				'ref' => $this->fullRef.'&amp;action=alter',
-				'name' => 'Обновить таблицу'
+				'name' => 'РћР±РЅРѕРІРёС‚СЊ С‚Р°Р±Р»РёС†Сѓ'
 			);
 			$ret = $this->getOperationsBar($links);
 			if (!empty($this->t->props['is_view'])) {

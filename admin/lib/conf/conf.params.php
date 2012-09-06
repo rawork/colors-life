@@ -3,7 +3,7 @@
 	define('__MAIN_EMAIL', 'rawork@yandex.ru');
 	
 	/* Path default settings */
-	$PATH_MAINPAGE_TITLE = array('ru' => 'Íà ãëàâíóþ', 'en' => 'Mainpage');
+	$PATH_MAINPAGE_TITLE = array('ru' => 'ÐÐ° Ð³Ð»Ð°Ð²Ð½ÑƒÑŽ', 'en' => 'Mainpage');
 	define('__PATH_DELIMETER', '/');
 	define('__PATH_MAINPAGE_VISIBLE', true);
 	define('__PATH_VISIBLE', true);

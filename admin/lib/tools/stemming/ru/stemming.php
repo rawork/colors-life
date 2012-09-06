@@ -13,7 +13,7 @@
 */
 
 /*
-	Слегонца варварски покоцано под win1251 и php4 , потому что надо было быстро чтоб работало ;) 
+	РЎР»РµРіРѕРЅС†Р° РІР°СЂРІР°СЂСЃРєРё РїРѕРєРѕС†Р°РЅРѕ РїРѕРґ win1251 Рё php4 , РїРѕС‚РѕРјСѓ С‡С‚Рѕ РЅР°РґРѕ Р±С‹Р»Рѕ Р±С‹СЃС‚СЂРѕ С‡С‚РѕР± СЂР°Р±РѕС‚Р°Р»Рѕ ;) 
 	serge@rogozhkin.ru 
 */
 
@@ -25,8 +25,8 @@ define ('CHAR_LENGTH', '1'); // all Russian characters take 2 bytes in UTF-8, so
 
 class PorterStem {
 
-	private static $_abc = 'абвгдеёжзийклмнопрстуфхцчшщъьэюя';
-	private static $_ABC = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЭЮЯ';
+	private static $_abc = 'Р°Р±РІРіРґРµС‘Р¶Р·РёР№РєР»РјРЅРѕРїСЂСЃС‚СѓС„С…С†С‡С€С‰СЉСЊСЌСЋСЏ';
+	private static $_ABC = 'РђР‘Р’Р“Р”Р•РЃР–Р—РР™РљР›РњРќРћРџР РЎРўРЈР¤РҐР¦Р§РЁР©РЄР¬Р­Р®РЇ';
 
 	function rustolower($arg){
 		for($i=0;$i<strlen(PorterStem::$_abc);$i++){
@@ -50,7 +50,7 @@ class PorterStem {
    	}
 
  	private static function rv($word) {
-      	$vowels=array('а','е','и','о','у','ы','э','ю','я');
+      	$vowels=array('Р°','Рµ','Рё','Рѕ','Сѓ','С‹','СЌ','СЋ','СЏ');
       	$flag=0;
       	$rv='';
       	$start='';
@@ -66,28 +66,28 @@ class PorterStem {
    	}
 
 	private static function step1($word){
-    	$perfective1=array('в', 'вши', 'вшись');
+    	$perfective1=array('РІ', 'РІС€Рё', 'РІС€РёСЃСЊ');
       	foreach ($perfective1 as $suffix)
-          	if (substr($word,-(strlen($suffix)))==$suffix && (substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='а' || substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='я'))
+          	if (substr($word,-(strlen($suffix)))==$suffix && (substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='Р°' || substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='СЏ'))
             	return substr($word, 0, strlen($word)-strlen($suffix));
 
-      	$perfective2=array('ив','ивши','ившись','ывши','ывшись');
+      	$perfective2=array('РёРІ','РёРІС€Рё','РёРІС€РёСЃСЊ','С‹РІС€Рё','С‹РІС€РёСЃСЊ');
       	foreach ($perfective2 as $suffix)
           	if (substr($word,-(strlen($suffix)))==$suffix)
             	return substr($word, 0, strlen($word)-strlen($suffix));
-      	$reflexive=array('ся', 'сь');
+      	$reflexive=array('СЃСЏ', 'СЃСЊ');
       	foreach ($reflexive as $suffix)
           	if (substr($word,-(strlen($suffix)))==$suffix)
             	$word=substr($word, 0, strlen($word)-strlen($suffix));
 
-      	$adjective=array('ее','ие','ые','ое','ими','ыми','ей','ий','ый','ой','ем','им','ым','ом','его','ого','ему','ому','их','ых','ую','юю','ая','яя','ою','ею');
-      	$participle2=array('ем','нн','вш','ющ','щ');
-      	$participle1=array('ивш','ывш','ующ');
+      	$adjective=array('РµРµ','РёРµ','С‹Рµ','РѕРµ','РёРјРё','С‹РјРё','РµР№','РёР№','С‹Р№','РѕР№','РµРј','РёРј','С‹Рј','РѕРј','РµРіРѕ','РѕРіРѕ','РµРјСѓ','РѕРјСѓ','РёС…','С‹С…','СѓСЋ','СЋСЋ','Р°СЏ','СЏСЏ','РѕСЋ','РµСЋ');
+      	$participle2=array('РµРј','РЅРЅ','РІС€','СЋС‰','С‰');
+      	$participle1=array('РёРІС€','С‹РІС€','СѓСЋС‰');
       	foreach ($adjective as $suffix)
           	if (substr($word,-(strlen($suffix)))==$suffix){
              	$word=substr($word, 0, strlen($word)-strlen($suffix));
              	foreach ($participle1 as $suffix)
-                	if (substr($word,-(strlen($suffix)))==$suffix && (substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='а' || substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='я'))
+                	if (substr($word,-(strlen($suffix)))==$suffix && (substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='Р°' || substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='СЏ'))
                   		$word=substr($word, 0, strlen($word)-strlen($suffix));
              	foreach ($participle2 as $suffix)
                 	if (substr($word,-(strlen($suffix)))==$suffix)
@@ -95,15 +95,15 @@ class PorterStem {
              	return $word;
         	}
 
-      	$verb1=array('ла','на','ете','йте','ли','й','л','ем','н','ло','но','ет','ют','ны','ть','ешь','нно');
+      	$verb1=array('Р»Р°','РЅР°','РµС‚Рµ','Р№С‚Рµ','Р»Рё','Р№','Р»','РµРј','РЅ','Р»Рѕ','РЅРѕ','РµС‚','СЋС‚','РЅС‹','С‚СЊ','РµС€СЊ','РЅРЅРѕ');
       	foreach ($verb1 as $suffix)
-          	if (substr($word,-(strlen($suffix)))==$suffix && (substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='а' || substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='я'))
+          	if (substr($word,-(strlen($suffix)))==$suffix && (substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='Р°' || substr($word,-strlen($suffix)-CHAR_LENGTH,CHAR_LENGTH)=='СЏ'))
             	return substr($word, 0, strlen($word)-strlen($suffix));
-      	$verb2=array('ила','ыла','ена','ейте','уйте','ите','или','ыли','ей','уй','ил','ыл','им','ым','ен','ило','ыло','ено','ят','ует','уют','ит','ыт','ены','ить','ыть','ишь','ую','ю');
+      	$verb2=array('РёР»Р°','С‹Р»Р°','РµРЅР°','РµР№С‚Рµ','СѓР№С‚Рµ','РёС‚Рµ','РёР»Рё','С‹Р»Рё','РµР№','СѓР№','РёР»','С‹Р»','РёРј','С‹Рј','РµРЅ','РёР»Рѕ','С‹Р»Рѕ','РµРЅРѕ','СЏС‚','СѓРµС‚','СѓСЋС‚','РёС‚','С‹С‚','РµРЅС‹','РёС‚СЊ','С‹С‚СЊ','РёС€СЊ','СѓСЋ','СЋ');
       	foreach ($verb2 as $suffix)
           	if (substr($word,-(strlen($suffix)))==$suffix)
             	return substr($word, 0, strlen($word)-strlen($suffix));
-      	$noun=array('а','ев','ов','ие','ье','е','иями','ями','ами','еи','ии','и','ией','ей','ой','ий','й','иям','ям','ием','ем','ам','ом','о','у','ах','иях','ях','ы','ь','ию','ью','ю','ия','ья','я');
+      	$noun=array('Р°','РµРІ','РѕРІ','РёРµ','СЊРµ','Рµ','РёСЏРјРё','СЏРјРё','Р°РјРё','РµРё','РёРё','Рё','РёРµР№','РµР№','РѕР№','РёР№','Р№','РёСЏРј','СЏРј','РёРµРј','РµРј','Р°Рј','РѕРј','Рѕ','Сѓ','Р°С…','РёСЏС…','СЏС…','С‹','СЊ','РёСЋ','СЊСЋ','СЋ','РёСЏ','СЊСЏ','СЏ');
       	foreach ($noun as $suffix)
           	if (substr($word,-(strlen($suffix)))==$suffix)
             	return substr($word, 0, strlen($word)-strlen($suffix));
@@ -111,13 +111,13 @@ class PorterStem {
    	}
 
  	private static function step2($word){
-      	if (substr($word,-CHAR_LENGTH,CHAR_LENGTH)=='и')
+      	if (substr($word,-CHAR_LENGTH,CHAR_LENGTH)=='Рё')
             $word=substr($word, 0, strlen($word)-CHAR_LENGTH);
       	return $word;
    	}
 
  	private static function step3($word) {
-      	$vowels=array('а','е','и','о','у','ы','э','ю','я');
+      	$vowels=array('Р°','Рµ','Рё','Рѕ','Сѓ','С‹','СЌ','СЋ','СЏ');
       	$flag=0;
       	$r1='';
       	$r2='';
@@ -138,7 +138,7 @@ class PorterStem {
             if ($flag=1 && array_search(substr($r1,$i,CHAR_LENGTH), $vowels)===FALSE)
                	$flag=2;
         }
-      	$derivational=array('ост', 'ость');
+      	$derivational=array('РѕСЃС‚', 'РѕСЃС‚СЊ');
       	foreach ($derivational as $suffix)
           	if (substr($r2,-(strlen($suffix)))==$suffix)
         		$word=substr($word, 0, strlen($r2)-strlen($suffix));
@@ -146,18 +146,18 @@ class PorterStem {
    	}
 
  	private static function step4($word) {
-      	if (substr($word,-CHAR_LENGTH*2)=='нн')
+      	if (substr($word,-CHAR_LENGTH*2)=='РЅРЅ')
         	$word=substr($word, 0, strlen($word)-CHAR_LENGTH);
       	else {
-            $superlative=array('ейш', 'ейше');
+            $superlative=array('РµР№С€', 'РµР№С€Рµ');
             foreach ($superlative as $suffix)
                 if (substr($word,-(strlen($suffix)))==$suffix)
                   	$word=substr($word, 0, strlen($word)-strlen($suffix));
-            if (substr($word,-CHAR_LENGTH*2)=='нн')
+            if (substr($word,-CHAR_LENGTH*2)=='РЅРЅ')
                 $word=substr($word, 0, strlen($word)-CHAR_LENGTH);
 		}
-      	// should there be a guard flag? can't think of a russian word that ends with ейшь or ннь anyways, though the algorithm states this is an "otherwise" case
-      	if (substr($word,-CHAR_LENGTH,CHAR_LENGTH)=='ь')
+      	// should there be a guard flag? can't think of a russian word that ends with РµР№С€СЊ or РЅРЅСЊ anyways, though the algorithm states this is an "otherwise" case
+      	if (substr($word,-CHAR_LENGTH,CHAR_LENGTH)=='СЊ')
         	$word=substr($word, 0, strlen($word)-CHAR_LENGTH);
       	return $word;
    	}

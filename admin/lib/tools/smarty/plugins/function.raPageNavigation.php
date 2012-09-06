@@ -18,20 +18,20 @@
 
 function smarty_function_raPageNavigation($params, &$smarty) {
 	if (!isset($params['table'])) {
-		$smarty->trigger_error('raPageNavigation: Íå óêàçàí ïàğàìåòğ: table');
+		$smarty->trigger_error('raPageNavigation: ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€: table');
 	} elseif (!isset($params['pref'])) {
-		$smarty->trigger_error('raPageNavigation: Íå óêàçàí ïàğàìåòğ: pref');
+		$smarty->trigger_error('raPageNavigation: ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€: pref');
 	} else {
 		if (!isset($params['var'])) {
-			$smarty->trigger_error('raItems: Íå óêàçàí ïàğàìåòğ: var');
+			$smarty->trigger_error('raItems: ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€: var');
 		} else {
 			inc_lib('CPageNavigation.php');
 			$pages = new CPageNavigation(
-					$GLOBALS['rtti']->getTable($params['table']), // Òàáëèöà ñ äàííûìè
-					$params['pref'], 							  //Áàçîâàÿ ññûëêà
-					$params['query'],					 		  // Çàïğîñ
-					empty($params['per_page']) ? 10 : $params['per_page'], //Ğåçóëüòàòîâ íà ñòğàíèöó
-					empty($params['page']) ? 1 : $params['page']  // Ñòğàíèöà
+					$GLOBALS['rtti']->getTable($params['table']), // Ğ¢Ğ°Ğ±Ğ»Ğ¸Ñ†Ğ° Ñ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğ¼Ğ¸
+					$params['pref'], 							  //Ğ‘Ğ°Ğ·Ğ¾Ğ²Ğ°Ñ ÑÑÑ‹Ğ»ĞºĞ°
+					$params['query'],					 		  // Ğ—Ğ°Ğ¿Ñ€Ğ¾Ñ
+					empty($params['per_page']) ? 10 : $params['per_page'], //Ğ ĞµĞ·ÑƒĞ»ÑŒÑ‚Ğ°Ñ‚Ğ¾Ğ² Ğ½Ğ° ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ñƒ
+					empty($params['page']) ? 1 : $params['page']  // Ğ¡Ñ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ğ°
 			);
 			if (!empty($params['tpl']))
 				$pages->setTemplate($params['tpl']);

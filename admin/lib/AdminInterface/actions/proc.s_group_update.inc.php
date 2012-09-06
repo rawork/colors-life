@@ -27,7 +27,7 @@
     	                $fields .= '</td></tr>'."\n";
 	                }
 					$ret .= '<tr>'."\n";
-					$ret .= '<th>Èçìåíèòü</th>'."\n";
+					$ret .= '<th>Ğ˜Ğ·Ğ¼ĞµĞ½Ğ¸Ñ‚ÑŒ</th>'."\n";
 					$ret .= '<th>ID: '.$a['id'].'</th></tr>'."\n";
         	        $ret .= $fields;
 	            }
@@ -36,12 +36,12 @@
 				$links = array(
 					array(
 						'ref' => $this->fullRef,
-						'name' => 'Ñïèñîê ıëåìåíòîâ'
+						'name' => 'Ğ¡Ğ¿Ğ¸ÑĞ¾Ğº ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚Ğ¾Ğ²'
 					)
 				);
 				$ret = $this->getOperationsBar($links).$this->getTableHeader().$ret;
 				$ret = '<form enctype="multipart/form-data" method="post" name="frmInsert" id="frmInsert" action="'.$this->fullRef.'&action=group_update"><input type="hidden" name="ids" value="'.implode(',', $ids_array).'">'.$ret;
-				$ret .= '</table><div class="ctlbtns"><input class="adm-btn" type="button" onClick="preSubmit(\'frmInsert\')" value="Ñîõğàíèòü"></div></form>';
+				$ret .= '</table><div class="ctlbtns"><input class="adm-btn" type="button" onClick="preSubmit(\'frmInsert\')" value="Ğ¡Ğ¾Ñ…Ñ€Ğ°Ğ½Ğ¸Ñ‚ÑŒ"></div></form>';
 			}
             return $ret;
         }

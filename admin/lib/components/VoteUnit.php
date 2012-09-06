@@ -33,7 +33,7 @@
 					$this->tables['questions']->update(' quantity=quantity+1 WHERE id='.$vote_id);
 					$this->tables['answers']->update(' quantity=quantity+1 WHERE id='.$answer_id);          	
 				} else {
-					$this->smarty->assign('message', '<div style="color:red">Количество голосований ограничено</div>');
+					$this->smarty->assign('message', '<div style="color:red">РљРѕР»РёС‡РµСЃС‚РІРѕ РіРѕР»РѕСЃРѕРІР°РЅРёР№ РѕРіСЂР°РЅРёС‡РµРЅРѕ</div>');
 				}
             }
 			

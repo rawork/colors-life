@@ -4,35 +4,35 @@
     $meta_tables[] = array(
 		'name' => 'items',
 		'component' => 'meta',
-		'title' => 'Âàğèàíòû',
+		'title' => 'Ğ’Ğ°Ñ€Ğ¸Ğ°Ğ½Ñ‚Ñ‹',
 		'fieldset' => array (
         'words' => array (
             'name' => 'words',
-            'title' => 'Ñòğîêè URI',
+            'title' => 'Ğ¡Ñ‚Ñ€Ğ¾ĞºĞ¸ URI',
             'type' => 'text',
-            'help' => '×åğåç çàïÿòóş',
+            'help' => 'Ğ§ĞµÑ€ĞµĞ· Ğ·Ğ°Ğ¿ÑÑ‚ÑƒÑ',
             'width' => '20%'
         ),
         'keywords' => array (
             'name' => 'keywords',
-            'title' => 'Ïîäñòğîêè URI',
+            'title' => 'ĞŸĞ¾Ğ´ÑÑ‚Ñ€Ğ¾ĞºĞ¸ URI',
             'type' => 'text',
-            'help' => '×åğåç çàïÿòóş',
+            'help' => 'Ğ§ĞµÑ€ĞµĞ· Ğ·Ğ°Ğ¿ÑÑ‚ÑƒÑ',
             'width' => '20%'
         ),
         'title' => array (
             'name' => 'title',
-            'title' => 'Òàéòë',
+            'title' => 'Ğ¢Ğ°Ğ¹Ñ‚Ğ»',
             'type' => 'text',
             'width' => '25%',
             'search' => true
         ),
         'meta' => array (
             'name' => 'meta',
-            'title' => 'Ìåòàòåãè',
+            'title' => 'ĞœĞµÑ‚Ğ°Ñ‚ĞµĞ³Ğ¸',
             'type' => 'text',
             'width' => '25%',
-            'help' => 'Âêëş÷àÿ ñëóæåáíûå ñèìâîëû',
+            'help' => 'Ğ’ĞºĞ»ÑÑ‡Ğ°Ñ ÑĞ»ÑƒĞ¶ĞµĞ±Ğ½Ñ‹Ğµ ÑĞ¸Ğ¼Ğ²Ğ¾Ğ»Ñ‹',
             'search' => true
         )
     ));

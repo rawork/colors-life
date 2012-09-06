@@ -38,7 +38,7 @@
 					$state = true;
 				} 
 			}
-			$this->uai->messageAction($state ? 'Íàñòðîéêè èçìåíåíû' : 'Îøèáêè ïðè èçìåíåíèè', $this->uai->getBaseRef().'&action=s_setting');
+			$this->uai->messageAction($state ? 'ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ñ‹' : 'ÐžÑˆÐ¸Ð±ÐºÐ¸ Ð¿Ñ€Ð¸ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ð¸', $this->uai->getBaseRef().'&action=s_setting');
         }
     }
 ?>

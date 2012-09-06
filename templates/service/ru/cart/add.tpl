@@ -1,4 +1,4 @@
-{if $ok}<div class="cart-add"> Товар успешно добавлен в корзину!<br><br>
-<a href="/cart/">Оформить заказ</a> &nbsp;&nbsp;&nbsp;<a href="#" onclick="return closePopUp('popup')">Продолжить покупки</a></div>
-{else}Ошибка добавления товара!{/if}
+{if $ok}<div class="cart-add"> РўРѕРІР°СЂ СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ РІ РєРѕСЂР·РёРЅСѓ!<br><br>
+<a href="/cart/">РћС„РѕСЂРјРёС‚СЊ Р·Р°РєР°Р·</a> &nbsp;&nbsp;&nbsp;<a href="#" onclick="return closePopUp('popup')">РџСЂРѕРґРѕР»Р¶РёС‚СЊ РїРѕРєСѓРїРєРё</a></div>
+{else}РћС€РёР±РєР° РґРѕР±Р°РІР»РµРЅРёСЏ С‚РѕРІР°СЂР°!{/if}
 

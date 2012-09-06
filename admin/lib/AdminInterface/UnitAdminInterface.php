@@ -73,33 +73,33 @@
 				if (sizeof($this->unit->dbparams) > 0) {
 					$ret[] = array (
 		            	'ref' => $this->getBaseRef().'&action=s_setting',
-	                	'name' => 'Настройки'
+	                	'name' => 'РќР°СЃС‚СЂРѕР№РєРё'
 	            	);
 				}
 			}
 			if ($this->unit->ocomponent['name'] == 'config' && $GLOBALS['auth']->isSuperuser()) {
 				$ret[] = array (
 		           	'ref' => $this->getBaseRef().'&action=s_backup',
-	               	'name' => 'Резервное копирование'
+	               	'name' => 'Р РµР·РµСЂРІРЅРѕРµ РєРѕРїРёСЂРѕРІР°РЅРёРµ'
 	            );
 			}
 			if ($this->unit->ocomponent['name'] == 'articles' && $GLOBALS['auth']->isSuperuser()) {
 				$ret[] = array (
 		           	'ref' => $this->getBaseRef().'&action=counttags',
-	               	'name' => 'Расчет тегов'
+	               	'name' => 'Р Р°СЃС‡РµС‚ С‚РµРіРѕРІ'
 	            );
 			}
 			if ($this->unit->ocomponent['name'] == 'maillist' && $GLOBALS['auth']->isSuperuser()) {
 				$ret[] = array (
 		           	'ref' => $this->getBaseRef().'&action=send',
-	               	'name' => 'Отправка писем'
+	               	'name' => 'РћС‚РїСЂР°РІРєР° РїРёСЃРµРј'
 	            );
 			}
 			if (__PROCESSOR_VISIBLE) {
 				if ($GLOBALS['auth']->isSuperuser() && empty($this->unit->ocomponent['is_admin'])) {
 					$ret[] = array (
 		            	'ref' => $this->getBaseRef().'&amp;action=s_methods',
-	                	'name' => 'Методы'
+	                	'name' => 'РњРµС‚РѕРґС‹'
             		);
 				}
 			}
@@ -125,11 +125,11 @@
 				if (CUtils::_getVar('action')) {
 					switch (CUtils::_getVar('action')) {
     	              case 's_table':
-        	            $title .= ':&nbsp;Настройка таблицы';break;
+        	            $title .= ':&nbsp;РќР°СЃС‚СЂРѕР№РєР° С‚Р°Р±Р»РёС†С‹';break;
                 	  case 's_insert':
-            	       	$title .= ':&nbsp;Добавление';break;
+            	       	$title .= ':&nbsp;Р”РѕР±Р°РІР»РµРЅРёРµ';break;
                   	  case 's_update':
-                        $title .= ':&nbsp;Редактирование';break;
+                        $title .= ':&nbsp;Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ';break;
                 	}
 				}
             }

@@ -5,12 +5,12 @@
             parent::__construct($unitAdminInterface);
         }
         function getText() {
-			$ret = '<b>Импорт CSV</b><br><table border="0" width="70%">
+			$ret = '<b>РРјРїРѕСЂС‚ CSV</b><br><table border="0" width="70%">
     <form enctype="multipart/form-data" action="'.$this->fullRef.'&action=import" method="post">
     <tr bgcolor="#fafafa">
-      <th align="left" width="20%">CSV-файл <small>(макс '.get_cfg_var('upload_max_filesize').')</small></th>
+      <th align="left" width="20%">CSV-С„Р°Р№Р» <small>(РјР°РєСЃ '.get_cfg_var('upload_max_filesize').')</small></th>
       <td><input name="csv_file" type="file" style="width:100%"></td></tr>
-    <tr><td colspan="2" align="right"><input type="submit" value="ИмпортироватьЭ></td></tr></form></table>';
+    <tr><td colspan="2" align="right"><input type="submit" value="РРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊР­></td></tr></form></table>';
 			return $ret;
         }
     }

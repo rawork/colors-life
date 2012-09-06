@@ -1,7 +1,7 @@
 
 {raItems var=items table=news_news query="publish='on'" limit=$settings.per_lenta}
 {if count($items)}
-<div class="spec-link"><a href="/news/">Новости</a></div>
+<div class="spec-link"><a href="/news/">РќРѕРІРѕСЃС‚Рё</a></div>
 <table class="news-table" cellpadding="0" cellspacing="0" border="0">
 {foreach from=$items item=news}
 <tr>

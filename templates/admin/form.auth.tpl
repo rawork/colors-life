@@ -1,7 +1,7 @@
 <html>
 <head>
-<title>Управление сайтом - {$prj_name}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<title>РЈРїСЂР°РІР»РµРЅРёРµ СЃР°Р№С‚РѕРј - {$prj_name}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="{$theme_ref}/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -16,7 +16,7 @@
                   <td valign="top"><table style="width:100%;border-bottom: 1px dotted #B2BCD9; margin-bottom: 7px;" border="0" cellspacing="3" cellpadding="0">
                       <tr>
                         <td valign="top"><img src="{$theme_ref}/img/icons/icon_key.gif"></td>
-                        <td valign="top" width="100%"><div class="auth-title">Авторизация</div></td>
+                        <td valign="top" width="100%"><div class="auth-title">РђРІС‚РѕСЂРёР·Р°С†РёСЏ</div></td>
                       </tr>
                     </table></td>
                 </tr>
@@ -26,7 +26,7 @@
                         <input type="hidden" name="submited" value="1">
                         <tr>
                           <td width="20">&nbsp;</td>
-                          <td align="right"><strong>Логин:&nbsp;</strong></td>
+                          <td align="right"><strong>Р›РѕРіРёРЅ:&nbsp;</strong></td>
                           <td><input name="auser" type="text" class="pole" size="30"></td>
                         </tr>
                         <tr>
@@ -34,7 +34,7 @@
                         </tr>
                         <tr>
                           <td>&nbsp;</td>
-                          <td align="right"><strong>Пароль:&nbsp;</strong></td>
+                          <td align="right"><strong>РџР°СЂРѕР»СЊ:&nbsp;</strong></td>
                           <td><input name="apw" type="password" class="pole" size="30"></td>
                         </tr>
                         <tr>
@@ -46,7 +46,7 @@
                           <td><table border="0">
                               <tr>
                                 <td><input type="checkbox" name="save" value="on"></td>
-                                <td> запомнить меня</td>
+                                <td> Р·Р°РїРѕРјРЅРёС‚СЊ РјРµРЅСЏ</td>
                               </tr>
                             </table></td>
                         </tr>
@@ -56,7 +56,7 @@
                         <tr>
                           <td>&nbsp;</td>
                           <td>&nbsp;</td>
-                          <td><input class="submit" type="submit" value="Войти">
+                          <td><input class="submit" type="submit" value="Р’РѕР№С‚Рё">
                             <br>
                             <br></td>
                         </tr>
@@ -64,8 +64,8 @@
                     </form></td>
                 </tr>
                 <tr>
-                  <td style="padding-bottom: 3px;"><b>Забыли свой пароль?</b><br>
-                    Следуйте на <a href="/admin/?operation=forgot">форму для запроса пароля</a>.<br>
+                  <td style="padding-bottom: 3px;"><b>Р—Р°Р±С‹Р»Рё СЃРІРѕР№ РїР°СЂРѕР»СЊ?</b><br>
+                    РЎР»РµРґСѓР№С‚Рµ РЅР° <a href="/admin/?operation=forgot">С„РѕСЂРјСѓ РґР»СЏ Р·Р°РїСЂРѕСЃР° РїР°СЂРѕР»СЏ</a>.<br>
                   </td>
                 </tr>
               </table>

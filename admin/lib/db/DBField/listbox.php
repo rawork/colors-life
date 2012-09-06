@@ -43,12 +43,12 @@
 			$value = empty($value) ? '' : $value;
             $input_id = $this->dbId ? strtr($name, '[]', '__').$this->dbId : strtr($name, '[]', '__');
 			$text = '';
-            // узнаем имя категории, для текстового поля
+            // СѓР·РЅР°РµРј РёРјСЏ РєР°С‚РµРіРѕСЂРёРё, РґР»СЏ С‚РµРєСЃС‚РѕРІРѕРіРѕ РїРѕР»СЏ
             if ($id && $items = $GLOBALS['rtti']->getItems($this->props['l_table'], $this->props['l_link']."=".$id)) {
 				foreach ($items as $item) {
 					$text .= ($text ? ', ' : '').$a[$this->props['l_field']];
 				}
-				return $ret.'<span id="'.$input_id.'">'.$text.'</span>&nbsp;<input class="butt" type="button" onClick="show_listbox(\''.$input_id.'\',\''.$unit.'\',\''.$table.'\',\''.$input_id.'\', \''.$this->dbId.'\');" value="Просмотр">';
+				return $ret.'<span id="'.$input_id.'">'.$text.'</span>&nbsp;<input class="butt" type="button" onClick="show_listbox(\''.$input_id.'\',\''.$unit.'\',\''.$table.'\',\''.$input_id.'\', \''.$this->dbId.'\');" value="РџСЂРѕСЃРјРѕС‚СЂ">';
 			} else {
 				return '-';
 			}

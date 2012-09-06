@@ -28,7 +28,7 @@
 	Default character encoding used by both the <xajax> and
 	<xajaxResponse> classes.
 */
-if (!defined ('XAJAX_DEFAULT_CHAR_ENCODING')) define ('XAJAX_DEFAULT_CHAR_ENCODING', 'windows-1251');
+if (!defined ('XAJAX_DEFAULT_CHAR_ENCODING')) define ('XAJAX_DEFAULT_CHAR_ENCODING', 'UTF-8');
 
 /*
 	String: XAJAX_PROCESSING_EVENT

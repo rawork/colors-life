@@ -10,7 +10,7 @@
     <td class="partners-left"><img src="/img/partner_l.gif"></td>
     <td class="partners-content" style="width"100%;"><table style="width"100%;height=100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="partners-title">Наши партнеры</td>
+          <td class="partners-title">РќР°С€Рё РїР°СЂС‚РЅРµСЂС‹</td>
           <td style="width:100%"><table style="width:100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td><img src="/img/partner2_lt.gif"></td>

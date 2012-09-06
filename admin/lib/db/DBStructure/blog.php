@@ -4,7 +4,7 @@
     $blog_tables[] = array(
 		'name'      => 'groups',
 		'component' => 'blog',
-		'title'     => 'Ãðóïïû áëîãîâ',
+		'title'     => 'Ð“Ñ€ÑƒÐ¿Ð¿Ñ‹ Ð±Ð»Ð¾Ð³Ð¾Ð²',
 		'order_by'  => 'ord', 
 		'is_lang'   => true,
 		'is_publish'=> true,
@@ -12,7 +12,7 @@
 		'fieldset'  => array (
         array (
             'name'   => 'name',
-            'title'  => 'Íàçâàíèå',
+            'title'  => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ',
             'type'   => 'string',
             'width'  => '95%',
             'search' => true
@@ -22,7 +22,7 @@
 	$vote_tables[] = array(
 		'name'       => 'answers',
 		'component'  => 'vote',
-		'title'      => 'Îòâåò',
+		'title'      => 'ÐžÑ‚Ð²ÐµÑ‚',
 		'order_by'   => 'ord,name', 
 		'is_lang'    => true,
 		'is_publish' => true,
@@ -30,14 +30,14 @@
 		'fieldset'   => array (
         array (
             'name'   => 'name',
-            'title'  => 'Îòâåò',
+            'title'  => 'ÐžÑ‚Ð²ÐµÑ‚',
             'type'   => 'string',
             'width'  => '45%',
             'search' => true
         ),
         array (
             'name'    => 'question_id',
-            'title'   => 'Âîïðîñ',
+            'title'   => 'Ð’Ð¾Ð¿Ñ€Ð¾Ñ',
             'type'    => 'select',
         	'l_table' => 'vote_questions',
         	'l_field' => 'title',
@@ -48,14 +48,14 @@
         ),
         array (
             'name'  => 'color',
-            'title' => 'Öâåò',
+            'title' => 'Ð¦Ð²ÐµÑ‚',
             'type'  => 'color',
 			'group_update' => true,
         	'width' => '5%'
         ),
         array (
             'name'  => 'quantity',
-            'title' => 'Êîë-âî ãîëîñîâ',
+            'title' => 'ÐšÐ¾Ð»-Ð²Ð¾ Ð³Ð¾Ð»Ð¾ÑÐ¾Ð²',
             'type'  => 'number',
 			'readonly' => true,
         	'width' => '5%'
@@ -65,7 +65,7 @@
 	$vote_tables[] = array(
 		'name'      => 'cache',
 		'component' => 'vote',
-		'title'     => 'Êåø îòâåòîâ',
+		'title'     => 'ÐšÐµÑˆ Ð¾Ñ‚Ð²ÐµÑ‚Ð¾Ð²',
 		'order_by'  => 'time DESC',
 		'no_update'  => true,
 		'no_delete'  => true,
@@ -73,7 +73,7 @@
 		'fieldset'  => array (
         array (
             'name'   => 'question_id',
-            'title'  => 'Îïðîñ',
+            'title'  => 'ÐžÐ¿Ñ€Ð¾Ñ',
             'type'   => 'select',
         	'l_table'=> 'vote_questions',
         	'l_field'=> 'title',
@@ -82,7 +82,7 @@
         ),
 		array (
             'name'   => 'sessionid',
-            'title'  => 'Ñåññèÿ',
+            'title'  => 'Ð¡ÐµÑÑÐ¸Ñ',
             'type'   => 'string',
             'width'  => '35%'
         ),
@@ -95,7 +95,7 @@
         ),
         array (
             'name'  => 'time',
-            'title' => 'Âðåìÿ',
+            'title' => 'Ð’Ñ€ÐµÐ¼Ñ',
             'type'  => 'number',
         	'width' => '10%'
         )

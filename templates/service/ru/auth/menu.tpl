@@ -1,11 +1,11 @@
 <div class="cabinet-menu">
 {if $smarty.get.action == 'orders'}
-<span><a href="/cabinet/">Настройки аккаунта</a></span>
-<span>Заказы</span>
+<span><a href="/cabinet/">РќР°СЃС‚СЂРѕР№РєРё Р°РєРєР°СѓРЅС‚Р°</a></span>
+<span>Р—Р°РєР°Р·С‹</span>
 {else}
-<span>Настройки аккаунта</span>
-<span><a href="/cabinet/?action=orders">Заказы</a></span>
+<span>РќР°СЃС‚СЂРѕР№РєРё Р°РєРєР°СѓРЅС‚Р°</span>
+<span><a href="/cabinet/?action=orders">Р—Р°РєР°Р·С‹</a></span>
 {/if}
-<span><a href="/cabinet/?action=logout">Выйти</a></span>
+<span><a href="/cabinet/?action=logout">Р’С‹Р№С‚Рё</a></span>
 </div>
 <br><br>

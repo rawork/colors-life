@@ -18,9 +18,9 @@
 
 function smarty_function_raFInfo($params, &$smarty) {
 	if (!isset($params['file'])) {
-		$smarty->trigger_error('raFInfo: Íå óêàçàí ïàðàìåòð: file');
+		$smarty->trigger_error('raFInfo: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: file');
 	} elseif (!isset($params['var'])) {
-		$smarty->trigger_error('raFInfo: Íå óêàçàí ïàðàìåòð: var');
+		$smarty->trigger_error('raFInfo: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: var');
 	} else {
 		$ipath = pathinfo($params['file']);
 		$smarty->assign($params['var'], array('ext' => $ipath['extension'], 'size' => CUtils::getFileSize($params['file'])));

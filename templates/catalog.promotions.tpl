@@ -1,10 +1,10 @@
-{raSetVar var=title value="Акции и скидки"}
-<h1>Акции и скидки</h1>
+{raSetVar var=title value="РђРєС†РёРё Рё СЃРєРёРґРєРё"}
+<h1>РђРєС†РёРё Рё СЃРєРёРґРєРё</h1>
 {raItems var=items table=catalog_offers query="publish='on'"}
 {foreach from=$items key=k item=item}
  <div class="article-block"> 
   <div class="article-title"><a href="{raURL node=catalog method=promotion prms=$item.id}">{$item.name}</a></div>
-  <div class="promotion-dates"> C {$item.datefrom|fdate:'d F Y'} по {$item.datetill|fdate:'d F Y'}</div>
+  <div class="promotion-dates"> C {$item.datefrom|fdate:'d F Y'} РїРѕ {$item.datetill|fdate:'d F Y'}</div>
   {if $item.file}
 <br>
 <div id="flashcontent{$item.id}"></div>
@@ -24,6 +24,6 @@
 <br>
 {/if}
   <!--<div class="article-text">{$item.body}</div> -->
-  <!--<div class="article-link"><a href="{raURL node=catalog method=promotion prms=$item.id}">Подробнее &gt;</a></div> -->
+  <!--<div class="article-link"><a href="{raURL node=catalog method=promotion prms=$item.id}">РџРѕРґСЂРѕР±РЅРµРµ &gt;</a></div> -->
 </div>
   {/foreach}

@@ -1,4 +1,4 @@
-<p>Результаты поиска по запросу &laquo;<b>{$smarty.get.text}</b>&raquo;:</p>
+<p>Р РµР·СѓР»СЊС‚Р°С‚С‹ РїРѕРёСЃРєР° РїРѕ Р·Р°РїСЂРѕСЃСѓ &laquo;<b>{$smarty.get.text}</b>&raquo;:</p>
 {if $ptext}{$ptext}<br>{/if}
 {foreach from=$items key=k item=it}<p>{$it.num}. <a href='{$it.ref}'>{$it.text}&nbsp;  &#8594;</a></p><br>
 {/foreach}

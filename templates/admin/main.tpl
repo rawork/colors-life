@@ -1,8 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Управление сайтом - {$prj_name}</title>
+<title>РЈРїСЂР°РІР»РµРЅРёРµ СЃР°Р№С‚РѕРј - {$prj_name}</title>
 <link href="{$theme_ref}/css/calendar-mos.css" type="text/css" rel="stylesheet">
 <link href="{$theme_ref}/css/colorPicker.css" type="text/css" rel="stylesheet">
 <link href="{$theme_ref}/css/style.css" type="text/css" rel="stylesheet">
@@ -41,8 +41,8 @@ var state = '{$state}';
               <tr> 
                 <td align="left" valign="middle" nowrap>
                   <div class="up-text">
-                    Проект: <a href="http://www.{$prj_name}.{$prj_zone}" target="_blank">www.{$prj_name}.{$prj_zone}</a><br>
-                    Пользователь: <strong>{$user}</strong>
+                    РџСЂРѕРµРєС‚: <a href="http://www.{$prj_name}.{$prj_zone}" target="_blank">www.{$prj_name}.{$prj_zone}</a><br>
+                    РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ: <strong>{$user}</strong>
                   </div>
                   </td>
               </tr>
@@ -58,8 +58,8 @@ var state = '{$state}';
                 {/if}
                 {/foreach}
                 <td><img src="{$theme_ref}/img/0.gif" width="10" height="3" border="0"></td>
-                <td><a href="/admin/?operation=logout" title="Выйти из Управление сайтом"><img src="{$theme_ref}/img/icons/icon_key.gif" border="0"></a></td>
-                <td style="padding-right: 10px;"><a href="/admin/?operation=logout" title="Выйти из Управление сайтом">Выйти</a></td>
+                <td><a href="/admin/?operation=logout" title="Р’С‹Р№С‚Рё РёР· РЈРїСЂР°РІР»РµРЅРёРµ СЃР°Р№С‚РѕРј"><img src="{$theme_ref}/img/icons/icon_key.gif" border="0"></a></td>
+                <td style="padding-right: 10px;"><a href="/admin/?operation=logout" title="Р’С‹Р№С‚Рё РёР· РЈРїСЂР°РІР»РµРЅРёРµ СЃР°Р№С‚РѕРј">Р’С‹Р№С‚Рё</a></td>
               </tr>
             </table></td>
         </tr>
@@ -80,13 +80,13 @@ var state = '{$state}';
 <table cellpadding="2" cellspacing="0" border="0">
 <tr>
 <td><div class="section-separator first"></div></td>
-<td align="center"><a href="javascript:getComponentList('content', '{$smarty.get.unit}');" class="context-button">Структура и контент</a></td>
+<td align="center"><a href="javascript:getComponentList('content', '{$smarty.get.unit}');" class="context-button">РЎС‚СЂСѓРєС‚СѓСЂР° Рё РєРѕРЅС‚РµРЅС‚</a></td>
 <td><div class="section-separator"></div></td>
-<td align="center"><a href="javascript:getComponentList('service', '{$smarty.get.unit}');" class="context-button">Сервисы</a></td>
+<td align="center"><a href="javascript:getComponentList('service', '{$smarty.get.unit}');" class="context-button">РЎРµСЂРІРёСЃС‹</a></td>
 <td><div class="section-separator"></div></td>
-<td align="center"><a href="javascript:getComponentList('settings', '{$smarty.get.unit}');" class="context-button">Настройки</a></td>
+<td align="center"><a href="javascript:getComponentList('settings', '{$smarty.get.unit}');" class="context-button">РќР°СЃС‚СЂРѕР№РєРё</a></td>
 <td><div class="section-separator"></div></td>
-<td align="center"><a href="javascript:fileBrowser('file');" class="context-button">Файловый менеджер</a></td>
+<td align="center"><a href="javascript:fileBrowser('file');" class="context-button">Р¤Р°Р№Р»РѕРІС‹Р№ РјРµРЅРµРґР¶РµСЂ</a></td>
 </tr>
 </table>
 </td>
@@ -152,7 +152,7 @@ var state = '{$state}';
       </table></td>
   </tr>
   <tr>
-  <td class="copyright">Управление сайтом &copy; 2000-2009</td>
+  <td class="copyright">РЈРїСЂР°РІР»РµРЅРёРµ СЃР°Р№С‚РѕРј &copy; 2000-2009</td>
 </table>
 <script type="text/javascript">
 window.admin_menu = new PopupMenu("admin_menu");
@@ -167,7 +167,7 @@ window.admin_menu = new PopupMenu("admin_menu");
 </table>
 </div>
 <div id="waiting"><table border="0" cellpadding="3" cellspacing="0"><tr>
-<td><img src="{$theme_ref}/img/loading.gif" border="0"></td><td>Обработка запроса...</td>
+<td><img src="{$theme_ref}/img/loading.gif" border="0"></td><td>РћР±СЂР°Р±РѕС‚РєР° Р·Р°РїСЂРѕСЃР°...</td>
 </tr></table></div>
 <div id="popup_tree"></div>
 </body>

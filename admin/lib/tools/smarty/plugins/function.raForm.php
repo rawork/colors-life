@@ -19,7 +19,7 @@
 
 function smarty_function_raForm($params, &$smarty) {
 	if (empty($params['name'])) {
-		$smarty->trigger_error('raForm: Не указан параметр: name');
+		$smarty->trigger_error('raForm: РќРµ СѓРєР°Р·Р°РЅ РїР°СЂР°РјРµС‚СЂ: name');
 	} else {
 		inc_u('forms');
 		$unit = new FormsUnit(array());

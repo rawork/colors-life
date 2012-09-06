@@ -16,7 +16,7 @@
             $this->pass_postfix = '_password_check';
 			$this->dbform['needed'] = false;
 			$this->defense = !empty($this->dbform['is_defense']);
-		    $this->dbform['submit_text'] = empty($frmItem['submit_text']) ? 'Отправить' : $frmItem['submit_text'];
+		    $this->dbform['submit_text'] = empty($frmItem['submit_text']) ? 'РћС‚РїСЂР°РІРёС‚СЊ' : $frmItem['submit_text'];
 			$this->email = empty($frmItem['email']) ? $GLOBALS['ADMIN_EMAIL'] : $frmItem['email'];
         }
 		
@@ -126,7 +126,7 @@
 					$ret = $smarty->fetch($PRJ_DIR.$this->dbform['template']);
 				}
 			} else {
-				$ret = 'Пустая форма '.$this->name;
+				$ret = 'РџСѓСЃС‚Р°СЏ С„РѕСЂРјР° '.$this->name;
 			}
 			return $ret;
         }
@@ -159,7 +159,7 @@
 			$ret = array('', '');
 			$msg = new Mail();
             $msg->From($GLOBALS['ADMIN_EMAIL']);
-           	$msg->Subject($this->dbform['title'].' на сайте '.$_SERVER['SERVER_NAME']);
+           	$msg->Subject($this->dbform['title'].' РЅР° СЃР°Р№С‚Рµ '.$_SERVER['SERVER_NAME']);
 			$fields = array();
 			foreach ($this->items as $k => $field){
 				$value = CUtils::_postVar($field['name']);
@@ -170,13 +170,13 @@
 					$ret[1] .= ($ret[1] ? '<br>' : '').$smarty->fetch('var:message');
 				}
 				if ($field['type'] == 'checkbox') {
-					$value = (empty($value) ? 'нет' : 'да').'<br>';
+					$value = (empty($value) ? 'РЅРµС‚' : 'РґР°').'<br>';
 				} elseif ($field['type'] == 'file' && is_array($_FILES) && isset($_FILES[$field['name']]) && $_FILES[$field['name']]['name'] != '') {
 					$upfile = $_FILES[$field['name']];
 					if ($upfile['name'] != '' && $upfile['size'] < $MAX_FILE_SIZE ){
   						$msg->AttachFile( $upfile['tmp_name'], $upfile['name'],  $upfile['type']);	
 					}
-					$value = $upfile['name'].' см. вложение<br>';
+					$value = $upfile['name'].' СЃРј. РІР»РѕР¶РµРЅРёРµ<br>';
 				} else {	
 					$value = htmlspecialchars($value);
 				}
@@ -186,9 +186,9 @@
    	    		$ret[1] = '<div class="tree-error">'.$ret[1].'</div>';
    	    	} else {
    	    		if ($this->defense)
-					$fields[] = array('value' => CUtils::_postVar('keystring'), 'title' => 'Код безопасности');
+					$fields[] = array('value' => CUtils::_postVar('keystring'), 'title' => 'РљРѕРґ Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё');
 				$smarty->assign('fields', $fields);
-				$msg->Html($smarty->fetch('service/form.mail.tpl'), 'windows-1251');
+				$msg->Html($smarty->fetch('service/form.mail.tpl'), 'UTF-8');
        			$msg->To(explode(',', $this->email));
    	    		$msg->Send();
    	    	}

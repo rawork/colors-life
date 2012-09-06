@@ -19,7 +19,7 @@
 
 function smarty_function_raInclude($params, &$smarty) {
 	if (empty($params['var'])) {
-		$smarty->trigger_error('raInclude: Íå óêàçàí ïàðàìåòð: var');
+		$smarty->trigger_error('raInclude: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: var');
 	} else {
 		if ($item = $GLOBALS['rtti']->getItem('tree_blocks',"name='{$params['var']}' AND publish='on'")) {
 			return $item['body'];

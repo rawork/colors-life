@@ -18,7 +18,7 @@
 			if (count($a)) {
 			  if (file_exists($PRJ_DIR.'/templates/admin/components/'.CUtils::_getVar('unit').'.'.CUtils::_getVar('table').'.tpl')){
 				  $smarty->assign('a', $a);
-				  $svalues = explode(';', 'Строка|string;Текст|text;Булево|checkbox;Файл|file;Выбор|select');
+				  $svalues = explode(';', 'РЎС‚СЂРѕРєР°|string;РўРµРєСЃС‚|text;Р‘СѓР»РµРІРѕ|checkbox;Р¤Р°Р№Р»|file;Р’С‹Р±РѕСЂ|select');
         	foreach ($svalues as $a) {
 					  $types[] = explode('|', $a);
 	        }
@@ -30,15 +30,15 @@
 				  $ret .= '<input type="hidden" id="utype" name="utype" value="0">';
 				  $ret .= $this->getTableHeader();
 				  $ret .= '<tr>';
-				  $ret .= '<th>Редактирование</th>';
-				  $ret .= '<th>Запись: '.$a['id'].'</th></tr>';
+				  $ret .= '<th>Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ</th>';
+				  $ret .= '<th>Р—Р°РїРёСЃСЊ: '.$a['id'].'</th></tr>';
 				  foreach ($this->t->fields as $k => $v) {
             $ft = $this->t->createFieldType($v, $a);
             $ret .= '<tr><td align="left" width=150><strong>'.$v['title'].'</strong>'.$this->getHelpLink($k, $v).$this->getTemplateName($v).'</td><td>';
             $ret .= !empty($v['readonly']) ? $ft->getStatic() : $ft->getInput();
             $ret .= '</td></tr>';
           }
-				  /* Реализация дополнительных параметров */
+				  /* Р РµР°Р»РёР·Р°С†РёСЏ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹С… РїР°СЂР°РјРµС‚СЂРѕРІ */
 				  /*if ($this->t->getDBTableName() == 'catalog_stuff' && $a['c_id'] != 0) {
 					
 					  $features = $GLOBALS['db']->getItems('get_filters', 'SELECT id,name FROM catalog_features where id IN ('.$a['c_id_filters'].') order by name');
@@ -47,7 +47,7 @@
 						  $feature_value_item = $GLOBALS['db']->getItem('get_feature_value', 'SELECT * from catalog_features_values where stuff_id='.$a['id'].' AND feature_id='.$feature['id']); 
 						  $ret .= '<tr><td width="150" align=left>'.$feature['name'].'</td><td>';
 							$ret .= '<select name="filter_'.$feature['id'].'">';
-						  $ret .= '<option value="0">Выберите...</option>';
+						  $ret .= '<option value="0">Р’С‹Р±РµСЂРёС‚Рµ...</option>';
 						  foreach ($feature_variants as $feature_variant) {
 							  $sel = '';
 							  if ($feature_value_item['feature_value_id'] == $feature_variant['id']) {
@@ -59,7 +59,7 @@
 						  $ret .= '</td></tr>'."\n";
 					  }
 				  }*/
-          $ret .= '</table><div class="ctlbtns"><input type="button" class="adm-btn" onClick="preSubmit(\'frmInsert\', 1)" value="Применить"><input type="button" class="adm-btn" onClick="preSubmit(\'frmInsert\', 0)" value="Сохранить"><input type="button" class="adm-btn" onClick="window.location = \''.(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->fullRef).'\'" value="Отменить"></div></form>';
+          $ret .= '</table><div class="ctlbtns"><input type="button" class="adm-btn" onClick="preSubmit(\'frmInsert\', 1)" value="РџСЂРёРјРµРЅРёС‚СЊ"><input type="button" class="adm-btn" onClick="preSubmit(\'frmInsert\', 0)" value="РЎРѕС…СЂР°РЅРёС‚СЊ"><input type="button" class="adm-btn" onClick="window.location = \''.(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->fullRef).'\'" value="РћС‚РјРµРЅРёС‚СЊ"></div></form>';
         }
 			}
 			return $ret;
@@ -74,12 +74,12 @@
 				$ret .= '<div id="sizelist">';
 				$ret .= '<table width="100%" cellpadding="0" cellspacing="0" class="tfields">';
 			  $ret .= '<tr>';
-        $ret .= '<th width="30%">Размер</th>';
-				$ret .= '<th width="30%">Цвет</th>';
-				$ret .= '<th width="30%">Цена</th>';
-				$ret .= '<th width="5%">Порядок</th>';
-				$ret .= '<th width="1%">Акт</th>';
-			  $ret .= '<th style="text-align:center;"><img alt="Действия" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
+        $ret .= '<th width="30%">Р Р°Р·РјРµСЂ</th>';
+				$ret .= '<th width="30%">Р¦РІРµС‚</th>';
+				$ret .= '<th width="30%">Р¦РµРЅР°</th>';
+				$ret .= '<th width="5%">РџРѕСЂСЏРґРѕРє</th>';
+				$ret .= '<th width="1%">РђРєС‚</th>';
+			  $ret .= '<th style="text-align:center;"><img alt="Р”РµР№СЃС‚РІРёСЏ" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
         $ret .= '</tr>';
 				
 				$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.ord, p.publish FROM catalog_prices p JOIN catalog_sizes s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.stuff_id=".$a['id']." ORDER BY p.ord, p.price";
@@ -97,7 +97,7 @@
 				$ret .= '</table>';
 				$ret .= '</div></form>';
 				$ret .= '<div class="ctlbtns"><table class="contextmenu3" cellspacing="0" cellpadding="3" border="0"><tr>';
-				$ret .= '<td><a onclick="updatePrices(xajax.getFormValues(\'updatePriceForm\'))" class="context-button" title="Сохранить"><img border="0" src="'.$THEME_REF.'/img/icons/icon_save.gif"></a></td>';
+				$ret .= '<td><a onclick="updatePrices(xajax.getFormValues(\'updatePriceForm\'))" class="context-button" title="РЎРѕС…СЂР°РЅРёС‚СЊ"><img border="0" src="'.$THEME_REF.'/img/icons/icon_save.gif"></a></td>';
       			$ret .= '</tr></table></div>';
 				$sizes = $GLOBALS['db']->getItems('get_sizes', "SELECT id,name FROM catalog_sizes ORDER BY name");
 				$colors = $GLOBALS['db']->getItems('get_colors', "SELECT id,name FROM catalog_color ORDER BY name");
@@ -105,24 +105,24 @@
 				$ret .= '<form method="post" name="addSizeForm" id="addSizeForm" action="">';
 				$ret .= '<input name="stuff_id" value="'.$a['id'].'" type="hidden">';
 				$ret .= '<table class="tfields" cellpadding="0" cellspacing="0" width="100%">';
-				$ret .= '<tr><td><b>Добавить</b><a name="add"></a><br><img src="/admin/themes/_default/img/0.gif" height="1" width="150"></td><td><div class="empty"></div></td></tr>';
+				$ret .= '<tr><td><b>Р”РѕР±Р°РІРёС‚СЊ</b><a name="add"></a><br><img src="/admin/themes/_default/img/0.gif" height="1" width="150"></td><td><div class="empty"></div></td></tr>';
 
-				$ret .= '<tr id="add_size_id" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Размер</b> <span class="sfnt">{size_id}</span></td>';
+				$ret .= '<tr id="add_size_id" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Р Р°Р·РјРµСЂ</b> <span class="sfnt">{size_id}</span></td>';
 				$ret .= '<td class="right"><select name="size_id" style="width: 100%;"><option value="0">...</option>';
 				foreach ($sizes as $size) {
 						$ret .= '<option value="'.$size['id'].'">'.$size['name'].'</option>';
 				}
 				$ret .= '</select></td></tr>';
-				$ret .= '<tr id="add_color_id" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Цвет</b> <span class="sfnt">{color_id}</span></td>';
+				$ret .= '<tr id="add_color_id" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Р¦РІРµС‚</b> <span class="sfnt">{color_id}</span></td>';
 				$ret .= '<td class="right"><select name="color_id" style="width: 100%;"><option value="0">...</option>';
 				foreach ($colors as $color) {
 						$ret .= '<option value="'.$color['id'].'">'.$color['name'].'</option>';		
 				}
 				$ret .= '</select></td></tr>';
-				$ret .= '<tr id="add_price" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Цена</b> <span class="sfnt">{price}</span></td><td class="right"><input name="price" style="text-align: right;" value="" size="20" type="text"></td></tr>';
-				$ret .= '<tr id="add_ord" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Порядок</b> <span class="sfnt">{ord}</span></td><td class="right"><input name="ord" style="text-align: right;" value="" size="10" type="text"></td></tr>';
-				$ret .= '<tr id="add_ord" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Акт</b> <span class="sfnt">{publish}</span></td><td class="right"><input type="checkbox" name="publish"></td></tr>';
-				$ret .= '</table><div class="ctlbtns"><input class="adm-btn" onclick="addPrice(xajax.getFormValues(\'addSizeForm\'))" value="Добавить" type="button"></div></form>';
+				$ret .= '<tr id="add_price" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Р¦РµРЅР°</b> <span class="sfnt">{price}</span></td><td class="right"><input name="price" style="text-align: right;" value="" size="20" type="text"></td></tr>';
+				$ret .= '<tr id="add_ord" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>РџРѕСЂСЏРґРѕРє</b> <span class="sfnt">{ord}</span></td><td class="right"><input name="ord" style="text-align: right;" value="" size="10" type="text"></td></tr>';
+				$ret .= '<tr id="add_ord" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>РђРєС‚</b> <span class="sfnt">{publish}</span></td><td class="right"><input type="checkbox" name="publish"></td></tr>';
+				$ret .= '</table><div class="ctlbtns"><input class="adm-btn" onclick="addPrice(xajax.getFormValues(\'addSizeForm\'))" value="Р”РѕР±Р°РІРёС‚СЊ" type="button"></div></form>';
 
 			return $ret;
 		}
@@ -132,15 +132,15 @@
 			$ret = '';
 			$a = $this->item;
 			if (!empty($this->t->props['multifile'])) {
-				//$ret .= "\n".'<div class="module-title">Дополнительные файлы</div>'."\n";
+				//$ret .= "\n".'<div class="module-title">Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ С„Р°Р№Р»С‹</div>'."\n";
 				$ret .= '<div id="filelist">';
 				$ret .= '<table width="100%" cellpadding="0" cellspacing="0" class="tfields">';
 			  $ret .= '<tr>';
 			  //$ret .= '<th width="1%" style="text-align:center;"><input type="checkbox" name="stateall" onClick="setStateAll(this);"></th>';
 			  //$ret .= '<th width="1%">ID</th>';
-        $ret .= '<th width="85%">Файл</th>';
-				$ret .= '<th width="10%">Размер</th>';
-			  $ret .= '<th style="text-align:center;"><img alt="Действия" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
+        $ret .= '<th width="85%">Р¤Р°Р№Р»</th>';
+				$ret .= '<th width="10%">Р Р°Р·РјРµСЂ</th>';
+			  $ret .= '<th style="text-align:center;"><img alt="Р”РµР№СЃС‚РІРёСЏ" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
         $ret .= '</tr>';
 				
 				$sql = "SELECT * FROM system_files WHERE table_name='".$this->t->getDBTableName()."' AND record_id=".$a['id']." ORDER BY credate";
@@ -150,20 +150,20 @@
 					//$ret .= '<td width="1%"><input type="checkbox" class="cng" onClick="setStateOne(this)" name="cng'.$a['id'].'" value="'.$a['id'].'"></td>';
 					//$ret .= '<td>'.$fileitem['id'].'</td>';
 				  $ret .= '<td><a href="'.$fileitem['file'].'">'.$fileitem['name'].'</a></td>';
-					$ret .= '<td>'.$fileitem['filesize'].' байт</td>';
+					$ret .= '<td>'.$fileitem['filesize'].' Р±Р°Р№С‚</td>';
 					$ret .= '<td><a href="#" onClick="delFile(\''.$fileitem['id'].'\',\''.$fileitem['name'].'\',\''.$this->t->getDBTableName().'\',\''.$a['id'].'\'); return false"><img src="'.$THEME_REF.'/img/icons/icon_delete.gif" border="0"></a></td>'."\n";
 					$ret .= '</tr>';	
 				}
 				$ret .= '</table>';
 				$ret .= '</div>';
-				$ret .= '<input type="button" class="adm-btn" onclick="xajax_updateFileList(\''.$this->t->getDBTableName().'\','.$a['id'].');return false" value="Обновить список" />'."\n";
-				$ret .= '<br><br><fieldset><legend>Добавить файл</legend>';
+				$ret .= '<input type="button" class="adm-btn" onclick="xajax_updateFileList(\''.$this->t->getDBTableName().'\','.$a['id'].');return false" value="РћР±РЅРѕРІРёС‚СЊ СЃРїРёСЃРѕРє" />'."\n";
+				$ret .= '<br><br><fieldset><legend>Р”РѕР±Р°РІРёС‚СЊ С„Р°Р№Р»</legend>';
 				$ret .= '<form id="uploadForm" action="doajaxfileupload.php" method="post" enctype="multipart/form-data">'."\n";
 				$ret .= '<input name="table_name" value="'.$this->t->getDBTableName().'" type="hidden"/>'."\n";
 				$ret .= '<input name="record_id" value="'.$a['id'].'" type="hidden"/>'."\n";
 				$ret .= '<input name="MAX_FILE_SIZE" value="1000000" type="hidden"/>'."\n";
 				$ret .= '<input name="fileToUpload[]" id="fileToUpload" class="MultiFile" type="file"/>'."\n";
-				$ret .= '<br><input class="adm-btn" value="Загрузить" type="submit"/>'."\n";
+				$ret .= '<br><input class="adm-btn" value="Р—Р°РіСЂСѓР·РёС‚СЊ" type="submit"/>'."\n";
 				$ret .= '</form>'."\n";
 				$ret .= "</fieldset>";
 				$ret .= '<img id="loading" src="'.$THEME_REF.'/img/loading.gif" style="display:none;"/>'."\n";   
@@ -177,7 +177,7 @@
 			$links = array(
 				array(
 					'ref' => $this->fullRef,
-					'name' => 'Список элементов'
+					'name' => 'РЎРїРёСЃРѕРє СЌР»РµРјРµРЅС‚РѕРІ'
 				)
 			);
 			$ret = $this->getOperationsBar($links);

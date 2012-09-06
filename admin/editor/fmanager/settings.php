@@ -4,7 +4,7 @@ $bReturnAbsolute=false;
 
 $sBaseVirtual0=$RES_REF;  //Assuming that the path is http://yourserver/Editor/assets/ ("Relative to Root" Path is required)
 $sBase0=$RES_DIR; //The real path
-$sName0='Файлы пользователя';
+$sName0='Р¤Р°Р№Р»С‹ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ';
 
 $sBaseVirtual1='';
 $sBase1='';

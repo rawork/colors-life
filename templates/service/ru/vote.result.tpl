@@ -5,4 +5,4 @@
 <div class="vote-item">{$v.name} - {$v.quantity} ({$v.percent}%)</div>
 <div style="height:16px;background-color:{$v.color};width:{$v.percent+1}%"></div>
 {/foreach}
-<!--<div class="vote-total">Всего голосов: {$q.quantity}</div> -->
+<!--<div class="vote-total">Р’СЃРµРіРѕ РіРѕР»РѕСЃРѕРІ: {$q.quantity}</div> -->

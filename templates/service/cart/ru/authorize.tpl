@@ -1,27 +1,27 @@
 <h1>
-<a href="/cart/">Уточнение заказа</a> &rarr;
-Авторизация &rarr;
-<span>Параметры заказа</span> &rarr;
-<span>Подтверждение заказа</span>
+<a href="/cart/">РЈС‚РѕС‡РЅРµРЅРёРµ Р·Р°РєР°Р·Р°</a> &rarr;
+РђРІС‚РѕСЂРёР·Р°С†РёСЏ &rarr;
+<span>РџР°СЂР°РјРµС‚СЂС‹ Р·Р°РєР°Р·Р°</span> &rarr;
+<span>РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ Р·Р°РєР°Р·Р°</span>
 </h1>
 <br>
 <form name="mainForm" action="/cabinet/login.htm" method="POST">
 <input name="processLogin" value="1" type="hidden">
 <input type="hidden" name="fromPage" value="/cart/detail.htm" />
-<p>Для оформления заказа войдите в магазин под своим аккаунтом.</p>
-  <p class="cut">Если вы делаете заказ впервые, пожалуйста, <a href="/cabinet/registration.htm">зарегистрируйтесь</a>.<br> Регистрация поможет вам контролировать заказы и сократит время оформления последующих покупок.</p>
-  <p class="cut"><a href="/cart/detail.htm">Не хочу регистрироваться</a></p>
+<p>Р”Р»СЏ РѕС„РѕСЂРјР»РµРЅРёСЏ Р·Р°РєР°Р·Р° РІРѕР№РґРёС‚Рµ РІ РјР°РіР°Р·РёРЅ РїРѕРґ СЃРІРѕРёРј Р°РєРєР°СѓРЅС‚РѕРј.</p>
+  <p class="cut">Р•СЃР»Рё РІС‹ РґРµР»Р°РµС‚Рµ Р·Р°РєР°Р· РІРїРµСЂРІС‹Рµ, РїРѕР¶Р°Р»СѓР№СЃС‚Р°, <a href="/cabinet/registration.htm">Р·Р°СЂРµРіРёСЃС‚СЂРёСЂСѓР№С‚РµСЃСЊ</a>.<br> Р РµРіРёСЃС‚СЂР°С†РёСЏ РїРѕРјРѕР¶РµС‚ РІР°Рј РєРѕРЅС‚СЂРѕР»РёСЂРѕРІР°С‚СЊ Р·Р°РєР°Р·С‹ Рё СЃРѕРєСЂР°С‚РёС‚ РІСЂРµРјСЏ РѕС„РѕСЂРјР»РµРЅРёСЏ РїРѕСЃР»РµРґСѓСЋС‰РёС… РїРѕРєСѓРїРѕРє.</p>
+  <p class="cut"><a href="/cart/detail.htm">РќРµ С…РѕС‡Сѓ СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ</a></p>
 <table class="forms" width="100%">
 <colgroup>
  <col width="30%" />
  <col />
 </colgroup>
  
-<tr><td><span>Электронный адрес</span></td><td><input maxlength="50" class="simple-text" type="text" name="login" id="l" value="" onblur="checkLoginForm()" onkeypress="checkLoginForm()" onkeyup="checkLoginForm()"></td></tr>
+<tr><td><span>Р­Р»РµРєС‚СЂРѕРЅРЅС‹Р№ Р°РґСЂРµСЃ</span></td><td><input maxlength="50" class="simple-text" type="text" name="login" id="l" value="" onblur="checkLoginForm()" onkeypress="checkLoginForm()" onkeyup="checkLoginForm()"></td></tr>
 
-<tr><td><span>Пароль</span></td><td><input maxlength="50" class="simple-text" type="password" name="password" id="p" value="" onblur="checkLoginForm()" onkeypress="checkLoginForm()" onkeyup="checkLoginForm()">
-<tr><td>&nbsp;</td><td><input type="submit" disabled="true" id="loginBtn" value="Продолжить..."></td></tr>
-<tr><td>&nbsp;</td><td><p><a href="/cabinet/forget.htm">Уже регистрировались и забыли пароль?</a></p></td></tr>
+<tr><td><span>РџР°СЂРѕР»СЊ</span></td><td><input maxlength="50" class="simple-text" type="password" name="password" id="p" value="" onblur="checkLoginForm()" onkeypress="checkLoginForm()" onkeyup="checkLoginForm()">
+<tr><td>&nbsp;</td><td><input type="submit" disabled="true" id="loginBtn" value="РџСЂРѕРґРѕР»Р¶РёС‚СЊ..."></td></tr>
+<tr><td>&nbsp;</td><td><p><a href="/cabinet/forget.htm">РЈР¶Рµ СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°Р»РёСЃСЊ Рё Р·Р°Р±С‹Р»Рё РїР°СЂРѕР»СЊ?</a></p></td></tr>
 </table>
  <input type="hidden" value="false" name="passOk" />
 

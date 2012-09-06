@@ -1,7 +1,7 @@
 <html>
 <head>
-<title>Управление сайтом - {$prj_name}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<title>РЈРїСЂР°РІР»РµРЅРёРµ СЃР°Р№С‚РѕРј - {$prj_name}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="{$theme_ref}/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -16,7 +16,7 @@
                   <td valign="top"><table style="width:100%;border-bottom: 1px dotted #B2BCD9; margin-bottom: 7px;" border="0" cellspacing="3" cellpadding="0">
                       <tr>
                         <td valign="top"><img src="{$theme_ref}/img/icons/icon_key.gif"></td>
-                        <td valign="top" width="100%"><div class="auth-title">Запрос пароля</div></td>
+                        <td valign="top" width="100%"><div class="auth-title">Р—Р°РїСЂРѕСЃ РїР°СЂРѕР»СЏ</div></td>
                       </tr>
                     </table></td>
                 </tr>
@@ -27,17 +27,17 @@
                         
                         <tr>
                           <td width="20">&nbsp;</td>
-                          <td align="right"><strong>Логин:&nbsp;</strong></td>
+                          <td align="right"><strong>Р›РѕРіРёРЅ:&nbsp;</strong></td>
                           <td><input name="fuser" type="text" class="pole" size="30"></td>
                         </tr>
                         <tr>
                           <td>&nbsp;</td>
                           <td>&nbsp;</td>
-                          <td height="20">или</td>
+                          <td height="20">РёР»Рё</td>
                         </tr>
                         <tr>
                           <td>&nbsp;</td>
-                          <td align="right"><strong>Эл. почта:&nbsp;</strong></td>
+                          <td align="right"><strong>Р­Р». РїРѕС‡С‚Р°:&nbsp;</strong></td>
                           <td><input name="femail" type="text" class="pole" size="30"></td>
                         </tr>
                         <tr>
@@ -49,7 +49,7 @@
                         <tr>
                           <td>&nbsp;</td>
                           <td>&nbsp;</td>
-                          <td><input class="submit" type="submit" value="Выслать">
+                          <td><input class="submit" type="submit" value="Р’С‹СЃР»Р°С‚СЊ">
                             <br>
                             <br></td>
                         </tr>
@@ -57,8 +57,8 @@
                     </form></td>
                 </tr>
                 <tr>
-                  <td style="padding-bottom: 3px;"> Если вы забыли пароль, введите ваш логин или E-Mail, указанный при регистрации. Новый пароль будет выслан вам по электронной почте.<br>
-                    Вернуться на <a href="/admin/">форму авторизации</a>.<br>
+                  <td style="padding-bottom: 3px;"> Р•СЃР»Рё РІС‹ Р·Р°Р±С‹Р»Рё РїР°СЂРѕР»СЊ, РІРІРµРґРёС‚Рµ РІР°С€ Р»РѕРіРёРЅ РёР»Рё E-Mail, СѓРєР°Р·Р°РЅРЅС‹Р№ РїСЂРё СЂРµРіРёСЃС‚СЂР°С†РёРё. РќРѕРІС‹Р№ РїР°СЂРѕР»СЊ Р±СѓРґРµС‚ РІС‹СЃР»Р°РЅ РІР°Рј РїРѕ СЌР»РµРєС‚СЂРѕРЅРЅРѕР№ РїРѕС‡С‚Рµ.<br>
+                    Р’РµСЂРЅСѓС‚СЊСЃСЏ РЅР° <a href="/admin/">С„РѕСЂРјСѓ Р°РІС‚РѕСЂРёР·Р°С†РёРё</a>.<br>
                   </td>
                 </tr>
               </table>

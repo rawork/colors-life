@@ -1,13 +1,13 @@
-          <h1><a href="/cart/">Ваша корзина</a> &rarr; Информация о Вас &rarr; <span>Оплата и доставка</span> &rarr; <span>Подтверждение</span> &rarr; <span>Информация о заказе</span></h1>
+          <h1><a href="/cart/">Р’Р°С€Р° РєРѕСЂР·РёРЅР°</a> &rarr; РРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р’Р°СЃ &rarr; <span>РћРїР»Р°С‚Р° Рё РґРѕСЃС‚Р°РІРєР°</span> &rarr; <span>РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ</span> &rarr; <span>РРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р·Р°РєР°Р·Рµ</span></h1>
           <br>
 {if $uauth->user}
 <div class="cart-auth-info">
-<b>ФИО:</b> {$uauth->user.name}<br>
-<b>Телефон:</b> {$uauth->user.phone}<br>
+<b>Р¤РРћ:</b> {$uauth->user.name}<br>
+<b>РўРµР»РµС„РѕРЅ:</b> {$uauth->user.phone}<br>
 <b>E-mail:</b> {$uauth->user.email}<br>
-<b>Способ оплаты:</b> {$smarty.session.pay_type}<br>
-<b>Способ доставки:</b> {$smarty.session.delivery_type}<br>
-<b>Адрес доставки:</b> {$smarty.session.delivery_address}<br>
+<b>РЎРїРѕСЃРѕР± РѕРїР»Р°С‚С‹:</b> {$smarty.session.pay_type}<br>
+<b>РЎРїРѕСЃРѕР± РґРѕСЃС‚Р°РІРєРё:</b> {$smarty.session.delivery_type}<br>
+<b>РђРґСЂРµСЃ РґРѕСЃС‚Р°РІРєРё:</b> {$smarty.session.delivery_address}<br>
 </div>
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
@@ -19,59 +19,59 @@
           <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
           <td valign="top">
-          <div>Если вы новый покупатель,<br> 
-			Вам необходимо пройти регистрацию:<br></div>
+          <div>Р•СЃР»Рё РІС‹ РЅРѕРІС‹Р№ РїРѕРєСѓРїР°С‚РµР»СЊ,<br> 
+			Р’Р°Рј РЅРµРѕР±С…РѕРґРёРјРѕ РїСЂРѕР№С‚Рё СЂРµРіРёСЃС‚СЂР°С†РёСЋ:<br></div>
           <div class="reg-form">
           <form method="post" action="/cabinet/?action=reg">
-          Логин <span class="required">*</span><br>
+          Р›РѕРіРёРЅ <span class="required">*</span><br>
           <input type="text" name="login" class="field-t1"><br>
-          Пароль <span class="required">*</span><br>
+          РџР°СЂРѕР»СЊ <span class="required">*</span><br>
           <input type="password" name="password" class="field-t1"><br>
-          Пароль еще раз <span class="required">*</span><br>
+          РџР°СЂРѕР»СЊ РµС‰Рµ СЂР°Р· <span class="required">*</span><br>
           <input type="password" name="password_password_check" class="field-t1"><br>
-          ФИО <span class="required">*</span><br>
+          Р¤РРћ <span class="required">*</span><br>
           <input type="text" name="name" class="field-t1"><br>
-          Дата рождения <span class="required">*</span><br>
+          Р”Р°С‚Р° СЂРѕР¶РґРµРЅРёСЏ <span class="required">*</span><br>
           <input type="text" name="birthday" class="field-t1"><br>
-          Телефон <span class="required">*</span><br>
+          РўРµР»РµС„РѕРЅ <span class="required">*</span><br>
           <input type="text" name="phone" class="field-t1"><br>
-          Эл. почта <span class="required">*</span><br>
+          Р­Р». РїРѕС‡С‚Р° <span class="required">*</span><br>
           <input type="text" name="email" class="field-t1"><br>
-          Способ оплаты <span class="required">*</span><br>
+          РЎРїРѕСЃРѕР± РѕРїР»Р°С‚С‹ <span class="required">*</span><br>
           <select name="pay_type" class="field-t2">
           {foreach from=$pays item=pay}
           <option value="{$pay.name}">{$pay.name}</option>
 		  {/foreach}
           </select>
           <br>
-          Способ доставки <span class="required">*</span><br>
+          РЎРїРѕСЃРѕР± РґРѕСЃС‚Р°РІРєРё <span class="required">*</span><br>
           <select name="delivery_type" class="field-t2">
           {foreach from=$delivery item=deliv}
           <option value="{$deliv.name}">{$deliv.name}</option>
 		  {/foreach}
           </select><br>
-           Адрес доставки <br>
+           РђРґСЂРµСЃ РґРѕСЃС‚Р°РІРєРё <br>
           <textarea style="width:250px;" type="text" name="address" class="field-t1"></textarea><br>
-           Введите символы на картинке внизу <br>
+           Р’РІРµРґРёС‚Рµ СЃРёРјРІРѕР»С‹ РЅР° РєР°СЂС‚РёРЅРєРµ РІРЅРёР·Сѓ <br>
           <input type="text" class="field-t1"><br>
-          <img id="secure_image" src="/secureimage.php"> <a href="#" onclick="document.getElementById('secure_image').src='/secureimage.php?rnd='+Math.random()+'&{$sess_name}={$sess_id}';return false">обновить код</a><br>
-          <input type="submit" value="Отправить">
+          <img id="secure_image" src="/secureimage.php"> <a href="#" onclick="document.getElementById('secure_image').src='/secureimage.php?rnd='+Math.random()+'&{$sess_name}={$sess_id}';return false">РѕР±РЅРѕРІРёС‚СЊ РєРѕРґ</a><br>
+          <input type="submit" value="РћС‚РїСЂР°РІРёС‚СЊ">
           </form>
           </div>
           </td>
           <td valign="top">
-          <div>Если вы уже зарегистрированы,<br>
-авторизуйтесь:<br></div>
+          <div>Р•СЃР»Рё РІС‹ СѓР¶Рµ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅС‹,<br>
+Р°РІС‚РѕСЂРёР·СѓР№С‚РµСЃСЊ:<br></div>
           <div class="login-form">
           <form method="post" action="/cabinet/?action=login">
 		  <input type="hidden" name="submited" value="1">
 
-          Логин <br>
+          Р›РѕРіРёРЅ <br>
           <input type="text" name="login" class="field-t1"><br>
-          Пароль <br>
+          РџР°СЂРѕР»СЊ <br>
           <input type="password" name="password" class="field-t1"><br>
-          <a href="#" onclick="return showForgotForm()">Забыли пароль?</a><br>
-          <input type="submit" value="Войти">
+          <a href="#" onclick="return showForgotForm()">Р—Р°Р±С‹Р»Рё РїР°СЂРѕР»СЊ?</a><br>
+          <input type="submit" value="Р’РѕР№С‚Рё">
           </form>
           </div>
           </td>

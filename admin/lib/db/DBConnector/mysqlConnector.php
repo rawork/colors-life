@@ -12,16 +12,16 @@
 
         public function __construct($host, $user, $pass, $base) {
             parent::__construct($host, $user, $pass, $base);
-			mysql_query('SET NAMES cp1251', $this->connection);
-            mysql_query('set character set cp1251', $this->connection);
+			mysql_query('SET NAMES utf8', $this->connection);
+            mysql_query('set character set utf8', $this->connection);
         }
 		
 		public function openConnection() {
 			if (!($ret = @mysql_connect($this->host, $this->user, $this->pass))) {
-				throw new Exception('Ошибка соединения. ('.mysql_errno().' - '.mysql_error().')');
+				throw new Exception('РћС€РёР±РєР° СЃРѕРµРґРёРЅРµРЅРёСЏ. ('.mysql_errno().' - '.mysql_error().')');
             } else {
                 if (!mysql_select_db($this->base, $ret))
-                    throw new Exception('БД отсутствует');
+                    throw new Exception('Р‘Р” РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚');
             }
 			return $ret;
 		}

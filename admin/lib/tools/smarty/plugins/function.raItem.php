@@ -18,14 +18,14 @@
 
 function smarty_function_raItem($params, &$smarty) {
 	if (!isset($params['table'])) {
-		$smarty->trigger_error('raItem: Íå óêàçàí ïàðàìåòð: table');
+		$smarty->trigger_error('raItem: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: table');
 	} else {
 		$class = $params['table'];
 		$where = isset($params['query']) ? $params['query'] : 0;
 		if (empty($where)){
-			$smarty->trigger_error('raItem: Íå óêàçàí ïàðàìåòð îòáîðà');
+			$smarty->trigger_error('raItem: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ Ð¾Ñ‚Ð±Ð¾Ñ€Ð°');
 		} elseif (!isset($params['var'])) {
-			$smarty->trigger_error('raItem: Íå óêàçàí ïàðàìåòð: var');
+			$smarty->trigger_error('raItem: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: var');
 		} else {
 			$smarty->assign($params['var'], $GLOBALS['rtti']->getItem($class, $where, !empty($params['sort']) ? $params['sort'] : '', !empty($params['select']) ? $params['select'] : ''));
 		}

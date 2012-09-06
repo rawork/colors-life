@@ -19,9 +19,9 @@
 
 function smarty_function_raSetVar($params, &$smarty) {
 	if (!isset($params['var'])) {
-		$smarty->trigger_error('raSetVar: Íå óêàçàí ïàğàìåòğ: var');
+		$smarty->trigger_error('raSetVar: ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€: var');
 	} elseif (!isset($params['value'])) {
-		$smarty->trigger_error('raSetVar: Íå óêàçàí ïàğàìåòğ: value');
+		$smarty->trigger_error('raSetVar: ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€: value');
 	} else {
 		$GLOBALS['rtti']->setVar($params['var'], $params['value']);
 	}

@@ -348,7 +348,7 @@
             // Clear element value (DOES NOT WORK in some browsers)
             //slave.reset().val('').attr('value', '')[0].value = '';
             
-            // 2007-06-24: BUG FIX - Thanks to Adrian Wrуbel <adrian [dot] wrobel [at] gmail.com>
+            // 2007-06-24: BUG FIX - Thanks to Adrian WrСѓbel <adrian [dot] wrobel [at] gmail.com>
             // Ditch the trouble maker and add a fresh new element
             MF.n--;
             MF.addSlave(newEle[0], this.i);
@@ -361,8 +361,8 @@
           $(this).css({ position:'absolute', top: '-3000px' });
           
           // Add new element to the form
-          MF.list.before(newEle);//.append(newEle); - replace by spiritzzz - эту строку я раскомментировал
-          //MF.wrapper.prepend(newEle);//.append(newEle); - replace by spiritzzz - а эту закомментировал
+          MF.list.before(newEle);//.append(newEle); - replace by spiritzzz - СЌС‚Сѓ СЃС‚СЂРѕРєСѓ СЏ СЂР°СЃРєРѕРјРјРµРЅС‚РёСЂРѕРІР°Р»
+          //MF.wrapper.prepend(newEle);//.append(newEle); - replace by spiritzzz - Р° СЌС‚Сѓ Р·Р°РєРѕРјРјРµРЅС‚РёСЂРѕРІР°Р»
           
           // Update list
           MF.addToList( this );

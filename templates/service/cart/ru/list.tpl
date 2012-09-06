@@ -1,9 +1,9 @@
 {if count($aItems)}
 <h1> 
-	Уточнение заказа &rarr;
-	{if is_null($uauth->user)}<span>Авторизация</span> &rarr;{/if}
-	<span>Оплата и доставка</span> &rarr; 
-	<span>Подтверждение заказа</span> 
+	РЈС‚РѕС‡РЅРµРЅРёРµ Р·Р°РєР°Р·Р° &rarr;
+	{if is_null($uauth->user)}<span>РђРІС‚РѕСЂРёР·Р°С†РёСЏ</span> &rarr;{/if}
+	<span>РћРїР»Р°С‚Р° Рё РґРѕСЃС‚Р°РІРєР°</span> &rarr; 
+	<span>РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ Р·Р°РєР°Р·Р°</span> 
 </h1>
 <br>
 <form name="frmCart" id="frmCart" method="post">
@@ -36,10 +36,10 @@
 								{if count($prices)}
 								&nbsp;&nbsp;
 								<select style="width:200px;" name="price_{$guid}" id="price_{$guid}">
-								<option value="0">Стандартное исполнение</option>
+								<option value="0">РЎС‚Р°РЅРґР°СЂС‚РЅРѕРµ РёСЃРїРѕР»РЅРµРЅРёРµ</option>
 								{foreach from=$prices item=price}
 								<option{if $price.id == $g.priceEntity.id} selected{/if} value="{$price.id}">
-								{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.
+								{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} СЂСѓР±.
 								</option>
 								{/foreach}
 								</select>
@@ -62,11 +62,11 @@
 								<span>
 								{$g.price|number_format:2:',':' '}
 								</span>
-								 руб.
+								 СЂСѓР±.
 								</div>
 								</td>
 								<td>
-								 Кол-во
+								 РљРѕР»-РІРѕ
 								<input type="text" style="width:30px;" value="{$g.counter}" name="amount_{$guid}" id="amount_{$guid}">
 								</td>
 								<td>
@@ -101,17 +101,17 @@
 	</td>
 	</tr>
 	</table>
-<div class="cart-total" id="totalSum">Всего {$smarty.session.number} товара(ов) на сумму: <span>{$list_total|number_format:2:',':' '} руб.</span></div>
+<div class="cart-total" id="totalSum">Р’СЃРµРіРѕ {$smarty.session.number} С‚РѕРІР°СЂР°(РѕРІ) РЅР° СЃСѓРјРјСѓ: <span>{$list_total|number_format:2:',':' '} СЂСѓР±.</span></div>
 {if is_array($discount)}
-<div class="cart-total">Для суммы товара от {$discount.sum_min|number_format:2:',':' '} до {$discount.sum_max|number_format:2:',':' '} руб. действует скидка <b style="color:#EE2A2A;font-size:14px;">{$discount.discount} %</b></div>
-<div class="cart-total">Сумма с учетом скидки: <span>{$list_total-$list_total*$discount.discount/100|number_format:2:',':' '} руб.</span></div>
+<div class="cart-total">Р”Р»СЏ СЃСѓРјРјС‹ С‚РѕРІР°СЂР° РѕС‚ {$discount.sum_min|number_format:2:',':' '} РґРѕ {$discount.sum_max|number_format:2:',':' '} СЂСѓР±. РґРµР№СЃС‚РІСѓРµС‚ СЃРєРёРґРєР° <b style="color:#EE2A2A;font-size:14px;">{$discount.discount} %</b></div>
+<div class="cart-total">РЎСѓРјРјР° СЃ СѓС‡РµС‚РѕРј СЃРєРёРґРєРё: <span>{$list_total-$list_total*$discount.discount/100|number_format:2:',':' '} СЂСѓР±.</span></div>
 {/if}
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr>
 		<td width="50%"></td>
 		<td width="50%" align="right">
-		<input type="submit" value="Сохранить изменения" />
-		<input type="button" onclick="window.location = '{if $uauth->user}/cart/detail.htm{else}/cart/authorize.htm{/if}'" value="Продолжить" />
+		<input type="submit" value="РЎРѕС…СЂР°РЅРёС‚СЊ РёР·РјРµРЅРµРЅРёСЏ" />
+		<input type="button" onclick="window.location = '{if $uauth->user}/cart/detail.htm{else}/cart/authorize.htm{/if}'" value="РџСЂРѕРґРѕР»Р¶РёС‚СЊ" />
 		</td>
 	</tr>
 </table>
@@ -151,7 +151,7 @@
 										<tr>
 											<td width="100%"></td>
 											<td><img src="/img/0.gif" width="128" height="1" border="0">
-												<div class="stuff-price-gift"><span>Подарок</span></div></td>
+												<div class="stuff-price-gift"><span>РџРѕРґР°СЂРѕРє</span></div></td>
 										</tr>
 									</table>
 								</td>
@@ -173,16 +173,16 @@
 	</tr>
 </table>
 <br>
-<!--Трэкер "Корзина"-->
+<!--РўСЂСЌРєРµСЂ "РљРѕСЂР·РёРЅР°"-->
 
 <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779415&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>
 
-<!--Трэкер "Корзина"-->
+<!--РўСЂСЌРєРµСЂ "РљРѕСЂР·РёРЅР°"-->
 {/foreach}
 
 {else}
 <div class="lst-item2">
-	<h1>В вашей корзине нет товаров</h1>
+	<h1>Р’ РІР°С€РµР№ РєРѕСЂР·РёРЅРµ РЅРµС‚ С‚РѕРІР°СЂРѕРІ</h1>
 	{raInclude var=delivery} 
 </div>
 {/if}

@@ -39,7 +39,7 @@
                   </table></td>
               </tr>
             </table>
-			<div class="cat-close-link"><a href="javascript:toggleCat({$cat.id})">Закрыть Х</a></div>
+			<div class="cat-close-link"><a href="javascript:toggleCat({$cat.id})">Р—Р°РєСЂС‹С‚СЊ РҐ</a></div>
 			</td>
           <td class="white-right"><img src="/img/0.gif" width="10" height="1" border="0"></td>
         </tr>

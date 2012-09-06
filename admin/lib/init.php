@@ -9,7 +9,8 @@
 	} else {
 		session_start();
 	}
-	$LIB_VERSION = '4.6.2009.10.18';
+	$LIB_VERSION = '5.0.1';
+	$LIB_DATE = '2012.09.10';
 	
     function inc_lib($v) {
     global $LIB_DIR;
@@ -33,14 +34,14 @@
         return inc_lib('components/'.ucfirst($v).'Unit.php');
     }
 	
-	// библиотека общих функций
+	// Р±РёР±Р»РёРѕС‚РµРєР° РѕР±С‰РёС… С„СѓРЅРєС†РёР№
 	inc_lib('CUtils.php');
 	
 	
-	// ID запрашиваемой страницы
+	// ID Р·Р°РїСЂР°С€РёРІР°РµРјРѕР№ СЃС‚СЂР°РЅРёС†С‹
 	$GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']));
 	
-	// Включаем кеш
+	// Р’РєР»СЋС‡Р°РµРј РєРµС€
 	/*inc_lib('tools/CCache.php');
 	$options = array(
 	    'cacheDir' => $PRJ_DIR.'/admin/lib/cache/',
@@ -53,7 +54,7 @@
 		//exit();
 	}*/
 	
-	// Соединение с базой и выполнение запросов
+	// РЎРѕРµРґРёРЅРµРЅРёРµ СЃ Р±Р°Р·РѕР№ Рё РІС‹РїРѕР»РЅРµРЅРёРµ Р·Р°РїСЂРѕСЃРѕРІ
 	$dbclass = strtolower(!empty($GLOBALS['DB_TYPE']) ? $GLOBALS['DB_TYPE'] : '').'Connector';
 	if (!file_exists($GLOBALS['LIB_DIR'].'/db/DBConnector/'.$dbclass.'.php')) {
 		CUtils::raiseError('DB connection type error (DB_TYPE). Possible value: mysql,mysqli,pg,oci', ERROR_DIE);
@@ -61,13 +62,13 @@
 	inc_lib('db/DBConnector/'.$dbclass.'.php');
 	$db = new $dbclass($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS'], $GLOBALS['DB_BASE']);
 	
-	// инициализация переменных
+	// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїРµСЂРµРјРµРЅРЅС‹С…
 	$db->execQuery('GLOBAL_VARS', 'SELECT * FROM config_variables');
 	while ($var = $db->getNextArray('GLOBAL_VARS')) {
 		$$var['name'] = $var['value'];
 	}
 	
-	//  НАДо ОТКАЗАТЬСЯ ОТ СМАРТИ
+	//  РќРђР”Рѕ РћРўРљРђР—РђРўР¬РЎРЇ РћРў РЎРњРђР РўР
 	inc_lib('tools/smarty/Smarty.class.php');
 	$GLOBALS['smarty'] = new Smarty;
 	$GLOBALS['smarty']->template_dir = $PRJ_DIR.'/templates/';
@@ -88,15 +89,15 @@
 	
 	if ($_SERVER['SCRIPT_NAME'] != '/restore.php') {
     	if (file_exists($PRJ_DIR.'/restore.php')) {
-			CUtils::raiseError('Удалите файл restore.php в корне сайта', ERROR_DIE);
+			CUtils::raiseError('РЈРґР°Р»РёС‚Рµ С„Р°Р№Р» restore.php РІ РєРѕСЂРЅРµ СЃР°Р№С‚Р°', ERROR_DIE);
 		}
 		
-		// Включаем парсер URL 
+		// Р’РєР»СЋС‡Р°РµРј РїР°СЂСЃРµСЂ URL 
 		inc_lib('CParser.php');
 		$parser = new CParser();
 		$GLOBALS['urlprops'] = $parser->getURLProps();
 		
-		// Инициализация текущего языка
+		// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ С‚РµРєСѓС‰РµРіРѕ СЏР·С‹РєР°
 		if (!isset($_SESSION['lang']))
 			$_SESSION['lang'] = CUtils::_postVar('lang', false, 'ru');
 		if (CUtils::_postVar('lang') && $_SESSION['lang'] != CUtils::_postVar('lang')) {

@@ -1,7 +1,7 @@
 <div class="nums">
-Записи {$recs} из {$rec_count}	
+Р—Р°РїРёСЃРё {$recs} РёР· {$rec_count}	
 <div class="numbers" id="pager">
-{if $begin_link ne ''}<a href="{$begin_link}">Нач.</a>{/if}
+{if $begin_link ne ''}<a href="{$begin_link}">РќР°С‡.</a>{/if}
 {if $prevblock_link ne ''}<a href="{$prevblock_link}">&laquo;</a>{/if}
 {if $prev_link ne ''}<a href="{$prev_link}">&lt;</a>{/if}
 {foreach from=$pages key=k item=i}
@@ -10,5 +10,5 @@
 {/foreach}
 {if $next_link ne ''}<a href="{$next_link}">&gt;</a>{/if}
 {if $nextblock_link ne ''}<a href="{$nextblock_link}">&raquo;</a>{/if}
-{if $end_link ne ''}<a href="{$end_link}">Кон.</a>{/if}
+{if $end_link ne ''}<a href="{$end_link}">РљРѕРЅ.</a>{/if}
 </div></div>

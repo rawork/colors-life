@@ -264,7 +264,7 @@
 				}
 				return addItem('classes', 'classid,seniorid,name,dbtablename,sysname,is_vitual', '1,'.$seniorid.",'".$name."','".$dbtablename."','".$dbtablename.",'".($is_virtual ? 1 : 0)."'");
 			} else {
-				return 'Дублирование таблицы класса';
+				return 'Р”СѓР±Р»РёСЂРѕРІР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ РєР»Р°СЃСЃР°';
 			}
 		}
 
@@ -306,7 +306,7 @@
 		}
 
 		function addMethod($class, $condition = ''){
-			// Обязательна проверка есть ли класс
+			// РћР±СЏР·Р°С‚РµР»СЊРЅР° РїСЂРѕРІРµСЂРєР° РµСЃС‚СЊ Р»Рё РєР»Р°СЃСЃ
 		}
 
 		function updateMethod($class, $met, $condition = '') {
@@ -412,7 +412,7 @@
 		}
 
 		/*
-		 * Разбирает URL на части Раздел - Метод - Параметры
+		 * Р Р°Р·Р±РёСЂР°РµС‚ URL РЅР° С‡Р°СЃС‚Рё Р Р°Р·РґРµР» - РњРµС‚РѕРґ - РџР°СЂР°РјРµС‚СЂС‹
 		 */
 		function parseURL($sURL = '/') {
 			if (preg_match('/^\/[a-z0-9_\-]+\/?[a-z0-9_\-\.]*(\.htm)?$/i', $sURL) || $sURL == '/') {
@@ -440,7 +440,7 @@
 		}
 
 		/*
-		 * Формирует URL на основе параметров /$sComponentName/$sMethodName.$mParam0.htm
+		 * Р¤РѕСЂРјРёСЂСѓРµС‚ URL РЅР° РѕСЃРЅРѕРІРµ РїР°СЂР°РјРµС‚СЂРѕРІ /$sComponentName/$sMethodName.$mParam0.htm
 		 *
 		 *
 		 */

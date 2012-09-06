@@ -13,14 +13,14 @@
 
         public function __construct($host, $user, $pass, $base) {
             parent::__construct($host, $user, $pass, $base);
-			$this->connection->query('SET NAMES cp1251');
-            $this->connection->query('set character set cp1251');
+			$this->connection->query('SET NAMES utf8');
+            $this->connection->query('set character set utf8');
         }
 		
 		public function openConnection() {
 			$ret = @new mysqli($this->host, $this->user, $this->pass, $this->base);
 			if (mysqli_connect_error()) {
-			    throw new Exception('Ошибка соединения с базой данных. ('.mysqli_connect_errno().' - '.mysqli_connect_error().')'); 
+			    throw new Exception('РћС€РёР±РєР° СЃРѕРµРґРёРЅРµРЅРёСЏ СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С…. ('.mysqli_connect_errno().' - '.mysqli_connect_error().')'); 
 			}
 			return $ret;
 		}

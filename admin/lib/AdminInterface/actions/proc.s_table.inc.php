@@ -12,7 +12,7 @@
             $ret = '';
             $fields = '';
 			$types = array();
-			$svalues = explode(';', 'HTML|html;Áóëåâî|checkbox;Âåùåñòâåííîå ÷èñëî|float;Âûáîð|select;Âûáîð èç äåðåâà|select_tree;Âûáîð ìíîæåñòâà|select_list;Äàòà|date;Äàòà è âðåìÿ|datetime;Ìåìî|text;Ïàðîëü|password;Ïåðå÷èñëåíèå|enum;Ðèñóíîê|image;Ñòðîêà|string;Ôàéë|file;Öåëîå ÷èñëî|number;Øàáëîí|template');
+			$svalues = explode(';', 'HTML|html;Ð‘ÑƒÐ»ÐµÐ²Ð¾|checkbox;Ð’ÐµÑ‰ÐµÑÑ‚Ð²ÐµÐ½Ð½Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾|float;Ð’Ñ‹Ð±Ð¾Ñ€|select;Ð’Ñ‹Ð±Ð¾Ñ€ Ð¸Ð· Ð´ÐµÑ€ÐµÐ²Ð°|select_tree;Ð’Ñ‹Ð±Ð¾Ñ€ Ð¼Ð½Ð¾Ð¶ÐµÑÑ‚Ð²Ð°|select_list;Ð”Ð°Ñ‚Ð°|date;Ð”Ð°Ñ‚Ð° Ð¸ Ð²Ñ€ÐµÐ¼Ñ|datetime;ÐœÐµÐ¼Ð¾|text;ÐŸÐ°Ñ€Ð¾Ð»ÑŒ|password;ÐŸÐµÑ€ÐµÑ‡Ð¸ÑÐ»ÐµÐ½Ð¸Ðµ|enum;Ð Ð¸ÑÑƒÐ½Ð¾Ðº|image;Ð¡Ñ‚Ñ€Ð¾ÐºÐ°|string;Ð¤Ð°Ð¹Ð»|file;Ð¦ÐµÐ»Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾|number;Ð¨Ð°Ð±Ð»Ð¾Ð½|template');
         	    foreach ($svalues as $a) {
 					$types[] = explode('|', $a);
 	            }
@@ -20,11 +20,11 @@
 			$smarty->assign('fields', $this->t->fields);
 			$smarty->assign('groups', $GLOBALS['rtti']->getItems('users_groups'));
 			$smarty->assign('rights', array(
-				'' => 'Ïî-óìîë÷àíèþ (÷òåíèå)',
-				'D' => 'Çàêðûò',
-				'R' => '×òåíèå',
-				'W' => '×òåíèå è çàïèñü',
-				'X' => 'Ïîëíûé äîñòóï'
+				'' => 'ÐŸÐ¾-ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ (Ñ‡Ñ‚ÐµÐ½Ð¸Ðµ)',
+				'D' => 'Ð—Ð°ÐºÑ€Ñ‹Ñ‚',
+				'R' => 'Ð§Ñ‚ÐµÐ½Ð¸Ðµ',
+				'W' => 'Ð§Ñ‚ÐµÐ½Ð¸Ðµ Ð¸ Ð·Ð°Ð¿Ð¸ÑÑŒ',
+				'X' => 'ÐŸÐ¾Ð»Ð½Ñ‹Ð¹ Ð´Ð¾ÑÑ‚ÑƒÐ¿'
 			));
 			$smarty->assign('a', $GLOBALS['rtti']->getClass($unit.'_'.$table));
             return $smarty->fetch('admin/table.edit.tpl');
@@ -34,15 +34,15 @@
 			$links = array(
 				array(
 					'ref' => $this->fullRef,
-					'name' => 'Ñïèñîê ýëåìåíòîâ'
+					'name' => 'Ð¡Ð¿Ð¸ÑÐ¾Ðº ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð²'
 				),
 				array(
 					'ref' => $this->fullRef.'&amp;action=create',
-					'name' => 'Ñîçäàòü òàáëèöó'
+					'name' => 'Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñƒ'
 				),
 				array(
 					'ref' => $this->fullRef.'&amp;action=alter',
-					'name' => 'Îáíîâèòü òàáëèöó'
+					'name' => 'ÐžÐ±Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñƒ'
 				)
 			);
 			$ret = $this->getOperationsBar($links);

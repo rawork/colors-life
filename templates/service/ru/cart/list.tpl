@@ -1,7 +1,7 @@
-{raSetVar var=h1 value='Ваша корзина'}
+{raSetVar var=h1 value='Р’Р°С€Р° РєРѕСЂР·РёРЅР°'}
 {raSetVar var=current_step value=1}
 {if sizeof($goods) > 0}
-<h1>Ваша корзина &rarr; <span>Информация о Вас</span> &rarr; <span>Оплата и доставка</span> &rarr; <span>Подтверждение</span> &rarr; <span>Информация о заказе</span></h1>
+<h1>Р’Р°С€Р° РєРѕСЂР·РёРЅР° &rarr; <span>РРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р’Р°СЃ</span> &rarr; <span>РћРїР»Р°С‚Р° Рё РґРѕСЃС‚Р°РІРєР°</span> &rarr; <span>РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ</span> &rarr; <span>РРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р·Р°РєР°Р·Рµ</span></h1>
           <br>  
               <form name="frmCart" id="frmCart" action="./?action=recalc" method="post">
 			  <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -27,9 +27,9 @@
                               {raItems var=prices table=catalog_prices query="stuff_id=`$g.stuff.id`"}
                         {if count($prices)}
                         &nbsp;&nbsp;<select name="price_{$guid}" id="price_{$guid}">
-                        <option value="0">Стандарт</option>
+                        <option value="0">РЎС‚Р°РЅРґР°СЂС‚</option>
                         {foreach from=$prices item=price}
-                        <option{if $price.id == $g.priceEntity.id} selected{/if} value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.</option>
+                        <option{if $price.id == $g.priceEntity.id} selected{/if} value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} СЂСѓР±.</option>
                         {/foreach} 
                         
                         {/if}
@@ -41,8 +41,8 @@
                                   <td><img src="/img/0.gif" width="244" height="1" border="0" style="display:block;">
                                     <table class="stuff-cart" width="100%" cellpadding="0" cellspacing="0">
                                       <tr>
-                                        <td style="padding-left:10px;"><div class="stuff-price"><span>{$g.price|number_format:2:',':' '}</span> руб.</div></td>
-                                        <td> Кол-во
+                                        <td style="padding-left:10px;"><div class="stuff-price"><span>{$g.price|number_format:2:',':' '}</span> СЂСѓР±.</div></td>
+                                        <td> РљРѕР»-РІРѕ
                                           <input type="text" style="width:30px;" value="{$g.counter}" name="amount_{$guid}">
                                           </td>
                                         <td><a href="./?action=recalc&amount_{$guid}=0"><img src="/img/delete_btn.gif" style="margin:0;" border="0"></a></td>
@@ -72,9 +72,9 @@
                 </tr>
               </table>
             </form>
-            <div class="cart-total">Всего {$smarty.session.number} товара(ов) на сумму: <span>{$list_total|number_format:2:',':' '} руб.</span></div>
-			{if is_array($discount)}<div class="cart-total">Для суммы товара от {$discount.sum_min|number_format:2:',':' '} до {$discount.sum_max|number_format:2:',':' '} руб. действует скидка <b style="color:#EE2A2A;font-size:14px;">{$discount.discount} %</b></div>
-			<div class="cart-total">Сумма с учетом скидки: <span>{$list_total-$list_total*$discount.discount/100|number_format:2:',':' '} руб.</span></div>{/if}
+            <div class="cart-total">Р’СЃРµРіРѕ {$smarty.session.number} С‚РѕРІР°СЂР°(РѕРІ) РЅР° СЃСѓРјРјСѓ: <span>{$list_total|number_format:2:',':' '} СЂСѓР±.</span></div>
+			{if is_array($discount)}<div class="cart-total">Р”Р»СЏ СЃСѓРјРјС‹ С‚РѕРІР°СЂР° РѕС‚ {$discount.sum_min|number_format:2:',':' '} РґРѕ {$discount.sum_max|number_format:2:',':' '} СЂСѓР±. РґРµР№СЃС‚РІСѓРµС‚ СЃРєРёРґРєР° <b style="color:#EE2A2A;font-size:14px;">{$discount.discount} %</b></div>
+			<div class="cart-total">РЎСѓРјРјР° СЃ СѓС‡РµС‚РѕРј СЃРєРёРґРєРё: <span>{$list_total-$list_total*$discount.discount/100|number_format:2:',':' '} СЂСѓР±.</span></div>{/if}
             <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
             <td width="50%"><a href="#" onclick="document.frmCart.submit();return false;"><img src="/img/calc_btn.gif"></a></td>
@@ -116,7 +116,7 @@
                                                   <tr>
                                                     <td width="100%"></td>
                                                     <td><img src="/img/0.gif" width="128" height="1" border="0">
-                                                      <div class="stuff-price-gift"><span>Подарок</span></div>
+                                                      <div class="stuff-price-gift"><span>РџРѕРґР°СЂРѕРє</span></div>
                                                       </td>
                                                   </tr>
                                                 </table></td>
@@ -138,7 +138,7 @@
 
 {else}
 <div class="lst-item2">
-<h1>В вашей корзине нет товаров</h1>
+<h1>Р’ РІР°С€РµР№ РєРѕСЂР·РёРЅРµ РЅРµС‚ С‚РѕРІР°СЂРѕРІ</h1>
 {raInclude var=delivery}
 </div>
 {/if}

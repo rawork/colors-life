@@ -1,26 +1,26 @@
 <div class="cabinet-menu">
 {if $urlprops.method == 'index'}
-<span>Личные данные</span>
+<span>Р›РёС‡РЅС‹Рµ РґР°РЅРЅС‹Рµ</span>
 {else}
-<span><a href="/cabinet/">Личные данные</a></span>
+<span><a href="/cabinet/">Р›РёС‡РЅС‹Рµ РґР°РЅРЅС‹Рµ</a></span>
 {/if}
 {if $urlprops.method == 'password'}
-<span>Изменить пароль</span>
+<span>РР·РјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ</span>
 {else}
-<span><a href="/cabinet/password.htm">Изменить пароль</a></span>
+<span><a href="/cabinet/password.htm">РР·РјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ</a></span>
 {/if}
 {if $urlprops.method == 'orders'}
-<span>Текущие заказы</span>
+<span>РўРµРєСѓС‰РёРµ Р·Р°РєР°Р·С‹</span>
 {else}
-<span><a href="/cabinet/orders.htm">Текущие заказы</a></span>
+<span><a href="/cabinet/orders.htm">РўРµРєСѓС‰РёРµ Р·Р°РєР°Р·С‹</a></span>
 {/if}
 <!--
 {if $urlprops.method == 'orders-history'}
-<span>История заказов</span>
+<span>РСЃС‚РѕСЂРёСЏ Р·Р°РєР°Р·РѕРІ</span>
 {else}
-<span><a href="/cabinet/orders-history.htm">История заказов</a></span>
+<span><a href="/cabinet/orders-history.htm">РСЃС‚РѕСЂРёСЏ Р·Р°РєР°Р·РѕРІ</a></span>
 {/if}
 -->
-<span><a href="/cabinet/logout.htm">Выйти</a></span>
+<span><a href="/cabinet/logout.htm">Р’С‹Р№С‚Рё</a></span>
 </div>
 <br><br>

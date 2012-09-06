@@ -4,53 +4,53 @@
     $templates_tables[] = array(
 	'name' => 'templates',
 	'component' => 'templates',
-	'title' => 'Øàáëîíû',
+	'title' => 'Ð¨Ð°Ð±Ð»Ð¾Ð½Ñ‹',
 	'order_by' => 'name',
 	'is_lang' => true,
 	'fieldset' => array (
         'name' => array (
             'name' => 'name',
-            'title' => 'Íàçâàíèå ìàêåòà',
+            'title' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð¼Ð°ÐºÐµÑ‚Ð°',
             'type' => 'string',
             'width' => '95%'
         ),
         'template' => array (
             'name' => 'template',
-            'title' => 'Øàáëîí HTML',
+            'title' => 'Ð¨Ð°Ð±Ð»Ð¾Ð½ HTML',
             'type' => 'template'
         )
     ));
     $templates_tables[] = array(
 	'name' => 'version',
 	'component' => 'templates',
-	'title' => 'Âåðñèîíèðîâàíèå',
+	'title' => 'Ð’ÐµÑ€ÑÐ¸Ð¾Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ',
 	'order_by' => 'credate',
 	'is_hidden' => true,
 	'fieldset' => array (
 		'cls' => array (
             'name' => 'cls',
-            'title' => 'Òàáëèöà',
+            'title' => 'Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð°',
             'type' => 'string',
             'width' => '20%',
             'search'=> true
         ),
         'fld' => array (
             'name' => 'fld',
-            'title' => 'Ïîëå',
+            'title' => 'ÐŸÐ¾Ð»Ðµ',
             'type' => 'string',
             'width' => '25%',
             'search'=> true
         ),
         'rc' => array (
             'name' => 'rc',
-            'title' => 'Çàïèñü',
+            'title' => 'Ð—Ð°Ð¿Ð¸ÑÑŒ',
             'type' => 'number',
             'width' => '25%',
             'search' => true
         ),
 		'file' => array (
             'name'  => 'file',
-            'title' => 'Ôàéë-âåðñèÿ',
+            'title' => 'Ð¤Ð°Ð¹Ð»-Ð²ÐµÑ€ÑÐ¸Ñ',
             'type' => 'file',
             'width' => '25%'
         )
@@ -58,14 +58,14 @@
 	$templates_tables[] = array(
 	'name' => 'rules',
 	'component' => 'templates',
-	'title' => 'Ïðàâèëà øàáëîíîâ',
+	'title' => 'ÐŸÑ€Ð°Ð²Ð¸Ð»Ð° ÑˆÐ°Ð±Ð»Ð¾Ð½Ð¾Ð²',
 	'order_by' => 'ord',
 	'is_lang' => true,
 	'is_sort' => true,
 	'fieldset' => array (
         'template_id' => array (
             'name' => 'template_id',
-            'title' => 'Øàáëîí',
+            'title' => 'Ð¨Ð°Ð±Ð»Ð¾Ð½',
             'type' => 'select',
 			'l_table' => 'templates_templates',
 			'l_field' => 'name',
@@ -75,28 +75,28 @@
         ),
         'type' => array (
             'name' => 'type',
-            'title' => 'Òèï óñëîâèÿ',
+            'title' => 'Ð¢Ð¸Ð¿ ÑƒÑÐ»Ð¾Ð²Ð¸Ñ',
             'type' => 'enum',
-            'select_values' => 'Ðàçäåë|F;Ïàðàìåòð URL|U;Ïåðèîä âðåìåíè|T',
+            'select_values' => 'Ð Ð°Ð·Ð´ÐµÐ»|F;ÐŸÐ°Ñ€Ð°Ð¼ÐµÑ‚Ñ€ URL|U;ÐŸÐµÑ€Ð¸Ð¾Ð´ Ð²Ñ€ÐµÐ¼ÐµÐ½Ð¸|T',
             'width' => '20%',
             'group_update' => true
         ),
         'cond' => array (
             'name' => 'cond',
-            'title' => 'Óñëîâèå',
+            'title' => 'Ð£ÑÐ»Ð¾Ð²Ð¸Ðµ',
             'type' => 'string',
             'width' => '20%',
             'group_update' => true
         ),
 		'date_beg' => array (
             'name' => 'date_beg',
-            'title' => 'Íà÷àëî ïîêàçà',
+            'title' => 'ÐÐ°Ñ‡Ð°Ð»Ð¾ Ð¿Ð¾ÐºÐ°Ð·Ð°',
             'type' => 'datetime',
             'width' => '12%'
         ),
 		'date_end' => array (
             'name' => 'date_end',
-            'title' => 'Êîíåö ïîêàçà',
+            'title' => 'ÐšÐ¾Ð½ÐµÑ† Ð¿Ð¾ÐºÐ°Ð·Ð°',
             'type' => 'datetime',
             'width' => '12%'
         )

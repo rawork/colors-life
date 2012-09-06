@@ -581,11 +581,11 @@
 		{
 		    $result = $this->_write($data);
 		    if (is_object($result)) {
-		        return $result; # We return the Error object
+		        return $result; #Â We return the Error object
 		    }
 		    $dataRead = $this->_read();
 		    if (is_object($dataRead)) {
-		        return $dataRead; # We return the Error object
+		        return $dataRead; #Â We return the Error object
 		    }
 		    if ((is_bool($dataRead)) && (!$dataRead)) {
 		        return false; 

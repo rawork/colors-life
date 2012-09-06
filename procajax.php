@@ -36,7 +36,7 @@
 	}
 
 	function getCartTotalText() {
-		$sCartText = 'Всего '.CUtils::_sessionVar('number', true, 0).' товара(ов) на сумму: <span>'.CUtils::_sessionVar('summa').'</span>';
+		$sCartText = 'Р’СЃРµРіРѕ '.CUtils::_sessionVar('number', true, 0).' С‚РѕРІР°СЂР°(РѕРІ) РЅР° СЃСѓРјРјСѓ: <span>'.CUtils::_sessionVar('summa').'</span>';
 		return $sCartText;
 	}
 
@@ -63,7 +63,7 @@
 	function getCartText() {
 		$sCartText = '';
 		if (CUtils::_sessionVar('number', true, 0)) {
-			$sCartText = '<span>'.CUtils::_sessionVar('number', true, 0).'</span> товара(ов)<br> на сумму <span>'.CUtils::_sessionVar('summa').'</span> руб.';
+			$sCartText = '<span>'.CUtils::_sessionVar('number', true, 0).'</span> С‚РѕРІР°СЂР°(РѕРІ)<br> РЅР° СЃСѓРјРјСѓ <span>'.CUtils::_sessionVar('summa').'</span> СЂСѓР±.';
 		}
 		return $sCartText;
 	}
@@ -103,19 +103,19 @@
 	function sendStuffExist($iStuffId, $sEmail) {
 		$oResponse = new xajaxResponse();
 		$aStuff = $GLOBALS['db']->getItem('stuff', 'SELECT id,name FROM catalog_stuff WHERE id='.$iStuffId);
-		$sName = isset($aStuff['name']) ? $aStuff['name'] : 'Товар не определен';
+		$sName = isset($aStuff['name']) ? $aStuff['name'] : 'РўРѕРІР°СЂ РЅРµ РѕРїСЂРµРґРµР»РµРЅ';
 		inc_lib('libmail.php');
 		$oMail = new Mail();
 		$oMail->From($GLOBALS['ADMIN_EMAIL']);
-		$oMail->Subject('Цвета жизни - заявка на оповещение о наличии товара на складе от '.date('d.m.Y H:i'));
+		$oMail->Subject('Р¦РІРµС‚Р° Р¶РёР·РЅРё - Р·Р°СЏРІРєР° РЅР° РѕРїРѕРІРµС‰РµРЅРёРµ Рѕ РЅР°Р»РёС‡РёРё С‚РѕРІР°СЂР° РЅР° СЃРєР»Р°РґРµ РѕС‚ '.date('d.m.Y H:i'));
 		$sBody = "
-			Пользователь с электронной почтой $sEmail просит оповестить о наличии товара на складе.\n\n
-			Запрошен товар $sName [ID=$iStuffId]
+			РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ СЌР»РµРєС‚СЂРѕРЅРЅРѕР№ РїРѕС‡С‚РѕР№ $sEmail РїСЂРѕСЃРёС‚ РѕРїРѕРІРµСЃС‚РёС‚СЊ Рѕ РЅР°Р»РёС‡РёРё С‚РѕРІР°СЂР° РЅР° СЃРєР»Р°РґРµ.\n\n
+			Р—Р°РїСЂРѕС€РµРЅ С‚РѕРІР°СЂ $sName [ID=$iStuffId]
 		";
-		$oMail->Body($sBody, 'windows-1251');
+		$oMail->Body($sBody, 'UTF-8');
 		$oMail->To(array('content@colors-life.ru', 'rawork@yandex.ru'));
 		$oMail->Send();
-		$oResponse->assign('mailblock'.$iStuffId, 'innerHTML', 'Ваша заявка принята. Мы будем рады помочь Вам.');
+		$oResponse->assign('mailblock'.$iStuffId, 'innerHTML', 'Р’Р°С€Р° Р·Р°СЏРІРєР° РїСЂРёРЅСЏС‚Р°. РњС‹ Р±СѓРґРµРј СЂР°РґС‹ РїРѕРјРѕС‡СЊ Р’Р°Рј.');
 		return $oResponse;
 	}
 	
@@ -125,27 +125,27 @@
 		$name  = $fD['name'];
 		$subscribe_type = $fD['subscribe_type'];
 		$lastname  = $fD['lastname'];
-		$message = 'Не указан e-mail';
+		$message = 'РќРµ СѓРєР°Р·Р°РЅ e-mail';
 		$success = false;
 		if (!empty($email) && $email != 'e-mail') {
 			if (!CUtils::valid_email($email)) {
-				$message = 'Неправильный e-mail';
+				$message = 'РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ e-mail';
 			} else {
 				$a = $GLOBALS['rtti']->getItem('maillist_users', "email='".$GLOBALS['db']->escapeStr($email)."'");
 				if (is_array($a)) {
-					// в базе есть - отписываем
+					// РІ Р±Р°Р·Рµ РµСЃС‚СЊ - РѕС‚РїРёСЃС‹РІР°РµРј
 					if ($subscribe_type == 2) {
 						if ($GLOBALS['db']->execQuery('delete_user_maillist', "DELETE FROM maillist_users WHERE email='".$GLOBALS['db']->escapeStr($email)."'")) {
-							$message = 'Адрес '.htmlspecialchars($email).' удален из списка рассылки';
+							$message = 'РђРґСЂРµСЃ '.htmlspecialchars($email).' СѓРґР°Р»РµРЅ РёР· СЃРїРёСЃРєР° СЂР°СЃСЃС‹Р»РєРё';
 							$success = true;
 						} else {
-							$message = 'Ошибка базы данных при удалении';
+							$message = 'РћС€РёР±РєР° Р±Р°Р·С‹ РґР°РЅРЅС‹С… РїСЂРё СѓРґР°Р»РµРЅРёРё';
 						}
 					} else {
-						$message='Адрес '.htmlspecialchars($email).' уже есть в списке рассылки';
+						$message='РђРґСЂРµСЃ '.htmlspecialchars($email).' СѓР¶Рµ РµСЃС‚СЊ РІ СЃРїРёСЃРєРµ СЂР°СЃСЃС‹Р»РєРё';
 					}
 				} else {
-					// в базе нет - подписываем
+					// РІ Р±Р°Р·Рµ РЅРµС‚ - РїРѕРґРїРёСЃС‹РІР°РµРј
 					if ($subscribe_type == 1) {
 						$email = substr($email, 0, 100);
 						$success = true;
@@ -153,27 +153,27 @@
 							inc_lib('libmail.php');
 							$oMail = new Mail();
 							$oMail->From($GLOBALS['ADMIN_EMAIL']);
-							$oMail->Subject('Оповещение о подписке на рассылку на сайте '.$_SERVER['SERVER_NAME']);
-							$body = "Уважаемый пользователь!\n\n
-Вы подписались на рассылку на сайте http://".$_SERVER['SERVER_NAME']."\n
-Для подтверждения, пожалуйста, проследуйте по ссылке:\n
+							$oMail->Subject('РћРїРѕРІРµС‰РµРЅРёРµ Рѕ РїРѕРґРїРёСЃРєРµ РЅР° СЂР°СЃСЃС‹Р»РєСѓ РЅР° СЃР°Р№С‚Рµ '.$_SERVER['SERVER_NAME']);
+							$body = "РЈРІР°Р¶Р°РµРјС‹Р№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ!\n\n
+Р’С‹ РїРѕРґРїРёСЃР°Р»РёСЃСЊ РЅР° СЂР°СЃСЃС‹Р»РєСѓ РЅР° СЃР°Р№С‚Рµ http://".$_SERVER['SERVER_NAME']."\n
+Р”Р»СЏ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ, РїРѕР¶Р°Р»СѓР№СЃС‚Р°, РїСЂРѕСЃР»РµРґСѓР№С‚Рµ РїРѕ СЃСЃС‹Р»РєРµ:\n
 http://".$_SERVER['SERVER_NAME']."/subscribe.php?email=".htmlspecialchars($email)."&action=active";
-							$oMail->Body($body, 'windows-1251');
+							$oMail->Body($body, 'UTF-8');
 							$oMail->To($email);
 							$oMail->Send();
-							$body = "На e-mail ".$email." оформлена подписка на рассылку на сайте http://".$_SERVER['SERVER_NAME']."\n";
-							$oMail->Body($body, 'windows-1251');
+							$body = "РќР° e-mail ".$email." РѕС„РѕСЂРјР»РµРЅР° РїРѕРґРїРёСЃРєР° РЅР° СЂР°СЃСЃС‹Р»РєСѓ РЅР° СЃР°Р№С‚Рµ http://".$_SERVER['SERVER_NAME']."\n";
+							$oMail->Body($body, 'UTF-8');
 							$oMail->To(array('content@colors-life.ru', 'rawork@yandex.ru'));
 							$oMail->Send();
-							$message='Адрес '.htmlspecialchars($email).' занесен в список рассылки';
+							$message='РђРґСЂРµСЃ '.htmlspecialchars($email).' Р·Р°РЅРµСЃРµРЅ РІ СЃРїРёСЃРѕРє СЂР°СЃСЃС‹Р»РєРё';
 						} else {
 							$success = false;
 						}
 						if (!$success) {
-							$message = 'Ошибка базы данных при добавлении';
+							$message = 'РћС€РёР±РєР° Р±Р°Р·С‹ РґР°РЅРЅС‹С… РїСЂРё РґРѕР±Р°РІР»РµРЅРёРё';
 						}
 					} else {
-						$message='Адреса '.htmlspecialchars($email).' нет в списке рассылки';
+						$message='РђРґСЂРµСЃР° '.htmlspecialchars($email).' РЅРµС‚ РІ СЃРїРёСЃРєРµ СЂР°СЃСЃС‹Р»РєРё';
 					}
 				}
 			}

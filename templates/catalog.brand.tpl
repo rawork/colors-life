@@ -3,7 +3,7 @@
 {raSetVar var=title value=$prod.name}
 <div>{$prod.description}</div>
 
-<h3><span>Товары производителя:</span></h3>
+<h3><span>РўРѕРІР°СЂС‹ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЏ:</span></h3>
 {raItems var=items table=catalog_stuff nquery="SELECT cc.id, cc.root_c_id, cc.name, cc2.name as root_name, st.producer_id, count(st.id) as quantity FROM catalog_stuff st JOIN catalog_producers prod ON prod.id=st.producer_id JOIN catalog_categories cc ON cc.id=st.c_id JOIN catalog_categories cc2 ON cc.root_c_id=cc2.id WHERE st.producer_id=`$prod.id` GROUP BY st.c_id ORDER BY cc.root_c_id, cc.name"}
 <table class="producer-categories" width="100%" cellpadding="0" cellspacing="0" border="0">
 {assign var=cur_root value=$items[0].root_c_id}

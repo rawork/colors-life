@@ -18,8 +18,8 @@
     </tr>
     {if $i.is_check}
     <tr id="tr_{$i.name}{$pass_postfix}">
-      <td><div>{$i.title} еще раз{if $i.not_empty}&nbsp;<span class="required">*</span>{/if}</div>
-        <input style="width:100%" type="{$i.type}" class="txt" title="{if $i.not_empty}{$i.title} еще раз{/if}" name="{$i.name}{$pass_postfix}" value="" /></td>
+      <td><div>{$i.title} РµС‰Рµ СЂР°Р·{if $i.not_empty}&nbsp;<span class="required">*</span>{/if}</div>
+        <input style="width:100%" type="{$i.type}" class="txt" title="{if $i.not_empty}{$i.title} РµС‰Рµ СЂР°Р·{/if}" name="{$i.name}{$pass_postfix}" value="" /></td>
     </tr>{/if}
     {elseif $i.type eq 'string'}
     <tr id="tr_{$i.name}">
@@ -60,14 +60,14 @@
     {/foreach}
     {if $dbform.is_defense}
     <tr>
-      <td><div>Введите символы на картинке внизу  <span class="required">*</span></div>
-        <p><input type="text" title="Код безопасности" style="width:120px" name="securecode"></p>
-        <p><img id="secure_image" src="/secureimage.php?{$sess_name}={$sess_id}"> <a href="#" onclick="document.getElementById('secure_image').src='/secureimage.php?rnd='+Math.random()+'&{$sess_name}={$sess_id}';return false">обновить код</a></p>
+      <td><div>Р’РІРµРґРёС‚Рµ СЃРёРјРІРѕР»С‹ РЅР° РєР°СЂС‚РёРЅРєРµ РІРЅРёР·Сѓ  <span class="required">*</span></div>
+        <p><input type="text" title="РљРѕРґ Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё" style="width:120px" name="securecode"></p>
+        <p><img id="secure_image" src="/secureimage.php?{$sess_name}={$sess_id}"> <a href="#" onclick="document.getElementById('secure_image').src='/secureimage.php?rnd='+Math.random()+'&{$sess_name}={$sess_id}';return false">РѕР±РЅРѕРІРёС‚СЊ РєРѕРґ</a></p>
       </td>
     </tr>
     {/if}
     {if $dbform.needed}<tr>
-      <td><strong><span class="required">*</span></strong> &#8212; обязательные поля</td>
+      <td><strong><span class="required">*</span></strong> &#8212; РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Рµ РїРѕР»СЏ</td>
     </tr>{/if}
     <tr>
       <td><input type="submit" class="btn" value="{$dbform.submit_text}" /></td>

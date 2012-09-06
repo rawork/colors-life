@@ -10,19 +10,19 @@
             return $this->t->getSeachSQL();
         }
 		
-		/* Кнопки управления записью */
+		/* РљРЅРѕРїРєРё СѓРїСЂР°РІР»РµРЅРёСЏ Р·Р°РїРёСЃСЊСЋ */
         protected function getUpdateDelete($file) {
 		global $THEME_REF;
             global $auth;
             $ret = '<td width="1">'."\n";
 			$ret .= '<a href="javascript:void(0);" onclick="this.blur();admin_menu.ShowMenu(this, [';
             if (empty($this->t->props['noupdate']) || $auth->isAdmin()) {
-                $ret .= "{'DEFAULT':true,'ICONCLASS':'btn_edit','TEXT':'Скачать','ONCLICK':'admin_menu.PopupHide(); javascript: window.location = \'".$file."\';'}";
+                $ret .= "{'DEFAULT':true,'ICONCLASS':'btn_edit','TEXT':'РЎРєР°С‡Р°С‚СЊ','ONCLICK':'admin_menu.PopupHide(); javascript: window.location = \'".$file."\';'}";
             }
             if (empty($this->t->props['nodelete']) || $auth->isAdmin()) {
-                $ret .= ",{'ICONCLASS':'btn_delete','TEXT':'Удалить','ONCLICK':'admin_menu.PopupHide(); javascript: window.location = \'".$this->fullRef.'&amp;action=backup_delete&amp;file='.$file."\';'}";
+                $ret .= ",{'ICONCLASS':'btn_delete','TEXT':'РЈРґР°Р»РёС‚СЊ','ONCLICK':'admin_menu.PopupHide(); javascript: window.location = \'".$this->fullRef.'&amp;action=backup_delete&amp;file='.$file."\';'}";
             }
-			$ret .= ']);" title="Действия" class="action context-button icon">'."\n";
+			$ret .= ']);" title="Р”РµР№СЃС‚РІРёСЏ" class="action context-button icon">'."\n";
 			$ret .= '<img src="'.$THEME_REF.'/img/arr_down.gif" class="arrow" alt=""></a></td>'."\n";
             return $ret;
         }
@@ -32,11 +32,11 @@
             $ret = '<form id="frmGroupUpdate" name="frmGroupUpdate" action="'.$this->fullRef.'&action=group_update'.(CUtils::_getVar('p_id') ? '&p_id='.CUtils::_getVar('p_id') : '').'" method="post">';
 			$ret .= $this->getTableHeader();
 			$ret .= '<tr>';
-			$ret .= '<th width="20%">Имя</th>';
-			$ret .= '<th width="30%">Ссылка</th>';
-			$ret .= '<th width="22%">Размер файла, MБ</th>';
-			$ret .= '<th width="22%">Создан</th>';
-            $ret .= '<th style="text-align:center;"><img alt="Действия" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
+			$ret .= '<th width="20%">РРјСЏ</th>';
+			$ret .= '<th width="30%">РЎСЃС‹Р»РєР°</th>';
+			$ret .= '<th width="22%">Р Р°Р·РјРµСЂ С„Р°Р№Р»Р°, MР‘</th>';
+			$ret .= '<th width="22%">РЎРѕР·РґР°РЅ</th>';
+            $ret .= '<th style="text-align:center;"><img alt="Р”РµР№СЃС‚РІРёСЏ" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
             $ret .= '</tr>';
             return $ret;
         }
@@ -81,7 +81,7 @@
             return $ret;
         }
         
-		/* Управление таблицей */
+		/* РЈРїСЂР°РІР»РµРЅРёРµ С‚Р°Р±Р»РёС†РµР№ */
 		protected function getTableOperations() {
 			$ret = '<table align="center" cellpadding="0" cellspacing="0" border="0" class="contextmenu2">
 	<tr class="top">
@@ -96,13 +96,13 @@
 <tr>';
             if (!$this->p['noinsert']) {
 			$ret .= '<td><div class="section-separator first"></div></td>
-<td align="center"><a href="'.$this->fullRef.'&amp;action=s_insert'.(CUtils::_getVar('p_id') ? '&p_id='.CUtils::_getVar('p_id') : '').'" class="context-button">Добавить запись</a></td>';
+<td align="center"><a href="'.$this->fullRef.'&amp;action=s_insert'.(CUtils::_getVar('p_id') ? '&p_id='.CUtils::_getVar('p_id') : '').'" class="context-button">Р”РѕР±Р°РІРёС‚СЊ Р·Р°РїРёСЃСЊ</a></td>';
 			}
 			
 			$ret .= '<td><div class="section-separator"></div></td>
-<td align="center"><a href="'.$this->fullRef.'&amp;action=create" class="context-button">Создать таблицу</a></td>';
+<td align="center"><a href="'.$this->fullRef.'&amp;action=create" class="context-button">РЎРѕР·РґР°С‚СЊ С‚Р°Р±Р»РёС†Сѓ</a></td>';
 $ret .= '<td><div class="section-separator"></div></td>
-<td align="center"><a href="'.$this->fullRef.'&amp;action=alter" class="context-button">Обновить таблицу</a></td>';
+<td align="center"><a href="'.$this->fullRef.'&amp;action=alter" class="context-button">РћР±РЅРѕРІРёС‚СЊ С‚Р°Р±Р»РёС†Сѓ</a></td>';
             $ret .= '</tr>
 </table>
 </td>
@@ -129,17 +129,17 @@ $ret .= '<td><div class="section-separator"></div></td>
     <form  method="post" name="frmArchive" id="frmArchive" action="">
       <!--<table width="100%" cellspacing="0" class="tprops">
         <tr>
-          <td><h4>Настройки</h4>
+          <td><h4>РќР°СЃС‚СЂРѕР№РєРё</h4>
             <table class="tfields" align="center" width="720" border="0" cellpadding="2" cellspacing="0">
               <tr>
-                <td>Название поля</td>
+                <td>РќР°Р·РІР°РЅРёРµ РїРѕР»СЏ</td>
                 <td><input type="text" name="title" value="" /></td>
               </tr>
             </table></td>
         </tr>
       </table>-->
       <div class="ctlbtns">
-        <input type="button" class="adm-btn" onClick="makeArchive(xajax.getFormValues(\'frmArchive\'));" value="Архивировать">
+        <input type="button" class="adm-btn" onClick="makeArchive(xajax.getFormValues(\'frmArchive\'));" value="РђСЂС…РёРІРёСЂРѕРІР°С‚СЊ">
       </div>
     </form>
   </div>';

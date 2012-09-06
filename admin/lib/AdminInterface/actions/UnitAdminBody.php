@@ -33,7 +33,7 @@
         }
 		/* Default method  */
 		public function getText() {
-			$body = 'Вызов неизвестной функции';
+			$body = 'Р’С‹Р·РѕРІ РЅРµРёР·РІРµСЃС‚РЅРѕР№ С„СѓРЅРєС†РёРё';
 			return $body;
 		}
 		/* Formed help-link */

@@ -70,16 +70,16 @@
 					inc_lib('libmail.php');
 					$msg = new Mail();
 					$msg->From($MAIN_EMAIL);
-           			$msg->Subject('Новые регистрационные данные. Сайт '.$_SERVER['SERVER_NAME']);
-					$body = 'Информационное сообщение сайта '.$_SERVER['SERVER_NAME']."\n";
+           			$msg->Subject('РќРѕРІС‹Рµ СЂРµРіРёСЃС‚СЂР°С†РёРѕРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ. РЎР°Р№С‚ '.$_SERVER['SERVER_NAME']);
+					$body = 'РРЅС„РѕСЂРјР°С†РёРѕРЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ СЃР°Р№С‚Р° '.$_SERVER['SERVER_NAME']."\n";
 					$body .= '------------------------------------------'."\n";
-					$body .= 'Вы запросили ваши регистрационные данные.'."\n";
-					$body .= 'Ваша регистрационная информация:'."\n";
-					$body .= 'ID пользователя: '.$user['id']."\n";
-					$body .= 'Логин: '.$user['syslogin']."\n";
-					$body .= 'Пароль: '.$key."\n\n";
-					$body .= 'Сообщение сгенерировано автоматически.'."\n";
-           			$msg->Body($body, 'windows-1251');
+					$body .= 'Р’С‹ Р·Р°РїСЂРѕСЃРёР»Рё РІР°С€Рё СЂРµРіРёСЃС‚СЂР°С†РёРѕРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ.'."\n";
+					$body .= 'Р’Р°С€Р° СЂРµРіРёСЃС‚СЂР°С†РёРѕРЅРЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ:'."\n";
+					$body .= 'ID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ: '.$user['id']."\n";
+					$body .= 'Р›РѕРіРёРЅ: '.$user['syslogin']."\n";
+					$body .= 'РџР°СЂРѕР»СЊ: '.$key."\n\n";
+					$body .= 'РЎРѕРѕР±С‰РµРЅРёРµ СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРѕ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё.'."\n";
+           			$msg->Body($body, 'UTF-8');
            			$msg->To($user['email']);
            			$msg->Send();
 				}
@@ -100,14 +100,14 @@
 					$user = $GLOBALS['db']->getItem('users_users', "SELECT * FROM users_users WHERE syslogin='".CUtils::_postVar('fuser')."'");
 					if (empty($user)) {
 						$this->message['type'] = 'error';
-						$this->message['text'] = 'Не найден пользователь с указанным <b>логином</b>!';
+						$this->message['text'] = 'РќРµ РЅР°Р№РґРµРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ СѓРєР°Р·Р°РЅРЅС‹Рј <b>Р»РѕРіРёРЅРѕРј</b>!';
 					}
 				}
 				if (CUtils::_postVar('femail') != '' && empty($user)) {
 					$user = $GLOBALS['db']->getItem('users_users', "SELECT * FROM users_users WHERE email='".CUtils::_postVar('femail')."'");
 					if (empty($user)) {
 						$this->message['type'] = 'error';
-						$this->message['text'] = 'Не найден пользователь с указанным <b>e-mail</b>!';
+						$this->message['text'] = 'РќРµ РЅР°Р№РґРµРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ СѓРєР°Р·Р°РЅРЅС‹Рј <b>e-mail</b>!';
 					}
 				}
 				if (!empty($user)) {
@@ -115,22 +115,22 @@
 					inc_lib('libmail.php');
 					$msg = new Mail();
 					$msg->From($MAIN_EMAIL);
-           			$msg->Subject('Новые регистрационные данные. Сайт '.$_SERVER['SERVER_NAME']);
-           			$body = 'Информационное сообщение сайта '.$_SERVER['SERVER_NAME']."\n";
+           			$msg->Subject('РќРѕРІС‹Рµ СЂРµРіРёСЃС‚СЂР°С†РёРѕРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ. РЎР°Р№С‚ '.$_SERVER['SERVER_NAME']);
+           			$body = 'РРЅС„РѕСЂРјР°С†РёРѕРЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ СЃР°Р№С‚Р° '.$_SERVER['SERVER_NAME']."\n";
 					$body .= '------------------------------------------'."\n";
-					$body .= 'Вы запросили ваши регистрационные данные.'."\n\n";
-					$body .= 'Ваша регистрационная информация:'."\n";
-					$body .= 'ID пользователя: '.$user['id']."\n";
-					$body .= 'Логин: '.$user['syslogin']."\n\n";
-					$body .= 'Для смены пароля перейдите по следующей ссылке:'."\n";
+					$body .= 'Р’С‹ Р·Р°РїСЂРѕСЃРёР»Рё РІР°С€Рё СЂРµРіРёСЃС‚СЂР°С†РёРѕРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ.'."\n\n";
+					$body .= 'Р’Р°С€Р° СЂРµРіРёСЃС‚СЂР°С†РёРѕРЅРЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ:'."\n";
+					$body .= 'ID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ: '.$user['id']."\n";
+					$body .= 'Р›РѕРіРёРЅ: '.$user['syslogin']."\n\n";
+					$body .= 'Р”Р»СЏ СЃРјРµРЅС‹ РїР°СЂРѕР»СЏ РїРµСЂРµР№РґРёС‚Рµ РїРѕ СЃР»РµРґСѓСЋС‰РµР№ СЃСЃС‹Р»РєРµ:'."\n";
 					$body .= 'http://'.$_SERVER['SERVER_NAME'].'/admin/?operation=change_password&key='.$key."\n\n";
-					$body .= 'Сообщение сгенерировано автоматически.'."\n";
-           			$msg->Body($body, 'windows-1251');
+					$body .= 'РЎРѕРѕР±С‰РµРЅРёРµ СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅРѕ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё.'."\n";
+           			$msg->Body($body, 'UTF-8');
            			$msg->To($user['email']);
            			$msg->Send();
 					$GLOBALS['db']->execQuery('users_users', "UPDATE users_users SET hashkey='".$key."' WHERE id=".$user['id']);
 					$this->message['type'] = 'ok';
-					$this->message['text'] = 'Новые параметры авторизации отправлены Вам на <b>e-mail</b>!';
+					$this->message['text'] = 'РќРѕРІС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ Р°РІС‚РѕСЂРёР·Р°С†РёРё РѕС‚РїСЂР°РІР»РµРЅС‹ Р’Р°Рј РЅР° <b>e-mail</b>!';
 				}
 			}
 			$this->showForgotForm();
@@ -158,7 +158,7 @@
             if (empty($this->user) && (empty($cuser) || empty($cpw))){
 				if (isset($_POST['auser']) && isset($_POST['apw'])) {
 					$this->message['type'] = 'error';
-					$this->message['text'] = 'Введено пустое значение пользователя или пароля';
+					$this->message['text'] = 'Р’РІРµРґРµРЅРѕ РїСѓСЃС‚РѕРµ Р·РЅР°С‡РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР»Рё РїР°СЂРѕР»СЏ';
 				}
 				$this->showAuthForm();
             } elseif ($this->isServer() && !empty($cuser) && !empty($cpw)) {
@@ -178,7 +178,7 @@
 					exit;
 				} else{
 					$this->message['type'] = 'error';
-					$this->message['text'] = 'Неправильно введен пользователь или пароль';
+					$this->message['text'] = 'РќРµРїСЂР°РІРёР»СЊРЅРѕ РІРІРµРґРµРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РёР»Рё РїР°СЂРѕР»СЊ';
 					$this->showAuthForm();
 				}
             }

@@ -15,7 +15,7 @@
         }
         
         public function getStatic() {
-            return $this->dbValue ? 'Да' : 'Нет';
+            return $this->dbValue ? 'Р”Р°' : 'РќРµС‚';
         }
         
         public function getInput($value = '', $name = '') {
@@ -33,7 +33,7 @@
             } else {
                 $no_matter = 'checked';
             }
-            return '<table><tr><td><input type="radio" style="height:13px;" name="'.$name.'" id="'.$name.'_yes" value="on" '.$yes.'><label style="position:relative; top:-2px;" for="'.$name.'_yes">да</label><input type="radio" style="height:13px;" name="'.$name.'" id="'.$name.'_no" value="off" '.$no.'><label style="position:relative; top:-2px;" for="'.$name.'_no">нет</label><input type="radio" style="height:13px;" name="'.$name.'" id="'.$name.'_nomatter" value="" '.$no_matter.'><label style="position:relative; top:-2px;" for="'.$name.'_nomatter">все равно</label></td></tr></table>';
+            return '<table><tr><td><input type="radio" style="height:13px;" name="'.$name.'" id="'.$name.'_yes" value="on" '.$yes.'><label style="position:relative; top:-2px;" for="'.$name.'_yes">РґР°</label><input type="radio" style="height:13px;" name="'.$name.'" id="'.$name.'_no" value="off" '.$no.'><label style="position:relative; top:-2px;" for="'.$name.'_no">РЅРµС‚</label><input type="radio" style="height:13px;" name="'.$name.'" id="'.$name.'_nomatter" value="" '.$no_matter.'><label style="position:relative; top:-2px;" for="'.$name.'_nomatter">РІСЃРµ СЂР°РІРЅРѕ</label></td></tr></table>';
         }
         
         public function getSearchSQL() {

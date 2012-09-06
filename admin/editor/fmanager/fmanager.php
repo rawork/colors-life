@@ -303,7 +303,7 @@ function writeFileSelections(){
 <base target="_self">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <link href="jquery.treeview.css" rel="stylesheet" type="text/css">
 <?php
@@ -422,8 +422,8 @@ var currFolder='<?php echo $currFolder; ?>';
 	<table cellpadding=0 cellspacing=0 ID="Table2">
 	<tr>
 	<td>
-	<input name="btnOk" id="btnOk" type="button" value=" ОК " onClick="doOk()" class="inpBtn" onMouseOver="this.className='inpBtnOver';" onMouseOut="this.className='inpBtnOut'">
-    <input name="btnClose" id="btnClose" type="button" value=" Закрыть " onClick="window.close();" class="inpBtn" onMouseOver="this.className='inpBtnOver';" onMouseOut="this.className='inpBtnOut'">
+	<input name="btnOk" id="btnOk" type="button" value=" РћРљ " onClick="doOk()" class="inpBtn" onMouseOver="this.className='inpBtnOver';" onMouseOut="this.className='inpBtnOut'">
+    <input name="btnClose" id="btnClose" type="button" value=" Р—Р°РєСЂС‹С‚СЊ " onClick="window.close();" class="inpBtn" onMouseOver="this.className='inpBtnOver';" onMouseOut="this.className='inpBtnOut'">
 	</td>
 	</tr>
 	</table>

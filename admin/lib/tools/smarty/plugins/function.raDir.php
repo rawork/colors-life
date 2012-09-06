@@ -18,7 +18,7 @@
 
 function smarty_function_raDir($params, &$smarty) {
 	if (!isset($params['var'])) {
-		$smarty->trigger_error('raDir: Íå óêàçàí ïàğàìåòğ: var');
+		$smarty->trigger_error('raDir: ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€: var');
 	} else {
 		$smarty->assign(
 			$params['var'], 

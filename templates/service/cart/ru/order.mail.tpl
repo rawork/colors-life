@@ -1,6 +1,6 @@
-<p>Здравствуйте, {$smarty.session.deliveryPerson}.</p>
-<p>Номер Вашего заказа: <b>{$order_number}</b>.</p>
-<p><b>Состав заказа:</b></p>
+<p>Р—РґСЂР°РІСЃС‚РІСѓР№С‚Рµ, {$smarty.session.deliveryPerson}.</p>
+<p>РќРѕРјРµСЂ Р’Р°С€РµРіРѕ Р·Р°РєР°Р·Р°: <b>{$order_number}</b>.</p>
+<p><b>РЎРѕСЃС‚Р°РІ Р·Р°РєР°Р·Р°:</b></p>
 <div class="tbl">
 <table class="itemList">
 <colgroup>
@@ -15,45 +15,45 @@
 </colgroup>
 <tbody>
 <tr class="firstRow">
-<td>Товар</td>
-<td>Кол-во</td>
-<td class="price">Цена</td>
+<td>РўРѕРІР°СЂ</td>
+<td>РљРѕР»-РІРѕ</td>
+<td class="price">Р¦РµРЅР°</td>
 <td></td>
 </tr>
 {foreach from=$smarty.session.cart item=aCartItem}
 <tr>
 <td>
-<p>[{$aCartItem.stuff.id}] {$aCartItem.stuff.name} {if isset($aCartItem.priceEntity.id)}(Вариант исполнения:{$aCartItem.priceEntity.size_id_name} - {$aCartItem.priceEntity.color_id_name}){/if}<br>
-Производитель: {$aCartItem.stuff.producer_id_name}
+<p>[{$aCartItem.stuff.id}] {$aCartItem.stuff.name} {if isset($aCartItem.priceEntity.id)}(Р’Р°СЂРёР°РЅС‚ РёСЃРїРѕР»РЅРµРЅРёСЏ:{$aCartItem.priceEntity.size_id_name} - {$aCartItem.priceEntity.color_id_name}){/if}<br>
+РџСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ: {$aCartItem.stuff.producer_id_name}
 </p>
 </td>
 <td>{$aCartItem.counter}</td>
-<td class="price">{$aCartItem.price}<span>&nbsp;руб.</span></td>
+<td class="price">{$aCartItem.price}<span>&nbsp;СЂСѓР±.</span></td>
 <td></td>
 </tr>
 {/foreach}
 <tr class="lastRow">
-<td colspan="2">Стоимость заказа:&nbsp;</td>
-<td><span>{$smarty.session.summa}</span><span class="rub">&nbsp;руб.</span></td>
+<td colspan="2">РЎС‚РѕРёРјРѕСЃС‚СЊ Р·Р°РєР°Р·Р°:&nbsp;</td>
+<td><span>{$smarty.session.summa}</span><span class="rub">&nbsp;СЂСѓР±.</span></td>
 <td></td>
 </tr>
 <tr><td></td></tr>
 </tbody>
 </table>
 </div>
-<p><b>Параметры заказа:</b></p>
-<p>Получение товара: {$sDeliveryType}, {$smarty.session.deliveryAddress}
-<br>Контактное лицо: {$smarty.session.deliveryPerson}
-<br>Телефон: <span class="wmi-callto">{$smarty.session.deliveryPhone}</span>
-{if $smarty.session.deliveryPhoneAdd}<br>Доп. телефон: <span class="wmi-callto">{$smarty.session.deliveryPhoneAdd}</span>{/if}
-{if $smarty.post.deliveryComment}<br>Комментарий к заказу: {$smarty.post.deliveryComment}</span>{/if}
+<p><b>РџР°СЂР°РјРµС‚СЂС‹ Р·Р°РєР°Р·Р°:</b></p>
+<p>РџРѕР»СѓС‡РµРЅРёРµ С‚РѕРІР°СЂР°: {$sDeliveryType}, {$smarty.session.deliveryAddress}
+<br>РљРѕРЅС‚Р°РєС‚РЅРѕРµ Р»РёС†Рѕ: {$smarty.session.deliveryPerson}
+<br>РўРµР»РµС„РѕРЅ: <span class="wmi-callto">{$smarty.session.deliveryPhone}</span>
+{if $smarty.session.deliveryPhoneAdd}<br>Р”РѕРї. С‚РµР»РµС„РѕРЅ: <span class="wmi-callto">{$smarty.session.deliveryPhoneAdd}</span>{/if}
+{if $smarty.post.deliveryComment}<br>РљРѕРјРјРµРЅС‚Р°СЂРёР№ Рє Р·Р°РєР°Р·Сѓ: {$smarty.post.deliveryComment}</span>{/if}
 </p>
 <br>
-{if $smarty.session.payType == 2}<p>Пожалуйста, <a target="_blank" href="http://www.colors-life.ru/notice.php?order={$order_number-$base_number}">распечатайте</a> бланк квитанции.</p>{/if}
-<p>Состояние заказа можно  посмотреть в <a target="_blank" href="http://www.colors-life.ru/cabinet/">личном кабинете</a>.</p>
-<p>Дополнительную информацию Вы можете получить по телефону 8 (495) 580-21-68</p>
-<p>--<br>Спасибо за покупку в Цвета жизни!</p>
+{if $smarty.session.payType == 2}<p>РџРѕР¶Р°Р»СѓР№СЃС‚Р°, <a target="_blank" href="http://www.colors-life.ru/notice.php?order={$order_number-$base_number}">СЂР°СЃРїРµС‡Р°С‚Р°Р№С‚Рµ</a> Р±Р»Р°РЅРє РєРІРёС‚Р°РЅС†РёРё.</p>{/if}
+<p>РЎРѕСЃС‚РѕСЏРЅРёРµ Р·Р°РєР°Р·Р° РјРѕР¶РЅРѕ  РїРѕСЃРјРѕС‚СЂРµС‚СЊ РІ <a target="_blank" href="http://www.colors-life.ru/cabinet/">Р»РёС‡РЅРѕРј РєР°Р±РёРЅРµС‚Рµ</a>.</p>
+<p>Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ Р’С‹ РјРѕР¶РµС‚Рµ РїРѕР»СѓС‡РёС‚СЊ РїРѕ С‚РµР»РµС„РѕРЅСѓ 8 (495) 580-21-68</p>
+<p>--<br>РЎРїР°СЃРёР±Рѕ Р·Р° РїРѕРєСѓРїРєСѓ РІ Р¦РІРµС‚Р° Р¶РёР·РЅРё!</p>
 <p>
-<br><br>Это письмо отправлено почтовым роботом. Не отвечайте на это письмо.
-Вы можете задать вопросы через форму обратной связи - <a target="_blank" href="http://www.colors-life.ru/feedback.htm">http://www.colors-life.ru/feedback.htm</a>.
+<br><br>Р­С‚Рѕ РїРёСЃСЊРјРѕ РѕС‚РїСЂР°РІР»РµРЅРѕ РїРѕС‡С‚РѕРІС‹Рј СЂРѕР±РѕС‚РѕРј. РќРµ РѕС‚РІРµС‡Р°Р№С‚Рµ РЅР° СЌС‚Рѕ РїРёСЃСЊРјРѕ.
+Р’С‹ РјРѕР¶РµС‚Рµ Р·Р°РґР°С‚СЊ РІРѕРїСЂРѕСЃС‹ С‡РµСЂРµР· С„РѕСЂРјСѓ РѕР±СЂР°С‚РЅРѕР№ СЃРІСЏР·Рё - <a target="_blank" href="http://www.colors-life.ru/feedback.htm">http://www.colors-life.ru/feedback.htm</a>.
 </p>

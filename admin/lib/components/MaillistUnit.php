@@ -22,7 +22,7 @@
                 $m = new Mail();
                 $m->From($ADMIN_EMAIL);
                 $m->Subject($a['subj']);
-                $m->SetCharset('windows-1251');
+                $m->SetCharset('UTF-8');
                 $m->Html($a['body']);
                 if (is_file($PRJ_DIR.$a['file'])) {
                     $m->AttachFile($PRJ_DIR.$a['file']);

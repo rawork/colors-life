@@ -69,7 +69,7 @@
 			hidePopup();
 		}
 		if (!found) {
-			alert("Выберите что нибудь");
+			alert("Р’С‹Р±РµСЂРёС‚Рµ С‡С‚Рѕ РЅРёР±СѓРґСЊ");
 		}
     }
 	
@@ -89,9 +89,9 @@
 	
 	function startGroupDelete(ref) {
 		if (cng_num <= 0) {
-			alert('Не выбраны элементы для удаления');
+			alert('РќРµ РІС‹Р±СЂР°РЅС‹ СЌР»РµРјРµРЅС‚С‹ РґР»СЏ СѓРґР°Р»РµРЅРёСЏ');
 		} else {
-			if (confirm('Уверены, что хотите удалить выделенные записи?')) {
+			if (confirm('РЈРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ РІС‹РґРµР»РµРЅРЅС‹Рµ Р·Р°РїРёСЃРё?')) {
 				$('#frmGroupUpdate').attr('action', ref + '&action=group_delete');
 				$('#frmGroupUpdate').submit();
 			} else {
@@ -101,7 +101,7 @@
 	}
 	
 	function startDelete(ref) {
-		if (confirm('Уверены, что хотите удалить запись?')) {
+		if (confirm('РЈРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ?')) {
 			window.location = ref;
 		} else {
 			return false;
@@ -110,7 +110,7 @@
 	
 	function startGroupUpdate(ref) {
 		if (cng_num <= 0) {
-			alert('Не выбраны элементы для редактирования');
+			alert('РќРµ РІС‹Р±СЂР°РЅС‹ СЌР»РµРјРµРЅС‚С‹ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ');
 		} else {
 			$('#frmGroupUpdate').attr('action', ref + '&action=s_group_update');
 			$('#frmGroupUpdate').submit();
@@ -165,12 +165,12 @@
 	function goDuplicate(ref) {
 		var quantity = parseInt($('#DuplicateQuantity').attr('value'));
 		if (quantity && (quantity < 1 || quantity > 10)) {
-			alert('Введите количество от 1 до 10!');	
+			alert('Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ РѕС‚ 1 РґРѕ 10!');	
 		} else if (quantity) {
 			hidePopup();
 			window.location = ref + '&quantity=' + quantity;
 		} else {
-			alert('Введите число');	
+			alert('Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ');	
 		}
 	}
 	
@@ -179,7 +179,7 @@
 		if (obj.selectedIndex) {
 			xajax_showTemplateVersion(obj.options[obj.selectedIndex].value);
 		} else {
-			alert('Не выбрана версия!');
+			alert('РќРµ РІС‹Р±СЂР°РЅР° РІРµСЂСЃРёСЏ!');
 		}
 	}
 	
@@ -246,7 +246,7 @@
 	xajax_updateFileList = function() {
 		var out = $('#uploadOutput');
 		out.empty();
-		//$('#filelist').html('Обновление списка файлов...');
+		//$('#filelist').html('РћР±РЅРѕРІР»РµРЅРёРµ СЃРїРёСЃРєР° С„Р°Р№Р»РѕРІ...');
 		return xajax.request( { xjxfun: 'updateFileList'}, { parameters: arguments} );	
 	}
 	
@@ -359,7 +359,7 @@
 			} else if (document.documentElement && document.documentElement.clientHeight) {
 				x = document.documentElement.clientWidth;
 				y = document.documentElement.clientHeight;
-				// Остальные версии IE
+				// РћСЃС‚Р°Р»СЊРЅС‹Рµ РІРµСЂСЃРёРё IE
 			} else if (document.body) {
 				x = document.body.clientWidth;
 				y = document.body.clientHeight;
@@ -413,11 +413,11 @@
 		
 		$('.MultiFile').MultiFile({ 
 			accept:'jpg|gif|png|rar|zip|pdf|flv|ppt|xls|doc', max:10, STRING: { 
-				remove:'удалить',
+				remove:'СѓРґР°Р»РёС‚СЊ',
 				file:'$file', 
-				selected:'Выбраны: $file', 
-				denied:'Неверный тип файла: $ext!', 
-				duplicate:'Этот файл уже выбран:\n$file!' 
+				selected:'Р’С‹Р±СЂР°РЅС‹: $file', 
+				denied:'РќРµРІРµСЂРЅС‹Р№ С‚РёРї С„Р°Р№Р»Р°: $ext!', 
+				duplicate:'Р­С‚РѕС‚ С„Р°Р№Р» СѓР¶Рµ РІС‹Р±СЂР°РЅ:\n$file!' 
 			} 
 		});		  
 	  
@@ -432,7 +432,7 @@
 		$('#uploadForm').ajaxForm({
 			beforeSubmit: function(a,f,o) {
 				o.dataType = "html";
-				$('#uploadOutput').html('Отправка данных...');
+				$('#uploadOutput').html('РћС‚РїСЂР°РІРєР° РґР°РЅРЅС‹С…...');
 			},
 			success: function(data) {
 				var $out = $('#uploadOutput');

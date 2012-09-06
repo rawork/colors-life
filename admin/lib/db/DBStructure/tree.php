@@ -3,7 +3,7 @@
 	$tree_tables[] = array(
 		'name' => 'tree',
 		'component' => 'tree',
-		'title' => 'Ðàçäåëû',
+		'title' => 'Ð Ð°Ð·Ð´ÐµÐ»Ñ‹',
 		'order_by' => 'ord,name', 
 		'is_lang' => true,
 		'is_publish' => true,
@@ -14,28 +14,28 @@
 		'fieldset' => array (
         'title' => array (
             'name' => 'title',
-            'title' => 'Íàçâàíèå',
+            'title' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ',
             'type' => 'string',
             'width' => '70%',
 			'search' => true
         ),
 		'name' => array (
             'name' => 'name',
-            'title' => 'Èìÿ (àíãë.)',
+            'title' => 'Ð˜Ð¼Ñ (Ð°Ð½Ð³Ð».)',
             'type' => 'string',
             'width' => '25%',
-        	'help' => 'àíãë. áóêâû áåç ïðîáåëîâ',
+        	'help' => 'Ð°Ð½Ð³Ð». Ð±ÑƒÐºÐ²Ñ‹ Ð±ÐµÐ· Ð¿Ñ€Ð¾Ð±ÐµÐ»Ð¾Ð²',
 			'search' => true,
 			'group_update' => true
         ),
 		'url' => array (
             'name' => 'url',
-            'title' => 'Ññûëêà',
+            'title' => 'Ð¡ÑÑ‹Ð»ÐºÐ°',
             'type' => 'string'
         ),
 		'p_id' => array (
             'name' => 'p_id',
-            'title' => 'Íàõîäèòñÿ â',
+            'title' => 'ÐÐ°Ñ…Ð¾Ð´Ð¸Ñ‚ÑÑ Ð²',
             'type' => 'select_tree',
             'l_table' => 'tree_tree',
             'l_field' => 'title',
@@ -44,7 +44,7 @@
         ),
 		'module_id' => array (
             'name' => 'module_id',
-            'title' => 'Êîìïîíåíò',
+            'title' => 'ÐšÐ¾Ð¼Ð¿Ð¾Ð½ÐµÐ½Ñ‚',
             'type' => 'select',
             'l_table' => 'config_modules',
             'l_field' => 'title',
@@ -52,12 +52,12 @@
         ),
         'body' => array (
             'name' => 'body',
-            'title' => 'Òåêñò',
+            'title' => 'Ð¢ÐµÐºÑÑ‚',
             'type' => 'html'
         ),
         'h1_img' => array (
             'name'  => 'h1_img',
-            'title' => 'Êàðòèíêà H1',
+            'title' => 'ÐšÐ°Ñ€Ñ‚Ð¸Ð½ÐºÐ° H1',
             'type' => 'image',
         )
     ));
@@ -65,14 +65,14 @@
 	$tree_tables[] = array(
 		'name' => 'blocks',
 		'component' => 'tree',
-		'title' => 'Èíôîáëîêè',
+		'title' => 'Ð˜Ð½Ñ„Ð¾Ð±Ð»Ð¾ÐºÐ¸',
 		'order_by' => 'name', 
 		'is_lang' => true,
 		'is_publish' => true,
 		'fieldset' => array (
 		'title' => array (
             'name' => 'title',
-            'title' => 'Íàçâàíèå',
+            'title' => 'ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ',
             'search' => true,
             'type' => 'string',
             'width' => '40%',
@@ -80,14 +80,14 @@
         ),
         'name' => array (
             'name' => 'name',
-            'title' => 'Èìÿ (àíãë.)',
+            'title' => 'Ð˜Ð¼Ñ (Ð°Ð½Ð³Ð».)',
             'type' => 'string',
             'width' => '40%',
             'search'=> true
         ),
 		'body' => array (
             'name'  => 'body',
-            'title' => 'Òåêñò',
+            'title' => 'Ð¢ÐµÐºÑÑ‚',
             'type' => 'html'
         )
     ));

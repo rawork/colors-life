@@ -1,23 +1,23 @@
-          <h1><a href="/cart/">Ваша корзина</a> &rarr; <a href="/cart/?action=info">Информация о Вас</a> &rarr; Оплата и доставка &rarr; <span>Подтверждение</span> &rarr; <span>Информация о заказе</span></h1>
+          <h1><a href="/cart/">Р’Р°С€Р° РєРѕСЂР·РёРЅР°</a> &rarr; <a href="/cart/?action=info">РРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р’Р°СЃ</a> &rarr; РћРїР»Р°С‚Р° Рё РґРѕСЃС‚Р°РІРєР° &rarr; <span>РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ</span> &rarr; <span>РРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р·Р°РєР°Р·Рµ</span></h1>
           <br>
           
           <div class="reg-form">
           <form name="frmCart" action="/cart/?action=delivery" method="post">
 		  <input type="hidden" name="submited" value="1">
-          Способ оплаты <br>
+          РЎРїРѕСЃРѕР± РѕРїР»Р°С‚С‹ <br>
           <select name="pay_type" class="field-t3">
           {foreach from=$pays item=pay}
           <option value="{$pay.name}"{if $smarty.session.pay_type == $pay.name} selected{/if}>{$pay.name}</option>
 		  {/foreach}
           </select>
           <br>
-          Способ доставки <br>
+          РЎРїРѕСЃРѕР± РґРѕСЃС‚Р°РІРєРё <br>
           <select name="delivery_type" class="field-t3">
           {foreach from=$delivery item=deliv}
           <option value="{$deliv.name}"{if $smarty.session.delivery_type == $deliv.name} selected{/if}>{$deliv.name}</option>
 		  {/foreach}
           </select><br>
-		  Адрес доставки <br>
+		  РђРґСЂРµСЃ РґРѕСЃС‚Р°РІРєРё <br>
 		  <textarea style="width:350px;height: 70px;" name="delivery_address">{$smarty.session.delivery_address}</textarea> 
           </form>
           </div>

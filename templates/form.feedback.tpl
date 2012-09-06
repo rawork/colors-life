@@ -6,27 +6,27 @@
 <td>                                
   <table width="100%" class="frmContainer" border="0" cellspacing="0" cellpadding="3">
             <tr id="tr_fio">
-      <td><div>ФИО&nbsp;<span class="required">*</span></div>
-        <input type="string" class="txt" title="ФИО" name="fio" value="" /></td>
+      <td><div>Р¤РРћ&nbsp;<span class="required">*</span></div>
+        <input type="string" class="txt" title="Р¤РРћ" name="fio" value="" /></td>
     </tr>
                 <tr id="tr_email">
       <td><div>E-mail&nbsp;<span class="required">*</span></div>
         <input type="string" class="txt" title="E-mail" name="email" value="" /></td>
     </tr>
                 <tr id="tr_phone">
-      <td><div>Телефон</div>
+      <td><div>РўРµР»РµС„РѕРЅ</div>
         <input type="string" class="txt" title="" name="phone" value="" /></td>
     </tr>
                 <tr id="tr_address">
-      <td><div>Адрес</div>
+      <td><div>РђРґСЂРµСЃ</div>
         <input type="string" class="txt" title="" name="address" value="" /></td>
     </tr>
                                
                 
         <tr>
-      <td><strong><span class="required">*</span></strong> &#8212; обязательные поля</td>
+      <td><strong><span class="required">*</span></strong> &#8212; РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Рµ РїРѕР»СЏ</td>
     </tr>    <tr>
-      <td><input type="submit" class="btn" value="Отправить" /></td>
+      <td><input type="submit" class="btn" value="РћС‚РїСЂР°РІРёС‚СЊ" /></td>
     </tr>
   </table>
 </td>
@@ -34,36 +34,36 @@
 <table width="100%" class="frmContainer" border="0" cellspacing="0" cellpadding="3">
             
                 <tr id="tr_thema">
-      <td><div>Тема сообщения</div>
+      <td><div>РўРµРјР° СЃРѕРѕР±С‰РµРЅРёСЏ</div>
         <select title="" name="thema"> 
         <option value="0">...</option>
-                <option value="Дезодоранты">Дезодоранты</option>
-                <option value="Игрушки 0+">Игрушки 0+</option>
-                <option value="Индивидуальная гигиена">Индивидуальная гигиена</option>
-                <option value="Многоразовые подгузники">Многоразовые подгузники</option>
-                <option value="Мыло">Мыло</option>
-                <option value="Мыльные орехи">Мыльные орехи</option>
-                <option value="Наборы для новорожденных">Наборы для новорожденных</option>
-                <option value="Серия для беременных">Серия для беременных</option>
-                <option value="Серия для детей">Серия для детей</option>
-                <option value="Системы естественного пеленания">Системы естественного пеленания</option>
-                <option value="Средства для мытья посуды">Средства для мытья посуды</option>
-                <option value="Средства для посудомоечных машин">Средства для посудомоечных машин</option>
-                <option value="Средства для стирки">Средства для стирки</option>
-                <option value="Стиральные порошки">Стиральные порошки</option>
-                <option value="Уход за волосами">Уход за волосами</option>
-                <option value="Уход за лицом">Уход за лицом</option>
-                <option value="Уход за телом">Уход за телом</option>
-                <option value="Чистящие средства">Чистящие средства</option>
+                <option value="Р”РµР·РѕРґРѕСЂР°РЅС‚С‹">Р”РµР·РѕРґРѕСЂР°РЅС‚С‹</option>
+                <option value="РРіСЂСѓС€РєРё 0+">РРіСЂСѓС€РєРё 0+</option>
+                <option value="РРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ РіРёРіРёРµРЅР°">РРЅРґРёРІРёРґСѓР°Р»СЊРЅР°СЏ РіРёРіРёРµРЅР°</option>
+                <option value="РњРЅРѕРіРѕСЂР°Р·РѕРІС‹Рµ РїРѕРґРіСѓР·РЅРёРєРё">РњРЅРѕРіРѕСЂР°Р·РѕРІС‹Рµ РїРѕРґРіСѓР·РЅРёРєРё</option>
+                <option value="РњС‹Р»Рѕ">РњС‹Р»Рѕ</option>
+                <option value="РњС‹Р»СЊРЅС‹Рµ РѕСЂРµС…Рё">РњС‹Р»СЊРЅС‹Рµ РѕСЂРµС…Рё</option>
+                <option value="РќР°Р±РѕСЂС‹ РґР»СЏ РЅРѕРІРѕСЂРѕР¶РґРµРЅРЅС‹С…">РќР°Р±РѕСЂС‹ РґР»СЏ РЅРѕРІРѕСЂРѕР¶РґРµРЅРЅС‹С…</option>
+                <option value="РЎРµСЂРёСЏ РґР»СЏ Р±РµСЂРµРјРµРЅРЅС‹С…">РЎРµСЂРёСЏ РґР»СЏ Р±РµСЂРµРјРµРЅРЅС‹С…</option>
+                <option value="РЎРµСЂРёСЏ РґР»СЏ РґРµС‚РµР№">РЎРµСЂРёСЏ РґР»СЏ РґРµС‚РµР№</option>
+                <option value="РЎРёСЃС‚РµРјС‹ РµСЃС‚РµСЃС‚РІРµРЅРЅРѕРіРѕ РїРµР»РµРЅР°РЅРёСЏ">РЎРёСЃС‚РµРјС‹ РµСЃС‚РµСЃС‚РІРµРЅРЅРѕРіРѕ РїРµР»РµРЅР°РЅРёСЏ</option>
+                <option value="РЎСЂРµРґСЃС‚РІР° РґР»СЏ РјС‹С‚СЊСЏ РїРѕСЃСѓРґС‹">РЎСЂРµРґСЃС‚РІР° РґР»СЏ РјС‹С‚СЊСЏ РїРѕСЃСѓРґС‹</option>
+                <option value="РЎСЂРµРґСЃС‚РІР° РґР»СЏ РїРѕСЃСѓРґРѕРјРѕРµС‡РЅС‹С… РјР°С€РёРЅ">РЎСЂРµРґСЃС‚РІР° РґР»СЏ РїРѕСЃСѓРґРѕРјРѕРµС‡РЅС‹С… РјР°С€РёРЅ</option>
+                <option value="РЎСЂРµРґСЃС‚РІР° РґР»СЏ СЃС‚РёСЂРєРё">РЎСЂРµРґСЃС‚РІР° РґР»СЏ СЃС‚РёСЂРєРё</option>
+                <option value="РЎС‚РёСЂР°Р»СЊРЅС‹Рµ РїРѕСЂРѕС€РєРё">РЎС‚РёСЂР°Р»СЊРЅС‹Рµ РїРѕСЂРѕС€РєРё</option>
+                <option value="РЈС…РѕРґ Р·Р° РІРѕР»РѕСЃР°РјРё">РЈС…РѕРґ Р·Р° РІРѕР»РѕСЃР°РјРё</option>
+                <option value="РЈС…РѕРґ Р·Р° Р»РёС†РѕРј">РЈС…РѕРґ Р·Р° Р»РёС†РѕРј</option>
+                <option value="РЈС…РѕРґ Р·Р° С‚РµР»РѕРј">РЈС…РѕРґ Р·Р° С‚РµР»РѕРј</option>
+                <option value="Р§РёСЃС‚СЏС‰РёРµ СЃСЂРµРґСЃС‚РІР°">Р§РёСЃС‚СЏС‰РёРµ СЃСЂРµРґСЃС‚РІР°</option>
                 </select></td>
     </tr>
                 <tr id="tr_body">
-      <td><div>Сообщение&nbsp;<span class="required">*</span></div>
-        <textarea rows="5" title="Сообщение" name="body" /></textarea></td>
+      <td><div>РЎРѕРѕР±С‰РµРЅРёРµ&nbsp;<span class="required">*</span></div>
+        <textarea rows="5" title="РЎРѕРѕР±С‰РµРЅРёРµ" name="body" /></textarea></td>
     </tr>
                 
         <tr>
-      <td><strong><span class="required">*</span></strong> &#8212; обязательные поля</td>
+      <td><strong><span class="required">*</span></strong> &#8212; РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Рµ РїРѕР»СЏ</td>
     </tr>    
   </table>
 </td>

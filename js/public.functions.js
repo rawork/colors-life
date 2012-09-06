@@ -103,7 +103,7 @@ function register(e) {
 		if (parseInt(count) > 0) {
 			xajax_addToCart(it, count, price, price_id);
 		} else {
-			alert('Неправильный формат количества');
+			alert('РќРµРїСЂР°РІРёР»СЊРЅС‹Р№ С„РѕСЂРјР°С‚ РєРѕР»РёС‡РµСЃС‚РІР°');
 		}
 	}
 	
@@ -154,65 +154,65 @@ function register(e) {
 /* end xajax */
 
 function checkForm(form) {
-	// Заранее объявим необходимые переменные
-	var el, // Сам элемент
-	elName, // Имя элемента формы
-	value, // Значение
-	type; // Атрибут type для input-ов
-	// Массив списка ошибок, по дефолту пустой
+	// Р—Р°СЂР°РЅРµРµ РѕР±СЉСЏРІРёРј РЅРµРѕР±С…РѕРґРёРјС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ
+	var el, // РЎР°Рј СЌР»РµРјРµРЅС‚
+	elName, // РРјСЏ СЌР»РµРјРµРЅС‚Р° С„РѕСЂРјС‹
+	value, // Р—РЅР°С‡РµРЅРёРµ
+	type; // РђС‚СЂРёР±СѓС‚ type РґР»СЏ input-РѕРІ
+	// РњР°СЃСЃРёРІ СЃРїРёСЃРєР° РѕС€РёР±РѕРє, РїРѕ РґРµС„РѕР»С‚Сѓ РїСѓСЃС‚РѕР№
 	var errorList = [];
-	// Хэш с текстом ошибок (ключ - ID ошибки)
+	// РҐСЌС€ СЃ С‚РµРєСЃС‚РѕРј РѕС€РёР±РѕРє (РєР»СЋС‡ - ID РѕС€РёР±РєРё)
 	var errorText = {
-	1 : "Не заполнено поле 'Имя'",
-	2 : "Не заполнено поле 'E-mail'",
-	3 : "Не заполнено поле 'Телефон'",
-	4 : "Неизвестная ошибка"
+	1 : "РќРµ Р·Р°РїРѕР»РЅРµРЅРѕ РїРѕР»Рµ 'РРјСЏ'",
+	2 : "РќРµ Р·Р°РїРѕР»РЅРµРЅРѕ РїРѕР»Рµ 'E-mail'",
+	3 : "РќРµ Р·Р°РїРѕР»РЅРµРЅРѕ РїРѕР»Рµ 'РўРµР»РµС„РѕРЅ'",
+	4 : "РќРµРёР·РІРµСЃС‚РЅР°СЏ РѕС€РёР±РєР°"
 	}
-	// Получаем семейство всех элементов формы
-	// Проходимся по ним в цикле
+	// РџРѕР»СѓС‡Р°РµРј СЃРµРјРµР№СЃС‚РІРѕ РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ С„РѕСЂРјС‹
+	// РџСЂРѕС…РѕРґРёРјСЃСЏ РїРѕ РЅРёРј РІ С†РёРєР»Рµ
 	//form = document.getElementById(frm);
 	for (var i = 0; i < form.elements.length; i++) {
 	el = form.elements[i];
 	elName = el.nodeName.toLowerCase();
 	value = el.value;
 	if (elName == "input") { // INPUT
-	// Определяем тип input-а
+	// РћРїСЂРµРґРµР»СЏРµРј С‚РёРї input-Р°
 	type = el.type.toLowerCase();
-	// Разбираем все инпуты по типам и обрабатываем содержимое
+	// Р Р°Р·Р±РёСЂР°РµРј РІСЃРµ РёРЅРїСѓС‚С‹ РїРѕ С‚РёРїР°Рј Рё РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј СЃРѕРґРµСЂР¶РёРјРѕРµ
 	switch (type) {
 	case "text" :
-	if (el.title != "" && value == "") errorList.push("Не заполнено поле '"+el.title+"'");
+	if (el.title != "" && value == "") errorList.push("РќРµ Р·Р°РїРѕР»РЅРµРЅРѕ РїРѕР»Рµ '"+el.title+"'");
 	break;
 	case "file" :
 	//if (value == "") errorList.push(3);
 	break;
 	case "checkbox" :
-	// Ничего не делаем, хотя можем
+	// РќРёС‡РµРіРѕ РЅРµ РґРµР»Р°РµРј, С…РѕС‚СЏ РјРѕР¶РµРј
 	break;
 	case "radio" :
-	// Ничего не делаем, хотя можем
+	// РќРёС‡РµРіРѕ РЅРµ РґРµР»Р°РµРј, С…РѕС‚СЏ РјРѕР¶РµРј
 	break;
 	default :
-	// Сюда попадают input-ы, которые не требуют обработки
+	// РЎСЋРґР° РїРѕРїР°РґР°СЋС‚ input-С‹, РєРѕС‚РѕСЂС‹Рµ РЅРµ С‚СЂРµР±СѓСЋС‚ РѕР±СЂР°Р±РѕС‚РєРё
 	// type = hidden, submit, button, image
 	break;
 	}
 	} else if (el.title != "" && elName == "textarea") { // TEXTAREA
-	if (value == "") errorList.push("Не заполнено поле '"+el.title+"'");
+	if (value == "") errorList.push("РќРµ Р·Р°РїРѕР»РЅРµРЅРѕ РїРѕР»Рµ '"+el.title+"'");
 	} else if (el.title != "" && elName == "select") { // SELECT
-	if (value == 0) errorList.push("Не выбран элемент в поле '"+el.title+"'");
+	if (value == 0) errorList.push("РќРµ РІС‹Р±СЂР°РЅ СЌР»РµРјРµРЅС‚ РІ РїРѕР»Рµ '"+el.title+"'");
 	} else {
-	// Обнаружен неизвестный элемент ;)
+	// РћР±РЅР°СЂСѓР¶РµРЅ РЅРµРёР·РІРµСЃС‚РЅС‹Р№ СЌР»РµРјРµРЅС‚ ;)
 	}
 	}
-	// Финальная стадия
-	// Если массив ошибок пуст - возвращаем true
+	// Р¤РёРЅР°Р»СЊРЅР°СЏ СЃС‚Р°РґРёСЏ
+	// Р•СЃР»Рё РјР°СЃСЃРёРІ РѕС€РёР±РѕРє РїСѓСЃС‚ - РІРѕР·РІСЂР°С‰Р°РµРј true
 	if (!errorList.length) {
 		return true;
 	}
-	// Если есть ошибки - формируем сообщение, выовдим alert
-	// и возвращаем false
-	var errorMsg = "При заполнении формы допущены следующие ошибки:\n\n";
+	// Р•СЃР»Рё РµСЃС‚СЊ РѕС€РёР±РєРё - С„РѕСЂРјРёСЂСѓРµРј СЃРѕРѕР±С‰РµРЅРёРµ, РІС‹РѕРІРґРёРј alert
+	// Рё РІРѕР·РІСЂР°С‰Р°РµРј false
+	var errorMsg = "РџСЂРё Р·Р°РїРѕР»РЅРµРЅРёРё С„РѕСЂРјС‹ РґРѕРїСѓС‰РµРЅС‹ СЃР»РµРґСѓСЋС‰РёРµ РѕС€РёР±РєРё:\n\n";
 	for (i = 0; i < errorList.length; i++) {
 	errorMsg += errorList[i] + "\n";
 	}
@@ -438,13 +438,13 @@ $(document).ready(function () {
 	  				"opacity": 0.7,
 	  				"rel": lightbox-tour,
 	  				text: {
-	    				image: "Картинка",
-	    				of: "из",
-	    				close: "Закрыть",
-	    				closeInfo: "Клик вне картинки завершит просмотр.",
+	    				image: "РљР°СЂС‚РёРЅРєР°",
+	    				of: "РёР·",
+	    				close: "Р—Р°РєСЂС‹С‚СЊ",
+	    				closeInfo: "РљР»РёРє РІРЅРµ РєР°СЂС‚РёРЅРєРё Р·Р°РІРµСЂС€РёС‚ РїСЂРѕСЃРјРѕС‚СЂ.",
 	    				help: {
-	      					close: "Закрыть",
-	      					interact: "Интерактивная подсказка"
+	      					close: "Р—Р°РєСЂС‹С‚СЊ",
+	      					interact: "РРЅС‚РµСЂР°РєС‚РёРІРЅР°СЏ РїРѕРґСЃРєР°Р·РєР°"
 	    				},
 	    				about: {
 	      					text: "",
@@ -462,7 +462,7 @@ var passComplete = false;
 function comparePasswords(first, repeate){
     if(repeate.value != first.value) {
         if(document.getElementById) {
-            document.getElementById("passStatus").innerHTML = "пароли не совпадают, попробуйте еще раз";
+            document.getElementById("passStatus").innerHTML = "РїР°СЂРѕР»Рё РЅРµ СЃРѕРІРїР°РґР°СЋС‚, РїРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰Рµ СЂР°Р·";
             document.getElementById("passStatus").style.color = "red";
             repeate.style.color = "red";
         }
@@ -470,7 +470,7 @@ function comparePasswords(first, repeate){
     }
     else if(repeate.value.length<6) {
         if(document.getElementById) {
-            document.getElementById("passStatus").innerHTML = "пароль должен состоять минимум из 6 символов";
+            document.getElementById("passStatus").innerHTML = "РїР°СЂРѕР»СЊ РґРѕР»Р¶РµРЅ СЃРѕСЃС‚РѕСЏС‚СЊ РјРёРЅРёРјСѓРј РёР· 6 СЃРёРјРІРѕР»РѕРІ";
             document.getElementById("passStatus").style.color = "red";
             repeate.style.color = "red";
         }
@@ -478,7 +478,7 @@ function comparePasswords(first, repeate){
     }
     else {
         if(document.getElementById) {
-            document.getElementById("passStatus").innerHTML = "введено верно";
+            document.getElementById("passStatus").innerHTML = "РІРІРµРґРµРЅРѕ РІРµСЂРЅРѕ";
             document.getElementById("passStatus").style.color = "green";
             repeate.style.color = "";
         }

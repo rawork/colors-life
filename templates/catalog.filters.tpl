@@ -3,7 +3,7 @@
 {if $cat} 
 {raItems var=filters table=catalog_features query="id IN (`$cat.filters`)"}
 {if count($filters)}
-<div class="filter-title"><span>Фильтры</span></div>
+<div class="filter-title"><span>Р¤РёР»СЊС‚СЂС‹</span></div>
 <div class="filter-block">
 <form name="frmFilters" action="" method="get"> 
 {if $smarty.get.rtt}
@@ -16,8 +16,8 @@
 {/foreach}
 <br>
 {/foreach}
-<input type="submit" value="Выбрать"> 
-<input type="button" onclick="unsetFilter()" value="Отключить"> 
+<input type="submit" value="Р’С‹Р±СЂР°С‚СЊ"> 
+<input type="button" onclick="unsetFilter()" value="РћС‚РєР»СЋС‡РёС‚СЊ"> 
 <br>
 </form>
  </div>

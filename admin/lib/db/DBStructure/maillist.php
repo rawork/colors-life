@@ -4,12 +4,12 @@
     $maillist_tables[] = array(
 		'name' => 'lists',
 		'component' => 'maillist',
-		'title' => 'Î÷åğåäü ğàññûëêè',
+		'title' => 'ĞÑ‡ĞµÑ€ĞµĞ´ÑŒ Ñ€Ğ°ÑÑÑ‹Ğ»ĞºĞ¸',
 		'order_by' => 'date',
 		'fieldset' => array (
         'rubrics' => array (
             'name' => 'rubrics',
-            'title' => 'Ñïèñêè ğàññûëêè',
+            'title' => 'Ğ¡Ğ¿Ğ¸ÑĞºĞ¸ Ñ€Ğ°ÑÑÑ‹Ğ»ĞºĞ¸',
             'type' => 'select_list',
 			'l_table' => 'maillist_rubric',
 			'l_field' => 'name',
@@ -17,19 +17,19 @@
         ),
 		'subj' => array (
             'name' => 'subj',
-            'title' => 'Òåìà',
+            'title' => 'Ğ¢ĞµĞ¼Ğ°',
             'type' => 'string',
             'width' => '35%',
             'search'=> true
         ),
         'body' => array (
             'name' => 'body',
-            'title' => 'Òåêñò',
+            'title' => 'Ğ¢ĞµĞºÑÑ‚',
             'type' => 'html'
         ),
         'file' => array (
             'name' => 'file',
-            'title' => 'Ôàéë',
+            'title' => 'Ğ¤Ğ°Ğ¹Ğ»',
             'type' => 'file',
             'path' => '/mailfiles',
             'width' => '20%'
@@ -37,7 +37,7 @@
         ),
         'date' => array (
             'name' => 'date',
-            'title' => 'Äàòà',
+            'title' => 'Ğ”Ğ°Ñ‚Ğ°',
             'type' => 'datetime',
             'width' => '15%',
             'search'=> true
@@ -47,40 +47,40 @@
     $maillist_tables[] = array(
 		'name' => 'users',
 		'component' => 'maillist',
-		'title' => 'Ïîäïèñ÷èêè',
+		'title' => 'ĞŸĞ¾Ğ´Ğ¿Ğ¸ÑÑ‡Ğ¸ĞºĞ¸',
 		'order_by' => 'name',
 		'fieldset' => array (
         'lastname' => array (
             'name'  => 'lastname',
-            'title' => 'Ôàìèëèÿ',
+            'title' => 'Ğ¤Ğ°Ğ¼Ğ¸Ğ»Ğ¸Ñ',
             'type'  => 'string',
             'width' => '24%',
             'search'=> true
         ),
 		'name' => array (
             'name'  => 'name',
-            'title' => 'Èìÿ',
+            'title' => 'Ğ˜Ğ¼Ñ',
             'type'  => 'string',
             'width' => '24%',
             'search'=> true
         ),
         'email' => array (
             'name'  => 'email',
-            'title' => 'Àäğåñ',
+            'title' => 'ĞĞ´Ñ€ĞµÑ',
             'type'  => 'string',
             'width' => '24%',
             'search'=> true
         ),
         'date' => array (
             'name'  => 'date',
-            'title' => 'Äàòà ğåãèñòğàöèè',
+            'title' => 'Ğ”Ğ°Ñ‚Ğ° Ñ€ĞµĞ³Ğ¸ÑÑ‚Ñ€Ğ°Ñ†Ğ¸Ğ¸',
             'type'  => 'datetime',
             'width' => '24%',
             'search'=> true
         ),
         'is_active' => array (
             'name' => 'is_active',
-            'title' => 'Ïîäïèñàí',
+            'title' => 'ĞŸĞ¾Ğ´Ğ¿Ğ¸ÑĞ°Ğ½',
             'type' => 'checkbox',
             'search' => true,
             'group_update'  => true,
@@ -91,12 +91,12 @@
 	$maillist_tables[] = array(
 		'name' => 'rubric',
 		'component' => 'maillist',
-		'title' => 'Ñïèñêè ğàññûëêè',
+		'title' => 'Ğ¡Ğ¿Ğ¸ÑĞºĞ¸ Ñ€Ğ°ÑÑÑ‹Ğ»ĞºĞ¸',
 		'order_by' => 'name',
 		'fieldset' => array (
         'name' => array (
             'name'  => 'name',
-            'title' => 'Èìÿ',
+            'title' => 'Ğ˜Ğ¼Ñ',
             'type'  => 'string',
             'width' => '95%',
             'search'=> true

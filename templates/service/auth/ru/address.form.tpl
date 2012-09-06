@@ -1,4 +1,4 @@
-<h1>Адреса доставки</h1>
+<h1>РђРґСЂРµСЃР° РґРѕСЃС‚Р°РІРєРё</h1>
 <form method="POST" name="mainForm">
 
 <style>
@@ -7,7 +7,7 @@
 select#suggestSelect {position: absolute; height:9em}
 </style>
 
-<p class="cut">Введите адрес доставки или выберите для редактирования один из <a href="/cabinet/address.htm">ваших адресов доставки</a></p>
+<p class="cut">Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃ РґРѕСЃС‚Р°РІРєРё РёР»Рё РІС‹Р±РµСЂРёС‚Рµ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РѕРґРёРЅ РёР· <a href="/cabinet/address.htm">РІР°С€РёС… Р°РґСЂРµСЃРѕРІ РґРѕСЃС‚Р°РІРєРё</a></p>
 <br>
 <input name="addressId" value="{$address.id}" type="hidden">
 <input name="updateAddress" value="1" type="hidden">
@@ -22,25 +22,25 @@ select#suggestSelect {position: absolute; height:9em}
 <td></td>
 </tr>
 <tr>
-<td><span>Город</span></td>
+<td><span>Р“РѕСЂРѕРґ</span></td>
 <td><input maxlength="60" value="{$address.street}" id="deliveryStreet" name="deliveryStreet" type="text"></td>
 </tr>
 <tr>
-<td><span>Улица</span><p class="comment">(проезд, площадь, переулок и т.п.)</p></td>
+<td><span>РЈР»РёС†Р°</span><p class="comment">(РїСЂРѕРµР·Рґ, РїР»РѕС‰Р°РґСЊ, РїРµСЂРµСѓР»РѕРє Рё С‚.Рї.)</p></td>
 <td><input maxlength="60" value="{$address.street}" id="deliveryStreet" name="deliveryStreet" type="text"></td>
 </tr>
-   <tr><td><p class="must">Дом</p></td><td><input value="37" maxlength="10" name="deliveryHouse" class="semiwide" onblur="checkForm()" onkeypress="checkForm()" onkeyup="checkForm()" type="text"></td></tr>
-   <tr><td>Корпус</td><td><input value="1" maxlength="10" name="deliveryCorpus" class="semiwide" type="text"></td></tr>
-   <tr><td>Строение</td><td><input value="2" maxlength="10" name="deliveryBuilding" class="semiwide" type="text"></td></tr>
+   <tr><td><p class="must">Р”РѕРј</p></td><td><input value="37" maxlength="10" name="deliveryHouse" class="semiwide" onblur="checkForm()" onkeypress="checkForm()" onkeyup="checkForm()" type="text"></td></tr>
+   <tr><td>РљРѕСЂРїСѓСЃ</td><td><input value="1" maxlength="10" name="deliveryCorpus" class="semiwide" type="text"></td></tr>
+   <tr><td>РЎС‚СЂРѕРµРЅРёРµ</td><td><input value="2" maxlength="10" name="deliveryBuilding" class="semiwide" type="text"></td></tr>
 
-      <tr><td>Квартира</td><td><input value="38" maxlength="10" name="deliveryFlat" class="semiwide" type="text"></td></tr>
-   <tr><td>Комментарий к адресу доставки</td><td><textarea rows="3" name="deliveryAddressComment" maxlength="150" onkeyup="return ismaxlength(this)" class="wide">доставлять по выходным</textarea></td></tr>
-   <tr><td><p class="must">ФИО получателя</p></td><td><input maxlength="60" class="wide" name="deliveryUser" value="Алякритский Роман" onblur="checkForm()" onkeypress="checkForm()" onkeyup="checkForm()" type="text"></td></tr>
-   <tr><td colspan="2"><p class="cut">Укажите номера телефонов, по которым с Вами можно связаться для согласования заказа</p></td></tr>
-   <tr><td><p class="must">Мобильный телефон</p><p class="comment">Формат: +7 (XXX) XXX-XX-XX</p></td><td><input maxlength="30" class="wide" name="deliveryPhone" value="+7 (916) 977-84-90" onblur="checkForm()" onkeypress="checkForm()" onkeyup="checkForm()" type="text"></td></tr>
+      <tr><td>РљРІР°СЂС‚РёСЂР°</td><td><input value="38" maxlength="10" name="deliveryFlat" class="semiwide" type="text"></td></tr>
+   <tr><td>РљРѕРјРјРµРЅС‚Р°СЂРёР№ Рє Р°РґСЂРµСЃСѓ РґРѕСЃС‚Р°РІРєРё</td><td><textarea rows="3" name="deliveryAddressComment" maxlength="150" onkeyup="return ismaxlength(this)" class="wide">РґРѕСЃС‚Р°РІР»СЏС‚СЊ РїРѕ РІС‹С…РѕРґРЅС‹Рј</textarea></td></tr>
+   <tr><td><p class="must">Р¤РРћ РїРѕР»СѓС‡Р°С‚РµР»СЏ</p></td><td><input maxlength="60" class="wide" name="deliveryUser" value="РђР»СЏРєСЂРёС‚СЃРєРёР№ Р РѕРјР°РЅ" onblur="checkForm()" onkeypress="checkForm()" onkeyup="checkForm()" type="text"></td></tr>
+   <tr><td colspan="2"><p class="cut">РЈРєР°Р¶РёС‚Рµ РЅРѕРјРµСЂР° С‚РµР»РµС„РѕРЅРѕРІ, РїРѕ РєРѕС‚РѕСЂС‹Рј СЃ Р’Р°РјРё РјРѕР¶РЅРѕ СЃРІСЏР·Р°С‚СЊСЃСЏ РґР»СЏ СЃРѕРіР»Р°СЃРѕРІР°РЅРёСЏ Р·Р°РєР°Р·Р°</p></td></tr>
+   <tr><td><p class="must">РњРѕР±РёР»СЊРЅС‹Р№ С‚РµР»РµС„РѕРЅ</p><p class="comment">Р¤РѕСЂРјР°С‚: +7 (XXX) XXX-XX-XX</p></td><td><input maxlength="30" class="wide" name="deliveryPhone" value="+7 (916) 977-84-90" onblur="checkForm()" onkeypress="checkForm()" onkeyup="checkForm()" type="text"></td></tr>
 
-   <tr><td><p>Дополнительный номер телефона</p><p class="comment">(с кодом города)</p></td><td><input maxlength="30" name="deliveryPhoneAdd" value="" class="wide" type="text"></td></tr>
-   <tr><td>&nbsp;</td><td><input value="Сохранить" id="submitBtn" type="submit"></td></tr>
+   <tr><td><p>Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Р№ РЅРѕРјРµСЂ С‚РµР»РµС„РѕРЅР°</p><p class="comment">(СЃ РєРѕРґРѕРј РіРѕСЂРѕРґР°)</p></td><td><input maxlength="30" name="deliveryPhoneAdd" value="" class="wide" type="text"></td></tr>
+   <tr><td>&nbsp;</td><td><input value="РЎРѕС…СЂР°РЅРёС‚СЊ" id="submitBtn" type="submit"></td></tr>
   </tbody></table>
 <script>
 function checkForm()
@@ -49,9 +49,9 @@ function checkForm()
  btn = document.getElementById('submitBtn');
  a = trim(f.deliveryStreet.value);
  b = trim(f.deliveryUser.value);
- с = trim(f.deliveryPhone.value).length < 6;
+ СЃ = trim(f.deliveryPhone.value).length < 6;
  d = trim(f.deliveryHouse.value);
- btn.disabled = (a == '' || b == '' || с || d == '') ? true : false;
+ btn.disabled = (a == '' || b == '' || СЃ || d == '') ? true : false;
 }
 
 function ismaxlength(obj)

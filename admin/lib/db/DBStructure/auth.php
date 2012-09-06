@@ -4,20 +4,20 @@
 	$auth_tables[] = array(
 		'name'		=> 'users',
 		'component' => 'auth',
-		'title'		=> 'Ïîëüçîâàòåëè ñàéòà',
+		'title'		=> 'ĞŸĞ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»Ğ¸ ÑĞ°Ğ¹Ñ‚Ğ°',
 		'order_by'	=> 'credate DESC, login',
 		'show_credate' => true,
 		'fieldset' => array (
         'login' => array (
             'name' => 'login',
-            'title' => 'Ëîãèí',
+            'title' => 'Ğ›Ğ¾Ğ³Ğ¸Ğ½',
             'type' => 'string',
             'not_empty' => true,
             'form' => true
         ),
 		'password' => array (
             'name' => 'password',
-            'title' => 'Ïàğîëü',
+            'title' => 'ĞŸĞ°Ñ€Ğ¾Ğ»ÑŒ',
             'type' => 'string',
             'not_empty' => true,
 			'is_check' => true,
@@ -33,7 +33,7 @@
         ),
         'name' => array (
             'name' => 'name',
-            'title' => 'Èìÿ',
+            'title' => 'Ğ˜Ğ¼Ñ',
             'type' => 'string',
 			'search' => true,
             'not_empty' => true,
@@ -42,50 +42,50 @@
         ),
 		'lastname' => array (
             'name' => 'lastname',
-            'title' => 'Ôàìèëèÿ',
+            'title' => 'Ğ¤Ğ°Ğ¼Ğ¸Ğ»Ğ¸Ñ',
             'type' => 'string',
 			'search' => true,
             'width' => '20%'
         ),
         'phone' => array (
             'name' => 'phone',
-            'title' => 'Òåëåôîí',
+            'title' => 'Ğ¢ĞµĞ»ĞµÑ„Ğ¾Ğ½',
             'type' => 'string',
             'width' => '15%'
         ),
 		'birthday' => array (
             'name' => 'birthday',
-            'title' => 'Äåíü ğîæäåíèÿ',
+            'title' => 'Ğ”ĞµĞ½ÑŒ Ñ€Ğ¾Ğ¶Ğ´ĞµĞ½Ğ¸Ñ',
             'type' => 'string',
             'width' => '15%'
         ),
 		'gender' => array (
             'name' => 'gender',
-            'title' => 'Ïîë',
+            'title' => 'ĞŸĞ¾Ğ»',
             'type' => 'string',
             'width' => '5%'
         ),
         'address' => array (
             'name' => 'address',
-            'title' => 'Àäğåñ äîñòàâêè',
+            'title' => 'ĞĞ´Ñ€ĞµÑ Ğ´Ğ¾ÑÑ‚Ğ°Ğ²ĞºĞ¸',
             'type' => 'text'
         ),
         'session_id' => array (
             'name'  => 'session_id',
-            'title' => 'ID ñåññèè',
+            'title' => 'ID ÑĞµÑÑĞ¸Ğ¸',
 			'readonly' => true,
             'type'  => 'string'
         ),
 		'logindate' => array (
             'name'  => 'logindate',
-            'title' => 'Äàòà ïîñëåäíåãî âõîäà',
+            'title' => 'Ğ”Ğ°Ñ‚Ğ° Ğ¿Ğ¾ÑĞ»ĞµĞ´Ğ½ĞµĞ³Ğ¾ Ğ²Ñ…Ğ¾Ğ´Ğ°',
 			'readonly' => true,
             'type'  => 'datetime',
 			'width' => '10%'
         ),
 		'pay_type' => array (
             'name' => 'pay_type',
-            'title' => 'Ñïîñîá îïëàòû',
+            'title' => 'Ğ¡Ğ¿Ğ¾ÑĞ¾Ğ± Ğ¾Ğ¿Ğ»Ğ°Ñ‚Ñ‹',
             'type' => 'select',
 			'l_table' => 'cart_pay_type',
 			'l_field' => 'name',
@@ -95,7 +95,7 @@
         ),
         'delivery_type' => array (
             'name' => 'delivery_type',
-            'title' => 'Ñïîñîá äîñòàâêè',
+            'title' => 'Ğ¡Ğ¿Ğ¾ÑĞ¾Ğ± Ğ´Ğ¾ÑÑ‚Ğ°Ğ²ĞºĞ¸',
             'type' => 'select',
 			'l_table' => 'cart_delivery_type',
 			'l_field' => 'name',
@@ -108,25 +108,25 @@
 	$auth_tables[] = array(
 		'name'		=> 'addresses',
 		'component' => 'auth',
-		'title'		=> 'Àäğåñà äîñòàâêè',
+		'title'		=> 'ĞĞ´Ñ€ĞµÑĞ° Ğ´Ğ¾ÑÑ‚Ğ°Ğ²ĞºĞ¸',
 		'order_by'	=> 'credate DESC, login',
 		'show_credate' => true,
 		'fieldset' => array (
         'name' => array (
             'name' => 'name',
-            'title' => 'ÔÈÎ ïîëó÷àòåëÿ',
+            'title' => 'Ğ¤Ğ˜Ğ Ğ¿Ğ¾Ğ»ÑƒÑ‡Ğ°Ñ‚ĞµĞ»Ñ',
             'type' => 'string'
         ),
 		'user_id' => array (
             'name' => 'user_id',
-            'title' => 'Ïîëüçîâàòåëü',
+            'title' => 'ĞŸĞ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ñ‚ĞµĞ»ÑŒ',
             'type' => 'select',
 			'l_table' => 'auth_users',
 			'l_field' => 'name,lastname'
         ),
         'town' => array (
             'name' => 'town',
-            'title' => 'Ãîğîä',
+            'title' => 'Ğ“Ğ¾Ñ€Ğ¾Ğ´',
             'type' => 'string',
 			'search' => true,
             'not_empty' => true,
@@ -135,7 +135,7 @@
         ),
 		'street' => array (
             'name' => 'street',
-            'title' => 'Óëèöà',
+            'title' => 'Ğ£Ğ»Ğ¸Ñ†Ğ°',
             'type' => 'string',
 			'search' => true,
             'not_empty' => true,
@@ -144,37 +144,37 @@
         ),
         'house' => array (
             'name' => 'house',
-            'title' => 'Äîì',
+            'title' => 'Ğ”Ğ¾Ğ¼',
             'type' => 'string',
             'width' => '10%'
         ),
 		'corpus' => array (
             'name' => 'corpus',
-            'title' => 'Êîğïóñ',
+            'title' => 'ĞšĞ¾Ñ€Ğ¿ÑƒÑ',
             'type' => 'string',
             'width' => '10%'
         ),
 		'building' => array (
             'name' => 'building',
-            'title' => 'Ñòğîåíèå',
+            'title' => 'Ğ¡Ñ‚Ñ€Ğ¾ĞµĞ½Ğ¸Ğµ',
             'type' => 'string',
             'width' => '10%'
         ),
 		'apartment' => array (
             'name' => 'apartment',
-            'title' => 'Êâàğòèğà',
+            'title' => 'ĞšĞ²Ğ°Ñ€Ñ‚Ğ¸Ñ€Ğ°',
             'type' => 'string',
             'width' => '10%'
         ),
 		'comment' => array (
             'name' => 'comment',
-            'title' => 'Êîììåíòàğèé',
+            'title' => 'ĞšĞ¾Ğ¼Ğ¼ĞµĞ½Ñ‚Ğ°Ñ€Ğ¸Ğ¹',
             'type' => 'text',
             'width' => '10%'
         ),
         'phone' => array (
             'name' => 'phone',
-            'title' => 'Òåëåôîí',
+            'title' => 'Ğ¢ĞµĞ»ĞµÑ„Ğ¾Ğ½',
             'type' => 'string',
             'not_empty' => true,
             'form' => true,
@@ -182,7 +182,7 @@
         ),
         'phone_extra' => array (
             'name' => 'phone_extra',
-            'title' => 'Òåëåôîí (äîï.)',
+            'title' => 'Ğ¢ĞµĞ»ĞµÑ„Ğ¾Ğ½ (Ğ´Ğ¾Ğ¿.)',
             'type' => 'string',
             'not_empty' => true,
             'form' => true,

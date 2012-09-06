@@ -4,69 +4,69 @@
     $vote_tables[] = array(
 		'name'      => 'questions',
 		'component' => 'vote',
-		'title'     => 'Îïðîñ',
+		'title'     => 'ÐžÐ¿Ñ€Ð¾Ñ',
 		'order_by'  => 'date_beg DESC', 
 		'is_lang'   => true,
 		//'is_publish'=> true,
 		'fieldset'  => array (
         'title' => array (
             'name'   => 'title',
-            'title'  => 'Âîïðîñ',
+            'title'  => 'Ð’Ð¾Ð¿Ñ€Ð¾Ñ',
             'type'   => 'string',
             'width'  => '45%',
             'search' => true
         ),
         'name' => array (
             'name'   => 'name',
-            'title'  => 'Ñèñò. èìÿ',
+            'title'  => 'Ð¡Ð¸ÑÑ‚. Ð¸Ð¼Ñ',
             'type'   => 'string',
             'width'  => '15%',
             'search' => true
         ),
         'date_beg' => array (
             'name'  => 'date_beg',
-            'title' => 'Íà÷àëî ïîêàçà',
+            'title' => 'ÐÐ°Ñ‡Ð°Ð»Ð¾ Ð¿Ð¾ÐºÐ°Ð·Ð°',
             'type'  => 'datetime',
             'width' => '15%',
             'search'=> true
         ),
         'date_end' => array (
             'name'  => 'date_end',
-            'title' => 'Êîíåö ïîêàçà',
+            'title' => 'ÐšÐ¾Ð½ÐµÑ† Ð¿Ð¾ÐºÐ°Ð·Ð°',
             'type'  => 'datetime',
             'width' => '15%',
             'search'=> true
         ),
         'quantity' => array (
             'name'  => 'quantity',
-            'title' => 'Êîë-âî îòâåòîâ',
+            'title' => 'ÐšÐ¾Ð»-Ð²Ð¾ Ð¾Ñ‚Ð²ÐµÑ‚Ð¾Ð²',
             'type'  => 'number',
 			'readonly' => true,
         	'width' => '5%'
         ),
 		'step' => array (
             'name'  => 'step',
-            'title' => 'Øàã ãîëîñîâàíèÿ',
+            'title' => 'Ð¨Ð°Ð³ Ð³Ð¾Ð»Ð¾ÑÐ¾Ð²Ð°Ð½Ð¸Ñ',
             'type'  => 'number',
-			'help'  => 'Â ñåêóíäàõ',
+			'help'  => 'Ð’ ÑÐµÐºÑƒÐ½Ð´Ð°Ñ…',
 			'group_update' => true,
         	'width' => '5%'
         ),
 		'lmt' => array (
             'name'  => 'lmt',
-            'title' => 'Îãðàíè÷åíèÿ',
+            'title' => 'ÐžÐ³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ',
             'type'  => 'enum',
-			'select_values' => 'Áåç îãðàíè÷åíèé|0;Ïî ñåññèè|1;Ïî ñåññèè è IP|2',
+			'select_values' => 'Ð‘ÐµÐ· Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ð¹|0;ÐŸÐ¾ ÑÐµÑÑÐ¸Ð¸|1;ÐŸÐ¾ ÑÐµÑÑÐ¸Ð¸ Ð¸ IP|2',
 			'dir' => true,
-			'help'  => 'Â ñåêóíäàõ',
+			'help'  => 'Ð’ ÑÐµÐºÑƒÐ½Ð´Ð°Ñ…',
 			'group_update' => true,
         	'width' => '5%'
         ),
 		'is_dia' => array (
             'name'  => 'is_dia',
-            'title' => 'Äèàãðàììà',
+            'title' => 'Ð”Ð¸Ð°Ð³Ñ€Ð°Ð¼Ð¼Ð°',
             'type'  => 'checkbox',
-			'help'  => 'Ðåçóëüòàò â âèäå äèàãðàììû',
+			'help'  => 'Ð ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ð² Ð²Ð¸Ð´Ðµ Ð´Ð¸Ð°Ð³Ñ€Ð°Ð¼Ð¼Ñ‹',
 			'group_update' => true,
         	'width' => '1%'
         ),
@@ -75,7 +75,7 @@
 	$vote_tables[] = array(
 		'name'       => 'answers',
 		'component'  => 'vote',
-		'title'      => 'Îòâåò',
+		'title'      => 'ÐžÑ‚Ð²ÐµÑ‚',
 		'order_by'   => 'ord,name', 
 		'is_lang'    => true,
 		'is_publish' => true,
@@ -83,14 +83,14 @@
 		'fieldset'   => array (
         'name' => array (
             'name'   => 'name',
-            'title'  => 'Îòâåò',
+            'title'  => 'ÐžÑ‚Ð²ÐµÑ‚',
             'type'   => 'string',
             'width'  => '45%',
             'search' => true
         ),
         'question_id' => array (
             'name'    => 'question_id',
-            'title'   => 'Âîïðîñ',
+            'title'   => 'Ð’Ð¾Ð¿Ñ€Ð¾Ñ',
             'type'    => 'select',
         	'l_table' => 'vote_questions',
         	'l_field' => 'title',
@@ -101,14 +101,14 @@
         ),
         'color' => array (
             'name'  => 'color',
-            'title' => 'Öâåò',
+            'title' => 'Ð¦Ð²ÐµÑ‚',
             'type'  => 'color',
 			'group_update' => true,
         	'width' => '5%'
         ),
         'quantity' => array (
             'name'  => 'quantity',
-            'title' => 'Êîë-âî ãîëîñîâ',
+            'title' => 'ÐšÐ¾Ð»-Ð²Ð¾ Ð³Ð¾Ð»Ð¾ÑÐ¾Ð²',
             'type'  => 'number',
 			'readonly' => true,
         	'width' => '5%'
@@ -118,7 +118,7 @@
 	$vote_tables[] = array(
 		'name'      => 'cache',
 		'component' => 'vote',
-		'title'     => 'Ãîëîñîâàíèÿ',
+		'title'     => 'Ð“Ð¾Ð»Ð¾ÑÐ¾Ð²Ð°Ð½Ð¸Ñ',
 		'order_by'  => 'time DESC',
 		'no_update'  => true,
 		'no_delete'  => true,
@@ -126,7 +126,7 @@
 		'fieldset'  => array (
         'question_id' => array (
             'name'   => 'question_id',
-            'title'  => 'Îïðîñ',
+            'title'  => 'ÐžÐ¿Ñ€Ð¾Ñ',
             'type'   => 'select',
         	'l_table'=> 'vote_questions',
         	'l_field'=> 'title',
@@ -135,7 +135,7 @@
         ),
 		'sessionid' => array (
             'name'   => 'sessionid',
-            'title'  => 'Ñåññèÿ',
+            'title'  => 'Ð¡ÐµÑÑÐ¸Ñ',
             'type'   => 'string',
             'width'  => '35%'
         ),
@@ -148,7 +148,7 @@
         ),
         'time' => array (
             'name'  => 'time',
-            'title' => 'Âðåìÿ',
+            'title' => 'Ð’Ñ€ÐµÐ¼Ñ',
             'type'  => 'number',
         	'width' => '10%'
         )

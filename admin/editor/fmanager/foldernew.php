@@ -19,7 +19,7 @@ if(isset($_POST["inpNewFolderName"])){
 <base target="_self">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="style.css" rel="stylesheet" type="text/css">
 <script>
 	if(navigator.appName.indexOf('Microsoft')!=-1)

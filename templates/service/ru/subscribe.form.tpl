@@ -1,26 +1,26 @@
 <div class="subscribe-form">
-  <div class="popup-title">Подписаться на рассылку</div>
-  новостей компании &laquo;Цвета жизни&raquo;, чтобы в<br> числе первых узнавать о скидках,<br> акциях и новинках.
+  <div class="popup-title">РџРѕРґРїРёСЃР°С‚СЊСЃСЏ РЅР° СЂР°СЃСЃС‹Р»РєСѓ</div>
+  РЅРѕРІРѕСЃС‚РµР№ РєРѕРјРїР°РЅРёРё &laquo;Р¦РІРµС‚Р° Р¶РёР·РЅРё&raquo;, С‡С‚РѕР±С‹ РІ<br> С‡РёСЃР»Рµ РїРµСЂРІС‹С… СѓР·РЅР°РІР°С‚СЊ Рѕ СЃРєРёРґРєР°С…,<br> Р°РєС†РёСЏС… Рё РЅРѕРІРёРЅРєР°С….
   <br><br>
   <form name="frmSubscribe" id="frmSubscribe" method="post" action="">
     <input type="hidden" value="1" name="subscribe_type" />
     <table style="width: 350px">
       <tr>
-        <td style="padding: 0 0 5px 0;">Адрес электронной почты<br><input style="font: 12px Arial; width: 100%" name="email" type="text" /></td>
+        <td style="padding: 0 0 5px 0;">РђРґСЂРµСЃ СЌР»РµРєС‚СЂРѕРЅРЅРѕР№ РїРѕС‡С‚С‹<br><input style="font: 12px Arial; width: 100%" name="email" type="text" /></td>
       </tr>
 	  <tr>
-        <td style="padding: 0 0 5px 0;">Фамилия<br><input style="font: 12px Arial; width: 100%" name="lastname" type="text" /></td>
+        <td style="padding: 0 0 5px 0;">Р¤Р°РјРёР»РёСЏ<br><input style="font: 12px Arial; width: 100%" name="lastname" type="text" /></td>
       </tr>
 	  <tr>
-        <td style="padding: 0 0 5px 0;">Имя<br><input style="font: 12px Arial; width: 100%" name="name" type="text" /></td>
+        <td style="padding: 0 0 5px 0;">РРјСЏ<br><input style="font: 12px Arial; width: 100%" name="name" type="text" /></td>
       </tr>
 	  <tr>
 		<td style="padding: 0 0 10px 0;white-space:nowrap;">
-		<input class="subscribe-radio" style="width:auto;" type="radio" name="subscribe_type" id="rd1" value="1" /><label for="rd1">Я <strong>хочу</strong> получать новости от компании Цвета жизни</label></p>
-		<input class="subscribe-radio" style="width:auto;" type="radio" name="subscribe_type" id="rd2" value="2" /><label for="rd2">Я <strong>не хочу</strong> получать новости от компании Цвета жизни</label></p></td>
+		<input class="subscribe-radio" style="width:auto;" type="radio" name="subscribe_type" id="rd1" value="1" /><label for="rd1">РЇ <strong>С…РѕС‡Сѓ</strong> РїРѕР»СѓС‡Р°С‚СЊ РЅРѕРІРѕСЃС‚Рё РѕС‚ РєРѕРјРїР°РЅРёРё Р¦РІРµС‚Р° Р¶РёР·РЅРё</label></p>
+		<input class="subscribe-radio" style="width:auto;" type="radio" name="subscribe_type" id="rd2" value="2" /><label for="rd2">РЇ <strong>РЅРµ С…РѕС‡Сѓ</strong> РїРѕР»СѓС‡Р°С‚СЊ РЅРѕРІРѕСЃС‚Рё РѕС‚ РєРѕРјРїР°РЅРёРё Р¦РІРµС‚Р° Р¶РёР·РЅРё</label></p></td>
 	  </tr>	
       <tr>
-        <td><input class="subscribe-button" style="width:auto;" type="button" value="Отправить" onClick="xajax_showSubscribeResult(xajax.getFormValues('frmSubscribe'))" />&nbsp;&nbsp;
+        <td><input class="subscribe-button" style="width:auto;" type="button" value="РћС‚РїСЂР°РІРёС‚СЊ" onClick="xajax_showSubscribeResult(xajax.getFormValues('frmSubscribe'))" />&nbsp;&nbsp;
 		</td>
       </tr>
       <tr>

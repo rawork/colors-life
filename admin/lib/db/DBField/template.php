@@ -89,22 +89,22 @@
             $name = $name ? $name : $this->getName();
 			$r_ = rand(0, getrandmax());
 	        if ($s = $this->getStatic()) {
-				$s = '<span id="'.$name.'_delete">Текущая версия: '.$s.'&nbsp;<input name="'.$name.'_delete" type="checkbox" id="del'.$r_.'"><label for="del'.$r_.'" style="position:relative; top:-2px;">удалить</label>&nbsp;<br></span>'."\n";
+				$s = '<span id="'.$name.'_delete">РўРµРєСѓС‰Р°СЏ РІРµСЂСЃРёСЏ: '.$s.'&nbsp;<input name="'.$name.'_delete" type="checkbox" id="del'.$r_.'"><label for="del'.$r_.'" style="position:relative; top:-2px;">СѓРґР°Р»РёС‚СЊ</label>&nbsp;<br></span>'."\n";
 				$versions = $GLOBALS['db']->getItems('templates_version', "SELECT * FROM templates_version WHERE cls='".$this->props['cls']."' AND fld='".$name."' AND rc=".$this->dbId);
 				if (sizeof($versions)>0) {
-					$s .= '<span>Предудущие версии:</span> <select onChange="templateState(this, \''.$name.'\')" id="'.$name.'_version" name="'.$name.'_version"><option value="0">Не выбрано</option>'."\n";
+					$s .= '<span>РџСЂРµРґСѓРґСѓС‰РёРµ РІРµСЂСЃРёРё:</span> <select onChange="templateState(this, \''.$name.'\')" id="'.$name.'_version" name="'.$name.'_version"><option value="0">РќРµ РІС‹Р±СЂР°РЅРѕ</option>'."\n";
 					foreach ($versions as $ver) {
 						$s .= '<option value="'.$ver['id'].'">'.$ver['credate'].'</option>'."\n";
 					}
-					$s .= '</select>&nbsp;<input type="button" style="display: none;" id="'.$name.'_view" onClick="showTemplateVersion(\''.$name.'_version\')" value="Просмотр">'."\n";
+					$s .= '</select>&nbsp;<input type="button" style="display: none;" id="'.$name.'_view" onClick="showTemplateVersion(\''.$name.'_version\')" value="РџСЂРѕСЃРјРѕС‚СЂ">'."\n";
 				}
             }
 			if (empty($value)){
-				$s = '<nobr>&nbsp;<input name="'.$name.'_cre" type="checkbox" id="'.$r_.'" onClick="chState(this, \''.$name.'\')"><label for="'.$r_.'" style="position:relative; top:-2px;">Создать</label></nobr><br>
+				$s = '<nobr>&nbsp;<input name="'.$name.'_cre" type="checkbox" id="'.$r_.'" onClick="chState(this, \''.$name.'\')"><label for="'.$r_.'" style="position:relative; top:-2px;">РЎРѕР·РґР°С‚СЊ</label></nobr><br>
 			<div><input type=text id="'.$name.'_create" name="'.$name.'" size="30" style="width:350px;display:none;"><textarea wrap="off" id="'.$name.'_temp" name="'.$name.'_temp" style="width:99%;display:none;" rows="10" cols="40"></textarea></div>';
 				$ret = '<input type="hidden" name="'.$name.'_oldValue" value="'.$this->dbValue.'">'.$s.'<div><input id="'.$name.'_load" style="width:99%;display:block" type="file" name="'.$name.'" size="30"></div>';
 			} else {
-				$ret = '<nobr><input type="hidden" name="'.$name.'_oldValue" value="'.$this->dbValue.'">'.$s.'&nbsp;<br><span id="'.$name.'_load">Новый: <input type="file" name="'.$name.'" size=49 style="width:99%"></nobr></span>'."\n";
+				$ret = '<nobr><input type="hidden" name="'.$name.'_oldValue" value="'.$this->dbValue.'">'.$s.'&nbsp;<br><span id="'.$name.'_load">РќРѕРІС‹Р№: <input type="file" name="'.$name.'" size=49 style="width:99%"></nobr></span>'."\n";
 				$text = @file_get_contents($PRJ_DIR.$value);	
 				$ret .= '<textarea wrap="off" id="'.$name.'_temp" name="'.$name.'_temp" style="width:99%" rows="15" cols="45">'.htmlspecialchars($text).'</textarea>'."\n";
 			}

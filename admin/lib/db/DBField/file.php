@@ -40,7 +40,7 @@
             $name = $name ? $name : $this->getName();
 			if ($s = $this->getStatic()) {
                 $r = rand(0, getrandmax());
-                $s = $s.'<nobr>&nbsp;<input name="'.$name.'_delete" type="checkbox" id="'.$r.'"><label for="'.$r.'" style="position:relative; top:-2px;">удалить</label></nobr><br>';
+                $s = $s.'<nobr>&nbsp;<input name="'.$name.'_delete" type="checkbox" id="'.$r.'"><label for="'.$r.'" style="position:relative; top:-2px;">СѓРґР°Р»РёС‚СЊ</label></nobr><br>';
             }
             return '<input type="hidden" name="'.$name.'_oldValue" value="'.$this->dbValue.'">'.$s.'<input type="file" name="'.$name.'" size="49" style="width:100%">';
         }

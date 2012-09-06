@@ -7,7 +7,7 @@
         }
         function getText() {
 			set_time_limit(0);
-            $this->messageAction($GLOBALS['rtti']->dublicateItem($this->t->getDBTableName(), CUtils::_getVar('id'), CUtils::_getVar('quantity', true, 5)) ? 'Скопировано' : 'Ошибка копирования');
+            $this->messageAction($GLOBALS['rtti']->dublicateItem($this->t->getDBTableName(), CUtils::_getVar('id'), CUtils::_getVar('quantity', true, 5)) ? 'РЎРєРѕРїРёСЂРѕРІР°РЅРѕ' : 'РћС€РёР±РєР° РєРѕРїРёСЂРѕРІР°РЅРёСЏ');
         }
 		
     }

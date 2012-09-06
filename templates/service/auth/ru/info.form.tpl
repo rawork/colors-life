@@ -1,5 +1,5 @@
 <form name="mainForm" method="POST">
-<h1>Личные данные</h1>
+<h1>Р›РёС‡РЅС‹Рµ РґР°РЅРЅС‹Рµ</h1>
 {$cabinetMenu}
 <input type="hidden" name="fromPage" value="">
 <input name="processInfo" value="1" type="hidden">
@@ -10,34 +10,34 @@
 </colgroup>
 <tr><td>&nbsp;</td><td>{if $error_message}<div class="tree-error">{$error_message}</div>{/if}</td></tr>
 <tr>
-<td><span>Электронная почта</span></td>
+<td><span>Р­Р»РµРєС‚СЂРѕРЅРЅР°СЏ РїРѕС‡С‚Р°</span></td>
 <td><input onblur="checkInfoForm()" onkeypress="checkInfoForm()" onkeyup="checkInfoForm()" type="text" value="{$userInfo.email}" class="simple-text" maxlength="30" name="userEmail" /></td>
 </tr>
 <tr>
-<td><span>Имя</span></td>
+<td><span>РРјСЏ</span></td>
 <td><input onblur="checkInfoForm()" onkeypress="checkInfoForm()" onkeyup="checkInfoForm()" type="text" value="{$userInfo.name}" class="simple-text" maxlength="30" name="userFName" /></td>
 </tr>
 <tr>
-<td>Фамилия</td>
+<td>Р¤Р°РјРёР»РёСЏ</td>
 <td><input onblur="checkInfoForm()" onkeypress="checkInfoForm()" onkeyup="checkInfoForm()" type="text" value="{$userInfo.lastname}" class="simple-text" maxlength="50" name="userLName" /></td>
 </tr>
 <tr>
-<td><span>Телефон</span></td>
+<td><span>РўРµР»РµС„РѕРЅ</span></td>
 <td><input onblur="checkInfoForm()" onkeypress="checkInfoForm()" onkeyup="checkInfoForm()" type="text" value="{$userInfo.phone}" class="simple-text" maxlength="30" name="userPhone" />
-<p class="comment">Формат: +7 (XXX) XXX-XX-XX</p></td>
+<p class="comment">Р¤РѕСЂРјР°С‚: +7 (XXX) XXX-XX-XX</p></td>
 </tr>
 <tr>
-<td>Адрес</td>
+<td>РђРґСЂРµСЃ</td>
 <td><textarea class="simple-text" maxlength="500" name="userAddress">{$userInfo.address}</textarea></td>
 </tr>
 <tr>
-<td>Пол</td>
+<td>РџРѕР»</td>
 <td>
-<input type="radio" value="мужской"{if $userInfo.gender == 'мужской'} checked{/if} name="userGender" id="male"><label for="male">&nbsp;мужской</label>
-<br><input type="radio" value="женский"{if $userInfo.gender == 'женский'} checked{/if} name="userGender" id="female"><label for="female">&nbsp;женский</label>
+<input type="radio" value="РјСѓР¶СЃРєРѕР№"{if $userInfo.gender == 'РјСѓР¶СЃРєРѕР№'} checked{/if} name="userGender" id="male"><label for="male">&nbsp;РјСѓР¶СЃРєРѕР№</label>
+<br><input type="radio" value="Р¶РµРЅСЃРєРёР№"{if $userInfo.gender == 'Р¶РµРЅСЃРєРёР№'} checked{/if} name="userGender" id="female"><label for="female">&nbsp;Р¶РµРЅСЃРєРёР№</label>
 </td>
 </tr>
- <tr><td>День рождения</td>
+ <tr><td>Р”РµРЅСЊ СЂРѕР¶РґРµРЅРёСЏ</td>
 <td style="vertical-align: top;">
   <input type="text" value="{$userInfo.birthday[0]}" name="userDay" maxlength="2" style="width:2em;height: 18px;margin-bottom:3px;">
   <select style="height: 25px;" name="userMonth">
@@ -49,7 +49,7 @@
 </tr>
 <tr>
 <td></td>
-<td><input type="submit" id="submitBtn" disabled="true" value="Сохранить" /></td>
+<td><input type="submit" id="submitBtn" disabled="true" value="РЎРѕС…СЂР°РЅРёС‚СЊ" /></td>
 </tr>
  </table>
 <script>

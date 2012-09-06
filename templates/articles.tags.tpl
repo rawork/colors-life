@@ -5,5 +5,5 @@
 	<li><a class="w{$item.position}" rel="tag" href="{raURL node=articles method=index}?tag={$item.id}">{$item.name}</a></li>
 	{/foreach}
 	</ul>
-	<br><a href="{raURL node=articles method=tags}">все метки</a>
+	<br><a href="{raURL node=articles method=tags}">РІСЃРµ РјРµС‚РєРё</a>
     </div>

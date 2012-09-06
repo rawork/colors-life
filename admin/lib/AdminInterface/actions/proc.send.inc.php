@@ -5,7 +5,7 @@
             parent::__construct($unitAdminInterface);
         }
         function getText() {
-			$this->messageAction($this->uai->unit->everyMin() ? 'Îøèáêè ïðè ðàññûëêå' : 'Ðàññûëêà ñäåëàíà');
+			$this->messageAction($this->uai->unit->everyMin() ? 'ÐžÑˆÐ¸Ð±ÐºÐ¸ Ð¿Ñ€Ð¸ Ñ€Ð°ÑÑÑ‹Ð»ÐºÐµ' : 'Ð Ð°ÑÑÑ‹Ð»ÐºÐ° ÑÐ´ÐµÐ»Ð°Ð½Ð°');
         }
     }
 ?>

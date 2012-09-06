@@ -1,11 +1,11 @@
-<div class="pager2"> Страницы: 
-{if $begin_link ne ''}<a href="{$begin_link}">Нач.</a>&nbsp;{/if}
+<div class="pager2"> РЎС‚СЂР°РЅРёС†С‹: 
+{if $begin_link ne ''}<a href="{$begin_link}">РќР°С‡.</a>&nbsp;{/if}
 {if $prevblock_link ne ''}<a href="{$prevblock_link}">...</a>&nbsp;{/if}	
-{if $prev_link ne ''}<a href="{$prev_link}">&larr;&nbsp;Предыдущая</a>&nbsp;{/if}
+{if $prev_link ne ''}<a href="{$prev_link}">&larr;&nbsp;РџСЂРµРґС‹РґСѓС‰Р°СЏ</a>&nbsp;{/if}
 {foreach from=$pages key=k item=i}
 {if $page == $i.name}<span>{$i.name}</span>&nbsp;{else}<a href="{$i.ref}">{$i.name}</a>&nbsp;{/if}
 {/foreach}
-{if $next_link ne ''}<a href="{$next_link}">Следующая&nbsp;&rarr;</a>&nbsp;{/if}
+{if $next_link ne ''}<a href="{$next_link}">РЎР»РµРґСѓСЋС‰Р°СЏ&nbsp;&rarr;</a>&nbsp;{/if}
 {if $nextblock_link ne ''}<a href="{$nextblock_link}">...</a>&nbsp;{/if}
-{if $end_link ne ''}<a href="{$end_link}">Кон.</a>&nbsp;{/if}
+{if $end_link ne ''}<a href="{$end_link}">РљРѕРЅ.</a>&nbsp;{/if}
 </div>

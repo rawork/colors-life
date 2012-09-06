@@ -8,7 +8,7 @@
 {raItem var=tag table=articles_tags select="id,name" query=$smarty.get.tag}
 {raPageNavigation var=pages table=articles_articles query="tags LIKE '%`$tag.name`%' AND publish='on' AND dir_id=`$urlprops.node.id`" pref="`$ref``$mname`.###.htm?tag=`$tag.id`" per_page=$settings.per_page page=$param0 tpl=public}
 {raItems var=items table=articles_articles query="tags LIKE '%`$tag.name`%' AND publish='on' AND dir_id=`$urlprops.node.id`" limit=$pages->limit}
-<h1>Все статьи на тему &laquo;{$tag.name}&raquo;</h1>
+<h1>Р’СЃРµ СЃС‚Р°С‚СЊРё РЅР° С‚РµРјСѓ &laquo;{$tag.name}&raquo;</h1>
 {else} 
 {raPageNavigation var=pages table=articles_articles query="publish='on' AND dir_id=`$urlprops.node.id`" pref="`$ref``$mname`.###.htm" per_page=$settings.per_page page=$param0 tpl=public}
 {raItems var=items table=articles_articles query="publish='on' AND dir_id=`$urlprops.node.id`" limit=$pages->limit}
@@ -18,7 +18,7 @@
  <div class="article-block"> 
     <div class="article-title"><a href="{raURL node=$art.dir_id_name method=read prms=$art.id}">{$art.name}</a></div>
   <div class="article-text">{$art.announce}</div>
-  <div class="article-link"><a href="{raURL node=$art.dir_id_name method=read prms=$art.id}">Подробнее &gt;</a></div>
+  <div class="article-link"><a href="{raURL node=$art.dir_id_name method=read prms=$art.id}">РџРѕРґСЂРѕР±РЅРµРµ &gt;</a></div>
 </div>
   {/foreach}
 {if is_object($pages)}{$pages->getText()}{/if} 

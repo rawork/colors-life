@@ -5,7 +5,7 @@
             parent::__construct($unitAdminInterface);
         }
         function getText() {
-            $this->messageAction($this->t->group_update() ? 'Îáíîâëåíî' : 'Îøèáêà îáíîâëåíèÿ çàïèñåé');
+            $this->messageAction($this->t->group_update() ? 'ÐžÐ±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¾' : 'ÐžÑˆÐ¸Ð±ÐºÐ° Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ Ð·Ð°Ð¿Ð¸ÑÐµÐ¹');
         }
     }
 ?>

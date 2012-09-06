@@ -2,10 +2,10 @@
 <head>
 <title>{$title}</title>
 {$meta}
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="/css/style.css" type="text/css">
-<link href=”/favicon.ico” rel=”icon” type=”image/x-icon” />
-<link href=”/favicon.ico” rel=”shortcut icon” type=”image/x-icon” />
+<link href=вЂќ/favicon.icoвЂќ rel=вЂќiconвЂќ type=вЂќimage/x-iconвЂќ />
+<link href=вЂќ/favicon.icoвЂќ rel=вЂќshortcut iconвЂќ type=вЂќimage/x-iconвЂќ />
 <script type="text/javascript" src="/js/swfobject.js"></script>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/dimmer.js"></script>
@@ -53,32 +53,32 @@
     <td style="padding-bottom:20px;"><table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td width="33%" class="head-contacts"><img src="/img/map.gif" border="0" usemap="#Map">
-            <div class="head-mode"> Мы работаем ежедневно<br>
+            <div class="head-mode"> РњС‹ СЂР°Р±РѕС‚Р°РµРј РµР¶РµРґРЅРµРІРЅРѕ<br>
               {raInclude var=rejim}</div>
             <div class="head-phone">{raInclude var=phone}</div>
-            <div class="head-contacts-link"><a href="/contacts.htm">контакты</a></div></td>
+            <div class="head-contacts-link"><a href="/contacts.htm">РєРѕРЅС‚Р°РєС‚С‹</a></div></td>
           <td width="33%" class="head-logo"><a href="/"><img src="/img/logo.gif"></a></td>
           <td width="33%" class="head-cart"><table align="right" width="260" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td colspan="2">
 				<div class="head-auth-link">
 				{if $uauth->user}
-				<b>{$uauth->user.name} {$uauth->user.lastname}</b> | <a href="/cabinet/">Личный кабинет</a> | <a href="/cabinet/logout.htm">Выйти</a>
+				<b>{$uauth->user.name} {$uauth->user.lastname}</b> | <a href="/cabinet/">Р›РёС‡РЅС‹Р№ РєР°Р±РёРЅРµС‚</a> | <a href="/cabinet/logout.htm">Р’С‹Р№С‚Рё</a>
 				{else}
-				<a href="/cabinet/">У меня уже есть логин</a> | <a href="/cabinet/registration.htm">Регистрация</a>
+				<a href="/cabinet/">РЈ РјРµРЅСЏ СѓР¶Рµ РµСЃС‚СЊ Р»РѕРіРёРЅ</a> | <a href="/cabinet/registration.htm">Р РµРіРёСЃС‚СЂР°С†РёСЏ</a>
 				{/if}
 				</div></td>
               </tr>
               <tr>
-                <td class="head-cart-content"><h5><a href="/cart/">Корзина</a></h5>
+                <td class="head-cart-content"><h5><a href="/cart/">РљРѕСЂР·РёРЅР°</a></h5>
                   <div id="cart_count"> 
 				  {if $smarty.session.number}
-				  <span>{$smarty.session.number}</span> товаров<br>
-                  на сумму <span>{$smarty.session.summa}</span> руб.
+				  <span>{$smarty.session.number}</span> С‚РѕРІР°СЂРѕРІ<br>
+                  РЅР° СЃСѓРјРјСѓ <span>{$smarty.session.summa}</span> СЂСѓР±.
 				  {else}
-				  Нет выбранных <br>
-                  товаров{/if} </div>
-                  <div class="head-cart-link"><a href="/cart/">Оформить заказ</a></div></td>
+				  РќРµС‚ РІС‹Р±СЂР°РЅРЅС‹С… <br>
+                  С‚РѕРІР°СЂРѕРІ{/if} </div>
+                  <div class="head-cart-link"><a href="/cart/">РћС„РѕСЂРјРёС‚СЊ Р·Р°РєР°Р·</a></div></td>
                 <td><img src="/img/cart.jpg"></td>
               </tr>
               <tr>
@@ -88,7 +88,7 @@
                 <table width="87%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                       <td><img src="/img/search_input_left.gif"></td>
-                      <td width="80%"><input type="text" name="text" onFocus="procFocus(this, 'Поиск по сайту')" onBlur="procBlur(this, 'Поиск по сайту')" value="Поиск по сайту" class="search-text"></td>
+                      <td width="80%"><input type="text" name="text" onFocus="procFocus(this, 'РџРѕРёСЃРє РїРѕ СЃР°Р№С‚Сѓ')" onBlur="procBlur(this, 'РџРѕРёСЃРє РїРѕ СЃР°Р№С‚Сѓ')" value="РџРѕРёСЃРє РїРѕ СЃР°Р№С‚Сѓ" class="search-text"></td>
                       <td width="20%" style="padding-left: 5px;"><a href="javascript:document.frmSearch.submit()"><img src="/img/search_btn.jpg"></a></td>
                     </tr>
                   </table>
@@ -116,28 +116,7 @@
   <tr>
     <td height="100%"><table width="100%" style="height:100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td valign="top"><!--<table width="100%" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td><img src="/img/extramenu_lt.gif"></td>
-                <td style="background:url('/img/extramenu_t.gif') repeat-x"><img src="/img/extramenu_t.gif"></td>
-                <td><img src="/img/extramenu_rt.gif"></td>
-              </tr>
-              <tr>
-                <td style="background:url('/img/extramenu_l.gif') repeat-y"><img src="/img/extramenu_l.gif"></td>
-                <td class="extramenu-content">
-                  {raDir var=extratrees query=extra_info}
-                  {foreach from=$extratrees key=k item=menuitem}
-                  {if $k > 0}<br>{/if}<a href="{$menuitem.ref}">{$menuitem.title}</a>
-                  {/foreach}
-                  </td>
-                <td style="background:url('/img/extramenu_r.gif') repeat-y"><img src="/img/extramenu_r.gif"></td>
-              </tr>
-              <tr>
-                <td><img src="/img/extramenu_lb.gif"></td>
-                <td style="background:url('/img/extramenu_b.gif') repeat-x"><img src="/img/extramenu_b.gif"></td>
-                <td><img src="/img/extramenu_rb.gif"></td>
-              </tr>
-            </table>-->
+          <td valign="top">
 			<div class="leftmenu-grey-line"><img src="/img/0.gif" height="4" width="240"></div>
 			{raMethod ref=/catalog/cats.htm}
             
@@ -161,11 +140,11 @@ a+=';d='+(s.colorDepth?s.colorDepth:s.pixelDepth);js=12;//--></script>
 js=13;//--></script><script language="javascript" type="text/javascript"><!--
 d.write('<a href="http://top.mail.ru/jump?from=1911268" target="_top">'+
 '<img src="http://d9.c2.bd.a1.top.mail.ru/counter?id=1911268;t=69;js='+js+
-a+';rand='+Math.random()+'" alt="Рейтинг@Mail.ru" border="0" '+
+a+';rand='+Math.random()+'" alt="Р РµР№С‚РёРЅРі@Mail.ru" border="0" '+
 'height="31" width="38"><\/a>');if(11<js)d.write('<'+'!-- ');//--></script>
 <noscript><a target="_top" href="http://top.mail.ru/jump?from=1911268">
 <img src="http://d9.c2.bd.a1.top.mail.ru/counter?js=na;id=1911268;t=69" 
-height="31" width="38" border="0" alt="Рейтинг@Mail.ru"></a></noscript>
+height="31" width="38" border="0" alt="Р РµР№С‚РёРЅРі@Mail.ru"></a></noscript>
 <script language="javascript" type="text/javascript"><!--
 if(11<js)d.write('--'+'>');//--></script>
 <!--// Rating@Mail.ru counter-->
@@ -193,14 +172,14 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 <!-- end of Top100 code -->	
 
 <a href='http://torg.mail.ru/?prtnr=1&pid=5915&click=1'><img height='31' border='0'
-width='88' alt='Товары@Mail.ru'
+width='88' alt='РўРѕРІР°СЂС‹@Mail.ru'
 src='http://upload.torg.mail.ru/prtnr/?pid=5915'/></a>
 
-<!--Трэкер "Основной"-->
+<!--РўСЂСЌРєРµСЂ "РћСЃРЅРѕРІРЅРѕР№"-->
 
 <script>document.write('<img src="http://mixmarket.biz/tr.plx?e=3779414&r='+escape(document.referrer)+'&t='+(new Date()).getTime()+'" width="1" height="1"/>');</script>
 
-<!--Трэкер "Основной"-->
+<!--РўСЂСЌРєРµСЂ "РћСЃРЅРѕРІРЅРѕР№"-->
 
 
 			</td>
@@ -209,7 +188,7 @@ src='http://upload.torg.mail.ru/prtnr/?pid=5915'/></a>
           	{raMethod ref=/catalog/advert.htm}
 			<div class="index-content">{$mainbody}</div>
 			{raMethod ref=/news/lenta.htm}
-            <div class="spec-link"><a href="javascript:changeTab('offer_stuff')" id="offer_stuff_link" class="active">Спецпредложения</a> <a href="javascript:changeTab('new_stuff')" id="new_stuff_link">Новинки</a></div>
+            <div class="spec-link"><a href="javascript:changeTab('offer_stuff')" id="offer_stuff_link" class="active">РЎРїРµС†РїСЂРµРґР»РѕР¶РµРЅРёСЏ</a> <a href="javascript:changeTab('new_stuff')" id="new_stuff_link">РќРѕРІРёРЅРєРё</a></div>
             <div id="offer_stuff">{raMethod ref=/catalog/offer.htm}</div>
             <div id="new_stuff" style="display:none">{raMethod ref=/catalog/new.htm}</div>
 			<br>
@@ -225,7 +204,7 @@ src='http://upload.torg.mail.ru/prtnr/?pid=5915'/></a>
     <td><table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><img src="/img/footer_left.gif"></td>
-          <td width="100%" class="footer-content">&copy; 2010 «Цвета Жизни»</td>
+          <td width="100%" class="footer-content">&copy; 2010 В«Р¦РІРµС‚Р° Р–РёР·РЅРёВ»</td>
           <td><img src="/img/footer_right.gif"></td>
         </tr>
       </table></td>

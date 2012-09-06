@@ -40,7 +40,7 @@
 					if ($this->_iPagesQuantity > 0) {
 						if ($this->_iCurrentPage > $this->_iPagesQuantity) {
 							$this->_iCurrentPage = 1;
-							//throw new Exception('Ошибка обращения к странице. <a href="/">Начать с главной страницы</a>');
+							//throw new Exception('РћС€РёР±РєР° РѕР±СЂР°С‰РµРЅРёСЏ Рє СЃС‚СЂР°РЅРёС†Рµ. <a href="/">РќР°С‡Р°С‚СЊ СЃ РіР»Р°РІРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹</a>');
 						}
 						if ($this->_iCurrentPage < 1) {
 							$this->_iCurrentPage = 1;

@@ -126,12 +126,12 @@
 					aTitle = a.attr('title');
 					$(a).removeAttr('title');
 
-					//se non cè creo l'oggetto largeimage
+					//se non cÐ¸ creo l'oggetto largeimage
 					if (!largeimage || $.browser.safari) {
 						largeimage = new Largeimage( a[0].href );
 					}
 
-					//se l'immagine grande non è stata caricata la carico
+					//se l'immagine grande non Ð¸ stata caricata la carico
 					if(!largeimageloaded || $.browser.safari)
 					{
 						largeimage.loadimage();
@@ -202,7 +202,7 @@
 					$().unbind();
 
 					a.unbind('mousemove');
-					//resetto il parametro che mi dice che è la prima volta che mostor lo zoom
+					//resetto il parametro che mi dice che Ð¸ la prima volta che mostor lo zoom
 					firstime = 0;
 					//remove ieiframe
 					if(jQuery('.zoom_ieframe').length > 0)

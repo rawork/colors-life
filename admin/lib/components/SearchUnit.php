@@ -64,14 +64,14 @@
                 		$pages = '<div>';
 						if ($this->page > 1) {
 							$ref = '?text='.urlencode(CUtils::_getVar('text')).'&page='.($this->page-1);
-							$pages .= '<a title="íàçàä" href="'.$ref.'">&larr;</a>';
+							$pages .= '<a title="Ğ½Ğ°Ğ·Ğ°Ğ´" href="'.$ref.'">&larr;</a>';
                	    	}
     	            	for ($i = 1; $i<=$pages_cnt; $i++){
                 	    	$pages .= $i == $this->page ? ' '.$i.' ' : ' <a href="?text='.urlencode(CUtils::_getVar('text')).'&page='.$i.'">'.$i.'</a> ';
 	                    }
 						if ($this->page < $pages_cnt) {
 							$ref = '?text='.urlencode(CUtils::_getVar('text')).'&page='.($this->page+1);
-							$pages .= '<a title="âïåğåä" href="'.$ref.'">&rarr;</a>';
+							$pages .= '<a title="Ğ²Ğ¿ĞµÑ€ĞµĞ´" href="'.$ref.'">&rarr;</a>';
 		                }
 	                    $pages .= '</div>';
 	                    $this->smarty->assign('ptext', $pages);

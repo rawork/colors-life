@@ -18,10 +18,10 @@
 
 function smarty_function_raCount($params, &$smarty) {
 	if (!isset($params['table'])) {
-		$smarty->trigger_error('raItems: Íå óêàçàí ïàğàìåòğ: table');
+		$smarty->trigger_error('raItems: ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€: table');
 	} else {
 		if (!isset($params['var'])) {
-			$smarty->trigger_error('raItems: Íå óêàçàí ïàğàìåòğ: var');
+			$smarty->trigger_error('raItems: ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½ Ğ¿Ğ°Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€: var');
 		} else {
 			$smarty->assign($params['var'], $GLOBALS['rtti']->getCount($params['table'], isset($params['query']) ? $params['query'] : ''));
 		}

@@ -19,7 +19,7 @@
 
 function smarty_function_raMethod($params, &$smarty) {
 	if (!isset($params['ref'])) {
-		$smarty->trigger_error('raMethod: Íå óêàçàí ïàðàìåòð: ref');
+		$smarty->trigger_error('raMethod: ÐÐµ ÑƒÐºÐ°Ð·Ð°Ð½ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€: ref');
 	} else {
 		return $GLOBALS['rtti']->callMethodByURL($params['ref'], false);
 	}

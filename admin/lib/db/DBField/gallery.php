@@ -126,7 +126,7 @@
 		
 		public function getInput($value = '', $name = '') {
 		global $PRJ_REF;	
-            return $this->getStatic().'<input class="butt" type="button" value="Èçìåíèòü" onClick="open_window(\''.$PRJ_REF.'/admin/wnd_photo.php?table='.$this->props['l_table'].'&field='.$this->props['l_field'].'&id='.$this->dbId.'\')">';
+            return $this->getStatic().'<input class="butt" type="button" value="Ð˜Ð·Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ" onClick="open_window(\''.$PRJ_REF.'/admin/wnd_photo.php?table='.$this->props['l_table'].'&field='.$this->props['l_field'].'&id='.$this->dbId.'\')">';
         }
 		
     }
