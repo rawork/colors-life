@@ -7,8 +7,8 @@ sitemap.xml
 
 # Configuration files
 config.php
-admin/lib/conf/db.conf.php
-admin/lib/conf/db.params.php
+admin/lib/conf/conf.db.php
+admin/lib/conf/conf.params.php
 
 # Cache
 admin/lib/cache/*
