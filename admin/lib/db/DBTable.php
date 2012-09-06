@@ -294,9 +294,9 @@
 					}
 				}
 				if ($search_fields) {
-					if ($fulltext_exists)
-						$sql .= 'ALTER TABLE '.$this->getDBTableName().' DROP INDEX search;#|#|#';
-					$sql .= 'ALTER TABLE '.$this->getDBTableName().' ADD FULLTEXT INDEX search ('.$search_fields.');#|#|#';
+//					if ($fulltext_exists)
+//						$sql .= 'ALTER TABLE '.$this->getDBTableName().' DROP INDEX search;#|#|#';
+//					$sql .= 'ALTER TABLE '.$this->getDBTableName().' ADD FULLTEXT INDEX search ('.$search_fields.');#|#|#';
 				} elseif ($fulltext_exists) {
 					$sql .= 'ALTER TABLE '.$this->getDBTableName().' DROP INDEX search;#|#|#';
 				}
