@@ -10,6 +10,7 @@
 			global $db, $PRJ_DIR;
 			$db->execQuery('truncate_tags', "TRUNCATE TABLE articles_tags");
 			$db->execQuery('truncate_tags', "TRUNCATE TABLE articles_tags_articles");
+			$db->execQuery('truncate_tags', "TRUNCATE TABLE articles_stuff_articles");
 			$articles = $db->getItems('get_art', "SELECT id,tags FROM articles_articles WHERE publish='on'");
 			$tags_full = array();
 			foreach ($articles as $article) {
