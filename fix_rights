@@ -4,4 +4,5 @@ chmod -R 775 admin/lib/cache/
 chmod -R 775 admin/lib/templates_c/
 chmod -R 775 img/files/
 chmod -R 775 upload/
-
+chmod -R 775 yml/shop.yml
+chmod -R 775 sitemap.xml
