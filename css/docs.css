@@ -1,0 +1,274 @@
+/* CSS Document */
+
+body {
+	font-family:Arial;
+	font-size:12px;
+	line-height:16px;
+	color:#000000;
+	font-weight:normal;
+	margin:0;
+	padding:0;
+}
+p, div, span, td {
+	font-family:Arial;
+	font-size:12px;
+	line-height:16px;
+	color:#000000;
+	font-weight:normal;
+}
+
+/* Schet-1 */
+table.account-top {
+	padding:5px;
+	margin:0 20px 0 0;
+}
+
+table.account-brd td {
+	border:1px solid #000000;
+	padding:5px;
+}
+
+td.account-number {
+	font-family:Arial;
+	font-size:16px;
+	line-height:16px;
+	color:#000000;
+	font-weight:bold;
+	text-align:center;
+	padding:20px 0 20px 0;
+}
+
+td.account-name1 {
+	font-family:Arial;
+	font-size:14px;
+	line-height:16px;
+	color:#000000;
+	font-weight:bold;
+	padding:0 0 0 0;
+}
+
+td.account-t1 {
+	font-family:Arial;
+	font-size:12px;
+	line-height:16px;
+	color:#000000;
+	font-weight:normal;
+	padding:0 0 0 0;
+}
+
+table.account-s1 td {
+	border:1px solid #000000;
+	padding:5px;
+}
+.s_number {
+	font-family:Arial;
+	font-size:22px;
+	line-height:20px;
+	color:#000000;
+	font-weight:normal;
+	text-align:center;
+	padding:20px 0 40px 0;
+}
+/* End Schet-1 */
+
+
+/* Schet-2 */
+table.account2 {
+	border:1px dotted #000000;
+}
+table.account2 td p {
+	padding:0;
+	margin:0;
+}
+/*table.account2 td {
+	padding:0 5px 0 5px;
+}*/
+
+table.account2 td.bord_r {
+	border-right:1px solid #000000;
+}
+table.account2 td.bord_4 {
+	border:1px solid #000000;
+}
+table.account2 td.bord_lvr {
+	border-left:1px solid #000000;
+	border-top:1px solid #000000;
+	border-right:1px solid #000000;
+}
+table.account2 td.bord_vr {
+	border-top:1px solid #000000;
+	border-right:1px solid #000000;
+}
+table.account2 td.bord_vrn {
+	border-top:1px solid #000000;
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
+}
+table.account2 td.bord_rn {
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
+}
+table.account2 td.bord_vn {
+	border-top:1px solid #000000;
+	border-bottom:1px solid #000000;
+}
+table.account2 td.bord_v {
+	border-top:1px solid #000000;
+}
+table.account2 td.bord_n {
+	border-bottom:1px solid #000000;
+}
+table.account2 td.bord_lr {
+	border-left:1px solid #000000;
+	border-right:1px solid #000000;
+}
+
+
+td.schet_p {
+	background:url(images/schet_p.gif) left top repeat-x;
+}
+
+.account2-t01 {
+	font-family:Arial;
+	font-size:10px;
+	line-height:10px;
+	color:#000000;
+	font-weight:normal;
+	padding:0 0 0 5px;
+	margin:0;
+}
+.account2-t02 {
+	font-family:Arial;
+	font-size:14px;
+	line-height:16px;
+	color:#000000;
+	font-weight:bold;
+	padding:0 0 0 5px;
+	margin:0;
+}
+.account2-t02.d {
+	padding:15px 5px 10px 5px;
+	margin:0;
+}
+.account2-t03 {
+	font-family:Arial;
+	font-size:10px;
+	line-height:10px;
+	color:#000000;
+	font-weight:normal;
+	white-space:nowrap;
+	padding:0 15px 0 15px;
+	margin:0;
+}
+.account2-t04 {
+	font-family:Arial;
+	font-size:14px;
+	line-height:16px;
+	color:#000000;
+	font-weight:bold;
+	font-style:italic;
+	padding:0 0 0 15px;
+	margin:0;
+}
+.account2-t05 {
+	font-family:Arial;
+	font-size:12px;
+	line-height:16px;
+	color:#000000;
+	font-weight:normal;
+	font-style:italic;
+	white-space:nowrap;
+	padding:0 0 0 5px;
+	margin:0;
+}
+.account2-t06 {
+	font-family:Arial;
+	font-size:10px;
+	line-height:10px;
+	color:#000000;
+	font-weight:normal;
+	white-space:nowrap;
+	padding:0 10px 15px 10px;
+	margin:0;
+}
+.account2-t07 {
+	font-family:Arial;
+	font-size:11px;
+	line-height:10px;
+	color:#000000;
+	font-weight:normal;
+	white-space:nowrap;
+	padding:0 10px 0 10px;
+	margin:0;
+}
+.account2-t07.b {
+	font-size:12px;
+	padding:5px 10px 5px 10px;
+	text-align:center;
+}
+.account2-t07.d {
+	font-size:12px;
+	line-height:14px;
+	padding:3px 5px 3px 5px;
+	white-space:normal;
+}
+.account2-t07.d2 {
+	font-size:12px;
+	padding:5px 0 5px 0;
+	text-align:center;
+	width:83px;
+}
+.account2-t07.d3 {
+	font-size:11px;
+	padding:3px 5px 3px 5px;
+	text-align:center;
+}
+.account2-t07.d4 {
+	font-size:11px;
+	padding:3px 5px 3px 5px;
+	text-align:center;
+	white-space:nowrap;
+}
+.account2-t08 {
+	font-family:Arial;
+	font-size:12px;
+	line-height:12px;
+	color:#000000;
+	font-weight:bold;
+	white-space:nowrap;
+	padding:5px 22px 5px 5px;
+	margin:0;
+}
+.account2-t08.d {
+	font-family:Arial;
+	font-size:12px;
+	line-height:12px;
+	color:#000000;
+	font-weight:bold;
+	white-space:nowrap;
+	padding:3px 0 3px 0;
+	margin:0;
+}
+.account2-t09 {
+	font-family:Arial;
+	font-size:10px;
+	line-height:10px;
+	color:#000000;
+	font-weight:normal;
+	white-space:nowrap;
+	padding:0 0 15px 0;
+	margin:0;
+}
+/* End Schet-2 */
+
+
+.inc {
+	font-family:Arial;
+	font-size:11px;
+	line-height:11px;
+	color:#000000;
+	font-weight:normal;
+	white-space:nowrap;
+	padding:13px 0 13px 0;
+	margin:0;
+}

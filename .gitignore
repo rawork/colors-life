@@ -1,12 +1,19 @@
-# Bootstrap
-app/bootstrap*
 
-# Symfony directories
-vendor/*
-*/logs/*
-*/cache/*
-web/uploads/*
-web/bundles/*
+# Uploads
+upload/*
+img/files/*
+yml/shop.yml
+sitemap.xml
 
 # Configuration files
-app/config/parameters.ini
+config.php
+admin/lib/conf/db.conf.php
+admin/lib/conf/db.params.php
+
+# Cache
+admin/lib/cache/*
+!admin/lib/cache/index.html
+admin/lib/templates_c/*
+!admin/lib/templates_c/index.html
+templates/backup/*
+!templates/backup/index.html
