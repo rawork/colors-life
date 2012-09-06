@@ -41,7 +41,7 @@ var state = '{$state}';
               <tr> 
                 <td align="left" valign="middle" nowrap>
                   <div class="up-text">
-                    Проект: <a href="http://www.{$prj_name}.{$prj_zone}" target="_blank">www.{$prj_name}.{$prj_zone}</a><br>
+                    Проект: <a href="http://{$prj_name}.{$prj_zone}" target="_blank">{$prj_name}.{$prj_zone}</a><br>
                     Пользователь: <strong>{$user}</strong>
                   </div>
                   </td>

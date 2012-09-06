@@ -1,8 +1,9 @@
 #!/bin/bash
 
-chmod -R 775 admin/lib/cache/
-chmod -R 775 admin/lib/templates_c/
-chmod -R 775 img/files/
-chmod -R 775 upload/
-chmod -R 664 yml/shop.yml
+chmod -R 777 admin/lib/cache/
+chmod -R 777 admin/lib/templates_c/
+chmod -R 777 img/files/
+chmod -R 777 upload/
+chmod -R 777 yml/
 chmod -R 664 sitemap.xml
+chmod -R 777 templates/backup/

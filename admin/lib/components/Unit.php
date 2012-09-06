@@ -70,22 +70,26 @@
             return $GLOBALS['rtti']->href(!empty($a['dir_id']) ? $a['dir_id_name'] : $this->props['uri'], $methodName, array($a['id']));
         }
         
-		function getTableSearchResults($text, $tableName, $where = '', $idName = '', $nName = 'name') {
+		function getTableSearchResults($words, $tableName, $where = '', $idName = '', $nName = 'name') {
             $ret = array();
             $fields = $this->getSearchFieldsArray($tableName);
 			$fields_text = implode(',',$fields);
+			$where = !empty($where) ? ' AND '.$where : '';
 			$search_query = '';
-			if (is_array($text)) {
-				$query_text = '';
-				foreach ($text as $t) {
-					if (strlen($t) > 2)
-						$query_text .= ($query_text ? ' ' : '').'+'.$t.'*';
+			foreach ($fields as $field) {
+				if (count($words) > 1) {
+					$search_query0 = '';
+					foreach ($words as $word) {
+						$search_query0 .=  ($search_query0 ? ' AND ' : '').'('.$field." LIKE '%".$word."%')";
+					}
+					$search_query .=  ($search_query ? ' OR ' : '').($search_query0 ? '('.$search_query0.')' : '');
+				} else {
+					$search_query .=  ($search_query ? ' OR ' : '').$field." LIKE '%".$words[0]."%'";
 				}
-				$search_query = " MATCH(".$fields_text.") AGAINST ('".$query_text."' IN BOOLEAN MODE)";
-            } else {
-				$search_query = " MATCH(".$fields_text.") AGAINST ('\"".$text."\"' IN BOOLEAN MODE)";
 			}
-			$items = $GLOBALS['db']->getItems('get_search_items', "SELECT id,".$nName.",name, ".$search_query." AS coef FROM ".$this->tables[$tableName]->getDBTableName()." WHERE ".$search_query.($where ? ' AND '.$where : '').' ORDER BY coef');
+			$sql = "SELECT id,".$fields_text." FROM ".$this->tables[$tableName]->getDBTableName()." WHERE (".$search_query.') '.$where.' ORDER BY id';
+			
+			$items = $GLOBALS['db']->getItems('get_search_items', $sql);
             foreach ($items as $a) {
 				$ret[] = array (
                     'ref' => $this->getSearchResultRef($a, $idName),
