@@ -1,14 +1,14 @@
-{if !$smarty.get.order}
+{if !$order}
 Не выбран номер заказа!
 {else}
-{assign var=iOrder value=$smarty.get.order-100000}
+{assign var=iOrder value=$order-100000}
 {raItem var=oOrder table=cart_order query=$iOrder}
 {if count($oOrder)}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Извещение</title>
-	<link href="css/docs.css" rel="stylesheet" type="text/css">
+	<link href="/css/docs.css" rel="stylesheet" type="text/css">
 </head><body>
 	<br><br><br>
 	<table class="account2" align="center" border="0" cellpadding="0" cellspacing="0" width="736">
@@ -52,7 +52,7 @@
 	<tr>
 		<td rowspan="9" class="bord_rn" valign="bottom" width="211">&nbsp;&nbsp;&nbsp;Кассир<br><br></td>
 		<td rowspan="9" class="bord_n" valign="bottom" width="11"></td>
-		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$oOrder.id+100000} от {$oOrder.credate|fdate} </td>
+		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$iOrder+100000} от {$oOrder.credate|fdate} </td>
 	</tr>
 	<tr>
 		<td valign="bottom" width="75"></td>
@@ -134,7 +134,7 @@
 	<tr>
 		<td rowspan="9" class="bord_r" valign="bottom" width="211">&nbsp;&nbsp;&nbsp;Кассир<br><br></td>
 		<td rowspan="9" valign="bottom" width="11"></td>
-		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$oOrder.id+100000} от {$oOrder.credate|fdate}</td>
+		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$iOrder+100000} от {$oOrder.credate|fdate}</td>
 	</tr>
 	<tr>
 		<td valign="bottom" width="75"></td>

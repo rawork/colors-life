@@ -21,14 +21,14 @@
 		}
 		
 		protected function checkURL($uri) {
-			return substr($uri, 0, 6) != '/admin' && $uri != '/secureimage.php' && $uri != '/procajax.php';
+			return !preg_match('/^\/admin\//', $_SERVER['REQUEST_URI']) && $uri != '/secureimage.php' && $uri != '/procajax.php';
 		}
 	
 		public function getURLProps($url = ''){
 		global $PRJ_REF;
 			$uri = empty($url) ? $this->url : $url;
 			$this->props['url'] = $uri;
-			if (!stristr($uri, '/admin')) {
+			if (!preg_match('/^\/admin\//', $_SERVER['REQUEST_URI'])) {
 				$langs = $GLOBALS['db']->getItems('config_languages', 'SELECT * FROM config_languages');
 				$findlang = false;
 				foreach ($langs as $l) {

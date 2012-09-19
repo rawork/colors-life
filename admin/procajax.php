@@ -1,6 +1,5 @@
 <?php
-    include_once('../config.php');
-	inc_lib('common.php');
+    include_once('../loader.php');
 	inc_lib('tools/xajax/xajax.inc.php');
     
 	$xajax = new xajax('/admin/procajax.php');

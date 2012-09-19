@@ -1,11 +1,9 @@
 <?php
-    include_once('config.php');
+    include_once('loader.php');
 	inc_lib('tools/xajax/xajax.inc.php');
 
 	$xajax = new xajax('/procajax.php');
 //	$xajax->setFlag('debug',true);
-	$xajax->registerFunction('vote');
-	$xajax->registerFunction('voteResult');
 	$xajax->registerFunction('addToCart');
 	$xajax->registerFunction('showSubscribeForm');
 	$xajax->registerFunction('showSubscribeResult');

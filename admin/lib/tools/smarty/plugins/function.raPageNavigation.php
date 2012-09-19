@@ -6,10 +6,10 @@
  */
 
 /**
- * Smarty {raPages} function plugin
+ * Smarty {raPageNavigation} function plugin
  *
  * Type:     function
- * Name:     raPages
+ * Name:     raPageNavigation
  * @author   Roman Alyakrytskiy
  * @param array
  * @param Smarty

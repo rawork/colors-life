@@ -26,7 +26,7 @@ c <input readonly="readonly" value="" name="datefrom" id="datefrom">
 <td>{$order.status}</td>
 <td>{$order.counter}</td>
 <td>{$order.summa} руб.
-{if $order.pay_type == 'Квитанция банка'}<div class="cabinet-notice"><a href="/notice.php?order={$order.id+100000}" target="_blank">Распечатать квитанцию</a></div>{/if}
+{if $order.pay_type == 'Квитанция банка'}<div class="cabinet-notice"><a href="/notice/{$order.id+100000}" target="_blank">Распечатать квитанцию</a></div>{/if}
 </td>
 </tr>
 {/foreach}

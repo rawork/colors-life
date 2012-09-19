@@ -49,7 +49,7 @@
 {if $smarty.post.deliveryComment}<br>Комментарий к заказу: {$smarty.post.deliveryComment}</span>{/if}
 </p>
 <br>
-{if $smarty.session.payType == 2}<p>Пожалуйста, <a target="_blank" href="http://www.colors-life.ru/notice.php?order={$order_number-$base_number}">распечатайте</a> бланк квитанции.</p>{/if}
+{if $smarty.session.payType == 2}<p>Пожалуйста, <a target="_blank" href="http://www.colors-life.ru/notice/{$order_number-$base_number}">распечатайте</a> бланк квитанции.</p>{/if}
 <p>Состояние заказа можно  посмотреть в <a target="_blank" href="http://www.colors-life.ru/cabinet/">личном кабинете</a>.</p>
 <p>Дополнительную информацию Вы можете получить по телефону 8 (495) 580-21-68</p>
 <p>--<br>Спасибо за покупку в Цвета жизни!</p>

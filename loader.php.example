@@ -1,0 +1,24 @@
+<?php
+
+/*** Project config ***/
+if (empty($CONFIG_PHP)) {
+
+	$CONFIG_PHP = true;
+
+	/* Project SYSPath */
+	$PRJ_REF = '';
+	if (empty($PRJ_DIR)) {
+		$PRJ_DIR = $_SERVER['DOCUMENT_ROOT'].$PRJ_REF;
+	}
+	$LIB_REF = $PRJ_REF.'/admin/lib';
+	$LIB_DIR = $PRJ_DIR.'/admin/lib';
+	$RES_REF = $PRJ_REF.'/img/files';
+	$RES_DIR = $PRJ_DIR.'/img/files';
+	$PCRE_RES_REF = str_replace('/', '\/', $RES_REF);
+	$THEME_REF = $PRJ_REF.'/admin/themes/_default';
+	$THEME_DIR = $PRJ_DIR.'/admin/themes/_default';
+
+	require_once($LIB_DIR.'/conf/conf.db.php');
+	require_once($LIB_DIR.'/conf/conf.params.php');
+	include_once($LIB_DIR.'/init.php');
+}
