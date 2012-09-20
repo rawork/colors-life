@@ -102,7 +102,7 @@
 			}
 
 			//$this->correctImages();
-			$this->_clearImages();
+			//$this->_clearImages();
 			
 			$this->buildSitemapXML();
 			$this->buildShopYML('shop.yml');
