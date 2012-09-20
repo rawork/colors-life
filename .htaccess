@@ -23,6 +23,26 @@ DirectoryIndex index.php
   php_value upload_max_filesize				50M
 </IfModule>
 
+<IfModule mod_expires.c>
+  # Enable expirations.
+  ExpiresActive On
+
+  # Cache all files for 2 weeks after access (A).
+  ExpiresDefault A1209600
+
+  #images
+  ExpiresByType image/gif A2678400
+  ExpiresByType image/jpeg A2678400
+  ExpiresByType image/png A2678400
+
+  <FilesMatch \.php$>
+    # Do not allow PHP scripts to be cached unless they explicitly send cache
+    # headers themselves. Otherwise all scripts would have to overwrite the
+    # headers set by mod_expires if they want another caching behavior.
+    ExpiresActive Off
+  </FilesMatch>
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 	
