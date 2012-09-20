@@ -8,7 +8,7 @@
 		include('app_dev.php');
 	} else {
 		include_once('loader.php');
-		inc_lib('CPage.php');
+		inc_lib('Page.php');
 		$page = new Page($GLOBALS['utree']);
 		$page->show();
 	}

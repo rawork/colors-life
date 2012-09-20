@@ -60,7 +60,7 @@
         protected function addUnit($u, $users) {
             global $PRJ_DIR, $THEME_REF;
 			if (($u['ctype'] == 'S' || $u['name'] == 'meta' || $u['name'] == 'tree') && !inc_u($u['name'])) {
-				CUtils::raiseError('Not exists component: '.$u['name'], ERROR_DIE);
+				throw new Exception('Not exists component: '.$u['name']);
 			}
 			$className = ucfirst($u['name']).'Unit';
 			$unit = inc_u($u['name']) ? new $className() : new Unit($u['name']);
@@ -71,7 +71,7 @@
 			if (isset($this->units[$uname]) && $this->units[$uname]->isAvailable()){
                	return $this->units[$uname];
             } else {
-                CUtils::raiseError('Not exists component: '.$uname, ERROR_DIE);
+                throw new Exception('Not exists component: '.$uname);
             }
         }
 		
@@ -89,7 +89,7 @@
                     $u->unit->$name();
                 }
             } else {
-                CUtils::raiseError('Cron params error', ERROR_DIE);
+                throw new Exception('Cron params error');
             }
         }
 		

@@ -1,5 +1,5 @@
 # Protect files and directories from prying eyes.
-<FilesMatch "\.(inc(\.php)?|.*sql|tpl(\.php)?)$">
+<FilesMatch "\.(inc(\.php)?|example|.*sql|tpl(\.php)?)$|^loader.php$">
   Order allow,deny
   Deny from all
 </FilesMatch>
@@ -18,7 +18,7 @@ DirectoryIndex index.php
   php_value magic_quotes_runtime            0
   php_value register_globals                0
   php_value error_reporting					2047
-  php_value display_errors					0
+  php_value display_errors					1
   php_value post_max_size					50M
   php_value upload_max_filesize				50M
 </IfModule>
@@ -56,9 +56,5 @@ DirectoryIndex index.php
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_URI} !^/admin/
 	RewriteCond %{REQUEST_URI} !=/favicon.ico
-	# captcha
-	RewriteCond %{REQUEST_URI} !^/secureimage.php
-	# xajax
-	RewriteCond %{REQUEST_URI} !^/procajax.php
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>

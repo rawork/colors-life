@@ -1,5 +1,5 @@
 <?php
-    inc_lib('db/DBField/FieldType.php');
+    inc_lib('db/Type/FieldType.php');
     class htmlFieldType extends FieldType {
         public function __construct(&$props, $dbArray = null) {
             parent::__construct($props, $dbArray);

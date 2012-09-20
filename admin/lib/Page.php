@@ -19,7 +19,7 @@ class Page {
 			//$GLOBALS['ccache']->save($data, $GLOBALS['cur_page_id']);
 			echo $data;
 		} else {
-			CUtils::raiseError('Template calculate error', ERROR_DIE);
+			throw new Exception('Template calculate error');
 		}
 
 	}
@@ -72,10 +72,10 @@ class Page {
 			if (!empty($_template['template']) && file_exists($GLOBALS['PRJ_DIR'].$_template['template'])) {
 				return $GLOBALS['PRJ_DIR'].$_template['template'];
 			} else {
-				CUtils::raiseError('Template file error', ERROR_DIE);
+				throw new Exception('Template file error');
 			}
 		} else {
-			CUtils::raiseError('Template settings error', ERROR_DIE);
+			throw new Exception('Template settings error');
 		}
 	}
 

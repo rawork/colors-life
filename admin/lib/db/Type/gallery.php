@@ -1,43 +1,31 @@
 <?php
 
-    inc_lib('db/DBField/file.php');
-    class imageFieldType extends fileFieldType {
-        public function __construct(&$props, $dbArray = null) {
+    inc_lib('db/Type/file.php');
+    class galleryFieldType extends fileFieldType {
+		public function __construct(&$props, $dbArray = null) {
             parent::__construct($props, $dbArray);
-			if (!empty($this->props['sizes'])) {
-				$this->props['sizes'] = 'default|100x50,'.$this->props['sizes'];
+			if (isset($this->props['sizes'])) {
+				$this->props['sizes'] = 'default:100x50'.(!empty($this->props['sizes']) ? ',' : '').$this->props['sizes'];
 			}	
         }
         
 		public function getStatic() {
-        global $PRJ_REF;
-			$photo = $this->dbValue;
-			$width = '';
-			$extra_text = '';
-			if (isset($this->props['sizes'])) {
-				if ($this->dbValue) {
-					$path_parts = pathinfo($this->dbValue);
-					$photo = $path_parts['dirname'].'/default_'.$path_parts['basename'];
-					$asizes = explode(',', $this->props['sizes']);
-					foreach ($asizes as $k => $sz) {
-						$asz = explode('|', $sz);
-						if ($k && sizeof($asz) == 2) {
-							$extra_text .= ($extra_text ? ' | ' : '').'<a target="_blank" href="'.$path_parts['dirname'].'/'.$asz[0].'_'.$path_parts['basename'].'">'.$asz[1].'</a>';
-						}
-					}
-					$extra_text = $extra_text ? '<span class="imageinfo">'.$extra_text.'</span>' : '';
+        global $db, $PRJ_REF;
+			$ret = '';
+			$photos = $db->getItems("SELECT * FROM system_gallery WHERE tbl='' AND fld='' AND rc=''");
+			foreach ($photos as $ph) {
+				if ($ph['file']) {
+					$path_parts = pathinfo($ph['file']);
+					$ret .= ($ret ? '&nbsp;' : '').'<img alt="'.$ph['name'].'" src="'.$PRJ_REF.$path_parts['dirname'].'/default_'.$path_parts['basename'].'">';
 				}
-			} else {
-				$width = ' width="50"';
 			}
-			return $photo ? '<a target="_blank" href="'.$this->dbValue.'"><img '.$width.' border="0" src="'.$PRJ_REF.$photo.'"></a><span class="imageinfo">('.CUtils::getFileSize($this->dbValue).')</span>'.$extra_text : '';
+			return $ret;
         }
         
-        public function getSQLValue($name = '') {
+        public function getSQLValue() {
             global $PRJ_DIR;
-			$name = $name ? $name : $this->getName();
-            $ret = CUtils::_postVar($name.'_oldValue');
-            if ($ret && CUtils::_postVar($name.'_delete')) {
+            $ret = CUtils::_postVar($this->getName().'_oldValue');
+            if ($ret && CUtils::_postVar($this->getName().'_delete')) {
                 if ($ret != '/img/lib/empty_photo.gif' && $ret != ''){
                 	@unlink($PRJ_DIR.$ret);
 					if (isset($this->props['sizes'])) {
@@ -54,7 +42,7 @@
                 }
                 $ret = '';
             }
-            if (is_array($_FILES) && sizeof($_FILES) > 0 && isset($_FILES[$name]) && $_FILES[$name]['name'] != '') {
+            if (is_array($_FILES) && sizeof($_FILES) > 0 && isset($_FILES[$this->getName()]) && $_FILES[$this->getName()]['name'] != '') {
                 if ($ret && $ret != '/img/lib/empty_photo.gif') {
                		@unlink($PRJ_DIR.$ret);
 					if (isset($this->props['sizes'])) {
@@ -69,15 +57,15 @@
 						
 					}
                 }
-                $dest = CUtils::getNextFileName('/upload/'.strtolower(CUtils::translitStr($_FILES[$name]['name'])));
-                @move_uploaded_file($_FILES[$name]['tmp_name'], $PRJ_DIR.$dest);
+                $dest = CUtils::getNextFileName('/upload/'.strtolower(CUtils::translitStr($_FILES[$this->getName()]['name'])));
+                @move_uploaded_file($_FILES[$this->getName()]['tmp_name'], $PRJ_DIR.$dest);
                 $ret = $dest;
                 $this->afterUpload($ret);
             }
             return $ret;
         }
         
-        protected function afterUpload($fileName) {
+        public function afterUpload($fileName) {
         	global $PRJ_DIR;
             $fileName = $PRJ_DIR.$fileName;
             $i = @GetImageSize($fileName);
@@ -134,6 +122,11 @@
 					}
 				}
         	}
+        }
+		
+		public function getInput($value = '', $name = '') {
+		global $PRJ_REF;	
+            return $this->getStatic().'<input class="butt" type="button" value="Изменить" onClick="open_window(\''.$PRJ_REF.'/admin/wnd_photo.php?table='.$this->props['l_table'].'&field='.$this->props['l_field'].'&id='.$this->dbId.'\')">';
         }
 		
     }

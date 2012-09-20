@@ -1,4 +1,11 @@
 <?php
+	
+	function exception_handler($exception) {
+		echo "<div style=\"padding:15px;color:#990000;font-size:14px;\">Неперехватываемое исключение: " , $exception->getMessage(), "</div>\n";
+	}
+
+	set_exception_handler('exception_handler');
+
 	ob_start();
 	$se_mask = "/(Yandex|Googlebot|StackRambler|Yahoo Slurp|WebAlta|msnbot)/";
 	if (preg_match($se_mask,$_SERVER['HTTP_USER_AGENT']) > 0) {
@@ -57,7 +64,7 @@
 	// Соединение с базой и выполнение запросов
 	$dbclass = strtolower(!empty($GLOBALS['DB_TYPE']) ? $GLOBALS['DB_TYPE'] : '').'Connector';
 	if (!file_exists($GLOBALS['LIB_DIR'].'/db/DBConnector/'.$dbclass.'.php')) {
-		CUtils::raiseError('DB connection type error (DB_TYPE). Possible value: mysql,mysqli,pg,oci', ERROR_DIE);
+		throw new Exception('DB connection type error (DB_TYPE). Possible value: mysql,mysqli');
 	}
 	inc_lib('db/DBConnector/'.$dbclass.'.php');
 	$db = new $dbclass($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS'], $GLOBALS['DB_BASE']);
@@ -83,19 +90,23 @@
 	$GLOBALS['smarty']->assign('lib_ref', $LIB_REF);
 	$GLOBALS['smarty']->assign('theme_dir', $THEME_DIR);
 	$GLOBALS['smarty']->assign('theme_ref', $THEME_REF);
+	
 	inc_lib('AdminInterface/AdminProtect.php');
-	inc_lib('db/DBTable.php');
-	inc_lib('db/DBRTTI.php');
+	inc_lib('db/Table.php');
+	inc_lib('db/RTTI.php');
+	
+	$GLOBALS["rtti"] = new RTTI();
+	$GLOBALS["rtti"]->register('connection', $db);
 	
 	if ($_SERVER['SCRIPT_NAME'] != '/restore.php') {
     	if (file_exists($PRJ_DIR.'/restore.php')) {
-			CUtils::raiseError('Удалите файл restore.php в корне сайта', ERROR_DIE);
+			throw new Exception('Удалите файл restore.php в корне сайта');
 		}
 		
 		// Включаем парсер URL 
-		inc_lib('CParser.php');
-		$parser = new CParser();
-		$GLOBALS['urlprops'] = $parser->getURLProps();
+		inc_lib('Router.php');
+		$router = new Router();
+		$GLOBALS['urlprops'] = $router->getURLProps();
 		
 		// Инициализация текущего языка
 		if (!isset($_SESSION['lang']))

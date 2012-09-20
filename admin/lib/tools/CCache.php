@@ -364,7 +364,7 @@
 	    * Trigger a PEAR error
 	    */
 	    public function raiseError($msg, $code){
-			return CUtils::raiseError($msg, $this->_pearErrorMode);
+			throw new Exception($msg);
 	    }
     
 		/**

@@ -1,6 +1,6 @@
 <?php
 
-    inc_lib('db/DBField/FieldType.php');
+    inc_lib('db/Type/FieldType.php');
     class select_listFieldType extends FieldType {
 
 		private $_aEntities = null;

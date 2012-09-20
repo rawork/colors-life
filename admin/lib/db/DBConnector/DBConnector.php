@@ -24,12 +24,8 @@
 			$this->host = $host;
 			$this->user = $user;
 			$this->pass = $pass;
-			try {
-				$this->connection = $this->openConnection();
-			} catch (Exception $e) {
-				CUtils::raiseError($e->getMessage(), ERROR_DIE); 
-			}
-        }
+			$this->connection = $this->openConnection();
+		}
 		
 		abstract function openConnection();
 		abstract function closeConnection();

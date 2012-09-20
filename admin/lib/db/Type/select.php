@@ -1,6 +1,6 @@
 <?php
 
-    inc_lib('db/DBField/LookUp.php');
+    inc_lib('db/Type/LookUp.php');
     class selectFieldType extends LookUp {
         
 		private $_aEntities = null;

@@ -29,7 +29,7 @@
                         break;
                     }
                 } else {
-                    CUtils::raiseError('Tables not exists', ERROR_DIE);
+                    throw new Exception('Tables not exists');
                 }
             }
             return CUtils::_getVar('table');

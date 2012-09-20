@@ -1,6 +1,6 @@
 <?php
 
-    inc_lib('db/DBField/LookUp.php');
+    inc_lib('db/Type/LookUp.php');
     class numberFieldType extends LookUp {
         public function __construct(&$props, $dbArray = null) {
             parent::__construct($props, $dbArray);

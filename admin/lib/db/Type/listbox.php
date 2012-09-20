@@ -1,7 +1,7 @@
 <?php
 	
-	inc_lib('db/DBField/FieldType.php');
-    //inc_lib('db/DBField/LookUp.php');
+	inc_lib('db/Type/FieldType.php');
+
     class listboxFieldType extends FieldType {
         public function __construct(&$props, $dbArray = null) {
             parent::__construct($props, $dbArray);
