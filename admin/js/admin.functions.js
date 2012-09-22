@@ -462,7 +462,8 @@
 					data = elementToString(data.documentElement, true);
 				else if (typeof data == 'object')
 					data = objToString(data);
-				$out.append('<div><pre>'+ data +'</pre></div>');
+				$out.append('<div>'+ data +'</div>');
+				$('#updatelistbtn').click();
 			}
 		});
 	});

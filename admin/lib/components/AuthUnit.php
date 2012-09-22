@@ -13,9 +13,9 @@
         
 		public $user;
 
-		private $_aUser;
+		private $currentUser;
 
-		private $_aMonths = array (
+		private $months = array (
 			'01' => 'января',
 			'02' => 'февраля',
 			'03' => 'марта',
@@ -30,20 +30,20 @@
 			'12' => 'декабря'
 		);
 
-		private $_aInfo = array(
+		private $info = array(
 			'send_password' => 'Новый пароль выслан вам на электронный адрес',
 			'change_password' => 'Пароль успешно изменен!'
 		);
 		
-		private $_aErrors = array(
+		private $errors = array(
 			'no_user' => 'С указанным эл. адресом нет зарегистрированных пользователей',
 			'db_error' => 'Ошибка обработки запроса. Обратитесь к администратору сайта.',
 			'incorrect_password' => 'Неправильный пароль! Для изменения пароля необходимо ввести текущий пароль!',
 			'incorrect_securecode' => 'Вы неправильно ввели цифры указанные на картинке'
 		);
 
-        function __construct($aProperties = array()) {
-            parent::__construct('auth', $aProperties);
+        function __construct($params = array()) {
+            parent::__construct('auth', $params);
             $this->initializeUser();
         }
 
@@ -51,7 +51,7 @@
 			if ($this->props) {
 				$this->user = $GLOBALS['rtti']->getItem('auth_users', "session_id='".session_id()."'");
 	            $this->user = count($this->user) ? $this->user : null;
-				$this->_aUser = $this->user;
+				$this->currentUser = $this->user;
 				if (!$_SESSION['deliveryAddress']) {
 					$_SESSION['deliveryAddress'] = $this->getAddress();
 					$_SESSION['deliveryPhone'] = $this->getPhone();
@@ -61,31 +61,31 @@
 		}
 
 		public function getUser() {
-			return $this->_aUser;
+			return $this->currentUser;
 		}
 
 		public function getPersonName() {
-			if ($this->_aUser) {
-				return $this->_aUser['name'].($this->_aUser['lastname'] ? ' '.$this->_aUser['lastname'] : '');
+			if ($this->currentUser) {
+				return $this->currentUser['name'].($this->currentUser['lastname'] ? ' '.$this->currentUser['lastname'] : '');
 			}
 			return null;
 		}
 
 		public function getPhone() {
-			if ($this->_aUser) {
-				return $this->_aUser['phone'];
+			if ($this->currentUser) {
+				return $this->currentUser['phone'];
 			}
 		}
 
 		public function getAddress() {
-			if ($this->_aUser) {
-				return $this->_aUser['address'];
+			if ($this->currentUser) {
+				return $this->currentUser['address'];
 			}
 		}
 
 		public function getLogin() {
-			if ($this->_aUser) {
-				return $this->_aUser['email'];
+			if ($this->currentUser) {
+				return $this->currentUser['email'];
 			}
 		}
 
@@ -97,7 +97,7 @@
 				unset($_SESSION['deliveryPerson']);
                 header('location: /');
             } else {
-                return $this->_aErrors['db_error'];
+                return $this->errors['db_error'];
             }
         
         }
@@ -112,7 +112,7 @@
 			
 			$this->smarty->assign('cabinetMenu', $this->_getMenu());
 			$this->smarty->assign('userInfo', $aUser);
-			$this->smarty->assign('Months', $this->_aMonths);
+			$this->smarty->assign('Months', $this->months);
 
             return $this->getTpl('service/auth/'.$this->props['lang'].'/info.form');;
         }
@@ -155,7 +155,7 @@
 				if ($GLOBALS['rtti']->getTable('auth_users')->update($sUpdate.", change_date = NOW() WHERE email='".$aUser['email']."'")) {
 					header('location: /cabinet/');
 				} else {
-					$aErrors[] = $this->_aErrors['db_error'];
+					$aErrors[] = $this->errors['db_error'];
 				}
 			}
             return implode('errors', $aErrors);
@@ -180,7 +180,7 @@
                         $this->smarty->assign('login', $sLogin);
 						header('location: '.($sFromPage ? $sFromPage : '/'));
                     } else {
-                        $aErrors[] = $this->_aErrors['db_error'];
+                        $aErrors[] = $this->errors['db_error'];
                     }
                 } else {
                     $aErrors[] = $this->getTpl('service/auth/'.$this->props['lang'].'/error.pass');
@@ -219,7 +219,7 @@
                     $this->smarty->assign('login', $sLogin);
                     $aErrors[] = $this->getTpl('service/auth/'.$this->props['lang'].'/error.userpresent');
                 } else {
-					$sUpdate .= "password='$sPassword'";
+					$sUpdate = "password='$sPassword'";
 					$sUpdate .= ",name='$sUserName'";
 					$sUpdate .= ",lastname='$sUserLName'";
 					$sUpdate .= ",phone='$sPhone'";
@@ -242,10 +242,10 @@
 						if ($t->update("session_id='".session_id()."' WHERE login='$sLogin' OR email='$sLogin'")) {
 							header('location: /cabinet/');
 						} else {
-							$aErrors[] = $this->_aErrors['db_error'];
+							$aErrors[] = $this->errors['db_error'];
 						}
                     } else {
-                        $aErrors = $this->_aErrors['db_error'];
+                        $aErrors = $this->errors['db_error'];
                     }
                 }
             }
@@ -292,10 +292,10 @@
 						$this->smarty->fetch('service/auth/'.$this->props['lang'].'/password.mail.tpl'),
 						array($sLogin)
 					);
-					$aMessages['info'][] = $this->_aInfo['change_password'];
+					$aMessages['info'][] = $this->info['change_password'];
 				}
 			} else {
-				$aMessages['errors'][] = $this->_aErrors['incorrect_password'];
+				$aMessages['errors'][] = $this->errors['incorrect_password'];
 			}
 			
 			return $aMessages;
@@ -317,7 +317,7 @@
 			);
 			$t = $GLOBALS['rtti']->getTable('auth_users');
 			if (CUtils::_sessionVar('c_sec_code') != md5(CUtils::_postVar('captcha').__CAPTCHA_HASH)) {
-				$aMessages['errors'][] = $this->_aErrors['incorrect_securecode'];
+				$aMessages['errors'][] = $this->errors['incorrect_securecode'];
 			} else {
 				$sLogin = CUtils::_postVar('login');
 				if ($aUser = $GLOBALS['rtti']->getItem('auth_users', "email='$sLogin'")) {
@@ -331,11 +331,11 @@
 							$this->smarty->fetch('service/auth/'.$this->props['lang'].'/forget.mail.tpl'),
 							array($sLogin)
 						);
-						$aMessages['info'][] = $this->_aInfo['send_password'];
+						$aMessages['info'][] = $this->info['send_password'];
 					}
 				} else {
 					$this->smarty->assign('login', $sLogin);
-					$aMessages['errors'][] = $this->_aErrors['no_user'];
+					$aMessages['errors'][] = $this->errors['no_user'];
 				}
 			}
 			return $aMessages;

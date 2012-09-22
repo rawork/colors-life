@@ -156,7 +156,7 @@
 				}
 				$ret .= '</table>';
 				$ret .= '</div>';
-				$ret .= '<input type="button" class="adm-btn" onclick="updateFileList(\''.$this->t->getDBTableName().'\','.$a['id'].');return false" value="Обновить список" />'."\n";
+				$ret .= '<input type="button" id="updatelistbtn" class="adm-btn" onclick="updateFileList(\''.$this->t->getDBTableName().'\','.$a['id'].');return false" value="Обновить список" />'."\n";
 				$ret .= '<br><br><fieldset><legend>Добавить файл</legend>';
 				$ret .= '<form id="uploadForm" action="doajaxfileupload.php" method="post" enctype="multipart/form-data">'."\n";
 				$ret .= '<input name="table_name" value="'.$this->t->getDBTableName().'" type="hidden"/>'."\n";

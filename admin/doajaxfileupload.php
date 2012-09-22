@@ -8,8 +8,6 @@ $upload_path = $GLOBALS['PRJ_DIR'].$upload_ref;
 $i = 0;
 $files_count = isset($_FILES[$fileElementName]["name"]) ? count($_FILES[$fileElementName]["name"]) : 0;
 
-//var_dump($_FILES);
-
 for ($i = 0; $i < $files_count-1; $i++) {	
 	if(!empty($_FILES[$fileElementName]['error'][$i])) {
 		switch($_FILES[$fileElementName]['error'][$i]) {
@@ -44,7 +42,7 @@ for ($i = 0; $i < $files_count-1; $i++) {
 		 /*if (file_exists($upload_path . $_FILES[$fileElementName]['name'][$i])){
   			$error = $_FILES[$fileElementName]['name'][$i] . " уже существует. ";
   		} else {*/
-    	$msg = " File Name: " . $_FILES[$fileElementName]['name'][$i] . "<br/>";
+    	$msg = " " . $_FILES[$fileElementName]['name'][$i] . "<br/>";
 		$fileref  = CUtils::getNextFileName($upload_ref.$_FILES[$fileElementName]['name'][$i]);
 		move_uploaded_file($_FILES[$fileElementName]['tmp_name'][$i], $GLOBALS['PRJ_DIR'].$fileref);
 		$filename = $_FILES[$fileElementName]['name'][$i];
