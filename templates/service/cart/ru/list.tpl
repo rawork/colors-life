@@ -70,7 +70,7 @@
 								<input type="text" style="width:30px;" value="{$g.counter}" name="amount_{$guid}" id="amount_{$guid}">
 								</td>
 								<td>
-								<a href="#" onclick="return deleteCartItem('{$guid}')"><img src="/img/delete_btn.gif" style="margin:0;" border="0"></a>
+								<a href="javascript:deleteCartItem('{$guid}')"><img src="/img/delete_btn.gif" style="margin:0;" border="0"></a>
 								</td>
 								
 								</tr>

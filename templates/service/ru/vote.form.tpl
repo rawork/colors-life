@@ -7,7 +7,7 @@
 <div class="vote-item">
 <input type="radio" name="vote" value="{$v.id}"> {$v.name}</div>
 {/foreach}
-<div class="vote-button"><input type="button" onclick="xajax_vote('{$q.name}', xajax.getFormValues('frm{$q.name}'))" value="Голосовать" /></div>
-<div class="vote-button"><input type="button" onclick="xajax_voteResult('{$q.name}', {$q.id})" value="Результаты" /></div>
+<div class="vote-button"><input type="button" onclick="vote('{$q.name}')" value="Голосовать" /></div>
+<div class="vote-button"><input type="button" onclick="voteResult('{$q.name}', {$q.id})" value="Результаты" /></div>
 </form></div>
 {/if}

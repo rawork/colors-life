@@ -69,7 +69,7 @@
 		global $PRJ_DIR, $THEME_REF, $smarty;		
 			$ret = '';
 			$a = $this->item;
-			$ret .= '<form method="post" name="updatePriceForm" id="updatePriceForm" action="">';
+			$ret .= '<form method="post" name="frmUpdatePrice" id="frmUpdatePrice" action="">';
 			$ret .= '<input type="hidden" name="stuff_id" value="'.$a['id'].'" />';
 				$ret .= '<div id="sizelist">';
 				$ret .= '<table width="100%" cellpadding="0" cellspacing="0" class="tfields">';
@@ -97,12 +97,12 @@
 				$ret .= '</table>';
 				$ret .= '</div></form>';
 				$ret .= '<div class="ctlbtns"><table class="contextmenu3" cellspacing="0" cellpadding="3" border="0"><tr>';
-				$ret .= '<td><a onclick="updatePrices(xajax.getFormValues(\'updatePriceForm\'))" class="context-button" title="Сохранить"><img border="0" src="'.$THEME_REF.'/img/icons/icon_save.gif"></a></td>';
+				$ret .= '<td><a onclick="updatePrices(\'UpdatePrice\')" class="context-button" title="Сохранить"><img border="0" src="'.$THEME_REF.'/img/icons/icon_save.gif"></a></td>';
       			$ret .= '</tr></table></div>';
 				$sizes = $GLOBALS['db']->getItems('get_sizes', "SELECT id,name FROM catalog_sizes ORDER BY name");
 				$colors = $GLOBALS['db']->getItems('get_colors', "SELECT id,name FROM catalog_color ORDER BY name");
 				$ret .= '<br><br>';
-				$ret .= '<form method="post" name="addSizeForm" id="addSizeForm" action="">';
+				$ret .= '<form method="post" name="frmAddPrice" id="frmAddPrice" action="">';
 				$ret .= '<input name="stuff_id" value="'.$a['id'].'" type="hidden">';
 				$ret .= '<table class="tfields" cellpadding="0" cellspacing="0" width="100%">';
 				$ret .= '<tr><td><b>Добавить</b><a name="add"></a><br><img src="/admin/themes/_default/img/0.gif" height="1" width="150"></td><td><div class="empty"></div></td></tr>';
@@ -122,7 +122,7 @@
 				$ret .= '<tr id="add_price" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Цена</b> <span class="sfnt">{price}</span></td><td class="right"><input name="price" style="text-align: right;" value="" size="20" type="text"></td></tr>';
 				$ret .= '<tr id="add_ord" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Порядок</b> <span class="sfnt">{ord}</span></td><td class="right"><input name="ord" style="text-align: right;" value="" size="10" type="text"></td></tr>';
 				$ret .= '<tr id="add_ord" bgcolor="#fafafa"><td class="left" align="left" width="180"><b>Акт</b> <span class="sfnt">{publish}</span></td><td class="right"><input type="checkbox" name="publish"></td></tr>';
-				$ret .= '</table><div class="ctlbtns"><input class="adm-btn" onclick="addPrice(xajax.getFormValues(\'addSizeForm\'))" value="Добавить" type="button"></div></form>';
+				$ret .= '</table><div class="ctlbtns"><input class="adm-btn" onclick="addPrice(\'AddPrice\')" value="Добавить" type="button"></div></form>';
 
 			return $ret;
 		}
@@ -156,7 +156,7 @@
 				}
 				$ret .= '</table>';
 				$ret .= '</div>';
-				$ret .= '<input type="button" class="adm-btn" onclick="xajax_updateFileList(\''.$this->t->getDBTableName().'\','.$a['id'].');return false" value="Обновить список" />'."\n";
+				$ret .= '<input type="button" class="adm-btn" onclick="updateFileList(\''.$this->t->getDBTableName().'\','.$a['id'].');return false" value="Обновить список" />'."\n";
 				$ret .= '<br><br><fieldset><legend>Добавить файл</legend>';
 				$ret .= '<form id="uploadForm" action="doajaxfileupload.php" method="post" enctype="multipart/form-data">'."\n";
 				$ret .= '<input name="table_name" value="'.$this->t->getDBTableName().'" type="hidden"/>'."\n";

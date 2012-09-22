@@ -1,7 +1,7 @@
 <?php
 
     inc_lib('components/Unit.php');
-	inc_lib('libmail.php');
+	inc_lib('Mail.php');
 	if (!isset($_SESSION['deliveryAddress'])) {
 		$_SESSION['deliveryAddress'] = '';
 		$_SESSION['deliveryPhone'] = '';

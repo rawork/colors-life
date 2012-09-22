@@ -20,7 +20,7 @@
 		<input class="subscribe-radio" style="width:auto;" type="radio" name="subscribe_type" id="rd2" value="2" /><label for="rd2">Я <strong>не хочу</strong> получать новости от компании Цвета жизни</label></p></td>
 	  </tr>	
       <tr>
-        <td><input class="subscribe-button" style="width:auto;" type="button" value="Отправить" onClick="xajax_showSubscribeResult(xajax.getFormValues('frmSubscribe'))" />&nbsp;&nbsp;
+        <td><input class="subscribe-button" style="width:auto;" type="button" value="Отправить" onClick="showSubscribeResult('Subscribe')" />&nbsp;&nbsp;
 		</td>
       </tr>
       <tr>

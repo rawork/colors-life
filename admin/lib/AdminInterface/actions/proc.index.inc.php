@@ -1,5 +1,5 @@
 <?php
-	inc_lib('CPageNavigation.php');
+	inc_lib('PageNavigation.php');
 	inc_lib('AdminInterface/actions/UnitAdminBody.php');
 	class indexUnitAdminBody extends UnitAdminBody {
 		
@@ -11,7 +11,7 @@
 		function __construct(&$oUnitAdminInterface) {
 			parent::__construct($oUnitAdminInterface);
 			$this->_iRowPerPage = CUtils::_getVar('rpp', true, 0) > 0 ? CUtils::_getVar('rpp', true, 0) : $this->t->props['rpp'];
-			$this->_oPageNavigation = new CPageNavigation($this->t, $this->searchRef.'&page=###', $this->search_sql, $this->_iRowPerPage, CUtils::_getVar('page', true, 1), 20);
+			$this->_oPageNavigation = new PageNavigation($this->t, $this->searchRef.'&page=###', $this->search_sql, $this->_iRowPerPage, CUtils::_getVar('page', true, 1), 20);
 		}
         		
 		/* Кнопки управления записью */
@@ -26,7 +26,7 @@
 				$ret .= ",{'ICONCLASS':'btn_delete','TEXT':'Удалить','ONCLICK':'admin_menu.PopupHide(); javascript: startDelete(\'".$this->fullRef.'&amp;action=delete&amp;id='.$id."\');'}";
 			}
 			if (empty($this->t->props['noinsert']) || $auth->isSuperuser()) {
-				$ret .= ",{'ICONCLASS':'btn_duplicate','TEXT':'Копировать','ONCLICK':'admin_menu.PopupHide(); javascript: xajax_showDuplicateSettings(\'".$this->fullRef.'&amp;action=duplicate&amp;id='.$id."\');'}";
+				$ret .= ",{'ICONCLASS':'btn_duplicate','TEXT':'Копировать','ONCLICK':'admin_menu.PopupHide(); javascript: showDuplicateSettings(\'".$this->fullRef.'&amp;action=duplicate&amp;id='.$id."\');'}";
 			}
 			$ret .= ']);" title="Действия" class="action context-button icon">'."\n";
 			$ret .= '<img src="'.$THEME_REF.'/img/arr_down.gif" class="arrow" alt=""></a></td>'."\n";

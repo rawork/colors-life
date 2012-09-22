@@ -21,7 +21,7 @@ class Router {
 	}
 
 	protected function checkURL($uri) {
-		return !preg_match('/^\/admin\//', $_SERVER['REQUEST_URI']) && $uri != '/secureimage.php' && $uri != '/procajax.php';
+		return !preg_match('/^\/(admin|ajax)\//', $_SERVER['REQUEST_URI']) && $uri != '/secureimage.php';
 	}
 
 	public function getURLProps($url = ''){

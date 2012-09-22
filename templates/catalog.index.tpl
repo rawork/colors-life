@@ -232,8 +232,8 @@
                                             <tr>
                                               <td width="100%"> Кол-во
                                                 <input type="text" name="amount_{$item.id}" id="amount_{$item.id}" style="width:30px;" value="1">
-                                                <a href="javascript:addToCart({$item.id})">Купить</a></td>
-                                              <td><a href="javascript:addToCart({$item.id})"><img src="/img/cart0.gif" style="margin:0;" border="0"></a></td>
+                                                <a href="javascript:addCartItem({$item.id})">Купить</a></td>
+                                              <td><a href="javascript:addCartItem({$item.id})"><img src="/img/cart0.gif" style="margin:0;" border="0"></a></td>
                                             </tr>
                                           </table></td>
                                       </tr>

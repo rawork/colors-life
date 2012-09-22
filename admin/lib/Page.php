@@ -16,7 +16,7 @@ class Page {
 
 	public function show() {
 		if ($data = $this->smarty->fetch($this->template)) {
-			//$GLOBALS['ccache']->save($data, $GLOBALS['cur_page_id']);
+//			$GLOBALS['cache']->save($data, $GLOBALS['cur_page_id']);
 			echo $data;
 		} else {
 			throw new Exception('Template calculate error');

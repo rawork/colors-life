@@ -11,8 +11,6 @@
 <script type="text/javascript" src="/js/dimmer.js"></script>
 <script type="text/javascript" src="/js/jquery.jqzoom.js"></script>
 <script type="text/javascript" src="/js/public.functions.js"></script>
-<script type="text/javascript" src="/admin/js/xajax_js/xajax_core.js"></script>
-
 {literal} 
 <script type="text/javascript">
 

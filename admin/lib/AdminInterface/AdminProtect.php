@@ -67,7 +67,7 @@
 				if (!empty($user) && !empty($user['email'])) {
 					$key = CUtils::genKey();
 					$GLOBALS['db']->execQuery('users_users', "UPDATE users_users SET syspassword=MD5('".$key."'), hashkey='' WHERE hashkey='".CUtils::_getVar('key')."'");
-					inc_lib('libmail.php');
+					inc_lib('Mail.php');
 					$msg = new Mail();
 					$msg->From($MAIN_EMAIL);
            			$msg->Subject('Новые регистрационные данные. Сайт '.$_SERVER['SERVER_NAME']);
@@ -112,7 +112,7 @@
 				}
 				if (!empty($user)) {
 					$key = CUtils::genKey(32);
-					inc_lib('libmail.php');
+					inc_lib('Mail.php');
 					$msg = new Mail();
 					$msg->From($MAIN_EMAIL);
            			$msg->Subject('Новые регистрационные данные. Сайт '.$_SERVER['SERVER_NAME']);

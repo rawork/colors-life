@@ -25,8 +25,8 @@ function smarty_function_raPageNavigation($params, &$smarty) {
 		if (!isset($params['var'])) {
 			$smarty->trigger_error('raItems: Не указан параметр: var');
 		} else {
-			inc_lib('CPageNavigation.php');
-			$pages = new CPageNavigation(
+			inc_lib('PageNavigation.php');
+			$pages = new PageNavigation(
 					$GLOBALS['rtti']->getTable($params['table']), // Таблица с данными
 					$params['pref'], 							  //Базовая ссылка
 					$params['query'],					 		  // Запрос

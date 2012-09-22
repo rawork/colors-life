@@ -18,7 +18,7 @@
             $this->tables['lists']->selectWhere('TO_DAYS(date) <= TO_DAYS(NOW())');
             if ($a = $this->tables['lists']->getNextArray()) {
                 
-				inc_lib('libmail.php');
+				inc_lib('Mail.php');
                 $m = new Mail();
                 $m->From($ADMIN_EMAIL);
                 $m->Subject($a['subj']);

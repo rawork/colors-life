@@ -1,6 +1,6 @@
 <?php
 
-    class CPageNavigation {
+    class PageNavigation {
 
 		public $limit				= '';
 		

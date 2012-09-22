@@ -2,10 +2,10 @@
 	
 	inc_lib('CUtils.php');
 	
-	define('CCACHE_ERROR_RETURN', 1);
-	define('CCACHE_ERROR_DIE', 8);
+	define('CACHE_ERROR_RETURN', 1);
+	define('CACHE_ERROR_DIE', 8);
 	
-	class CCache {
+	class Cache {
 		
 		/**
 		* Directory where to put the cache files
@@ -83,7 +83,7 @@
 		* error mode (when raiseError is called)
 		* @var int $_pearErrorMode
 		*/
-		protected $_pearErrorMode = CCACHE_ERROR_RETURN;
+		protected $_pearErrorMode = CACHE_ERROR_RETURN;
     
 		/**
 		* Current cache id
@@ -162,7 +162,7 @@
 		* Nested directory level
 		* Set the hashed directory structure level. 0 means "no hashed directory 
 		* structure", 1 means "one level of directory", 2 means "two levels"... 
-		* This option can speed up CCache only when you have many thousands of 
+		* This option can speed up Cache only when you have many thousands of 
 		* cache file. Only specific benchs can help you to choose the perfect value 
 		* for you. Maybe, 1 or 2 is a good start.
 		* @var int $_hashedDirectoryLevel
@@ -176,10 +176,10 @@
 		protected $_hashedDirectoryUmask = 0700;
     
 		/**
-		 * API break for error handling in CCACHE_ERROR_RETURN mode
-		 * In CCACHE_ERROR_RETURN mode, error handling was not good because
+		 * API break for error handling in CACHE_ERROR_RETURN mode
+		 * In CACHE_ERROR_RETURN mode, error handling was not good because
 		 * for example save() method always returned a boolean (a PEAR_Error object
-		 * would be better in CCACHE_ERROR_RETURN mode). To correct this without
+		 * would be better in CACHE_ERROR_RETURN mode). To correct this without
 		 * breaking the API, this option (false by default) can change this handling.
 		 * @var boolean
 		 */
@@ -315,7 +315,7 @@
 		* Set to debug mode
 		*/
 		public function setToDebug(){
-		    $this->setOption('pearErrorMode', CCACHE_ERROR_DIE);
+		    $this->setOption('pearErrorMode', CACHE_ERROR_DIE);
 		}
 
 	    /**
@@ -391,7 +391,7 @@
 		*/
 		protected function _unlink($file){
 			if (!@unlink($file)) {
-			    return $this->raiseError('CCache: Unable to remove cache!', -3);
+			    return $this->raiseError('Cache: Unable to remove cache!', -3);
 			}
 			return true;        
 		}
@@ -417,7 +417,7 @@
 		        }
 		    }
 		    if (!($dh = opendir($dir))) {
-		        return $this->raiseError('CCache: Unable to open cache directory!', -4);
+		        return $this->raiseError('Cache: Unable to open cache directory!', -4);
 		    }
 		    $result = true;
 		    while ($file = readdir($dh)) {
@@ -536,7 +536,7 @@
 		        }
 				return $data;
 		    }
-		    return $this->raiseError('CCache: Unable to read cache!', -2); 
+		    return $this->raiseError('Cache: Unable to read cache!', -2); 
 		}
     
 		/**
@@ -571,7 +571,7 @@
 		        @fclose($fp);
 		        return true;
 		    }      
-		    return $this->raiseError('CCache: Unable to write cache file: '.$this->_file, -1);
+		    return $this->raiseError('Cache: Unable to write cache file: '.$this->_file, -1);
 		}
        
 		/**

@@ -67,7 +67,7 @@
 			$input_id = strtr($name, '[]', '__');
             $ret = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="100%"><input type="text" readonly style="width:100%;" value="'.$this->getStatic().'" size="62" id="'.$input_id.'_title">';
             $ret .= '<input type="hidden" name="'.$name.'" value="'.$value.'" id="'.$input_id.'">';
-            $ret .= '</td><td><input class="butt" type="button" value="&hellip;" onClick="show_list_popup(\''.$input_id.'\',\''.CUtils::_getVar('unit').'_'.CUtils::_getVar('table').'\',\''.$this->getName().'\', \''.CUtils::_getVar('id', true, 0).'\',\''.$value.'\');"></td></tr></table>';
+            $ret .= '</td><td><input class="butt" type="button" value="&hellip;" onClick="showListPopup(\''.$input_id.'\',\''.CUtils::_getVar('unit').'_'.CUtils::_getVar('table').'\',\''.$this->getName().'\', \''.CUtils::_getVar('id', true, 0).'\',\''.$value.'\');"></td></tr></table>';
             return $ret;
         }
     }

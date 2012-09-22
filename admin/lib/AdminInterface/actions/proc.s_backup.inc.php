@@ -82,48 +82,6 @@ class s_backupUnitAdminBody extends UnitAdminBody {
 		return $ret;
 	}
 
-	/* Управление таблицей */
-	protected function getTableOperations() {
-		$ret = '<table align="center" cellpadding="0" cellspacing="0" border="0" class="contextmenu2">
-<tr class="top">
-<td class="left"><div class="empty"></div></td>
-<td><div class="empty"></div></td>
-<td class="right"><div class="empty"></div></td>
-</tr>
-<tr>
-<td class="left"><div class="empty"></div></td>
-<td class="content">
-<table cellpadding="2" cellspacing="0" border="0">
-<tr>';
-		if (!$this->p['noinsert']) {
-		$ret .= '<td><div class="section-separator first"></div></td>
-<td align="center"><a href="'.$this->fullRef.'&amp;action=s_insert'.(CUtils::_getVar('p_id') ? '&p_id='.CUtils::_getVar('p_id') : '').'" class="context-button">Добавить запись</a></td>';
-		}
-
-		$ret .= '<td><div class="section-separator"></div></td>
-<td align="center"><a href="'.$this->fullRef.'&amp;action=create" class="context-button">Создать таблицу</a></td>';
-$ret .= '<td><div class="section-separator"></div></td>
-<td align="center"><a href="'.$this->fullRef.'&amp;action=alter" class="context-button">Обновить таблицу</a></td>';
-		$ret .= '</tr>
-</table>
-</td>
-<td class="right"><div class="empty"></div></td>
-</tr>
-<tr class="bottom">
-<td class="left"><div class="empty"></div></td>
-<td><div class="empty"></div></td>
-<td class="right"><div class="empty"></div></td>
-</tr>
-
-<tr class="bottom-all">
-<td class="left"><div class="empty"></div></td>
-<td><div class="empty"></div></td>
-<td class="right"><div class="empty"></div></td>
-</tr>
-</table><br>';
-		return $ret;
-	}
-
 	protected function formArchive() {
 		$ret = '<div id="archive_info"></div>';
 		$ret .= '<div id="fields_panel" class="panel">
@@ -140,7 +98,7 @@ $ret .= '<td><div class="section-separator"></div></td>
 	</tr>
 	</table>-->
 	<div class="ctlbtns">
-	<input type="button" class="adm-btn" onClick="makeArchive(xajax.getFormValues(\'frmArchive\'));" value="Архивировать">
+	<input type="button" class="adm-btn" onClick="makeArchive();" value="Архивировать">
 	</div>
 </form>
 </div>';
@@ -149,7 +107,6 @@ $ret .= '<td><div class="section-separator"></div></td>
 
 	public function getText() {
 		$ret = '';
-		//$ret .= $this->getTableOperations();
 		$ret .= $this->formArchive();
 		$ret .= $this->getMainBodyTable();
 		return $ret;

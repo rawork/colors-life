@@ -49,17 +49,17 @@
 	$GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']));
 	
 	// Включаем кеш
-	/*inc_lib('tools/CCache.php');
-	$options = array(
-	    'cacheDir' => $PRJ_DIR.'/admin/lib/cache/',
-	    'lifeTime' => 24*60*14,
-	    'pearErrorMode' => CCACHE_ERROR_DIE
-	);
-	$GLOBALS['ccache'] = new CCache($options);
-	if ($data = $GLOBALS['ccache']->get($GLOBALS['cur_page_id'])){
-		//echo $data;
-		//exit();
-	}*/
+//	inc_lib('tools/Cache.php');
+//	$options = array(
+//	    'cacheDir' => $PRJ_DIR.'/admin/lib/cache/',
+//	    'lifeTime' => 24*60*14,
+//	    'pearErrorMode' => CACHE_ERROR_DIE
+//	);
+//	$GLOBALS['cache'] = new Cache($options);
+//	if ($data = $GLOBALS['cache']->get($GLOBALS['cur_page_id'])){
+//		//echo $data;
+//		//exit();
+//	}
 	
 	// Соединение с базой и выполнение запросов
 	$dbclass = strtolower(!empty($GLOBALS['DB_TYPE']) ? $GLOBALS['DB_TYPE'] : '').'Connector';
@@ -120,17 +120,6 @@
 		$GLOBALS['smarty']->assign('urlprops', $GLOBALS['urlprops']);
     	
 		if (!stristr($_SERVER['REQUEST_URI'], '/admin')) {
-			/*if ((isset($GLOBALS['urlprops']['node'])) && $GLOBALS['urlprops']['node']['id'] == 82 && $GLOBALS['urlprops']['method'] == 'index') {
-				$cat = $GLOBALS['db']->getItem('get_cat',"SELECT id,filters FROM catalog_categories WHERE id=".$GLOBALS['urlprops']['params'][0]);
-				$filters = $GLOBALS['db']->getItems('get_filters', "SELECT id FROM catalog_features WHERE id IN(".$cat['filters'].")");
-				$filters_values = array();
-				foreach($filters as $filter) {
-					if(isset($_GET['filter_'.$filter['id']])) {
-						$filters_values[$filter['id']] = CUtils::_getVar('filter_'.$filter['id'], true);
-					}
-				}
-				$GLOBALS['smarty']->assign('filters_values2', $filters_values);
-			}*/
 			inc_u('tree');
 			$GLOBALS['utree'] = new TreeUnit($GLOBALS['urlprops']);
 			inc_u('auth');
@@ -144,7 +133,5 @@
 			$GLOBALS['smarty']->assign('mail_to', $ADMIN_EMAIL);
 			$GLOBALS['smarty']->assign('utree', $GLOBALS['utree']);
 			$GLOBALS['smarty']->assign('uauth', $GLOBALS['uauth']);
-			//var_dump($GLOBALS['urlprops']);
 		}	
     }
-?>

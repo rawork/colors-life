@@ -70,7 +70,7 @@
         </tr>
       </table>
       <div class="ctlbtns">
-        <input type="button" class="adm-btn" onClick="xajax_updateTable(xajax.getFormValues('frmUpdateTable'));" value="Сохранить">
+        <input type="button" class="adm-btn" onClick="" value="Сохранить">
       </div>
     </form>
   </div>
@@ -107,7 +107,7 @@
         </tr>
       </table>
       <div class="ctlbtns">
-        <input type="button" class="adm-btn" onClick="xajax_updateFields({$a.id}, xajax.getFormValues('frmTableFields'));" value="Сохранить">
+        <input type="button" class="adm-btn" onClick="updateFields({$a.id}, 'frmTableFields');" value="Сохранить">
       </div>
     </form>
   </div>
@@ -136,7 +136,7 @@
         </tr>
       </table>
       <div class="ctlbtns">
-        <input type="button" class="adm-btn" onClick="xajax_updateRights({$a.id}, xajax.getFormValues('frmTableRights'));" value="Сохранить">
+        <input type="button" class="adm-btn" onClick="updateRights({$a.id}, 'frmTableRights');" value="Сохранить">
       </div>
     </form>
   </div>

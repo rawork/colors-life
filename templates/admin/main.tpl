@@ -22,7 +22,6 @@ var state = '{$state}';
 <script src="{$prj_ref}/admin/js/jquery_ui/jquery.blockUI.js" type="text/javascript"></script>
 <script src="{$prj_ref}/admin/js/admin_tools.js" type="text/javascript"></script>
 <script src="{$prj_ref}/admin/js/admin.functions.js" type="text/javascript"></script>
-<script src="{$prj_ref}/admin/js/xajax_js/xajax_core.js" charset="UTF-8" type="text/javascript"></script>
 <script src="{$prj_ref}/admin/editor/tiny_mce_gzip.js" type="text/javascript"></script> 
 <script src="{$prj_ref}/admin/editor/tmcegzip_init.js" type="text/javascript"></script> 
 <script src="{$prj_ref}/admin/editor/tmce_init.js" type="text/javascript"></script>

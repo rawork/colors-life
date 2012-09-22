@@ -41,18 +41,6 @@
 		$.dimScreenStop();
 	}
 	
-	function show_tree_popup(input_id, unit_name, table_name, field_name, dbid, zero_title){
-		value = $('#'+input_id).attr('value');
-		$('#popup_body').empty();
-		xajax_show_tree_popup(input_id, unit_name, table_name, field_name, dbid, zero_title, value);
-	}
-	
-	function show_list_popup(input_id, unit_name, table_name, field_name, dbid){
-		values = $('#'+input_id).attr('value');
-		$("#popup_body").empty();
-		xajax_show_list_popup(input_id, unit_name, table_name, field_name, dbid, values);
-	}
-	
 	function marked_choice(check_id) {
 		checked_id = check_id;
 	}
@@ -131,35 +119,91 @@
 	}
 	
 	
-/* xajax */	
+/* ajax */	
 	
-	try { if (undefined == xajax.config) xajax.config = {}; } catch (e) { xajax = {}; xajax.config = {}; };
-	xajax.config.requestURI = prj_ref+"/admin/procajax.php";
-	xajax.config.statusMessages = false;
-	xajax.config.waitCursor = true;
-	xajax.config.version = "xajax 0.5 rc1";
-	xajax.config.legacy = false;
-	xajax.config.defaultMode = "asynchronous";
-	xajax.config.defaultMethod = "POST";
-	
-	xajax_show_tree_popup = function() {
-		return xajax.request( { xjxfun: 'show_tree_popup' }, { parameters: arguments } );
-	}
-
-	xajax_show_list_popup = function() {
-		return xajax.request( { xjxfun: 'show_list_popup' }, { parameters: arguments } );
+	function getComponentList(currentState, moduleName) {
+		state = currentState;
+		showDiv('waiting', 0, -100);
+		$.post("/adminajax/", {method: 'getComponentList', currentState: currentState, moduleName: moduleName},
+		function(data){
+			if (data.alertText) {
+				alert(data.alertText);
+			} else {
+				$('#componentMenu').html(data.content);
+			}
+			hideDiv('waiting');
+		}, "json");
 	}
 	
-	xajax_editField = function(field_id) {
-		return xajax.request( { xjxfun: 'editField'}, { parameters: arguments} );	
+	function getTableList(currentState, moduleName) {
+		obj = $('#tableMenu_'+moduleName);
+		if (obj.html() == '') {
+			showDiv('waiting', 0, -100);
+			$.post("/adminajax/", {method: 'getTableList', currentState: currentState, moduleName: moduleName},
+			function(data){
+				if (data.alertText) {
+					alert(data.alertText);
+				} else {
+					$('#tableMenu_'+moduleName).html(data.content);
+					obj.css('display', 'block');
+				}
+				hideDiv('waiting');
+			}, "json");
+		} else if (obj.css('display') == 'none') {
+			obj.css('display', 'block');
+			hideDiv('waiting');
+		} else {
+			obj.css('display', 'none');
+			hideDiv('waiting');
+		}
 	}
 	
-	xajax_showTemplateVersion = function() {
-		return xajax.request( { xjxfun: 'showTemplateVersion'}, { parameters: arguments} );	
+	function showTreePopup(inputId, table_name, field_name, dbid, zero_title, value){
+		$('#popup_body').empty();
+		$.post("/adminajax/", {method: 'showTreePopup', inputId: inputId, table_name: table_name, field_name: field_name, dbid: dbid, zero_title : zero_title, value: value},
+		function(data){
+			marked_choice(value);
+			$('#popup_title').html(data.title);
+			$('#popup_button').html(data.button);
+			$('#popup_body').html(data.content);
+			showPopup();
+		}, "json");
 	}
 	
-	xajax_showDuplicateSettings = function() {
-		return xajax.request( { xjxfun: 'showDuplicateSettings'}, { parameters: arguments} );
+	function showListPopup(inputId, table_name, field_name, dbid, value){
+		$("#popup_body").empty();
+		$.post("/adminajax/", {method: 'showListPopup', inputId: inputId, table_name: table_name, field_name: field_name, dbid: dbid, value: value},
+		function(data){
+			$('#popup_title').html(data.title);
+			$('#popup_button').html(data.button);
+			$('#popup_body').html(data.content);
+			showPopup();
+		}, "json");
+	}
+	
+	function showTemplateVersion(versionId) {
+		obj = document.getElementById(versionId);
+		if (obj.selectedIndex) {
+			$.post("/adminajax/", {method: 'showTemplateVersion', versionId: obj.options[obj.selectedIndex].value},
+			function(data){
+				$('#popup_title').html(data.title);
+				$('#popup_button').html(data.button);
+				$('#popup_body').html(data.content);
+				showPopup();
+			}, "json");
+		} else {
+			alert('Не выбрана версия!');
+		}
+	}
+	
+	function showDuplicateSettings(ref) {
+		$.post("/adminajax/", {method: 'showDuplicateSettings', ref: ref},
+		function(data){
+			$('#popup_title').html(data.title);
+			$('#popup_button').html(data.button);
+			$('#popup_body').html(data.content);
+			showPopup();
+		}, "json");
 	}
 	
 	function goDuplicate(ref) {
@@ -174,99 +218,75 @@
 		}
 	}
 	
-	function showTemplateVersion(ver_id) {
-		obj = document.getElementById(ver_id);
-		if (obj.selectedIndex) {
-			xajax_showTemplateVersion(obj.options[obj.selectedIndex].value);
-		} else {
-			alert('Не выбрана версия!');
-		}
+	function editField(fieldId) {
+		$.post("/adminajax/", {method: 'editField', fieldId: fieldId},
+		function(data){
+			$('#popup_title').html(data.title);
+			$('#popup_button').html(data.button);
+			$('#popup_body').html(data.content);
+			showPopup();
+		}, "json");
 	}
 	
-	xajax_getComponentList = function(st, un) {
-    	return xajax.request( { xjxfun: 'getComponentList' }, { parameters: arguments } ); 
-	}
-	
-	xajax_getTableList = function(component, st){
-		return xajax.request( { xjxfun: 'getTableList' }, { parameters: arguments } ); 
-	}
-	
-	function getComponentList(st, un) {
-		state = st;
+	function makeArchive(formId) {
 		showDiv('waiting', 0, -100);
-		xajax_getComponentList(st, un);
-	}
-	
-	xajax_makeArchive = function() {
-    	return xajax.request( { xjxfun: 'makeArchive' }, { parameters: arguments } ); 
-	}
-	
-	function makeArchive(fD) {
-		showDiv('waiting', 0, -100);
-		xajax_makeArchive(fD);
-	}
-	
-	function delFile(file_id, file_name, class_id, rocord_id) {
-		$('#file_'+file_id).css('display', 'none');
-		xajax_delFile(file_name, class_id, rocord_id);
-	}
-	
-	xajax_delFile = function() {
-		return xajax.request( { xjxfun: 'delFile'}, { parameters: arguments} );	
-	}
-	
-	function delPrice(price_id) {
-		$('#price_'+price_id).css('display', 'none');
-		xajax_delPrice(price_id);
-	}
-	
-	xajax_delPrice = function() {
-		showDiv('waiting', 0, -100);
-		return xajax.request( { xjxfun: 'delPrice'}, { parameters: arguments} );	
-	}
-	
-	function addPrice(fD) {
-		xajax_addPrice(fD);
-	}
-	
-	xajax_addPrice = function() {
-		showDiv('waiting', 0, -100);
-		return xajax.request( { xjxfun: 'addPrice'}, { parameters: arguments} );	
-	}
-	
-	function updatePrices(fD) {
-		showDiv('waiting', 0, -100);
-		xajax_updatePrices(fD);
-	}
-	
-	xajax_updatePrices = function() {
-		return xajax.request( { xjxfun: 'updatePrices'}, { parameters: arguments} );	
-	}
-	
-	xajax_updateFileList = function() {
-		var out = $('#uploadOutput');
-		out.empty();
-		//$('#filelist').html('Обновление списка файлов...');
-		return xajax.request( { xjxfun: 'updateFileList'}, { parameters: arguments} );	
-	}
-	
-	function getTableList(component, st) {
-		it = $('#tableMenu_'+component);
-		if (it.attr('innerHTML') == '') {
-			showDiv('waiting', 0, -100);
-			xajax_getTableList(component, st);
-		} else if (it.css('display') == 'none') {
-			it.css('display', 'block');
+		$("archive_info").empty();
+		$.post("/adminajax/", {method: 'makeArchive'},
+		function(data){
+			$("#archive_info").html(data.content);
 			hideDiv('waiting');
-		} else {
-			it.css('display', 'none');
-			hideDiv('waiting');
-		}
+			window.location.reload();
+		}, "json");
 	}
 	
+	function delFile(fileId, fileName, classId, recordId) {
+		$('#file_'+fileId).css('display', 'none');
+		$.post("/adminajax/", {method: 'delFile', fileName: fileName, classId: classId, recordId: recordId},
+		function(data){
+			if (data.alertText) {
+				alert(data.alertText);
+			}
+		}, "json");
+	}
 	
+	function updateFileList(tableName, recordId) {
+		$('#uploadOutput').empty();
+		$.post("/adminajax/", {method: 'updateFileList', tableName: tableName, recordId: recordId},
+		function(data){
+			$('#filelist').html(data.content);
+		}, "json");
+	}
 	
-/* end xajax */	
+	function addPrice(formId) {
+		fields = $('#frm'+formId).serialize();
+		showDiv('waiting', 0, -100);
+		$.post("/adminajax/", {method: 'addPrice', formdata: fields},
+		function(data){
+			$('#sizelist').html(data.content);
+			hideDiv('waiting');
+		}, "json");
+	}
+	
+	function delPrice(priceId) {
+		showDiv('waiting', 0, -100);
+		$.post("/adminajax/", {method: 'delPrice', priceId: priceId},
+		function(data){
+			$('#price_'+priceId).remove();
+			hideDiv('waiting');
+		}, "json");
+	}
+	
+	function updatePrices(formId) {
+		fields = $('#frm'+formId).serialize();
+		showDiv('waiting', 0, -100);
+		$.post("/adminajax/", {method: 'updatePrices', formdata: fields},
+		function(data){
+			$('#sizelist').html(data.content);
+			hideDiv('waiting');
+		}, "json");
+	}
+	
+/* end ajax */	
 
 /* Calendar setup*/
 

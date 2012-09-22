@@ -155,7 +155,7 @@
 		
         public function sendMail($params) {
 		global $smarty, $MAX_FILE_SIZE;
-			inc_lib('libmail.php');
+			inc_lib('Mail.php');
 			$ret = array('', '');
 			$msg = new Mail();
             $msg->From($GLOBALS['ADMIN_EMAIL']);

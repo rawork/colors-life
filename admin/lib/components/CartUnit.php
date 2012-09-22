@@ -53,9 +53,9 @@
             return $this->smarty->fetch('service/cart/'.$this->props['lang'].'/add.tpl');
         }
 		
-		public function getOrderDetail($iOrderId) {
-			$aOrder = $GLOBALS['rtti']->getTable('cart_orders')->getItem($iOrderId);
-			return nl2br($aOrder['order']);
+		public function getOrderDetail($orderId) {
+			$order = $GLOBALS['rtti']->getTable('cart_order')->getItem($orderId);
+			return nl2br($order['order_txt']);
 			
 		}
 		
@@ -165,33 +165,10 @@
 					"',"."'".$sOrderText."',NOW()");
 			$iLastId = $db->getInsertID();
 
-			/*inc_lib('tools/phpmailer/class.phpmailer.php');
-			$mail = new PHPMailer(true); // the true param means it will throw exceptions on errors, which we need to catch
-
-			$mail->IsSMTP(); // telling the class to use SMTP
-
-			try {
-			  $mail->Host       = "81.177.139.92"; // SMTP server
-			  //$mail->SMTPDebug  = 2;                     // enables SMTP debug information (for testing)
-			  $mail->SMTPAuth   = true;                  // enable SMTP authentication
-			  $mail->Username   = "webmaster@colors-life.ru"; // SMTP account username
-			  $mail->Password   = "97474004207";        // SMTP account password
-			  $mail->AddAddress($this->getOrderEmail());
-			  $mail->SetFrom($this->getOrderEmail(), 'Colors-life.ru Site Administrator');
-			  $mail->Subject = 'Заказ товаров на сайте '.$_SERVER['SERVER_NAME'];
-			  $mail->AltBody = $this->getOrderText();
-			  $mail->MsgHTML($this->getOrderText());
-			  $mail->Send();
-			  //echo "Message Sent OK</p>\n";
-			} catch (phpmailerException $e) {
-			  //echo $e->errorMessage(); //Pretty error messages from PHPMailer
-			} catch (Exception $e) {
-			  //echo $e->getMessage(); //Boring error messages from anything else!
-			}*/
 			$iCurrentOrderNumber = $this->_iBaseNumber + $iLastId;
 			$this->smarty->assign('order_number', $iCurrentOrderNumber);
 			$sOrderText = $this->smarty->fetch('service/cart/'.$this->props['lang'].'/order.mail.tpl');
-            inc_lib('libmail.php');
+            inc_lib('Mail.php');
 			$oMail = new Mail();
             $oMail->From($this->getOrderEmail());
             $oMail->Subject('Заказ №'.$iCurrentOrderNumber.' от '.date('d.m.Y H:i'));

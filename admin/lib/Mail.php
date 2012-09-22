@@ -62,7 +62,7 @@ class Mail
 	}
 
 	public function Subject ($subject = "") { 
-		$this->xheaders['Subject'] = strtr ($subject, "\r\n" , "  "); 
+		$this->xheaders['Subject'] = "=?utf-8?B?" . base64_encode(strtr ($subject, "\r\n" , "  ")) . "?=";
 		return true;
 	}
 

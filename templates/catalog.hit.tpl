@@ -41,8 +41,8 @@
                                           <td style="white-space:nowrap;"><div class="stuff-price"><span id="price_{$item2.id}">{if $item2.spec_price != '0.00'}{$item2.spec_price}{else}{$item2.price}{/if}</span> руб.</div></td>
                                           <td style="white-space:nowrap;"> Кол-во
                                            <input type="text" name="amount_{$item2.id}" id="amount_{$item2.id}" style="width:30px;" value="1">
-                                            <a href="javascript:addToCart({$item2.id})">Купить</a></td>
-                                          <td><a href="javascript:addToCart({$item2.id})"><img src="/img/cart0.gif" style="margin:0;" border="0"></a></td>
+                                            <a href="javascript:addCartItem({$item2.id})">Купить</a></td>
+                                          <td><a href="javascript:addCartItem({$item2.id})"><img src="/img/cart0.gif" style="margin:0;" border="0"></a></td>
                                         </tr>
                                       </table>
                                     </td>
@@ -133,8 +133,8 @@
 											  <tr>
                                                 <td width="100%"> Кол-во
                                                   <input type="text" name="amount_{$item.id}" id="amount_{$item.id}" style="width:30px;" value="1">
-                                                  <a href="javascript:addToCart({$item.id})">Купить</a></td>
-                                                <td><a href="javascript:addToCart({$item.id})"><img src="/img/cart0.gif" style="margin:0;" border="0"></a></td>
+                                                  <a href="javascript:addCartItem({$item.id})">Купить</a></td>
+                                                <td><a href="javascript:addCartItem({$item.id})"><img src="/img/cart0.gif" style="margin:0;" border="0"></a></td>
                                               </tr>
                                             </table>
                                           </td>

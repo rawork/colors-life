@@ -15,7 +15,6 @@
 <script type="text/javascript" src="/js/jquery.jqzoom.js"></script>
 <script type="text/javascript" src="/js/jquery.lightbox.js"></script>
 <script type="text/javascript" src="/js/public.functions.js"></script>
-<script type="text/javascript" src="/admin/js/xajax_js/xajax_core.js"></script>
 <script src="/admin/js/calendar.js" type="text/javascript"></script>
 <script src="/admin/js/calendar-ru.js" type="text/javascript"></script>
 <script src="/admin/js/calendar-setup.js" type="text/javascript"></script>

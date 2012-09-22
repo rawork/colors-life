@@ -82,8 +82,8 @@ class RTTI {
 		return $ret;
 	}
 
-	function getTable($tname) {
-		return $this->tables[$tname];
+	function getTable($name) {
+		return $this->tables[$name];
 	}
 
 	function getTables($cname) {
