@@ -79,10 +79,11 @@ div.auth-title {
 	text-decoration: underline;	
 }
 
-.up-text {
+.up-text a{
 	font-family: Arial, Tahoma;
-	font-size: 12px;
+	font-size: 16px;
 	font-weight: normal;
+	text-transform: capitalize;
 	color: #4D4D4D;
 }
 

@@ -40,8 +40,7 @@ var state = '{$state}';
               <tr> 
                 <td align="left" valign="middle" nowrap>
                   <div class="up-text">
-                    Проект: <a href="http://{$prj_name}.{$prj_zone}" target="_blank">{$prj_name}.{$prj_zone}</a><br>
-                    Пользователь: <strong>{$user}</strong>
+                    <a href="http://{$prj_name}.{$prj_zone}" target="_blank">{$prj_name}</a><br>
                   </div>
                   </td>
               </tr>
@@ -57,8 +56,7 @@ var state = '{$state}';
                 {/if}
                 {/foreach}
                 <td><img src="{$theme_ref}/img/0.gif" width="10" height="3" border="0"></td>
-                <td><a href="/admin/?operation=logout" title="Выйти из Управление сайтом"><img src="{$theme_ref}/img/icons/icon_key.gif" border="0"></a></td>
-                <td style="padding-right: 10px;"><a href="/admin/?operation=logout" title="Выйти из Управление сайтом">Выйти</a></td>
+                <td style="padding-right: 10px;white-space: nowrap;"><strong>{$user}</strong> / <a href="/admin/?operation=logout" title="Выйти из Управление сайтом">Выйти</a></td>
               </tr>
             </table></td>
         </tr>
@@ -151,7 +149,7 @@ var state = '{$state}';
       </table></td>
   </tr>
   <tr>
-  <td class="copyright">Управление сайтом &copy; 2000-2009</td>
+  <td class="copyright">Управление сайтом &copy; 2000-2012</td>
 </table>
 <script type="text/javascript">
 window.admin_menu = new PopupMenu("admin_menu");
