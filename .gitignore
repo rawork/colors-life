@@ -9,6 +9,7 @@ sitemap.xml
 app/config/config.php
 app/config/database.php
 app/config/parameters.php
+.htaccess
 
 # Cache
 app/cache/*
