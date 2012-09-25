@@ -10,10 +10,10 @@ class CounttagAction extends Action {
 
 	function getText() {
 		
-//		$this->fixImages();
-//		$this->fixFiles();
-//		$this->fixNews();
-//		$this->fixTables(); 
+		$this->fixImages();
+		$this->fixFiles();
+		$this->fixNews();
+		$this->fixTables(); 
 		
 //		$this->calculateCatalog();
 //		$this->buildSitemapXML();
