@@ -23,7 +23,7 @@ function smarty_function_raSetVar($params, &$smarty) {
 	} elseif (!isset($params['value'])) {
 		$smarty->trigger_error('raSetVar: Не указан параметр: value');
 	} else {
-		$GLOBALS['rtti']->setVar($params['var'], $params['value']);
+		$GLOBALS['container']->setVar($params['var'], $params['value']);
 	}
 }
 

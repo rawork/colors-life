@@ -18,9 +18,8 @@
  */
 
 function smarty_function_raSearch($params, &$smarty) {
-	inc_lib('components/SearchUnit.php');
-	$unit = new SearchUnit($GLOBALS['urlprops']);
-	return $unit->getBody();
+	$controller = new \Controller\SearchController();
+	return $controller->getBody();
 }
 
 ?>

@@ -1,0 +1,236 @@
+<html>
+<head>
+<title>{$title}</title>
+{$meta}
+<link href="/css/style.css" rel="stylesheet">
+<link href="/css/map.css" rel="stylesheet">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/public.functions.js"></script>
+<script src="/admin/js/xajax_js/xajax_core.js" charset="UTF-8" type="text/javascript"></script>
+</head>
+<body>
+<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="100%" valign="top">
+	
+	<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" style=" background: url(/img/bg_top_left.jpg) top left no-repeat;">
+  <tr>
+    <td height="34"><table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td style=" width:26.6%; border-right: 1px solid #FFFFFF;">&nbsp;</td>
+    <td background="/img/bg_top.jpg">&nbsp;</td>
+  </tr>
+</table>
+</td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="100%" style=" width:26.6%; border-right: 1px solid #FFFFFF;" valign="top">
+		
+		
+		</td>
+        <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="133"><table width="100%" height="133" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="100%" style=" background: url(/img/head_bg1.jpg) right;" height="100%" valign="top">
+				
+				<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" style=" background: url(/img/head_bg.jpg) no-repeat right;">
+  <tr>
+    <td height="27">
+	<div id="top_menu">
+	<table width="100%" height="27" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    {raDir var=menuitems query=/}
+	{foreach from=$menuitems key=k item=m}
+    <td class="item"><a {if $m.a}class="active"{/if} href="{$m.ref}">{$m.title}</a></td>
+    <td>&nbsp;</td>
+    {/foreach}
+  </tr>
+</table>
+	</div>	</td>
+  </tr>
+  <tr>
+    <td height="100%">
+	
+	<h1 style=" padding-left: 20px; color: #ffffd1;">Стратегический инвестор российских<br>
+предприятий и холдингов</h1>	</td>
+  </tr>
+</table>				</td>
+                <td><img src="/img/head_bg3.jpg" width="268" height="133"></td>
+              </tr>
+            </table></td>
+          </tr>
+          <tr>
+            <td height="33" bgcolor="b8b1cb" style=" padding: 0 0 0 20px;">
+			<form action="/search.php" method="get">
+			<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td style=" color: #ffffff; font-size: 9pt;">Поиск</td>
+    <td style=" padding: 0 10px 0 10px;"><input name="text" type="text" style=" padding: 0; font-size: 8pt; width: 260px; height: 17px; border-top: 1px solid #818181; border-left: 1px solid #818181;"></td>
+    <td><input type="submit" value="найти" style=" border: none; background: #4b437c; color: #c9c7d8; height: 17px; font-size: 8pt; padding-bottom: 5px;"></td>
+  </tr>
+</table>
+</form>
+			</td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td valign="top" height="100%">
+	
+	<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td valign="top" bgcolor="ffffff" style=" width: 26.6%; padding-right: 20px;">
+	<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td height="25" bgcolor="#FFFFFF">&nbsp;</td>
+	</tr>
+      <tr>
+        <td bgcolor="eaeaea" valign="top" style=" border-top: 7px solid #655890;">
+		
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td bgcolor="eaeaea" width="25" style=" border-bottom: 1px solid #e0e0e0;">&nbsp;</td>
+    <td bgcolor="f9f9f9" style=" border-bottom: 1px solid #e0e0e0; padding: 10px 25px 10px 25px;">
+	
+	<div style=" font: 14pt Times New Roman; color: #574886;">Аналитическая</div>
+            <div style=" font: 14pt Times New Roman; color: #574886; padding-left: 50px;">информация</div>
+	
+	
+	</td>
+  </tr>
+  <tr>
+    <td bgcolor="eaeaea" style=" border-bottom: 1px solid #fcfcfc;">&nbsp;</td>
+    <td bgcolor="f9f9f9" style=" border-bottom: 1px solid #fcfcfc; padding: 10px 25px 10px 25px; color: #7e7e7e; font-size: 9pt;">
+	
+	eergrerehrГруппа компаний «Петротек» - 
+российская бизнес-структура, 
+основана в 1993 году
+	
+	</td>
+  </tr>
+</table>
+		<br>
+<br>
+<br>
+<br>
+
+		</td>
+      </tr>
+      <tr>
+        <td height="100%" valign="top" bgcolor="eaeaea" style=" border-top: 7px solid #655890;">
+		
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td bgcolor="eaeaea" width="25">&nbsp;</td>
+    <td bgcolor="f9f9f9" style=" padding: 10px 25px 10px 25px;">
+	
+	<div style=" font: 14pt Times New Roman; color: #574886;">Анонсы и</div>
+            <div style=" font: 14pt Times New Roman; color: #574886; padding-left: 50px;">новости</div>
+	
+	
+	</td>
+  </tr>
+
+</table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td bgcolor="eaeaea" valign="top" style=" padding: 16px 25px 16px 50px;">
+	
+	grgaerГруппа компаний <strong>«Петротек»</strong> 
+владеет пакетами акций и является 
+стратегическим инвестором крупных 
+российских предприятий и холдингов, 
+работающих в нефтяной, 
+строительной, химической и других 
+отраслях. Миссией Группы компаний 
+«Петротек» является обеспечение 
+широкого спектра...
+	<br><br>
+    {raVote name=vote1}
+	</td>
+  </tr>
+</table>
+		</td>
+      </tr>
+    </table></td>
+    <td bgcolor="#FFFFFF" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+		<td height="25" bgcolor="#FFFFFF">&nbsp;</td>
+	</tr>
+      <tr>
+        <td valign="top"><h2>{$h1}</h2>
+		{raPath visible=1}<br>
+        <br>
+		{eval var=$mainbody}
+		<br>
+<br>
+<br>
+		</td>
+      </tr>
+    </table></td>
+	<td width="20">&nbsp;</td>
+  </tr>
+</table>
+
+	
+	</td>
+  </tr>
+  <tr>
+    <td height="150"><table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td bgcolor="#FFFFFF" style=" width:26.6%; padding-right: 20px;">
+		
+		<table width="100%" height="150" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td bgcolor="eaeaea" style=" width:26.6%;" valign="bottom" align="right"><img src="/img/cont_bg_bot.jpg"></td>
+  </tr>
+</table>
+
+		
+		</td>
+        <td valign="top">
+		
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+ 
+  <tr>
+    <td style=" border-top: 7px solid #655890;">
+	<table width="100%" height="27" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    {foreach from=$menuitems key=k item=m}
+    <td class="item"><a {if $m.a}class="active"{/if} href="{$m.ref}">{$m.title}</a></td>
+    <td>&nbsp;</td>
+    {/foreach}
+  </tr>
+</table>
+	</td>
+  </tr>
+  <tr>
+  <td>
+  <br>
+<br>
+
+<strong style=" color: #114d7c;"> Copyright © 1993-2006<br>
+<br>
+{raInclude var=address} </strong></td>
+  </tr>
+</table>		</td>
+        <td style=" width:26.6%;">&nbsp;</td>
+      </tr>
+    </table></td>
+  </tr>
+    
+</table>
+	
+	
+	</td>
+  </tr>
+</table>
+<map name="Map"><area shape="rect" coords="-36,-12,70,13" href="/map.php">
+<area shape="rect" coords="-54,22,85,38" href="mailto:r@web2b.ru"></map></body>
+</html>

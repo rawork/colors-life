@@ -80,7 +80,7 @@
 			alert('Не выбраны элементы для удаления');
 		} else {
 			if (confirm('Уверены, что хотите удалить выделенные записи?')) {
-				$('#frmGroupUpdate').attr('action', ref + '&action=group_delete');
+				$('#frmGroupUpdate').attr('action', ref + '/groupdelete');
 				$('#frmGroupUpdate').submit();
 			} else {
 				return false;
@@ -100,7 +100,7 @@
 		if (cng_num <= 0) {
 			alert('Не выбраны элементы для редактирования');
 		} else {
-			$('#frmGroupUpdate').attr('action', ref + '&action=s_group_update');
+			$('#frmGroupUpdate').attr('action', ref + '/groupedit');
 			$('#frmGroupUpdate').submit();
 		}	
 	}
@@ -212,7 +212,7 @@
 			alert('Введите количество от 1 до 10!');	
 		} else if (quantity) {
 			hidePopup();
-			window.location = ref + '&quantity=' + quantity;
+			window.location = ref + '?quantity=' + quantity;
 		} else {
 			alert('Введите число');	
 		}
@@ -230,7 +230,7 @@
 	
 	function makeArchive(formId) {
 		showDiv('waiting', 0, -100);
-		$("archive_info").empty();
+		$("#archive_info").empty();
 		$.post("/adminajax/", {method: 'makeArchive'},
 		function(data){
 			$("#archive_info").html(data.content);
@@ -239,9 +239,9 @@
 		}, "json");
 	}
 	
-	function delFile(fileId, fileName, classId, recordId) {
+	function delFile(fileId, fileName, tableName, recordId) {
 		$('#file_'+fileId).css('display', 'none');
-		$.post("/adminajax/", {method: 'delFile', fileName: fileName, classId: classId, recordId: recordId},
+		$.post("/adminajax/", {method: 'delFile', fileName: fileName, tableName: tableName, recordId: recordId},
 		function(data){
 			if (data.alertText) {
 				alert(data.alertText);
@@ -286,6 +286,15 @@
 		}, "json");
 	}
 	
+	function updateRpp(sel, tableName) {
+		showDiv('waiting', 0, -100);
+		$.post("/adminajax/", {method: 'updateRpp', tableName: tableName, rpp: sel.options[sel.selectedIndex].value},
+		function(data){
+			hideDiv('waiting');
+			location.reload();
+		}, "json");
+	}
+	
 /* end ajax */	
 
 /* Calendar setup*/
@@ -327,7 +336,7 @@
 		if (enableAutoTypeSelection && cType) {
 			connector += '&Type=' + cType;
 		}
-		open(connector, 'tinyfck', 'modal,width=640,height=465');
+		open(connector, 'tinyfck', 'modal,width=750,height=465');
 	}
 	
 	function fileBrowserCallBack(field_name, url, type, win) {
@@ -351,7 +360,7 @@
 		if (enableAutoTypeSelection && cType) {
 			connector += '&Type=' + cType;
 		}
-		open(connector, 'tinyfck', 'modal,width=640,height=465');
+		open(connector, 'tinyfck', 'modal,width=750,height=465');
 	}
 	
 	function setFieldType(it){
@@ -363,11 +372,6 @@
 			$('#add_select_values').css('display', 'none');
 			$('#add_params').css('display', 'none');
 		}
-	}
-	
-	function updateRpp(sel) {
-		ref = document.getElementById('ref');
-		window.location = ref.value+'&rpp='+sel.options[sel.selectedIndex].value;
 	}
 	
 	function setPos(it, plusW, plusH) {

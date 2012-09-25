@@ -63,8 +63,6 @@ function smarty_function_math($params, &$smarty)
         }
     }
 	
-	//var_dump($equation);
-	
 	
     eval("\$smarty_math_result = ".$equation.";");
 

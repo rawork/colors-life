@@ -20,7 +20,7 @@
 function smarty_function_raPath($params, &$smarty) {
 	if (!empty($params['visible'])) {
 		$params['delimeter'] = empty($params['demimeter']) ? __PATH_DELIMETER : $params['demimeter'];
-		return $GLOBALS['utree']->getPath($params['delimeter']);
+		return $GLOBALS['container']->get('tree')->getPath($params['delimeter']);
 	} else {
 		return '';
 	}

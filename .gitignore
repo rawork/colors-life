@@ -2,18 +2,14 @@
 # Uploads
 upload/*
 img/files/*
-yml/shop.yml
+yml/*
 sitemap.xml
 
 # Configuration files
-config.php
-admin/lib/conf/conf.db.php
-admin/lib/conf/conf.params.php
+app/config/config.php
+app/config/database.php
+app/config/parameters.php
 
 # Cache
-admin/lib/cache/*
-!admin/lib/cache/index.html
-admin/lib/templates_c/*
-!admin/lib/templates_c/index.html
-templates/backup/*
-!templates/backup/index.html
+app/cache/*
+app/Resources/backup/*

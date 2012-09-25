@@ -27,7 +27,7 @@ function smarty_function_raItem($params, &$smarty) {
 		} elseif (!isset($params['var'])) {
 			$smarty->trigger_error('raItem: Не указан параметр: var');
 		} else {
-			$smarty->assign($params['var'], $GLOBALS['rtti']->getItem($class, $where, !empty($params['sort']) ? $params['sort'] : '', !empty($params['select']) ? $params['select'] : ''));
+			$smarty->assign($params['var'], $GLOBALS['container']->getItem($class, $where, !empty($params['sort']) ? $params['sort'] : '', !empty($params['select']) ? $params['select'] : ''));
 		}
 	}
 }

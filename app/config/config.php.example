@@ -1,0 +1,17 @@
+<?php
+
+$PRJ_REF = '';
+$PRJ_DIR = $_SERVER['DOCUMENT_ROOT'].$PRJ_REF;
+
+$LIB_REF = $PRJ_REF.'/admin/lib';
+$LIB_DIR = $PRJ_DIR.'/admin/lib';
+$RES_REF = $PRJ_REF.'/img/files';
+$RES_DIR = $PRJ_DIR.'/img/files';
+$UPLOAD_REF = $PRJ_REF.'/upload';
+$UPLOAD_DIR = $PRJ_DIR.'/upload';
+$PCRE_RES_REF = str_replace('/', '\/', $RES_REF);
+$THEME_REF = $PRJ_REF.'/admin/themes/_default';
+$THEME_DIR = $PRJ_DIR.'/admin/themes/_default';
+
+require_once('database.php');
+require_once('parameters.php');

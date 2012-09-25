@@ -23,7 +23,7 @@ function smarty_function_raFInfo($params, &$smarty) {
 		$smarty->trigger_error('raFInfo: Не указан параметр: var');
 	} else {
 		$ipath = pathinfo($params['file']);
-		$smarty->assign($params['var'], array('ext' => $ipath['extension'], 'size' => CUtils::getFileSize($params['file'])));
+		$smarty->assign($params['var'], array('ext' => $ipath['extension'], 'size' => $GLOBALS['container']->get('util')->getFileSize($params['file'])));
 	}
 }
 ?>

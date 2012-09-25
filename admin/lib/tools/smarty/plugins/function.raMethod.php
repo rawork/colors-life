@@ -21,7 +21,7 @@ function smarty_function_raMethod($params, &$smarty) {
 	if (!isset($params['ref'])) {
 		$smarty->trigger_error('raMethod: Не указан параметр: ref');
 	} else {
-		return $GLOBALS['rtti']->callMethodByURL($params['ref'], false);
+		return $GLOBALS['container']->callMethodByURL($params['ref'], false);
 	}
 }
 

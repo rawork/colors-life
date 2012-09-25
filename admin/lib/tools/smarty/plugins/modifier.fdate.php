@@ -30,7 +30,7 @@
  */
 
 function smarty_modifier_fdate($string, $format = 'd.m.Y') {
-	return CUtils::fdate($string, $format);
+	return $GLOBALS['container']->get('util')->fdate($string, $format);
 }
 
 

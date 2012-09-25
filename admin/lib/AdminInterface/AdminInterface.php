@@ -1,104 +1,112 @@
 <?php
-	inc_lib('AdminInterface/UnitAdminInterface.php');
-	inc_lib('components/Unit.php');
-    class AdminInterface {
-        protected $units = array(); 
-		protected $unit;
-		protected $state;
-		protected $smarty;
-        public function __construct() {
-			$this->setOptions();
-			$this->setUnits();
-        }
-        
-		protected function setOptions() {
-			$this->unit = CUtils::_getVar('unit');
-			$this->state = CUtils::_getVar('state', false, 'content');
-			$this->smarty = $GLOBALS['smarty'];
-			$this->smarty->assign('user', CUtils::_sessionVar('user'));
-			$this->smarty->assign('state', $this->state);
-			$this->smarty->assign('lang', CUtils::_sessionVar('lang', false, 'ru'));
-			$this->smarty->assign('unit', $this->unit);
-		}
-		
-		protected function setUnits() {
-		global $PRJ_DIR, $THEME_REF;
-			$components = $GLOBALS['rtti']->getComponents();
-			if (sizeof($components) > 0) {
-				foreach ($components as $u)
-					if ($u['name'] == $this->unit)
-						$this->addUnit($u, array(CUtils::_sessionVar('user') => 1));
-				switch ($this->state) {
-					case 'content': $stateLetter = 'C'; break;
-					case 'settings': $stateLetter = 'A'; break;
-					case 'service': $stateLetter = 'S'; break;
-					default : $stateLetter = 'N';
-				}
-				$units = array();
-				foreach ($components as $u) {
-					if ($u['ctype'] == $stateLetter) {
-						$basePath = $THEME_REF.'/img/module/';
-						$units[] = array(
-							'name' => $u['name'],
-							'title' => $u['title'],
-							'ref' => $this->getBaseRef($u['name']),
-							'icon' => (file_exists($PRJ_DIR.$basePath.$u['name'].'.gif') ? $basePath.$u['name'] : $basePath.'folder').'.gif',
-							'tablelist' => $u['name'] == $this->unit ? $this->getUnit($u['name'])->getTableMenu() : '',
-							'current' => $u['name'] == $this->unit
-						);	
-					}
-				}
-				$this->smarty->assign('units', $units);
-			} else {
-				unset($_SESSION['user']);
-				unset($_SESSION['ukey']);
-				session_destroy();
-				header('/admin/?error='.urlencode('Incorrect user settings. Check user rules.'));
-			}	
-		}
-		
-        protected function addUnit($u, $users) {
-            global $PRJ_DIR, $THEME_REF;
-			if (($u['ctype'] == 'S' || $u['name'] == 'meta' || $u['name'] == 'tree') && !inc_u($u['name'])) {
-				throw new Exception('Not exists component: '.$u['name']);
+
+namespace AdminInterface;
+
+use Admin\BaseAdmin;
+
+class AdminInterface {
+	private $units = array(); 
+	private $currentModule;
+	private $currentState;
+	
+	public function __construct() {
+		$this->setOptions();
+		$this->setModules();
+	}
+
+	protected function setOptions() {
+		$this->currentModule = $this->get('router')->getParam('module');
+		$this->currentState = $this->get('router')->getParam('state');
+		$this->get('smarty')->assign('user', $this->get('util')->_sessionVar('user'));
+		$this->get('smarty')->assign('lang', $this->get('util')->_sessionVar('lang', false, 'ru'));
+		$this->get('smarty')->assign('module', $this->currentModule);
+		$this->get('smarty')->assign('state', $this->currentState);
+	}
+
+	protected function setModules() {
+	global $PRJ_DIR, $THEME_REF;
+		$modules = $this->get('container')->getModules();
+		if (count($modules)) {
+			foreach ($modules as $module)
+				if ($module['name'] == $this->currentModule)
+					$this->addAdmin($module, array($this->get('util')->_sessionVar('user') => 1));
+			switch ($this->currentState) {
+				case 'content': $stateLetter = 'C'; break;
+				case 'settings': $stateLetter = 'A'; break;
+				case 'service': $stateLetter = 'S'; break;
+				default : $stateLetter = 'N';
 			}
-			$className = ucfirst($u['name']).'Unit';
-			$unit = inc_u($u['name']) ? new $className() : new Unit($u['name']);
-			$this->units[$u['name']] = new UnitAdminInterface($unit, $u['title'], $users);
-        }
-        
-		public function getUnit($uname) {
-			if (isset($this->units[$uname]) && $this->units[$uname]->isAvailable()){
-               	return $this->units[$uname];
-            } else {
-                throw new Exception('Not exists component: '.$uname);
-            }
-        }
-		
-		public function getBaseRef($unitname) {
-            return '?state='.$this->state.'&unit='.$unitname;
-        }
-		
-        public function cron($period) {
-            if (!empty($period)) {
-                set_time_limit(0);
-                echo 'Cron ('.$period.'):';
-                foreach ($this->units as $u) {
-                    echo ' '.$u->unit->ocomponent['name'];
-                    $name = 'every'.$period;
-                    $u->unit->$name();
-                }
-            } else {
-                throw new Exception('Cron params error');
-            }
-        }
-		
-        public function show() {
-			$version = $GLOBALS['LIB_VERSION'];
-			$this->smarty->assign('bottom', !empty($this->unit) ? $this->getUnit($this->unit)->getIndex() : '');
-			$this->smarty->assign('langs', $GLOBALS['db']->getItems('config_languages', 'SELECT * FROM config_languages'));
-			$this->smarty->display('admin/main.tpl');
-			ob_end_flush();
-        }
-    }
-?>
+			$ret = array();
+			foreach ($modules as $module) {
+				if ($module['ctype'] == $stateLetter) {
+					$basePath = $THEME_REF.'/img/module/';
+					$ret[] = array(
+						'name' => $module['name'],
+						'title' => $module['title'],
+						'ref' => $this->getBaseRef($module['name']),
+						'icon' => (file_exists($PRJ_DIR.$basePath.$module['name'].'.gif') ? $basePath.$module['name'] : $basePath.'folder').'.gif',
+						'tablelist' => $module['name'] == $this->currentModule ? $this->getModule($module['name'])->getTableMenu() : '',
+						'current' => $module['name'] == $this->currentModule
+					);	
+				}
+			}
+			$this->get('smarty')->assign('modules', $ret);
+		} else {
+			unset($_SESSION['user']);
+			unset($_SESSION['ukey']);
+			session_destroy();
+			header('/admin/');
+		}	
+	}
+
+	private function addAdmin($module, $users) 
+	{
+		$admin = new \Admin\Admin($module['name']);
+		$this->units[$module['name']] = new AdminController($admin, $module['title'], $users);
+	}
+
+	public function getModule($moduleName) {
+		if (isset($this->units[$moduleName]) && $this->units[$moduleName]->isAvailable()){
+			return $this->units[$moduleName];
+		} else {
+			throw new \Exception('Отсутствует запрашиваемый модуль: '.$moduleName);
+		}
+	}
+
+	public function getBaseRef($moduleName) {
+		return $this->currentState.'/'.$moduleName.'/';
+	}
+
+	public function cron($period) {
+		if (!empty($period)) {
+			set_time_limit(0);
+			echo 'Cron ('.$period.'):';
+			foreach ($this->units as $u) {
+				echo ' '.$u->currentModule->name;
+				$name = 'every'.$period;
+				$u->currentModule->$name();
+			}
+		} else {
+				throw new \Exception('Cron params error');
+		}
+	}
+
+	public function show() {
+		$this->get('smarty')->assign('version', $GLOBALS['LIB_VERSION']);
+		$this->get('smarty')->assign('content', !empty($this->currentModule) ? $this->getModule($this->currentModule)->getIndex() : '');
+		$this->get('smarty')->assign('langs', $this->get('connection')->getItems('config_languages', 'SELECT * FROM config_languages'));
+		$this->get('smarty')->display('admin/layout.tpl');
+		ob_end_flush();
+	}
+	
+	public function get($name) {
+		global $container, $security;
+		if ($name == 'container') {
+			return $container;
+		} elseif ($name == 'security') {
+			return $security;
+		} else {
+			return $container->get($name);
+		}
+	}
+}

@@ -22,7 +22,7 @@ function smarty_function_raURL($params, &$smarty) {
 	$separator = !empty($params['spt']) ? $params['spt'] : '\*';
     $method = isset($params['method']) ? $params['method'] : 'index';
     $prms = !empty($params['prms']) ? explode('.', $params['prms']) : array();
-    $link = !empty($params['node']) ? (stristr($params['node'], 'http://') ? $params['node'] : $GLOBALS['rtti']->href($params['node'], $method , $prms)) : '';
+    $link = !empty($params['node']) ? (stristr($params['node'], 'http://') ? $params['node'] : $GLOBALS['container']->href($params['node'], $method , $prms)) : '';
     if (!empty($params['text'])) {
         if (empty($params['node']) && empty($params['url'])) {
         	return str_replace(str_replace('\\', '', $separator), '', $params['text']);

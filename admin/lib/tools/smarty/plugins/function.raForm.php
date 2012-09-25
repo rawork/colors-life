@@ -21,9 +21,8 @@ function smarty_function_raForm($params, &$smarty) {
 	if (empty($params['name'])) {
 		$smarty->trigger_error('raForm: Не указан параметр: name');
 	} else {
-		inc_u('forms');
-		$unit = new FormsUnit(array());
-		return $unit->getForm("name='".$params['name']."'", $params);
+		$manager = new \Model\FormManager();
+		return $manager->getForm("name='".$params['name']."'", $params);
 	}
 }
 

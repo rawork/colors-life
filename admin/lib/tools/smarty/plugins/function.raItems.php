@@ -24,14 +24,14 @@ function smarty_function_raItems($params, &$smarty) {
 			$smarty->trigger_error('raItems: Не указан параметр: var');
 		} else {
 			if (!empty($params['nquery'])) {
-				$smarty->assign($params['var'], $GLOBALS['rtti']->getNativeItems($params['nquery']));
+				$smarty->assign($params['var'], $GLOBALS['container']->getNativeItems($params['nquery']));
 			} else {
 				$class = $params['table'];
 				$condition = !empty($params['query']) ? $params['query'] : '';
 				$sort = !empty($params['sort']) ? $params['sort'] : '';
 				$limit = !empty($params['limit']) ? $params['limit'] : false;
 				$select = !empty($params['select']) ? $params['select'] : '';
-				$smarty->assign($params['var'], $GLOBALS['rtti']->getItems($class, $condition, $sort, $limit, $select));
+				$smarty->assign($params['var'], $GLOBALS['container']->getItems($class, $condition, $sort, $limit, $select));
 			}
 		}
 	}

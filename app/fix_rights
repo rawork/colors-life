@@ -1,0 +1,8 @@
+#!/bin/bash
+
+chmod -R 777 app/cache/
+chmod -R 777 img/files/
+chmod -R 777 upload/
+chmod -R 777 yml/
+chmod -R 666 sitemap.xml
+chmod -R 777 app/backup/

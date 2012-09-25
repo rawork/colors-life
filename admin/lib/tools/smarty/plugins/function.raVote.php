@@ -18,12 +18,10 @@
  */
 
 function smarty_function_raVote($params, &$smarty) {
-global $urlprops;
-	$urlprops['action'] = 'form';
-	$urlprops['frmname'] = empty($params['name']) ? '' : $params['name'];
-	inc_u('vote');
-	$unit = new VoteUnit($urlprops);
-	return $unit->getBody();
+	$controller = new \Controller\VoteController();
+	$controller->params['action'] = 'form';
+	$controller->params['frmname'] = empty($params['name']) ? '' : $params['name'];
+	return $controller->getBody();
 }
 
 ?>

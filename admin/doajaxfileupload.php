@@ -3,7 +3,9 @@ require_once('../loader.php');
 $error = "";
 $msg = "";
 $fileElementName = 'fileToUpload';
-$upload_ref  = '/upload/';
+$date = new \Datetime();
+$upload_ref = $GLOBALS['UPLOAD_REF'].$date->format('/Y/d/m/');
+@mkdir($GLOBALS['PRJ_DIR'].$upload_ref, 0755, true);
 $upload_path = $GLOBALS['PRJ_DIR'].$upload_ref;
 $i = 0;
 $files_count = isset($_FILES[$fileElementName]["name"]) ? count($_FILES[$fileElementName]["name"]) : 0;
@@ -43,13 +45,13 @@ for ($i = 0; $i < $files_count-1; $i++) {
   			$error = $_FILES[$fileElementName]['name'][$i] . " уже существует. ";
   		} else {*/
     	$msg = " " . $_FILES[$fileElementName]['name'][$i] . "<br/>";
-		$fileref  = CUtils::getNextFileName($upload_ref.$_FILES[$fileElementName]['name'][$i]);
+		$fileref  = $GLOBALS['container']->get('util')->getNextFileName($upload_ref.$_FILES[$fileElementName]['name'][$i]);
 		move_uploaded_file($_FILES[$fileElementName]['tmp_name'][$i], $GLOBALS['PRJ_DIR'].$fileref);
 		$filename = $_FILES[$fileElementName]['name'][$i];
 		$filesize = @filesize($upload_path.$_FILES[$fileElementName]['name'][$i]);
 		$filetype = $_FILES[$fileElementName]['type'][$i];
-		$table_name = CUtils::_postVar('table_name');
-		$record_id = CUtils::_postVar('record_id', true, 0);
+		$table_name = $GLOBALS['container']->get('util')->_postVar('table_name');
+		$record_id = $GLOBALS['container']->get('util')->_postVar('record_id', true, 0);
 		$filewidth = 0;
 		$fileheight = 0;
 		if (is_array($file_info = @GetImageSize($GLOBALS['PRJ_DIR'].$fileref))) {
@@ -58,7 +60,7 @@ for ($i = 0; $i < $files_count-1; $i++) {
 	    }
 			$sql = "INSERT INTO system_files(name,mimetype,file,width,height,filesize,table_name,record_id,credate) "
 				." VALUES('$filename','$filetype','$fileref',$filewidth,$fileheight,'$filesize','$table_name','$record_id',NOW())";
-			$GLOBALS['db']->execQuery('addfile', $sql);
+			$GLOBALS['container']->get('connection')->execQuery('addfile', $sql);
 			//$msg .= $sql;
 		/*}*/
 	//for security reason, we force to remove all uploaded file

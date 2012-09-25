@@ -1,5 +1,5 @@
 <?php
-include_once('../../../config.php');
+include_once('../../../loader.php');
 $bReturnAbsolute=false;
 
 $sBaseVirtual0=$RES_REF;  //Assuming that the path is http://yourserver/Editor/assets/ ("Relative to Root" Path is required)

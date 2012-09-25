@@ -44,11 +44,11 @@ if(isset($_FILES["File1"]))
 		{
 		$sMsg = "The File Type is not allowed.";
 		}
-	elseif (move_uploaded_file($_FILES['File1']['tmp_name'], $currFolder."/".basename(strtolower(CUtils::translitStr($_FILES['File1']['name']))))) 
+	elseif (move_uploaded_file($_FILES['File1']['tmp_name'], $currFolder."/".basename(strtolower($container->get('util')->translitStr($_FILES['File1']['name']))))) 
 		{
 		$sMsg = "";
-		$sUploadedFile=CUtils::translitStr($_FILES['File1']['name']);
-		@chmod($currFolder."/".basename(strtolower(CUtils::translitStr($_FILES['File1']['name']))), 0644);
+		$sUploadedFile=$container->get('util')->translitStr($_FILES['File1']['name']);
+		@chmod($currFolder."/".basename(strtolower($container->get('util')->translitStr($_FILES['File1']['name']))), 0644);
 		}
 	else 
 		{

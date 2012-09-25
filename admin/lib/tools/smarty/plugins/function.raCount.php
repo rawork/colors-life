@@ -23,7 +23,7 @@ function smarty_function_raCount($params, &$smarty) {
 		if (!isset($params['var'])) {
 			$smarty->trigger_error('raItems: Не указан параметр: var');
 		} else {
-			$smarty->assign($params['var'], $GLOBALS['rtti']->getCount($params['table'], isset($params['query']) ? $params['query'] : ''));
+			$smarty->assign($params['var'], $GLOBALS['container']->getCount($params['table'], isset($params['query']) ? $params['query'] : ''));
 		}
 	}
 }

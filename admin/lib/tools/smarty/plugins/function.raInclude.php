@@ -21,7 +21,7 @@ function smarty_function_raInclude($params, &$smarty) {
 	if (empty($params['var'])) {
 		$smarty->trigger_error('raInclude: Не указан параметр: var');
 	} else {
-		if ($item = $GLOBALS['rtti']->getItem('tree_blocks',"name='{$params['var']}' AND publish='on'")) {
+		if ($item = $GLOBALS['container']->getItem('tree_blocks',"name='{$params['var']}' AND publish='on'")) {
 			return $item['body'];
 		} else {
 			return '';

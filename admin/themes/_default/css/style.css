@@ -23,25 +23,41 @@ div.auth-border {
 	border: 1px solid #B2BCD9;
 	background-color: #F9FAFD;
 	width: 450px;
-	padding: 6px 6px 6px 6px;
+	padding: 6px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
 div.auth-title {
-	font-family: Tahoma;
-	font-size: 12px;
-	font-weight: bold;
-	color: #1F1F1F;
+	font-family: Arial, Tahoma;
+	font-size: 16px;
+	color: #666666;
 	margin-top: 4px;
+}
+
+div.auth-border td {
+	font-size: 14px;
 }
 
 .pole {
 	background-color:#FFFFFF;
-	color:#000000;
 	border:1px #A1BCC7 solid;
-	font-family: Tahoma;
-	font-size: 10px;
+	font-family: Arial, Tahoma;
+	font-size: 14px;
 	font-style: normal;
-	color:#C9242B;
+	color:#666666;
+	height: 26px;
+	padding: 0 5px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
 .lang-active {
