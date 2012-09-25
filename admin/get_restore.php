@@ -1,6 +1,6 @@
 <?
 	
-$filename = $_SERVER['DOCUMENT_ROOT'].'/admin/lib/tools/restore.php';
+$filename = $_SERVER['DOCUMENT_ROOT'].'/app/restore.php';
 $sfilename = 'restore.php';
 
 if (!file_exists($filename)) {

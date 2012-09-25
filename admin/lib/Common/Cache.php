@@ -12,7 +12,7 @@ class Cache {
 	* (make sure to add a trailing slash)
 	* @var string $_cacheDir
 	*/
-	protected $_cacheDir = '/admin/lib/cache/';
+	protected $_cacheDir = '/app/cache/';
 
 	/**
 	* Enable / disable caching

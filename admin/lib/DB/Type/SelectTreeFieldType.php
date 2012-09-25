@@ -33,7 +33,7 @@ class SelectTreeFieldType extends LookUpFieldType {
 	}
 
 	protected function select_tree_getInput($value, $name, $zeroTitle = 'Корень') {
-		$name = $name ? $name : $this->getName();
+		$name = $name ?: $this->getName();
 		$value = empty($value) ? intval($this->dbValue) : $value;
 		$unit = $this->get('router')->getParam('module'); 
 		$table = $this->get('router')->getParam('table');

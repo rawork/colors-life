@@ -19,16 +19,20 @@ class Action {
 		$this->searchRef = $this->baseRef;
 		$this->fullRef = $this->searchRef.($this->get('util')->_getVar('page') ? '?page='.$this->get('util')->_getVar('page') : '');
 		if (is_object($this->dataTable = $this->uai->getBaseTable())) {
-			if ($_SERVER['REQUEST_METHOD'] != 'POST' && $tableParams = $this->get('util')->_sessionVar($this->dataTable->getDBTableName())) {
-				$this->tableParams = json_decode(stripslashes($tableParams), true);
-			} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				if ($this->get('util')->_postVar('cansel_filter')) {
-					unset($_SESSION[$this->dataTable->getDBTableName()]);
-				} elseif ($this->search_url = $this->dataTable->getSearchURL()) {
-					parse_str($this->search_url, $this->tableParams);
-					$_SESSION[$this->dataTable->getDBTableName()] = json_encode($this->tableParams);
+			if ($filterType = $this->get('util')->_postVar('filter_type')) {
+				switch ($filterType) {
+					case 'cansel':
+						unset($_SESSION[$this->dataTable->getDBTableName()]);
+						break;
+					default:
+						$this->search_url = $this->dataTable->getSearchURL();
+						parse_str($this->search_url, $this->tableParams);
+						$_SESSION[$this->dataTable->getDBTableName()] = json_encode($this->tableParams);
 				}
 				header('location: '.$this->baseRef);
+			} else {
+				$tableParams = $this->get('util')->_sessionVar($this->dataTable->getDBTableName());
+				$this->tableParams = json_decode(stripslashes($tableParams), true);
 			}
 			if (is_array($this->tableParams)) {
 				foreach ($this->tableParams as $key => $value) {

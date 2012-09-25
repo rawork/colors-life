@@ -22,12 +22,12 @@
 	
 	function autoloader($className)
 	{
+		global $LIB_DIR;
 		if ($className == 'Smarty') {
-			global $PRJ_DIR;
-			require_once($PRJ_DIR.'/admin/lib/tools/smarty/Smarty.class.php');
+			
+			require_once($LIB_DIR.'/tools/smarty/Smarty.class.php');
 		} else {
-			global $PRJ_DIR;
-			$basePath = $PRJ_DIR.'/admin/lib/';
+			$basePath = $LIB_DIR.'/';
 			$className = ltrim($className, '\\');
 			$fileName  = '';
 			$namespace = '';

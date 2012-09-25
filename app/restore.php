@@ -343,7 +343,7 @@ elseif($Step == 3)
 	
 	if ($d_pos==0) // start
 	{
-		$dbconn = $_SERVER['DOCUMENT_ROOT']."/admin/lib/conf/conf.db.php";
+		$dbconn = $_SERVER['DOCUMENT_ROOT']."/app/config/database.php";
 		if(file_exists($dbconn))
 		{
 			$arReplace = array(

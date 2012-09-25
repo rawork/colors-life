@@ -6,6 +6,7 @@ class GroupeditAction extends Action {
 	function __construct(&$adminController) {
 		parent::__construct($adminController);
 	}
+	
 	function getText() {
 		$ids_array = array();
 		foreach ($_POST as $k => $req_item) {
@@ -14,11 +15,6 @@ class GroupeditAction extends Action {
 		}
 		if (!$ids_array) {
 			$this->messageAction($this->dataTable->group_update() ? 'Обновлено' : 'Ошибка обновления записей');
-		}
-		$ids_array = array();
-		foreach ($_POST as $k => $req_item) {
-			if (stristr($k, 'cng'))
-				$ids_array[] = intval($req_item);
 		}
 		$ret = '';
 		$fields = '';

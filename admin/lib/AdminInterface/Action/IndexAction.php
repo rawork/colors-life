@@ -44,7 +44,7 @@ class IndexAction extends Action {
 
 	private function _getTopTableHeader() {
 		global $THEME_REF;
-		$ret = '<form id="frmGroupUpdate" name="frmGroupUpdate" action="'.$this->fullRef.'/groupedit" method="post">';
+		$ret = '<form id="frmGroupUpdate" name="frmGroupUpdate" action="'.$this->baseRef.'/groupedit" method="post">';
 		$ret .= $this->getTableHeader();
 		$ret .= '<tr>';
 		$ret .= '<th width="1%" style="text-align:center;"><input type="checkbox" name="stateall" onClick="setStateAll(this);"></th>';
@@ -73,7 +73,7 @@ class IndexAction extends Action {
 		if (!empty($this->showGroupSubmit)) {
 			$sTableControlPanel .= '<td><a onclick="document.frmGroupUpdate.submit();return false;" class="context-button" title="Сохранить"><img border="0" src="'.$THEME_REF.'/img/icons/icon_save.gif"></a></td>';
 		}
-		$sTableControlPanel .= '<td>с выделенными:&nbsp;</td><td><a class="context-button" onclick="startGroupUpdate(\''.$this->fullRef.'\');return false;" title="Редактировать"><img border="0" src="'.$THEME_REF.'/img/icons/icon_edit.gif"></a></td><td><a class="context-button" onclick="startGroupDelete(\''.$this->fullRef.'\');return false;" title="Удалить"><img border="0" src="'.$THEME_REF.'/img/icons/icon_delete.gif"></a></td>';
+		$sTableControlPanel .= '<td>с отмеченными:&nbsp;</td><td><a class="context-button" onclick="startGroupUpdate(\''.$this->fullRef.'\');return false;" title="Редактировать"><img border="0" src="'.$THEME_REF.'/img/icons/icon_edit.gif"></a></td><td><a class="context-button" onclick="startGroupDelete(\''.$this->fullRef.'\');return false;" title="Удалить"><img border="0" src="'.$THEME_REF.'/img/icons/icon_delete.gif"></a></td>';
 		if (empty($this->dataTable->params['is_view'])) {
 			$rpps = array(10,25,50,100,200);
 			$sTableControlPanel .= '<td>&nbsp;&nbsp;Показывать записей:<input type="hidden" id="ref" name="ref" value="'.$this->fullRef.'"> <select name="rpp" onChange="updateRpp(this, \''.$this->dataTable->getDBTableName().'\')">';
@@ -190,7 +190,8 @@ EOD;
 	private function _getFilterForm() {
 		// обрабатываем возможные поля для поиска
 		$ret = '';
-		$ret .= '<form method="post" action="'.$this->baseRef.'">';
+		$ret .= '<form method="post" id="frmFilter" action="'.$this->baseRef.'">';
+		$ret .= '<input type="hidden" id="filter_type" name="filter_type" value="set" />';
 		$ret .= $this->getTableHeader();
 		$ret .= '<tr><th>Фильтр</th><th><div class="empty"></div></th></tr>';
 		$ret .= '<tr><td align="left" width="100">ID&nbsp;</td><td>';
@@ -205,7 +206,7 @@ EOD;
 				$ret .= '</td></tr>'."\n";
 			}
 		}
-		return $ret.'</table><div class="ctlbtns"><input class="adm-btn" type="submit" value="Искать"><input class="adm-btn" name="cansel_filter" type="submit" value="Отменить фильтры"></div></div></form>'; 
+		return $ret.'</table><div class="ctlbtns"><input class="adm-btn" type="submit" value="Искать"><input class="adm-btn" onclick="preFilter(\'cansel\');" type="button" value="Отменить фильтры"></div></div></form>'; 
 	}
 
 	public function getText() {

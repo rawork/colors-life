@@ -24,6 +24,11 @@
 		$('#'+frm).submit();
 	}
 	
+	function preFilter(type) {
+		$('#filter_type').attr('value', type);
+		$('#frmFilter').submit();
+	}
+	
 	function controlEditor(it, itname) {
 		if (it.checked)
 			tinyMCE.execCommand('mceAddControl', false, itname);
