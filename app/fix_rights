@@ -1,8 +1,15 @@
 #!/bin/bash
 
-chmod -R 777 app/cache/
-chmod -R 777 img/files/
-chmod -R 777 upload/
-chmod -R 777 yml/
-chmod -R 666 sitemap.xml
-chmod -R 777 app/backup/
+chmod -R 777 log/
+chmod 644 log/.gitkeep
+chmod -R 777 cache/
+chmod 644 cache/.gitkeep
+chmod 644 cache/smarty/.gitkeep
+chmod -R 777 ../img/files/
+chmod -R 777 ../upload/
+chmod 644 ../upload/.htaccess
+chmod -R 777 ../yml/
+chmod 644 ../yml/.gitkeep
+chmod -R 666 ../sitemap.xml
+chmod -R 777 backup/
+chmod 644 backup/.gitkeep
