@@ -7,9 +7,10 @@ class SelectTreeFieldType extends LookUpFieldType {
 		parent::__construct($params, $entity);
 	}
 
-	public function getStatic() {
-		if (!empty($this->dbValue)) {
-			$a = $this->get('connection')->getItem('select_tree_item','SELECT id,'.$this->params['l_field'].' FROM '.$this->params['l_table'].' WHERE id='.intval($this->dbValue));
+	public function getStatic($value = null) {
+		$value = $value ?: $this->dbValue;
+		if ($value) {
+			$a = $this->get('connection')->getItem('select_tree_item','SELECT id,'.$this->params['l_field'].' FROM '.$this->params['l_table'].' WHERE id='.intval($value));
 			if (!empty($this->params['l_field']) && count($a)) {
 				$ret = '';
 				$fields = explode(',', $this->params['l_field']);
@@ -40,7 +41,7 @@ class SelectTreeFieldType extends LookUpFieldType {
 		$id = empty($this->dbId) ? '-1' : $this->dbId;
 		$input_id = strtr($name, '[]', '__');
 		// узнаем имя категории, для текстового поля
-		$ret = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="100%"><input type="text" readonly style="width:100%;" value="'.$this->getStatic().'" size="62" id="'.$input_id.'_title">';
+		$ret = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td width="100%"><input type="text" readonly style="width:100%;" value="'.$this->getStatic($value).'" size="62" id="'.$input_id.'_title">';
 		$ret .= '<input type="hidden" name="'.$name.'" value="'.$value.'" id="'.$input_id.'"></td>';
 		$ret .= '</td><td><input class="butt" type="button" value="&hellip;" onClick="showTreePopup(\''.$input_id.'\',\''.$unit.'_'.$table.'\',\''.$name.'\', \''.$id.'\', \''.$zeroTitle.'\',\''.$value.'\');"></td></tr></table>';
 		return $ret;
