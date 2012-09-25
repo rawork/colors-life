@@ -1,5 +1,5 @@
 <?php
-include_once('../../../loader.php');
+include_once('../../../app/init.php');
 $bReturnAbsolute=false;
 
 $sBaseVirtual0=$RES_REF;  //Assuming that the path is http://yourserver/Editor/assets/ ("Relative to Root" Path is required)
@@ -17,5 +17,3 @@ $sName2='';
 $sBaseVirtual3='';
 $sBase3='';
 $sName3='';
-
-?>
