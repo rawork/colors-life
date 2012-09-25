@@ -10,14 +10,14 @@ class CounttagAction extends Action {
 
 	function getText() {
 		
-		$this->fixImages();
-		$this->fixFiles();
-		$this->fixNews();
-		$this->fixTables(); 
+//		$this->fixImages();
+//		$this->fixFiles();
+//		$this->fixNews();
+//		$this->fixTables(); 
 		
-//		$this->calculateCatalog();
-//		$this->buildSitemapXML();
-//		$this->buildShopYML('shop.yml');
+		$this->calculateCatalog();
+		$this->buildSitemapXML();
+		$this->buildShopYML('shop.yml');
 		
 		//$this->correctImages();
 		//$this->_clearImages();
