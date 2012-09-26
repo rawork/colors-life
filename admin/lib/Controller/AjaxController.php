@@ -3,37 +3,31 @@
 namespace Controller;
 
 use \Common\Controller;
+use \Model\VoteManager;
 
 class AjaxController extends Controller{	
 	
-	private function getCartText() {
+	private function getCartText($quantity, $sum) {
 		$sCartText = '';
-		if ($this->get('util')->_sessionVar('number', true, 0)) {
-			$sCartText = '<span>'.$this->get('util')->_sessionVar('number', true, 0).'</span> товара(ов)<br> на сумму <span>'.$this->get('util')->_sessionVar('summa').'</span> руб.';
+		if ($quantity) {
+			$sCartText = '<span>'.$quantity.'</span> товара(ов)<br> на сумму <span>'.$sum.'</span> руб.';
 		} else {
 			$sCartText = 'Нет выбранных<br/> товаров';
 		}
 		return $sCartText;
 	}
 	
-	private function getCartTotalText() {
-		$sCartText = 'Всего '.$this->get('util')->_sessionVar('number', true, 0).' товара(ов) на сумму: <span>'.$this->get('util')->_sessionVar('summa').'</span>';
-		return $sCartText;
-	}
-	
-	function vote($values) {
-		// гемморой с массивами переданными через $.post
-		foreach ($values as $element) {
-			$_POST[$element['name']] = $element['value'];
-		}
-		$unit = new \Controller\VoteController();
-		return json_encode(array('content' => $unit->getBody()));
+	function voteProcess($formData) {
+		parse_str($formData, $elements);
+		$_POST = array_merge($_POST, $elements);
+		$manager = new VoteManager();
+		return json_encode(array('content' => $manager->getResult()));
 	}                                                                       
                                                                                 
 	function voteResult($voteId) {
-		$_POST['vote'] = $voteId;
-		$unit = new \Controller\VoteController();
-		return json_encode(array('content' => $unit->getBody()));
+		$_POST['vote_question'] = $voteId;
+		$manager = new VoteManager();
+		return json_encode(array('content' => $manager->getResult()));
 	}  
 	
 	public function addCartItem($productId, $quantity = 1, $price = 0, $priceId = 0) {
@@ -41,22 +35,22 @@ class AjaxController extends Controller{
 		$cart = new \Controller\CartController();
 		$result = array();
 		$result['popup_content'] = $cart->addCartItem($productId, $quantity, $price, $priceId);
-		$result['cart_count'] = $this->getCartText();
+		$result['cart_count'] = $this->getCartText($cart->getTotalQuantity(), $cart->getTotalPriceRus());
 		return json_encode($result);
 	}
 	
 	public function deleteCartItem($productGuid) {
-		$product = $_SESSION['cart'][$productGuid];
-		$quantity	= $_SESSION['number'];
-		$sum		= preg_replace('/(\s|,00)+/i', '', $_SESSION['summa']);
-		$productQuantity = $product['counter'];
-		$productSum = $product['price'] * $productQuantity;
-		unset($_SESSION['cart'][$productGuid]);
-		$_SESSION['number'] = $quantity - $productQuantity;
-		$_SESSION['summa']	= number_format($sum - $productSum, 2, ',', ' ');
 		$result = array();
-		$result['cart_count'] = $this->getCartText();
-		$result['totalSum'] = $this->getCartTotalText();
+		$this->get('router')->setParams('/cart/');
+		$this->get('container')->register('auth', new \Controller\AuthController());
+		$cart = new \Controller\CartController();
+		$cart->deleteItem($productGuid);
+		$result['cart_count'] = $this->getCartText($cart->getTotalQuantity(), $cart->getTotalPriceRus());
+		$result['totalQuantity'] = $cart->getTotalQuantity();
+		$result['totalSum'] = $cart->getTotalPriceRus().' руб.';
+		$result['totalSumDiscount'] = $cart->getTotalPriceDiscount().' руб.';
+		$result['discount'] = $cart->getDiscount().'%';
+		
 		return json_encode($result);
 	}
 
@@ -68,8 +62,8 @@ class AjaxController extends Controller{
 		return json_encode($result);
 	}
 	
-	public function showSubscribeResult($formdata) {
-		parse_str($formdata);
+	public function showSubscribeResult($formData) {
+		parse_str($formData);
 		$message = 'Не указан e-mail';
 		$success = false;
 		if (!empty($email) && $email != 'e-mail') {

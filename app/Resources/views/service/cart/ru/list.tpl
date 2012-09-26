@@ -101,11 +101,10 @@
 	</td>
 	</tr>
 	</table>
-<div class="cart-total" id="totalSum">Всего {$smarty.session.number} товара(ов) на сумму: <span>{$list_total|number_format:2:',':' '} руб.</span></div>
-{$discount.id}
-{if is_array($discount)}
-<div class="cart-total">Для суммы товара от {$discount.sum_min|number_format:2:',':' '} до {$discount.sum_max|number_format:2:',':' '} руб. действует скидка <b style="color:#EE2A2A;font-size:14px;">{$discount.discount} %</b></div>
-<div class="cart-total">Сумма с учетом скидки: <span>{$list_total-$list_total*$discount.discount/100|number_format:2:',':' '} руб.</span></div>
+<div class="cart-total">Всего <strong id="totalQuantity">{$smarty.session.number}</strong> товара(ов) на сумму: <span id="totalSum">{$list_total|number_format:2:',':' '} руб.</span></div>
+{if $discount > 0}
+<div class="cart-total">Скидка: <strong id="discount">{$discount}%</strong></div>
+<div class="cart-total">Сумма с учетом скидки: <span id="totalSumDiscount">{$totalPriceDiscount} руб.</span></div>
 {/if}
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr>

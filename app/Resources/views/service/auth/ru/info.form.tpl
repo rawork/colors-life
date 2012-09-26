@@ -1,6 +1,9 @@
 <form name="mainForm" method="POST">
 <h1>Личные данные</h1>
 {$cabinetMenu}
+{if $userInfo.discount}
+	<div class="alert-success1">Персональная скидка: <strong>{$userInfo.discount}%</strong></div>
+{/if}
 <input type="hidden" name="fromPage" value="">
 <input name="processInfo" value="1" type="hidden">
 <table class="forms" width="100%">

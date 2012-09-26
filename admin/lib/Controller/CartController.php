@@ -19,41 +19,52 @@ class CartController extends Controller {
 		parent::__construct('cart');
 	}
 
-	private function _add($id, $amount = 1, $price = '', $price_id = 0) {
+	private function _add($id, $amount = 1, $price = '', $priceId = 0) {
 		$amount = intval($amount);
-		if ($aStuff = $this->get('container')->getItem('catalog_stuff', $id)) {
-			if ($price_id) {
-				$aPriceEntity = $this->get('container')->getItem('catalog_prices', $price_id);
+		if ($product = $this->get('container')->getItem('catalog_stuff', $id)) {
+			if ($priceId) {
+				$priceData = $this->get('container')->getItem('catalog_prices', $priceId);
 			} else {
-				$aPriceEntity  = array();
+				$priceData  = array();
 			}
 			//var_dump($id, $amount, $price, $price_id, $aPriceEntity);
 			if ($price == '0.00') {
-				$price = $aStuff['spec_price'] == '0.00' ? $aStuff['price'] : $aStuff['spec_price'];
+				$price = $product['spec_price'] == '0.00' ? $product['price'] : $product['spec_price'];
 			}
-			$guid = md5($aStuff['id'].$price);
+			$guid = md5($product['id'].$price);
 			if (isset($_SESSION["cart"][$guid])) {
 				$_SESSION["cart"][$guid]["counter"] = intval($_SESSION["cart"][$guid]["counter"]) + $amount;
 			} else {
 				$_SESSION["cart"][$guid] = array (
-					"stuff" => $aStuff,
+					"stuff" => $product,
 					"price" => $price,
-					"priceEntity" => $aPriceEntity,
+					"priceEntity" => $priceData,
 					"counter" => $amount
 				);
 			}
 			$_SESSION['number'] = $_SESSION['number'] + $amount;
 			$_SESSION['summa'] = $this->getTotalPriceRus();
-			return $aStuff;
+			return $product;
 		}
 	}
 
-	public function addCartItem($iStuffId, $iQuantity = 1, $fPrice, $iPriceId = 0) {
-		if ($aItem = $this->_add($iStuffId, $iQuantity, $fPrice, $iPriceId)) {
-			$this->get('smarty')->assign('add_name', $aItem['name']);
+	public function addCartItem($productId, $quantity = 1, $price = 0, $priceId = 0) {
+		if ($product = $this->_add($productId, $quantity, $price, $priceId)) {
+			$this->get('smarty')->assign('add_name', $product['name']);
 			$this->get('smarty')->assign('ok', 1);
 		}
 		return $this->get('smarty')->fetch('service/cart/'.$this->lang.'/add.tpl');
+	}
+	
+	public function deleteItem($guid) {
+		$product = $_SESSION['cart'][$guid];
+		$quantity	= $_SESSION['number'];
+		$sum		= preg_replace('/(\s|,00)+/i', '', $_SESSION['summa']);
+		$productQuantity = $product['counter'];
+		$productSum = $product['price'] * $productQuantity;
+		unset($_SESSION['cart'][$guid]);
+		$_SESSION['number'] = $quantity - $productQuantity;
+		$_SESSION['summa']	= number_format($sum - $productSum, 2, ',', ' ');
 	}
 
 	public function getOrderDetail($orderId) {
@@ -61,23 +72,42 @@ class CartController extends Controller {
 		return nl2br($order['order_txt']);
 
 	}
-
-	function getTotalPrice() {
-		$aCartItems = $_SESSION['cart'];
-		$fPrice = 0.0;
-		foreach ($aCartItems as $aCartItem) {
-			$fPrice += $aCartItem["price"] * $aCartItem["counter"];
-		}
-		return $fPrice;
+	
+	public function getTotalQuantity() {
+		return $this->get('util')->_sessionVar('number', true, 0);
 	}
 
-	function getTotalPriceDiscount($discount = 0) {
-		$aCartItems = $_SESSION['cart'];
-		$fPrice = 0.0;
-		foreach ($aCartItems as $aCartItem) {
-			$fPrice += $aCartItem['price'] * $aCartItem["counter"];
+	public function getTotalPrice() {
+		$cartItems = $_SESSION['cart'];
+		$totalPrice = 0.0;
+		foreach ($cartItems as $item) {
+			$totalPrice += $item["price"] * $item["counter"];
 		}
-		return $fPrice;
+		return $totalPrice;
+	}
+	
+	public function getDiscount() 
+	{
+		$totalPrice = $this->getTotalPrice();
+		$discount = 0;
+		$user = $this->get('auth')->getUser();
+		if ($user) {
+			$discount = $user['discount'];
+		}
+		$discountData = $this->get('container')->getItem('cart_discount', "publish='on' AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
+		if ($discountData && intval($discountData['discount']) > $discount) {
+			$discount = $discountData['discount'];
+		}
+		
+		return $discount;
+	}
+
+	function getTotalPriceDiscount() 
+	{
+		$totalPrice = $this->getTotalPrice();
+		$totalPrice -= $totalPrice*$this->getDiscount()/100;
+
+		return number_format($totalPrice, 2, ',', ' ');
 	}
 
 	function getTotalPriceRus() {
@@ -90,22 +120,22 @@ class CartController extends Controller {
 			header('location: /cart/');
 		}
 
-		$aSessionItems = $_SESSION['cart'];
-		$aCartItems = array();
-		$aItemIds = array();
-		foreach ($aSessionItems as $sGUID => $aItem) {
-			$aCartItems[$sGUID] = $aItem;
-			$aItemIds[] = $aItem['stuff']['id'];
+		$sessionItems = $_SESSION['cart'];
+		$cartItems = array();
+		$itemIds = array();
+		foreach ($sessionItems as $sGUID => $item) {
+			$cartItems[$sGUID] = $item;
+			$itemIds[] = $item['stuff']['id'];
 		}
 		$totalPrice = $this->getTotalPrice();
 		$this->get('smarty')->assign("list_total_rus", (string)$this->getTotalPriceRus());
 		$this->get('smarty')->assign("list_total", (string)$totalPrice);
-		$this->get('smarty')->assign('aItems', $aCartItems);
-		$gifts = $this->get('container')->getItems('catalog_gifts', "stuff_id IN (".implode(',', $aItemIds).")");
+		$this->get('smarty')->assign('aItems', $cartItems);
+		$gifts = $this->get('container')->getItems('catalog_gifts', "stuff_id IN (".implode(',', $itemIds).")");
 		$gifts2 = $this->get('container')->getItems('cart_gifts', "publish='on' AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
 		$this->get('smarty')->assign('gifts', array_merge($gifts, $gifts2));
-		$discount = $this->get('container')->getItem('cart_discount', "publish='on' AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
-		$this->get('smarty')->assign('discount', $discount);
+		$this->get('smarty')->assign('discount', $this->getDiscount());
+		$this->get('smarty')->assign('totalPriceDiscount', $this->getTotalPriceDiscount());
 		if ($editable) {
 			return $this->get('smarty')->fetch('service/cart/'.$this->lang.'/list.tpl');
 		} else {
@@ -152,10 +182,11 @@ class CartController extends Controller {
 		$this->get('smarty')->assign('sDeliveryType', $aDeliveryType['name']);
 		$sOrderText = $this->_getOrderText();
 		$this->tables["order"]->insert(
-				"user_id, counter, summa, status, fio, email, phone, phone2, pay_type, delivery_type, address, additions, order_txt, credate",
+				"user_id, counter, summa, discount, status, fio, email, phone, phone2, pay_type, delivery_type, address, additions, order_txt, credate",
 				($aUser ? $aUser['id'] : 0).
 				",'".$_SESSION['number'].
-				"','".$_SESSION['summa'].
+				"','".$this->getTotalPriceDiscount().
+				"','".$this->getDiscount().
 				"','Новый','".$this->get('util')->_sessionVar('deliveryPerson').
 				"','".$this->get('auth')->getLogin().
 				"','".$this->get('util')->_sessionVar('deliveryPhone').

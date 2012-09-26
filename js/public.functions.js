@@ -73,18 +73,18 @@ function register(e) {
 
 /* start ajax */
 
-function vote(divId) {
-	values = $('#frm'+divId).serializeArray();
-	$.post("/ajax/", {method: 'vote', values: values},
+function voteProcess(voteName) {
+	formData = $('#frm'+voteName).serialize();
+	$.post("/ajax/", {method: 'voteProcess', formData: formData},
 	function(data){
-		$('#'+divId).html(data.content);
+		$('#'+voteName).html(data.content);
 	}, "json");
 }
 
-function voteResult(divId, voteId) {
-	$.post("/ajax/", {method: 'vote', voteId: voteId},
+function voteResult(voteName, voteId) {
+	$.post("/ajax/", {method: 'voteResult', voteId: voteId},
 	function(data){
-		$('#'+divId).html(data.content);
+		$('#'+voteName).html(data.content);
 	}, "json");
 }
 
@@ -109,12 +109,17 @@ function addCartItem(productId) {
 function deleteCartItem(productGuid) {
 	$.post("/ajax/", {method: 'deleteCartItem', productGuid: productGuid},
 	function(data){
-		if (data.cart_count) {
+		if (data.totalQuantity == 0) {
+			location.reload();
+		} else {
 			$('#cart_count').html(data.cart_count);
+			$('#totalQuantity').html(data.totalQuantity);
+			$('#totalSum').html(data.totalSum);
+			$('#discount').html(data.discount);
+			$('#totalSumDiscount').html(data.totalSumDiscount);
+			$('#stuff_'+productGuid).remove();
+			$('#delim_'+productGuid).remove();
 		}
-		$('#totalSum').html(data.totalSum);
-		$('#stuff_'+productGuid).remove();
-		$('#delim_'+productGuid).remove();
 	}, "json");
 }
 

@@ -392,7 +392,7 @@ class Container {
 			$this->services[$name] = new Paginator();
 		}
 		if (!isset($this->services[$name])) {
-			throw new \Exeption('Service "'.$name.'" not exists');
+			throw new \Exception('Service "'.$name.'" not exists');
 		}
 		return $this->services[$name];
 	}

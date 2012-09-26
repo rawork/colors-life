@@ -1,5 +1,7 @@
 <?php
 
+namespace Common;
+
 class Diagram {
 	
 	public $width;

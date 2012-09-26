@@ -24,7 +24,6 @@
 	{
 		global $LIB_DIR;
 		if ($className == 'Smarty') {
-			
 			require_once($LIB_DIR.'/tools/smarty/Smarty.class.php');
 		} else {
 			$basePath = $LIB_DIR.'/';

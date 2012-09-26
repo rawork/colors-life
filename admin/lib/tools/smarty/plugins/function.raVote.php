@@ -18,10 +18,8 @@
  */
 
 function smarty_function_raVote($params, &$smarty) {
-	$controller = new \Controller\VoteController();
-	$controller->params['action'] = 'form';
-	$controller->params['frmname'] = empty($params['name']) ? '' : $params['name'];
-	return $controller->getBody();
+	$controller = new \Model\VoteManager();
+	return $controller->getForm($params['name']);
 }
 
 ?>
