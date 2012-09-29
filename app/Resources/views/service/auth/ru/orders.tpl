@@ -3,10 +3,10 @@
 <div class="search-panel">
 <form name="frmOrderSearch" action="" method="post">
 c <input readonly="readonly" value="" name="datefrom" id="datefrom">
-&nbsp;<img id="trigger_datefrom" style="cursor: pointer; border: 0px none;" src="/admin/themes/_default/img/calendar.gif">
+&nbsp;<img id="trigger_datefrom" style="cursor: pointer; border: 0px none;" src="/bundles/admin/img/calendar.gif">
 <script type="text/javascript">setupCalendar('datefrom', '%H:%M:00')</script> 
 по <input readonly="readonly" value="" name="datetill" id="datetill">
-&nbsp;<img id="trigger_datetill" style="cursor: pointer; border: 0px none;" src="/admin/themes/_default/img/calendar.gif">
+&nbsp;<img id="trigger_datetill" style="cursor: pointer; border: 0px none;" src="/bundles/admin/img/calendar.gif">
 <script type="text/javascript">setupCalendar('datetill', '%H:%M:00')</script>
 номер: <input type="text" name="order_num" /> <input type="submit" value="Искать" />
 </form>

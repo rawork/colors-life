@@ -1,4 +1,4 @@
-<?
+<?php
 error_reporting(E_ALL & ~E_NOTICE);
 $page = ($_SERVER["REQUEST_URI"] <> ''? $_SERVER["REQUEST_URI"] : $_SERVER["SCRIPT_NAME"]);
 if(strpos($page, '/restore.php') !== 0)

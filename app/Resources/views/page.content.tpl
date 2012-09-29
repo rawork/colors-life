@@ -3,7 +3,7 @@
 <title>{$title}</title>
 {$meta}
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="/admin/themes/_default/css/calendar-mos.css" type="text/css" rel="stylesheet">
+<link href="/bundles/admin/css/calendar-mos.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css" type="text/css">
 <link rel="stylesheet" href="/css/jqzoom.css" type="text/css">
 <link rel="stylesheet" href="/css/lightbox.css" type="text/css">
@@ -15,9 +15,9 @@
 <script type="text/javascript" src="/js/jquery.jqzoom.js"></script>
 <script type="text/javascript" src="/js/jquery.lightbox.js"></script>
 <script type="text/javascript" src="/js/public.functions.js"></script>
-<script src="/admin/js/calendar.js" type="text/javascript"></script>
-<script src="/admin/js/calendar-ru.js" type="text/javascript"></script>
-<script src="/admin/js/calendar-setup.js" type="text/javascript"></script>
+<script src="/bundles/admin/js/calendar.js" type="text/javascript"></script>
+<script src="/bundles/admin/js/calendar-ru.js" type="text/javascript"></script>
+<script src="/bundles/admin/js/calendar-setup.js" type="text/javascript"></script>
 {literal}
 <script type="text/javascript">
 

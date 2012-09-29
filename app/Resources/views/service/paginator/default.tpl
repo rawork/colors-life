@@ -1,14 +1,13 @@
 <div class="nums">
-Записи {$recs} из {$rec_count}	
-<div class="numbers" id="pager">
-{if $begin_link ne ''}<a href="{$begin_link}">Нач.</a>{/if}
-{if $prevblock_link ne ''}<a href="{$prevblock_link}">&laquo;</a>{/if}
-{if $prev_link ne ''}<a href="{$prev_link}">&lt;</a>{/if}
+Записи {$currentItems} из {$totalItems}	
+<div class="pagination">
+  <ul>
+<li{if $begin_link == ''} class="disabled"{/if}><a href="{$begin_link}">Начало</a></li>
+<li{if $prev_link == ''} class="disabled"{/if}><a href="{$prev_link}">&laquo;</a></li>
 {foreach from=$pages key=k item=i}
-{if $page == $i.name}<span class="active">{$i.name}</span>{else}<a href="{$i.ref}">{$i.name}</a>
-{/if}
+<li{if $page == $i.name} class="active"{/if}><a href="{$i.ref}">{$i.name}</a></li>
 {/foreach}
-{if $next_link ne ''}<a href="{$next_link}">&gt;</a>{/if}
-{if $nextblock_link ne ''}<a href="{$nextblock_link}">&raquo;</a>{/if}
-{if $end_link ne ''}<a href="{$end_link}">Кон.</a>{/if}
+<li{if $next_link == ''} class="disabled"{/if}><a href="{$next_link}">&raquo;</a></li>
+<li{if $end_link == ''} class="disabled"{/if}><a href="{$end_link}">Конец</a></li>
+  </ul>
 </div></div>

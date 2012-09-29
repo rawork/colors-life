@@ -15,7 +15,7 @@
           <td class="stuff-content"><table style="height:100%" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td class="stuff-image"> {if $item.big_image}<a href="{$item.big_image}" class="jqzoom" title="{$item.name}"> <img src="{$item.image}"  title="{$item.name}" style="border: 0px solid #666;"> </a> {elseif $item.image}<img width="260" src="{$item.image}">{else}<img src="/img/noimage_small.jpg">{/if} 
-                {raItems var=fotos nquery="SELECT * FROM system_files WHERE table_name='catalog_stuff' AND record_id=`$item.id` ORDER BY credate"}
+                {raItems var=fotos nquery="SELECT * FROM system_files WHERE table_name='catalog_stuff' AND entity_id=`$item.id` ORDER BY credate"}
                 {if count($fotos)}
                 <div class="stuff-extra-image-links">Галерея:               
   				{foreach from=$fotos key=k item=foto}

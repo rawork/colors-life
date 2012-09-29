@@ -66,7 +66,7 @@
 			{/foreach}
  {/if}
 {else}
-{if $param0 == $controller}
+{if empty($param0)}
 {raItems var=items table=catalog_stuff query="publish='on' AND is_hit='on'" limit=$settings.limit_hit sort="RAND()"}
 {else}
 {raItem var=cat table=catalog_categories query=$param0}	

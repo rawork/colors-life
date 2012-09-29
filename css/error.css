@@ -1,0 +1,25 @@
+html * {
+	font-family: Arial; 
+}
+
+h1 {
+	font-size:24px;
+	font-weight:normal;
+	padding:0 0 15px 0;
+	margin:0;
+}
+
+.error {
+	width: 400px;
+	position:absolute;      
+    top: 50%;
+    left: 50%;
+	margin-top:-180px; /* negative number 1/2 height */
+    margin-left:-200px; /* negative number 1/2 width */
+	text-align: center;
+}
+
+.error-text {
+	font-size: 16px;
+	line-height: 24px;
+}

@@ -1,8 +1,7 @@
 <?php
-	
+
 	require_once 'config/config.php';
 
-	ob_start();
 	$se_mask = "/(Yandex|Googlebot|StackRambler|Yahoo Slurp|WebAlta|msnbot)/";
 	if (preg_match($se_mask,$_SERVER['HTTP_USER_AGENT']) > 0) {
 		if (!empty($_GET[session_name()])) {
@@ -12,19 +11,26 @@
 	} else {
 		session_start();
 	}
+	
 	$LIB_VERSION = '5.0.1';
 	$LIB_DATE = '2012.09.10';
 	
 	function exception_handler($exception) 
 	{
-		echo "<div style=\"padding:15px;color:#990000;font-size:16px;\">Ошибка: " , $exception->getMessage(), '<br><br>' , $exception->getTraceasString(), "</div>\n";
+		if ($exception instanceof \Exception\NotFoundHttpException) {
+			$controller = new \Controller\ExceptionController();
+			echo $controller->indexAction($exception->getStatusCode(), $exception->getMessage());
+		} else {
+			$controller = new \Controller\ExceptionController();
+			echo $controller->indexAction(500, $exception->getMessage());
+		}
 	}
 	
 	function autoloader($className)
 	{
-		global $LIB_DIR;
+		global $LIB_DIR, $PRJ_DIR;
 		if ($className == 'Smarty') {
-			require_once($LIB_DIR.'/tools/smarty/Smarty.class.php');
+			require_once($PRJ_DIR.'/vendor/smarty/Smarty.class.php');
 		} else {
 			$basePath = $LIB_DIR.'/';
 			$className = ltrim($className, '\\');
@@ -36,14 +42,24 @@
 				$fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
 			}
 			$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-
-			require $basePath.$fileName;
+			if (file_exists($basePath.$fileName)) {
+				require_once $basePath.$fileName;
+			} else {
+				throw new \Exception('Не возможно загрузить класс "'.$className.'"');
+			}
 		}	
 	}
 	
 	set_exception_handler('exception_handler');
 	spl_autoload_register('autoloader');
-
+	
+	use Common\Container;
+	use Common\Templating;
+	use Common\Util;
+	use Common\Router;
+	use Security\SecurityHandler;
+	use Security\Controller\SecurityController;
+	
 	// ID запрашиваемой страницы
 	$GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']));
 	
@@ -66,41 +82,47 @@
 	} catch (\Exception $e) {
 		throw new \Exception('DB connection type error (DB_TYPE). Possible value: mysql,mysqli. Check DB connection params');
 	}
+	
+
+	$container = new Container();
+	$container->register('util', new Util());
+	$container->register('connection', $connection);
+	
 	// инициализация переменных
-	$connection->execQuery('GLOBAL_VARS', 'SELECT * FROM config_variables');
-	while ($var = $connection->getNextArray('GLOBAL_VARS')) {
+	$params = array();
+	$vars = $connection->getItems('GLOBAL_VARS', 'SELECT name, value FROM config_variables');
+	foreach ($vars as $var) {
+		$params[strtolower($var['name'])] = $var['value'];
 		$$var['name'] = $var['value'];
 	}
-
-	$container = new Common\Container();
-	$container->register('util', new Common\Util());
-	$container->register('connection', $connection);
+	
+	$params['theme_ref'] = $THEME_REF;
 	
 	$container->register('smarty', new Smarty());
 	$container->get('smarty')->template_dir = $PRJ_DIR.'/app/Resources/views/';
 	$container->get('smarty')->compile_dir = $PRJ_DIR.'/app/cache/smarty/';
 	$container->get('smarty')->compile_check = true;
 	$container->get('smarty')->debugging = false;
-	$container->get('smarty')->assign('prj_name', $PRJ_NAME);
-	$container->get('smarty')->assign('prj_zone', $PRJ_ZONE);
-	$container->get('smarty')->assign('prj_dir', $PRJ_DIR);
-	$container->get('smarty')->assign('prj_ref', $PRJ_REF);
-	$container->get('smarty')->assign('lib_dir', $LIB_DIR);
-	$container->get('smarty')->assign('lib_ref', $LIB_REF);
-	$container->get('smarty')->assign('theme_dir', $THEME_DIR);
-	$container->get('smarty')->assign('theme_ref', $THEME_REF);
 	
+	$container->register(
+		'templating', 
+		new Templating(
+			$container->get('smarty'), 
+			array('assignMethod' => 'assign', 'renderMethod' => 'fetch'
+	)));
+	
+	$container->get('templating')->setParams($params);
 	
 	// Включаем Роутер запросов к сайту 
-	$container->register('router', new Common\Router());
+	$container->register('router', new Router());
 	
-	$security = new \Security\SecurityHandler();
+	$security = new SecurityHandler();
 	if (!$security->isAuthenticated() && $security->isSecuredArea()) {
-		$controller = new \Security\SecurityController();
+		$controller = new SecurityController();
 		echo $controller->loginAction();
 		exit;
 	} elseif (preg_match('/^\/admin\/(logout|forgot|password)/', $_SERVER['REQUEST_URI'], $matches)) {
-		$controller = new \Security\SecurityController();
+		$controller = new SecurityController();
 		$methodName = $matches[1].'Action';
 		echo $controller->$methodName();
 		exit;
@@ -113,22 +135,3 @@
 	if ($_SERVER['SCRIPT_NAME'] != '/restore.php' && file_exists($PRJ_DIR.'/restore.php')) {
 		throw new \Exception('Удалите файл restore.php в корне сайта');
 	}
-	
-	if ($container->get('router')->isPublic($container->get('router')->getPath())) {
-
-		$container->register('tree', new \Controller\TreeController());
-		$container->register('auth', new \Controller\AuthController());
-		$container->register('meta', new \Model\MetaManager());
-
-		if ($container->get('router')->hasParam('nodeId')) {
-			$container->get('smarty')->assign('dirs', $container->get('tree')->tables['tree']->getPrev($container->get('router')->getParam('nodeId')));
-		}
-		$params = $container->get('router')->getParam('params');
-		if ($container->get('router')->getParam('params')) {
-			$container->get('smarty')->assign('cats_tree', $container->getPrev('catalog_categories', $params[0]));
-		}
-		$container->get('smarty')->assign('mail_to', $ADMIN_EMAIL);
-		$container->get('smarty')->assign('tree', $container->get('tree'));
-		$container->get('smarty')->assign('auth', $container->get('auth'));
-		
-	}	

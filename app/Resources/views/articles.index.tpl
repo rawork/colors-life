@@ -13,7 +13,7 @@
 {raPaginator var=paginator table=articles_articles query="publish='on' AND dir_id=`$node.id`" pref="`$ref``$methodName`.###.htm" per_page=$settings.per_page page=$param0 tpl=public}
 {raItems var=items table=articles_articles query="publish='on' AND dir_id=`$node.id`" limit=$paginator->limit}
 {/if}
-{if is_object($paginator)}{$paginator->getText()}{/if}
+{if is_object($paginator)}{$paginator->render()}{/if}
 {foreach from=$items key=k item=art}
  <div class="article-block"> 
     <div class="article-title"><a href="{raURL node=$art.dir_id_name method=read prms=$art.id}">{$art.name}</a></div>
@@ -21,4 +21,4 @@
   <div class="article-link"><a href="{raURL node=$art.dir_id_name method=read prms=$art.id}">Подробнее &gt;</a></div>
 </div>
   {/foreach}
-{if is_object($paginator)}{$paginator->getText()}{/if} 
+{if is_object($paginator)}{$paginator->render()}{/if} 

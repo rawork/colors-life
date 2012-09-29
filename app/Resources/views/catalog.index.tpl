@@ -1,4 +1,4 @@
-{if $param0 == $controller}
+{if empty($param0)}
 {raItems var=cats table=catalog_categories query="publish='on' AND p_id=0"}
 <div class="catalog-index-cats">
 {foreach from=$cats item=cat}
@@ -167,7 +167,7 @@
       на страницу </td>
               </tr>
 </table>
-{if is_object($paginator)}{$paginator->getText()}{/if}
+{if is_object($paginator)}{$paginator->render()}{/if}
 
 <table class="stuff-table" cellpadding="0" cellspacing="0" border="0">
 	{counter assign=cnt start=1}
@@ -254,6 +254,6 @@
 	{counter assign=cnt start=1}{else}{counter assign=cnt}{/if}
 	{/foreach}
 </table>
-{if is_object($paginator)}{$paginator->getText()}{/if}
+{if is_object($paginator)}{$paginator->render()}{/if}
 {/if} 
 {/if}

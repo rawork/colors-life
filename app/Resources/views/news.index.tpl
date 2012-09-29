@@ -1,4 +1,4 @@
-{raPaginator var=pages table=news_news query="publish='on'" pref="`$ref``$methodName`.htm?page=###" per_page=10 page=$smarty.get.page tpl=public}
+{raPaginator var=paginator table=news_news query="publish='on'" pref="`$ref``$methodName`.htm?page=###" per_page=10 page=$smarty.get.page tpl=public}
 {raItems var=items table=news_news query="publish='on'" limit=$pages->limit}
 <table class="news-table" cellpadding="0" cellspacing="0" border="0">
 {foreach from=$items item=news}
@@ -11,4 +11,4 @@
 </tr>
 {/foreach}
 </table>
-<div>{if is_object($pages)}{$pages->getText()}{/if}</div>
+<div>{if is_object($paginator)}{$paginator->render()}{/if}</div>

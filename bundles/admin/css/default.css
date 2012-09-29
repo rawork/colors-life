@@ -1,0 +1,104 @@
+.pointer-view {
+	cursor: pointer;
+}
+
+.vertical-padding {
+	padding-top: 50px;
+	padding-bottom: 30px;
+}
+
+.left-padding {
+	padding-left: 5px;
+}
+
+#componentMenu {
+	/*width: 190px;*/
+}
+
+#componentMenu a {
+	font-size: 14px;
+}
+
+.admin-copyright {
+	font-size: 11px;
+	padding: 3px 0;
+	text-align: center;
+	border-top: 1px solid #ddd;
+	background-color: #fff;
+}
+
+.admin-submenu {
+	padding: 5px 0 5px 5px;
+}
+
+.admin-submenu div {
+	white-space: nowrap;
+}	
+
+.closed {
+	display: none;
+}
+
+div#waiting {
+	display:none;
+	border:solid 1px #00CC00;
+	background-color:#FFFFFF;
+	z-index: 1031;
+	position: fixed;
+	padding: 3px;
+	top: 100px;
+	left: 300px;
+}
+
+div#waiting * {
+	color: #999999;
+}
+
+.admin-dropdown-menu {
+	min-width: 110px;
+}
+
+.admin-dropdown-toggle {
+	padding:4px 4px;
+}
+
+.admin-dropdown-menu a{
+	padding:4px 4px;
+}
+
+#filter input, #filter select {
+	margin-bottom: 2px;
+}
+
+#filter input {
+	height: 20px;
+	line-height: 20px;
+	padding: 1px 6px;
+}
+
+#filter input[type="radio"], #filter input[type="checkbox"] {
+	margin: 0 4px;
+}
+
+#filter select, #control select {
+	height: 24px;
+	line-height: 24px;
+}
+
+#filter button {
+	height: 24px;
+	line-height: 24px;
+}
+
+.right {
+	text-align: right;
+}
+
+.admin-modal-header {
+	padding: 2px 15px;
+}
+
+.admin-modal-footer {
+	padding: 8px 15px;
+}
+
