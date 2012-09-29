@@ -106,7 +106,7 @@ class EditAction extends Action {
 <td><input type="text" class="input-mini right" name="price_'.$priceitem['id'].'" value="'.$priceitem['price'].'" /></td>
 <td><input type="text" class="input-mini" name="ord_'.$priceitem['id'].'" value="'.$priceitem['ord'].'" /></td>
 <td><input type="checkbox" name="publish_'.$priceitem['id'].'" value="on"'.($priceitem['publish'] ? ' checked' : '').'></td>
-<td><a href="#" class="btn btn-small btn-danger" onClick="delPrice('.$priceitem['id'].'); return false"><i class="icon-trash icon-white"></i></a></td>
+<td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$priceitem['id'].')"><i class="icon-trash icon-white"></i></a></td>
 </tr>';	
 		}
 		$content .= '</table>

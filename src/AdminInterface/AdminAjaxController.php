@@ -366,25 +366,25 @@ class AdminAjaxController extends AbstractController {
 	function getPriceList($stuff_id) {
 		global $THEME_REF;		
 		$ret = '<table class="table table-condensed">';
-		$ret .= '<tr>';
+		$ret .= '<thead><tr>';
     	$ret .= '<th width="30%">Размер</th>';
 		$ret .= '<th width="30%">Цвет</th>';
 		$ret .= '<th width="30%">Цена</th>';
 		$ret .= '<th width="5%">Порядок</th>';
 		$ret .= '<th width="1%">Акт</th>';
-		$ret .= '<th style="text-align:center;"><img alt="Действия" src="'.$THEME_REF.'/img/action_head.gif" border=0></th>';
-    	$ret .= '</tr>';
+		$ret .= '<th><i class="icon-align-justify"></i></th>';
+    	$ret .= '</tr></thead>';
 				
 		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.ord, p.publish FROM catalog_prices p JOIN catalog_sizes s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.stuff_id=".$stuff_id." ORDER BY p.price";
-		$items = $this->get('connection')->getItems('sizelist', $sql);
-		foreach ($items as $sizeitem) {
-			$ret .= '<tr id="price_'.$sizeitem['id'].'">';
-			$ret .= '<td>'.$sizeitem['size_id_name'].'</td>';
-			$ret .= '<td>'.$sizeitem['color_id_name'].'</td>';
-			$ret .= '<td><input type="text" class="input-mini right" name="price_'.$sizeitem['id'].'" value="'.$sizeitem['price'].'" /></td>';
-			$ret .= '<td><input type="text" class="input-mini" name="ord_'.$sizeitem['id'].'" value="'.$sizeitem['ord'].'" /></td>';
-			$ret .= '<td><input type="checkbox" name="publish_'.$sizeitem['id'].'" value="on"'.($sizeitem['publish'] ? ' checked' : '').'></td>';
-			$ret .= '<td><a href="#" onClick="delPrice('.$sizeitem['id'].'); return false"><img src="'.$THEME_REF.'/img/icons/icon_delete.gif" border="0"></a></td>'."\n";
+		$prices = $this->get('connection')->getItems('sizelist', $sql);
+		foreach ($prices as $priceitem) {
+			$ret .= '<tr id="price_'.$priceitem['id'].'">';
+			$ret .= '<td>'.$priceitem['size_id_name'].'</td>';
+			$ret .= '<td>'.$priceitem['color_id_name'].'</td>';
+			$ret .= '<td><input type="text" class="input-mini right" name="price_'.$priceitem['id'].'" value="'.$priceitem['price'].'" /></td>';
+			$ret .= '<td><input type="text" class="input-mini" name="ord_'.$priceitem['id'].'" value="'.$priceitem['ord'].'" /></td>';
+			$ret .= '<td><input type="checkbox" name="publish_'.$priceitem['id'].'" value="on"'.($priceitem['publish'] ? ' checked' : '').'></td>';
+			$ret .= '<td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$priceitem['id'].')"><i class="icon-trash icon-white"></i></a></td>'."\n";
 			$ret .= '</tr>';	
 		}
 		$ret .= '</table>';
