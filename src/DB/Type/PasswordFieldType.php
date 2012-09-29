@@ -15,7 +15,7 @@ class PasswordFieldType extends FieldType {
 
 	public function getSQLValue($name = '') {
 		$text = $this->getValue($name);
-		if (!empty($text) && strlen($text) != '32'){
+		if (!empty($text)){
 			$text = md5($text);
 		}
 		return $text;
