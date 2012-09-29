@@ -171,8 +171,8 @@ class PageController extends AbstractController {
 		global $LIB_DIR;
 		
 		if (preg_match('/^\/notice\/[\d]{6}$/', $_SERVER['REQUEST_URI'])) {
-			$container->get('smarty')->assign('order', str_replace('/notice/', '', $_SERVER['REQUEST_URI']));
-			echo $container->get('smarty')->fetch('page.notice.tpl');
+			$this->get('smarty')->assign('order', str_replace('/notice/', '', $_SERVER['REQUEST_URI']));
+			echo $this->get('smarty')->fetch('page.notice.tpl');
 			exit;
 		}
 		
