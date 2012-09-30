@@ -19,7 +19,7 @@ c <input readonly="readonly" value="" name="datefrom" id="datefrom">
 <th>Кол-во товаров</th>
 <th>Сумма</th>
 </tr>
-{raItems var=orders table=cart_order query="user_id=`$auth->user.id`"}
+{raItems var=orders table=cart_order query="user_id=`$user.id`"}
 {foreach from=$orders item=order}
 <tr>
 <td>{$order.credate|fdate}</td>

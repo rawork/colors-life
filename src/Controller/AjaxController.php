@@ -58,7 +58,7 @@ class AjaxController extends AbstractController {
 		$this->get('router')->setParams('/cart/');
 		$cart = new \Controller\CartController();
 		$result = array();
-		$result['popup_content'] = $cart->getOrderDetail($orderId);
+		$result['popup_content'] = '<div class="cart-add">'.$cart->getOrderDetail($orderId).'</div>';
 		return json_encode($result);
 	}
 	

@@ -1,6 +1,6 @@
 {raItem var=item table=catalog_stuff query=$param0}
-{raSetVar var=title value=$item.name}
 {if $item.publish}
+{raSetVar var=title value=$item.name}
 <h1>{$item.name}</h1>
 <table class="stuff-table" cellpadding="0" cellspacing="0" border="0">
   <tr>

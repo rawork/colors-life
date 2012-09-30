@@ -217,30 +217,7 @@ function checkForm(form) {
 	return false;
 }
 
-function setPosition(name) {
-	var x = $(window).width();
-    var y = $(window).height();
-	
-	var top = $(document).scrollTop()-50;
-	var left = $(document).scrollLeft();
-	
-	var width = $("#"+name).width();
-	var height = $("#"+name).height();
-	
-	var halfX = x /2;
-	var halfWidth = width / 2;
-	var leftPad = (left + halfX) - halfWidth;
-
-	var halfY = y /2;
-	var halfHeight = height / 2;
-	var topPad = (top + halfY) - halfHeight;
-
-	$("#"+name).css('top', topPad);
-	$("#"+name).css('left', leftPad);	
-}
-
 function popUp(name) { //default name = pop_up 
-	setPosition(name);
 	$.dimScreen(500, 0.4, function() {$('#'+name).fadeIn('fast')});
 }
 
@@ -411,7 +388,6 @@ this.screenshotPreview = function(){
 
 
 $(document).ready(function () { 
-	//$('img.lightbox').imgZoom({ rotate: false, duration: 1000 });
 	var options = {
 	    zoomWidth: 350,
 	    zoomHeight: 350,
@@ -423,33 +399,6 @@ $(document).ready(function () {
 	};
 
 	$(".jqzoom").jqzoom(options);
-	
-	/*$.Lightbox.construct({
-	  				"speed": 700,
-	  				"show_linkback": true,
-	  				"keys": {
-	    				close: "q",
-	    				prev: "z",
-	    				next: "x"
-	  				},
-	  				"opacity": 0.7,
-	  				"rel": lightbox-tour,
-	  				text: {
-	    				image: "Картинка",
-	    				of: "из",
-	    				close: "Закрыть",
-	    				closeInfo: "Клик вне картинки завершит просмотр.",
-	    				help: {
-	      					close: "Закрыть",
-	      					interact: "Интерактивная подсказка"
-	    				},
-	    				about: {
-	      					text: "",
-	      					title: "",
-	      					link: ""
-	    				}
-	  				}
-				});*/
 	
 	screenshotPreview();
 });

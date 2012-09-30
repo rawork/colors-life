@@ -259,6 +259,7 @@ class AuthController extends Controller {
 	}
 
 	private function _getOrders() {
+		$this->get('smarty')->assign('user', $this->getUser());
 		$this->get('smarty')->assign('cabinetMenu', $this->_getMenu());
 		return $this->get('smarty')->fetch('service/auth/'.$this->lang.'/orders.tpl');
 	}

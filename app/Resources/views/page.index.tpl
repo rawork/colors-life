@@ -9,7 +9,6 @@
 <script type="text/javascript" src="/js/swfobject.js"></script>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/dimmer.js"></script>
-<script type="text/javascript" src="/js/jquery.jqzoom.js"></script>
 <script type="text/javascript" src="/js/public.functions.js"></script>
 {literal} 
 <script type="text/javascript">
@@ -154,19 +153,10 @@
       </table></td>
   </tr>
 </table>
-<table class="popup" id="popup" cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td class="extramenu-content">
-				<table width="100%" cellpadding="0" cellspacing="0" border="0">
-				<tr><td align="right"><a href="#" onClick="return closePopUp('popup')"><img src="/img/close_btn.png"></a></td></tr>
-				<tr><td id="popup_content"></td></tr>
-				</table>
-				</td>
-              </tr>
-              <tr>
-                <td style="background:url('/img/extramenu_b.gif') repeat-x"><img src="/img/extramenu_b.gif"></td>
-              </tr>
-            </table>
+<div class="popup" id="popup" cellpadding="0" cellspacing="0" border="0">
+	<a href="#" class="popup-btn" onClick="return closePopUp('popup')">&times;</a>
+	<div id="popup_content"></div>
+</div>
 {raMethod ref=/catalog/selectors.htm}			
 <map name="Map">
   <area shape="rect" coords="0,1,10,9" href="/">
