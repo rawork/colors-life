@@ -1,7 +1,7 @@
 {if count($aItems)}
 <h1> 
 	Уточнение заказа &rarr;
-	{if is_null($auth->user)}<span>Авторизация</span> &rarr;{/if}
+	{if !$user.id}<span>Авторизация</span> &rarr;{/if}
 	<span>Оплата и доставка</span> &rarr; 
 	<span>Подтверждение заказа</span> 
 </h1>

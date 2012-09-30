@@ -1,6 +1,6 @@
 <h1>
 <a href="/cart/">Уточнение заказа</a> &rarr;
-{if !$auth->user}<a href="/cart/authorize.htm">Авторизация</a> &rarr;{/if}
+{if !$user.id}<a href="/cart/authorize.htm">Авторизация</a> &rarr;{/if}
 Параметры заказа &rarr;
 <span>Подтверждение заказа</span>
 </h1>

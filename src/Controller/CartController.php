@@ -12,7 +12,7 @@ if (!isset($_SESSION['cart'])) {
 
 class CartController extends Controller {
 
-	private $_iBaseNumber = 100000;
+	private $baseNumber = 100000;
 	public $lang;
 
 	public function __construct() {
@@ -27,7 +27,6 @@ class CartController extends Controller {
 			} else {
 				$priceData  = array();
 			}
-			//var_dump($id, $amount, $price, $price_id, $aPriceEntity);
 			if ($price == '0.00') {
 				$price = $product['spec_price'] == '0.00' ? $product['price'] : $product['spec_price'];
 			}
@@ -136,6 +135,7 @@ class CartController extends Controller {
 		$this->get('smarty')->assign('gifts', array_merge($gifts, $gifts2));
 		$this->get('smarty')->assign('discount', $this->getDiscount());
 		$this->get('smarty')->assign('totalPriceDiscount', $this->getTotalPriceDiscount());
+		$this->get('smarty')->assign('user', $user = $this->get('auth')->getUser());
 		if ($editable) {
 			return $this->get('smarty')->fetch('service/cart/'.$this->lang.'/list.tpl');
 		} else {
@@ -175,15 +175,14 @@ class CartController extends Controller {
 	}
 
 	private function _addOrder() {
-		$aUser = $this->get('auth')->getUser();
-		$aPayType		= $this->get('connection')->getItem('pay', 'SELECT name FROM cart_pay_type WHERE id='.$this->get('util')->_sessionVar('payType'));
-		$aDeliveryType	= $this->get('connection')->getItem('delivery', 'SELECT name FROM cart_delivery_type WHERE id='.$this->get('util')->_sessionVar('deliveryType'));
-		$this->get('smarty')->assign('sPayType', $aPayType['name']);
-		$this->get('smarty')->assign('sDeliveryType', $aDeliveryType['name']);
-		$sOrderText = $this->_getOrderText();
+		$user = $this->get('auth')->getUser();
+		$payType		= $this->get('connection')->getItem('pay', 'SELECT id,name FROM cart_pay_type WHERE id='.$this->get('util')->_sessionVar('payType'));
+		$deliveryType	= $this->get('connection')->getItem('delivery', 'SELECT id,name FROM cart_delivery_type WHERE id='.$this->get('util')->_sessionVar('deliveryType'));
+		
+		$orderText = $this->_getOrderText();
 		$this->tables["order"]->insert(
 				"user_id, counter, summa, discount, status, fio, email, phone, phone2, pay_type, delivery_type, address, additions, order_txt, credate",
-				($aUser ? $aUser['id'] : 0).
+				($user ? $user['id'] : 0).
 				",'".$_SESSION['number'].
 				"','".$this->getTotalPriceDiscount().
 				"','".$this->getDiscount().
@@ -191,26 +190,44 @@ class CartController extends Controller {
 				"','".$this->get('auth')->getLogin().
 				"','".$this->get('util')->_sessionVar('deliveryPhone').
 				"','".$this->get('util')->_sessionVar('deliveryPhoneAdd').
-				"','".$aPayType['name'].
-				"','".$aDeliveryType['name'].
+				"','".$payType['name'].
+				"','".$deliveryType['name'].
 				"','".$this->get('util')->_sessionVar('deliveryAddress').
 				"','".$this->get('util')->_postVar('deliveryComment').
-				"',"."'".$sOrderText."',NOW()");
-		$iLastId = $this->get('connection')->getInsertID();
+				"',"."'".$orderText."',NOW()");
+		$lastId = $this->get('connection')->getInsertID();
 
-		$iCurrentOrderNumber = $this->_iBaseNumber + $iLastId;
-		$this->get('smarty')->assign('order_number', $iCurrentOrderNumber);
-		$sOrderText = $this->get('smarty')->fetch('service/cart/'.$this->lang.'/order.mail.tpl');
+		$orderNumber = $this->baseNumber + $lastId;
+		$this->get('smarty')->assign('discount', $this->getDiscount());
+		$this->get('smarty')->assign('totalPriceDiscount', $this->getTotalPriceDiscount());
+		$this->get('smarty')->assign('totalPrice', $this->getTotalPriceRus());
+		$this->get('smarty')->assign('deliveryPhone', $this->get('util')->_sessionVar('deliveryPhone'));
+		$this->get('smarty')->assign('deliveryComment', $this->get('util')->_postVar('deliveryComment'));
+		$this->get('smarty')->assign('deliveryPhoneAdd', $this->get('util')->_sessionVar('deliveryPhoneAdd'));
+		$this->get('smarty')->assign('deliveryAddress', $this->get('util')->_sessionVar('deliveryAddress'));
+		$this->get('smarty')->assign('deliveryPerson', $this->get('util')->_sessionVar('deliveryPerson'));
+		$cart = $this->get('util')->_sessionVar('cart');
+		foreach($cart as &$cartItem) {
+			$cartItem['price'] = number_format($cartItem['price'], 2, ',', ' ');
+		}
+		unset($cartItem);
+		$this->get('smarty')->assign('cart', $cart);
+		$this->get('smarty')->assign('payType', $payType['name']);
+		$this->get('smarty')->assign('payTypeId', $payType['id']);
+		$this->get('smarty')->assign('deliveryType', $deliveryType['name']);
+		$this->get('smarty')->assign('orderNumber', $orderNumber);
+		$this->get('smarty')->assign('user', $user);
+		$orderText = $this->get('smarty')->fetch('service/cart/'.$this->lang.'/order.mail.tpl');
 		$mail = new Mail();
 		$mail->From($this->getOrderEmail());
-		$mail->Subject('Заказ №'.$iCurrentOrderNumber.' от '.date('d.m.Y H:i'));
-		$mail->Html("Заказ №$iCurrentOrderNumber от ".date('d.m.Y H:i')."<br>".$sOrderText, "UTF-8");
+		$mail->Subject('Заказ №'.$orderNumber.' от '.date('d.m.Y H:i'));
+		$mail->Html("Заказ №$orderNumber от ".date('d.m.Y H:i')."<br>".$orderText, "UTF-8");
 		$mail->To($this->getOrderEmail());
 		$mail->Send();
 		$sEmail = $this->get('util')->_sessionVar('deliveryEmail');
 		if ($sEmail) {
-			$mail->Subject('Цвета жизни - заказ №'.$iCurrentOrderNumber.' принят к обработке');
-			$mail->Html($sOrderText, 'UTF-8');
+			$mail->Subject('Цвета жизни - заказ №'.$orderNumber.' принят к обработке');
+			$mail->Html($orderText, 'UTF-8');
 			$mail->To(array($sEmail));
 			$mail->Send();
 		}
@@ -253,6 +270,10 @@ class CartController extends Controller {
 	}
 
 	private function _getAuthorizePage() {
+		$user = $this->get('auth')->getUser();
+		if ($user) {
+			header('location: /cart/detail.htm');
+		}
 		return $this->get('smarty')->fetch('service/cart/'.$this->lang.'/authorize.tpl');
 	}
 
@@ -267,14 +288,16 @@ class CartController extends Controller {
 			$_SESSION['deliveryPhoneAdd'] = $this->get('util')->_postVar('deliveryPhoneAdd');
 			header('location: /cart/confirm.htm');
 		}
-		$this->get('smarty')->assign('aPayTypes', $this->get('connection')->getItems('get_pay', "SELECT id,name FROM cart_pay_type WHERE publish='on' ORDER BY ord"));
-		$this->get('smarty')->assign('aDeliveryTypes', $this->get('connection')->getItems('get_delivery', "SELECT id,name,description FROM cart_delivery_type WHERE publish='on' ORDER BY ord"));
+		
 		if (empty($_SESSION['deliveryEmail'])) {
 			$_SESSION['deliveryEmail'] = $this->get('auth')->user ? 
 				$this->get('auth')->user['email']
 				:
 				'';
 		}
+		$this->get('smarty')->assign('aPayTypes', $this->get('connection')->getItems('get_pay', "SELECT id,name FROM cart_pay_type WHERE publish='on' ORDER BY ord"));
+		$this->get('smarty')->assign('aDeliveryTypes', $this->get('connection')->getItems('get_delivery', "SELECT id,name,description FROM cart_delivery_type WHERE publish='on' ORDER BY ord"));
+		$this->get('smarty')->assign('user', $user = $this->get('auth')->getUser());
 		return $this->get('smarty')->fetch('service/cart/'.$this->lang.'/detail.tpl');
 	}
 

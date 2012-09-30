@@ -1,7 +1,7 @@
 {if count($aItems)}
 <h1>
 <a href="/cart/">Уточнение заказа</a> &rarr;
-{if !$auth->user}<a href="/cart/authorize.htm">Авторизация</a> &rarr;{/if}
+{if !$user.id}<a href="/cart/authorize.htm">Авторизация</a> &rarr;{/if}
 <a href="/cart/detail.htm">Параметры заказа</a> &rarr;
 Подтверждение заказа
 </h1>
@@ -77,7 +77,7 @@
 </form>
 {else}
 <div class="lst-item2">
-<h1>В вашей корзине нет товаров</h1>
-{raInclude var=delivery}
+	<h1>В вашей корзине нет товаров</h1>
+	{raInclude var=delivery} 
 </div>
 {/if}
