@@ -111,7 +111,7 @@
 		<td width="50%"></td>
 		<td width="50%" align="right">
 		<input type="submit" value="Сохранить изменения" />
-		<input type="button" onclick="window.location = '{if $auth->user}/cart/detail.htm{else}/cart/authorize.htm{/if}'" value="Продолжить" />
+		<input type="button" onclick="window.location = '{if $user.id}/cart/detail.htm{else}/cart/authorize.htm{/if}'" value="Продолжить" />
 		</td>
 	</tr>
 </table>

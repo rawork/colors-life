@@ -83,11 +83,15 @@ class PageController extends AbstractController {
 		if ($this->controller && $this->isService) {
 			$content = $this->controller->getContent();
 		} elseif ($this->controller) {
-			$content = $this->get('container')->callMethod(
-					$this->controller->name, 
-					$this->get('router')->getParam('methodName'), 
-					$this->get('router')->getParam('params')
-			);
+			try {
+				$content = $this->get('container')->callMethod(
+						$this->controller->name, 
+						$this->get('router')->getParam('methodName'), 
+						$this->get('router')->getParam('params')
+				);
+			} catch (\Exception $e) {
+				throw $this->createNotFoundException('Неcуществующая страница');
+			}
 		}
 		return $content;
 	}

@@ -1,5 +1,6 @@
+{if !$param0}{raException}{/if}
 {raItem var=news table=news_news query=$param0}
-{if $news.id}
+{if $news.publish}
 {raSetVar var=title value=$news.name}
 {raSetVar var=h1 value=$news.name}
 <h1>{$news.name}</h1>
@@ -13,5 +14,5 @@
 </tr>
 </table>
 {else}
-Новость по идентификатору "{$param0}" не найдена!
+{raException}
 {/if}

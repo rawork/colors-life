@@ -1,3 +1,4 @@
+{if !$param0}{raException}{/if}
 {raItem var=item table=catalog_stuff query=$param0}
 {if $item.publish}
 {raSetVar var=title value=$item.name}
@@ -104,5 +105,5 @@
 {/if}
 {raMethod ref=/catalog/hit.htm}
 {else}
-	Товар не найден. <a href="/catalog/">Перейти на главную страницу каталога</a>	
+{raException}		
 {/if}

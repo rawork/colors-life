@@ -85,10 +85,14 @@ class Router {
 			} elseif ($pathParts['dirname'] == '/' && $pathParts['extension'] == 'htm') {
 				$urlParts['node'] = $pathParts['filename'];
 			} elseif (count($dirParts) == 2) {
-				$urlParts['node'] = $dirParts[1];
-				$method = explode('.', $pathParts['filename']);
-				$urlParts['methodName'] = array_shift($method);
-				$urlParts['params'] = $method;
+				if ($pathParts['extension'] != 'htm') {
+					$urlParts['node'] = 'paraamnikudotaim'; // :)
+				} else {
+					$urlParts['node'] = $dirParts[1];
+					$method = explode('.', $pathParts['filename']);
+					$urlParts['methodName'] = array_shift($method);
+					$urlParts['params'] = $method;
+				}
 			}	
 			return $urlParts;
 		} else {

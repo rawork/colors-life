@@ -16,7 +16,7 @@
 	$LIB_DATE = '2012.09.10';
 	
 	function exception_handler($exception) 
-	{
+	{	
 		if ($exception instanceof \Exception\NotFoundHttpException) {
 			$controller = new \Controller\ExceptionController();
 			echo $controller->indexAction($exception->getStatusCode(), $exception->getMessage());

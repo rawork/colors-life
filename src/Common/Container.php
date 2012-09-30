@@ -298,7 +298,7 @@ class Container {
 		if ( $method ) {
 			return $method;
 		} else {
-			throw new \Exception('Страница не доступна: '.$controllerName.'.'.$actionName.'. <a href="/">Перейти на главную</a>');
+			throw new \Exception('Страница не доступна: '.$controllerName.'.'.$actionName);
 		}
 	}
 
@@ -339,12 +339,7 @@ class Container {
 	}
 
 	function callMethod($controller, $methodName = 'index', $params = array()) {
-		try {
-			return $this->callMethodInstance($this->getMethodInstance($controller, $methodName), $params);
-		} catch (\Exception $e) {
-			echo $this->get('util')->showError($e->getMessage());
-			exit;
-		}
+		return $this->callMethodInstance($this->getMethodInstance($controller, $methodName), $params);
 	}
 
 	/*
