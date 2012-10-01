@@ -63,10 +63,10 @@ else
 
 if(isset($_POST["inpFileToDelete"]))
 	{
-	$filename=pathinfo($_POST["inpFileToDelete"]);
-	$filename=$filename['basename'];
-	if($filename!="")
-		unlink($currFolder . "/" . $filename);
+	$filepath=pathinfo($_POST["inpFileToDelete"]);
+	$filepath=$filepath['basename'];
+	if($filepath!="")
+		unlink($currFolder . "/" . $filepath);
 	$sMsg = "";
 	}
 	

@@ -1,0 +1,73 @@
+<?php
+
+namespace Fuga\AdminBundle\Action;
+
+	class SettingAction extends Action {
+        function __construct(&$adminController) {
+            parent::__construct($adminController);
+        }
+        function getText() {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				$state = false;
+				$params = $this->get('connection')->getItems('get_settings', "SELECT * FROM config_settings WHERE komponent='".$this->uai->module->name."'");
+				foreach ($params as $param) {
+					if ($this->get('util')->_postVar('param_'.$param['name']) && $value = $this->validParam($this->get('util')->_postVar('param_'.$param['name']), $param)) {
+						$this->get('connection')->execQuery('set_settings', "UPDATE config_settings SET value='".$value."' WHERE name='".$param['name']."' AND komponent='".$param['komponent']."'");
+						$state = true;
+					} elseif ($param['type'] == 'bol') {
+						$this->get('connection')->execQuery('set_settings', "UPDATE config_settings SET value='0' WHERE name='".$param['name']."' AND komponent='".$param['komponent']."'");
+						$state = true;
+					} 
+				}
+				$this->uai->messageAction($state ? 'Настройки изменены' : 'Ошибки при изменении', $this->uai->getBaseTableRef().'/setting');
+			}
+			
+			$ret = '';
+			$ret .= '<form method="post" action="'.$this->fullRef.'/setting">';
+			$ret .= '<table class="table table-condensed">';
+			$ret .= '<thead><tr>';
+			$ret .= '<th nowrap><b>Настройки модуля</b></th>';
+			$ret .= '<th></th></tr></thead>';
+			$params = $this->get('connection')->getItems('get_settings', "SELECT * FROM config_settings WHERE komponent='".$this->uai->module->name."'");
+
+			foreach ($params as $param) {
+				$ret .= '<tr><td align=left width="250"><strong>'.$param["title"].'</strong><br>{'.$param["name"].'}</td><td>';
+				if ($param['type'] == 'bol') {
+					if (intval($param['value']) > 0) {
+						$text = 'checked';
+					} else {
+						$text = '';
+					}
+					$ret .= '<input type="checkbox" name="param_'.$param["name"].'" value="1" '.$text.'>';
+				} elseif ($param['type'] == 'txt') {
+					$ret .= '<textarea rows="5" style="width:50%;" name="param_'.$param["name"].'">'.$param["value"].'</textarea>';
+				} else {
+					$ret .= '<input style="width:50%;" type="text" name="param_'.$param["name"].'" value="'.$param["value"].'">';
+				}
+				$ret .= '</td></tr>';
+			} 
+            $ret .= '</table><br><input class="btn btn-success" type="submit" value="Сохранить изменения"> <a class="btn" href="'.$this->fullRef.'/setting">Отменить</a></form>';
+			return $ret;
+        }
+		
+		function validParam($value, $param = array()) {
+			$ret = null;
+			if ($param['type'] == 'bool') {
+				if (intval($value) >= intval($param['minvalue']) && intval($value) <= intval($param['maxvalue'])) {
+					$ret = intval($value);
+				} else {
+					$ret = intval($param['defaultvalue']);
+				}
+			} elseif ($param['type'] == 'int') {
+				if (intval($value) >= intval($param['minvalue']) && intval($value) <= intval($param['maxvalue'])) {
+					$ret = intval($value);
+				} else {
+					$ret = intval($param['defaultvalue']);
+				}
+			} else {
+				$ret = $value;
+			}
+			return $ret;
+		}
+    }
+?>

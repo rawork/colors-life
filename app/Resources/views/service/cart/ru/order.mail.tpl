@@ -46,6 +46,7 @@
 <p><b>Параметры заказа:</b></p>
 <p>Получение товара: {$deliveryType}, {$deliveryAddress}
 <br>Контактное лицо: {$deliveryPerson}
+<br>Эл. почта: {$deliveryEmail}
 <br>Телефон: <span class="wmi-callto">{$deliveryPhone}</span>
 {if $deliveryPhoneAdd}<br>Доп. телефон: <span class="wmi-callto">{$deliveryPhoneAdd}</span>{/if}
 {if $deliveryComment}<br>Комментарий к заказу: {$deliveryComment}</span>{/if}

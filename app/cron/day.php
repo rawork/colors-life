@@ -1,8 +1,8 @@
 <?php
-//написать в формате шел скрипта
 
+use Fuga\Component\Scheduler\Scheduler;
 
-    $PRJ_DIR = substr($PHP_SELF, 0, strpos($PHP_SELF, "/app/cron/"));
-    require_once('../init.php');
-    $ai = new \AdminInterface\AdminInterface();
-    $ai->cron("Day");
+require_once('../init.php');
+
+$scheduler = new Scheduler();
+$scheduler->processTasks('day');

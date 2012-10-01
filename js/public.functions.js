@@ -243,8 +243,6 @@ $(window).resize(function(){
             height: $(document).height() + 'px'
             ,width: $(document).width() + 'px'
     });
-	if ($('#cart_add').css('display') != 'none')
-		setPosition('cart_add');
 });
 
 var cur_tab = 'offer_stuff';

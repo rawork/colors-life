@@ -1,11 +1,13 @@
 <?php
 
-use \AdminInterface\AdminInterface;
-use \Controller\PageController;
-use \Security\Captcha\KCaptcha;
+use Fuga\AdminBundle\AdminInterface;
+use Fuga\AdminBundle\Controller\AdminAjaxController;
+use Fuga\CMSBundle\Security\Captcha\KCaptcha;
+use Fuga\CMSBundle\Controller\PageController;
+use Fuga\PublicBundle\Controller\AjaxController;
 
 if (preg_match('/^\/secureimage\//', $_SERVER['REQUEST_URI'])) {
-	include_once($_SERVER['DOCUMENT_ROOT'].'/src/Security/Captcha/KCaptcha.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/src/Fuga/CMSBundle/Security/Captcha/KCaptcha.php');
 	session_start();
 	$captcha = new KCaptcha();
 	$_SESSION['captchaHash'] = md5($captcha->getKeyString().'FWK');
@@ -15,28 +17,34 @@ if (preg_match('/^\/secureimage\//', $_SERVER['REQUEST_URI'])) {
 	require_once('app/init.php');
 	
 	if (preg_match('/^\/ajax\//', $_SERVER['REQUEST_URI'])) {
-		$controller = new \Controller\AjaxController();
-		$obj = new ReflectionClass('\Controller\AjaxController');
-		if (isset($_POST['method'])) {
+		try {
+			$controller = new AjaxController();
+			$obj = new \ReflectionClass('Fuga\PublicBundle\Controller\AjaxController');
 			$post = $_POST;
 			unset($post['method']);
 			echo $obj->getMethod($_POST['method'])->invokeArgs($controller, $post);
-		} else {
-			throw new \Exception('AJAX call error');
-		}
+		} catch (\Exception $e) {
+			$container->get('log')->write(json_encode($_POST));
+			$container->get('log')->write($e->getMessage());
+			$container->get('log')->write('Trace% '.$e->getTraceAsString());
+			echo '';
+		}	
 	} elseif (preg_match('/^\/adminajax\//', $_SERVER['REQUEST_URI'])) {
-		$controller = new \AdminInterface\AdminAjaxController();
-		$obj = new ReflectionClass('\AdminInterface\AdminAjaxController');
-		if (isset($_POST['method'])) {
+		try {
+			$controller = new AdminAjaxController();
+			$obj = new \ReflectionClass('Fuga\AdminBundle\Controller\AdminAjaxController');
 			$post = $_POST;
 			unset($post['method']);
 			echo $obj->getMethod($_POST['method'])->invokeArgs($controller, $post);
-		} else {
-			throw new \Exception('AJAX call error');
+		} catch (\Exception $e) {
+			$container->get('log')->write(json_encode($_POST));
+			$container->get('log')->write($e->getMessage());
+			$container->get('log')->write('Trace% '.$e->getTraceAsString());
+			echo '';
 		}
 	} elseif ($GLOBALS['container']->get('router')->isAdmin()) {
 		$frontcontroller = new AdminInterface();
-		$frontcontroller->show();
+		$frontcontroller->handle();
 	} else {
 		$frontcontroller = new PageController();
 		$frontcontroller->handle();

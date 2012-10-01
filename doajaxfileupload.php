@@ -46,7 +46,7 @@ foreach ($_FILES[$fileElementName]["name"] as $i => $file) {
     	$msg = " " . $_FILES[$fileElementName]['name'][$i] . "<br/>";
 		$fileref  = $GLOBALS['container']->get('util')->getNextFileName($upload_ref.$_FILES[$fileElementName]['name'][$i]);
 		move_uploaded_file($_FILES[$fileElementName]['tmp_name'][$i], $GLOBALS['PRJ_DIR'].$fileref);
-		$filename = $_FILES[$fileElementName]['name'][$i];
+		$filepath = $_FILES[$fileElementName]['name'][$i];
 		$filesize = @filesize($upload_path.$_FILES[$fileElementName]['name'][$i]);
 		$filetype = $_FILES[$fileElementName]['type'][$i];
 		$tableName = $GLOBALS['container']->get('util')->_postVar('table_name');
@@ -58,7 +58,7 @@ foreach ($_FILES[$fileElementName]["name"] as $i => $file) {
        		$fileheight = $fileInfo[1];
 	    }
 		$sql = "INSERT INTO system_files(name,mimetype,file,width,height,filesize,table_name,entity_id,credate) "
-			." VALUES('$filename','$filetype','$fileref',$filewidth,$fileheight,'$filesize','$tableName','$entityId',NOW())";
+			." VALUES('$filepath','$filetype','$fileref',$filewidth,$fileheight,'$filesize','$tableName','$entityId',NOW())";
 		$GLOBALS['container']->get('connection')->execQuery('addfile', $sql);
 	}
 	if ($error) {

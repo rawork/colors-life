@@ -58,6 +58,7 @@ function startGroupUpdate(checkUpdate) {
 				id = $(domElement).attr('value'); 
 				ids.push(id);
 			});
+			$('input[name="edited"]').attr('value', 0);
 			$('#ids').attr('value', ids.join());
 			$('#frmGroupUpdate').submit();
 		}
@@ -142,7 +143,7 @@ function getTableList(currentState, moduleName) {
 			if (data.alertText) {
 				alert(data.alertText);
 			} else {
-				$('#tableMenu_'+moduleName).html(data.content);
+				obj.html(data.content);
 				obj.css('display', 'block');
 			}
 			hideDiv('waiting');

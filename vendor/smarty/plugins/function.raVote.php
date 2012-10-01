@@ -18,7 +18,7 @@
  */
 
 function smarty_function_raVote($params, &$smarty) {
-	$controller = new \Model\VoteManager();
+	$controller = new Fuga\CMSBundle\Model\VoteManager();
 	return $controller->getForm($params['name']);
 }
 

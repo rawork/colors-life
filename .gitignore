@@ -14,5 +14,7 @@ app/config/parameters.php
 # Cache
 app/cache/*
 !app/cache/.gitkeep
+app/logs/*
+!app/logs/.gitkeep
 app/backup/*
 !app/backup/.gitkeep

@@ -1,6 +1,7 @@
 <br>
 {$paginator->render()}
 <form id="frmGroupUpdate" name="frmGroupUpdate" action="{$baseRef}/groupedit" method="post">
+<input type="hidden" name="edited" value="1">
 <table class="table table-condensed table-normal">
 <thead>
 <tr>

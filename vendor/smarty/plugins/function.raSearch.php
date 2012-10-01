@@ -18,8 +18,8 @@
  */
 
 function smarty_function_raSearch($params, &$smarty) {
-	$controller = new \Controller\SearchController();
-	return $controller->getBody();
+	$controller = new Fuga\PublicBundle\Controller\SearchController();
+	return $controller->getContent();
 }
 
 ?>

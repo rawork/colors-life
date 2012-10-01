@@ -2,9 +2,6 @@
 	/* Path default settings */
 	$PATH_MAINPAGE_TITLE = array('ru' => 'На главную', 'en' => 'Mainpage');
 		
-	/* CMS core settings */
-	define('__PROCESSOR_VISIBLE', false);
-		
 	/* Template Versions settings */
 	define('__VERSION_QUANTITY', 10);
 	
