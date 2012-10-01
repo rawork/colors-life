@@ -15,7 +15,9 @@ class MaillistManager extends ModelManager {
 			foreach ($subscribers as $subscriber) {
 				$emails[] = $subscriber['email'];
 			}
-			$this->get('mailer')->attach($letter['file']);
+			if ($letter['file']) {
+				$this->get('mailer')->attach($letter['file']);
+			}
 			$this->get('mailer')->send(
 				$letter['subject'],
 				$letter['message'],
