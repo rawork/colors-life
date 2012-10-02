@@ -283,7 +283,9 @@ class AdminAjaxController extends Controller {
 		$filename = date('YmdHi',$my_time).'_'.$my_key.'.tar.gz';
 		$filename_sql = date('YmdHi',$my_time).'_'.$my_key.'.sql';
 		$filename_sql2 = date('YmdHi',$my_time).'_'.$my_key.'_after_connect.sql';
-		
+		$this->get('log')->write($GLOBALS['BACKUP_DIR'].$filename);
+		$this->get('log')->write($GLOBALS['BACKUP_DIR'].$filename_sql);
+		$this->get('log')->write($GLOBALS['BACKUP_DIR'].$filename_sql2);	
 		$f = fopen($GLOBALS['BACKUP_DIR'].'/'.$filename_sql2, "a");
 		fwrite($f, "/*!41000 SET NAMES 'utf8' */;");
 		fclose($f);
@@ -314,8 +316,8 @@ class AdminAjaxController extends Controller {
 		$text .= 'Размер неупакованых файлов: '.$this->get('util')->getSize($sfiles, 2);
 		$text .= '<br>';
 		$text .= 'Размер архива: '.$this->get('filestorage')->size($GLOBALS['BACKUP_REF'].'/'.$filename);
-		@unlink($GLOBALS['BACKUP_DIR'].'/'.$filename_sql);
-		@unlink($GLOBALS['BACKUP_DIR'].'/'.$filename_sql2);
+//		@unlink($GLOBALS['BACKUP_DIR'].'/'.$filename_sql);
+//		@unlink($GLOBALS['BACKUP_DIR'].'/'.$filename_sql2);
 		$_SESSION['archiveReport'] = $text;
 		return json_encode(array('content' => $text));
 	}
