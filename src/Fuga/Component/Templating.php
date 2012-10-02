@@ -10,7 +10,12 @@ class Templating {
 	private $basePath = '/app/Resources/views/';
 	
 	public function __construct($engine, $options = array()) {
+		global $PRJ_DIR;
 		$this->engine = $engine;
+		$this->engine->template_dir = $PRJ_DIR.'/app/Resources/views/';
+		$this->engine->compile_dir = $PRJ_DIR.'/app/cache/smarty/';
+		$this->engine->compile_check = true;
+		$this->engine->debugging = false;
 		$this->assignMethod = 'assign';
 		$this->renderMethod = 'fetch';
 		$this->setOptions($options);

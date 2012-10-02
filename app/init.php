@@ -73,46 +73,37 @@ if ($_SERVER['SCRIPT_NAME'] != '/restore.php' && file_exists($PRJ_DIR.'/restore.
 // ID запрашиваемой страницы
 $GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']));
 
+$container = new Container();
+$container->register('log', new Log());
+$container->register('util', new Util());
+
 // Соединение с базой и выполнение запросов
 try {
 	$className = '\\Fuga\\Component\\DB\\Connector\\'.ucfirst($GLOBALS['DB_TYPE']).'Connector';
-	$connection = new $className($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS'], $GLOBALS['DB_BASE']);
+	$container->register('connection', new $className($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS'], $GLOBALS['DB_BASE']));
 } catch (\Exception $e) {
 	throw new \Exception('DB connection type error (DB_TYPE). Possible value: mysql,mysqli. Check DB connection params');
 }
 
-$container = new Container();
-$container->register('log', new Log());
-$container->register('util', new Util());
-$container->register('connection', $connection);
+$container->register('smarty', new Smarty());
+$container->register('templating', 
+	new Templating(
+		$container->get('smarty'), 
+		array('assignMethod' => 'assign', 'renderMethod' => 'fetch'
+)));
 
 // инициализация переменных
 $params = array();
-$vars = $connection->getItems('GLOBAL_VARS', 'SELECT name, value FROM config_variables');
+$vars = $container->get('connection')->getItems('GLOBAL_VARS', 'SELECT name, value FROM config_variables');
 foreach ($vars as $var) {
 	$params[strtolower($var['name'])] = $var['value'];
 	$$var['name'] = $var['value'];
 }
 
 $params['theme_ref'] = $THEME_REF;
-
-$container->register('smarty', new Smarty());
-$container->get('smarty')->template_dir = $PRJ_DIR.'/app/Resources/views/';
-$container->get('smarty')->compile_dir = $PRJ_DIR.'/app/cache/smarty/';
-$container->get('smarty')->compile_check = true;
-$container->get('smarty')->debugging = false;
-
-$container->register(
-	'templating', 
-	new Templating(
-		$container->get('smarty'), 
-		array('assignMethod' => 'assign', 'renderMethod' => 'fetch'
-)));
+$params['prj_ref'] = $PRJ_REF;
 
 $container->get('templating')->setParams($params);
-
-// Включаем Роутер запросов к сайту 
-$container->register('router', new Router());
 
 $security = new SecurityHandler();
 if (!$security->isAuthenticated() && $security->isSecuredArea()) {
@@ -128,6 +119,7 @@ if (!$security->isAuthenticated() && $security->isSecuredArea()) {
 $container->register('security', $security);
 $container->initialize();
 
+// Включаем Роутер запросов к сайту 
+$container->register('router', new Router());
 $container->get('router')->setLanguage();
 $container->get('router')->setParams();
-

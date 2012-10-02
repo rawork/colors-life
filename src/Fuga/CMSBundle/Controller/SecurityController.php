@@ -39,7 +39,7 @@ class SecurityController extends Controller {
 				'text' => $this->get('util')->_getVar('ok')
 			);
 		}
-		return $this->render('FugaCMSBundle:Security:layout.login.tpl', array('message' => $message));
+		return $this->render('admin/layout.login.tpl', array('message' => $message));
 	}
 	
 	public function forgotAction() {
@@ -83,7 +83,7 @@ class SecurityController extends Controller {
 				);
 			}
 		}	
-		return $this->render('FugaCMSBundle:Security:layout.forgot.tpl', array('message' => $message));
+		return $this->render('admin/layout.forgot.tpl', array('message' => $message));
 	}
 	
 	public function logoutAction() {
