@@ -21,7 +21,7 @@ function smarty_function_raForm($params, &$smarty) {
 	if (empty($params['name'])) {
 		$smarty->trigger_error('raForm: Не указан параметр: name');
 	} else {
-		$manager = new Fuga\CMSBundle\Model\FormManager();
+		$manager = new \Fuga\CMSBundle\Model\FormManager();
 		return $manager->getForm("name='".$params['name']."'", $params);
 	}
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace Fuga\PublicBundle\PublicController;
+namespace Fuga\PublicBundle\Controller;
+
+use Fuga\CMSBundle\Controller\PublicController;
 
 // TODO Cache of search results
 

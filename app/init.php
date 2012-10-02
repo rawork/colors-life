@@ -19,11 +19,11 @@ function exception_handler($exception)
 {	
 	// TODO Подключить логирование
 	if ($exception instanceof Fuga\Component\Exception\NotFoundHttpException) {
-		$controller = new Fuga\CMSBundle\Controller\ExceptionController();
+		$controller = new ExceptionController();
 		echo $controller->indexAction($exception->getStatusCode(), $exception->getMessage());
 	} else {
 		// TODO Ругаться красиво, саму ошибку в лог пишем
-		$controller = new Fuga\CMSBundle\Controller\ExceptionController();
+		$controller = new ExceptionController();
 		echo $controller->indexAction(500, $exception->getMessage());
 	}
 }
@@ -64,6 +64,7 @@ use Fuga\Component\Router;
 use Fuga\Component\Templating;
 use Fuga\CMSBundle\Security\SecurityHandler;
 use Fuga\CMSBundle\Security\Controller\SecurityController;
+use Fuga\CMSBundle\Controller\ExceptionController;
 
 // ID запрашиваемой страницы
 $GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']));
