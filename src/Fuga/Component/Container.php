@@ -417,7 +417,7 @@ class Container
 		if ($name == 'search' && !isset($this->services[$name])) {
 			$this->services[$name] = new SearchEngine();
 		}
-		if ($name == 'search' && !isset($this->services[$name])) {
+		if ($name == 'cache' && !isset($this->services[$name])) {
 			global $CACHE_DIR, $CACHE_TTL;
 			$options = array(
 			    'cacheDir' => $CACHE_DIR,
