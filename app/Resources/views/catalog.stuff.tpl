@@ -24,7 +24,7 @@
   				{/foreach}
                 </div>
                 <script type="text/javascript">
-                $(".stuff-extra-image-links a").lightbox();
+                $(".stuff-extra-image-links a").lightBox();
                </script>
                 {/if}
                 </td>

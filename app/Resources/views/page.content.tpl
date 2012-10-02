@@ -5,18 +5,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="/bundles/admin/css/calendar-mos.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="/css/style.css" type="text/css">
-<link rel="stylesheet" href="/css/jqzoom.css" type="text/css">
-<link rel="stylesheet" href="/css/lightbox.css" type="text/css">
+<link rel="stylesheet" href="/bundles/jqzoom/css/jquery.jqzoom.css" type="text/css">
+<link rel="stylesheet" href="/bundles/lightbox/css/jquery.lightbox-0.5.css" type="text/css">
 <link href=”/favicon.ico” rel=”icon” type=”image/x-icon” />
 <link href=”/favicon.ico” rel=”shortcut icon” type=”image/x-icon” />
 <script type="text/javascript" src="/js/swfobject.js"></script>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/dimmer.js"></script>
-<script type="text/javascript" src="/js/jquery.jqzoom.js"></script>
+<script type="text/javascript" src="/bundles/jqzoom/js/jquery.jqzoom-core.js"></script>
+<script type="text/javascript" src="/bundles/lightbox/js/jquery.lightbox-0.5.js"></script>
 <script type="text/javascript" src="/js/public.functions.js"></script>
-<script src="/bundles/admin/js/calendar.js" type="text/javascript"></script>
-<script src="/bundles/admin/js/calendar-ru.js" type="text/javascript"></script>
-<script src="/bundles/admin/js/calendar-setup.js" type="text/javascript"></script>
+<script type="text/javascript" src="/bundles/admin/js/calendar.js" ></script>
+<script type="text/javascript" src="/bundles/admin/js/calendar-ru.js"></script>
+<script type="text/javascript" src="/bundles/admin/js/calendar-setup.js"></script>
 {literal}
 <script type="text/javascript">
 
