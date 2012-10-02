@@ -9,6 +9,7 @@ use Fuga\Component\Scheduler\Scheduler;
 use Fuga\Component\Storage\FileStorage;
 use Fuga\Component\Storage\ImageStorageDecorator;
 use Fuga\Component\Search\SearchEngine;
+use Fuga\Component\Cache\Cache;
 
 class Container 
 {
@@ -416,6 +417,16 @@ class Container
 		if ($name == 'search' && !isset($this->services[$name])) {
 			$this->services[$name] = new SearchEngine();
 		}
+		if ($name == 'search' && !isset($this->services[$name])) {
+			global $CACHE_DIR, $CACHE_TTL;
+			$options = array(
+			    'cacheDir' => $CACHE_DIR,
+			    'lifeTime' => $CACHE_TTL,
+			    'pearErrorMode' => CACHE_ERROR_DIE
+			);
+			$this->services[$name] = new Cache($options);
+		}
+		
 		if (!isset($this->services[$name])) {
 			throw new \Exception('Cлужба "'.$name.'" отсутствует');
 		}

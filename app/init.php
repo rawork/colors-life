@@ -73,18 +73,6 @@ if ($_SERVER['SCRIPT_NAME'] != '/restore.php' && file_exists($PRJ_DIR.'/restore.
 // ID запрашиваемой страницы
 $GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']));
 
-// Кеш
-//	$options = array(
-//	    'cacheDir' => $PRJ_DIR.'/app/cache/',
-//	    'lifeTime' => 24*60*14,
-//	    'pearErrorMode' => CACHE_ERROR_DIE
-//	);
-//	$GLOBALS['cache'] = new Cache($options);
-//	if ($data = $GLOBALS['cache']->get($GLOBALS['cur_page_id'])){
-//		//echo $data;
-//		//exit();
-//	}
-
 // Соединение с базой и выполнение запросов
 try {
 	$className = '\\Fuga\\Component\\DB\\Connector\\'.ucfirst($GLOBALS['DB_TYPE']).'Connector';
