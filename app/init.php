@@ -12,7 +12,7 @@ use Fuga\Component\Util;
 use Fuga\Component\Router;
 use Fuga\Component\Templating;
 use Fuga\CMSBundle\Security\SecurityHandler;
-use Fuga\CMSBundle\Security\Controller\SecurityController;
+use Fuga\CMSBundle\Controller\SecurityController;
 use Fuga\CMSBundle\Controller\ExceptionController;
 
 $se_mask = "/(Yandex|Googlebot|StackRambler|Yahoo Slurp|WebAlta|msnbot)/";
@@ -65,6 +65,10 @@ function autoloader($className)
 
 set_exception_handler('exception_handler');
 spl_autoload_register('autoloader');
+
+if ($_SERVER['SCRIPT_NAME'] != '/restore.php' && file_exists($PRJ_DIR.'/restore.php')) {
+	throw new \Exception('Удалите файл restore.php в корне сайта');
+}
 
 // ID запрашиваемой страницы
 $GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']));
@@ -139,6 +143,3 @@ $container->initialize();
 $container->get('router')->setLanguage();
 $container->get('router')->setParams();
 
-if ($_SERVER['SCRIPT_NAME'] != '/restore.php' && file_exists($PRJ_DIR.'/restore.php')) {
-	throw new \Exception('Удалите файл restore.php в корне сайта');
-}

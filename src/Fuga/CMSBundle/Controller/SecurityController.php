@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuga\CMSBundle\Security\Controller;
+namespace Fuga\CMSBundle\Controller;
 
 use Fuga\CMSBundle\Controller\Controller;
 
@@ -39,7 +39,7 @@ class SecurityController extends Controller {
 				'text' => $this->get('util')->_getVar('ok')
 			);
 		}
-		return $this->render('admin/layout.login.tpl', array('message' => $message));
+		return $this->render('FugaCMSBundle:Security:layout.login.tpl', array('message' => $message));
 	}
 	
 	public function forgotAction() {
@@ -83,7 +83,7 @@ class SecurityController extends Controller {
 				);
 			}
 		}	
-		return $this->render('admin/layout.forgot.tpl', array('message' => $message));
+		return $this->render('FugaCMSBundle:Security:layout.forgot.tpl', array('message' => $message));
 	}
 	
 	public function logoutAction() {
@@ -98,7 +98,7 @@ class SecurityController extends Controller {
 	}
 	
 	public function passwordAction() {
-		global $ADMIN_EMAIL, $PRJ_REF;
+		global $PRJ_REF;
 		if ($this->get('util')->_getVar('key')) {
 			$user = $this->get('connection')->getItem('users_users', "SELECT id,syslogin,email FROM users_users WHERE hashkey='".$this->get('util')->_getVar('key')."'");
 			if (!empty($user) && !empty($user['email'])) {
