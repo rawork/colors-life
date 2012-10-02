@@ -147,7 +147,7 @@
 {raSetVar var=title value=$cat.name}
 {/if}
 
-{raPaginator var=paginator table=catalog_stuff query="publish='on' AND c_id=`$param0` `$param2_where`" pref="`$ref``$mname`.`$param0`.`$param1`.`$param2`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
+{raPaginator var=paginator table=catalog_stuff query="publish='on' AND c_id=`$param0` `$param2_where`" pref="`$ref``$methodName`.`$param0`.`$param1`.`$param2`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
 {raItems var=items table=catalog_stuff query="c_id=`$cat.id` AND publish='on' `$param2_where`" limit=$paginator->limit sort="is_exist DESC,`$param1`"}
 
 
@@ -155,7 +155,16 @@
 <table class="stuff-selector" width="100%" cellpadding="5" cellspacing="0" border="0">
   <tr>
                 <td width="40%">Сортировать по: 
-      {if $param1 != 'price' && $param1 != 'name'} <a href="{raURL node=catalog method=$mname prms="`$param0`.price"}">цене</a> <a href="{raURL node=catalog method=$mname prms="`$param0`.name"}">названию</a> {elseif $param1 == 'price'} <span>цене</span> <a href="{raURL node=catalog method=$mname prms="`$param0`.name"}">названию</a> {else} <a href="{raURL node=catalog method=$mname prms="`$param0`.price"}">цене</a> <span>названию</span> {/if} </td>
+		{if $param1 != 'price' && $param1 != 'name'} 
+		<a href="{raURL node=catalog method=$methodName prms="`$param0`.price"}">цене</a> 
+		<a href="{raURL node=catalog method=$methodName prms="`$param0`.name"}">названию</a> 
+		{elseif $param1 == 'price'} 
+		<span>цене</span> 
+		<a href="{raURL node=catalog method=$methodName prms="`$param0`.name"}">названию</a> 
+		{else} 
+		<a href="{raURL node=catalog method=$methodName prms="`$param0`.price"}">цене</a> 
+		<span>названию</span> 
+		{/if} </td>
                 <td width="60%" align="right">Показать товары: <span>таблицей</span> <a href="{raURL node=$node.name method=list prms=$param0}">списком</a> по
       <select name="cpage" onChange="setCatalogRTT(this, {$rtt}, {$page})">
                     <option value="6"{if $rtt == 6} selected{/if}>6</option>

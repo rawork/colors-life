@@ -1,5 +1,5 @@
 {raPaginator var=paginator table=news_news query="publish='on'" pref="`$ref``$methodName`.htm?page=###" per_page=10 page=$smarty.get.page tpl=public}
-{raItems var=items table=news_news query="publish='on'" limit=$pages->limit}
+{raItems var=items table=news_news query="publish='on'" limit=$paginator->limit}
 <table class="news-table" cellpadding="0" cellspacing="0" border="0">
 {foreach from=$items item=news}
 <tr>
