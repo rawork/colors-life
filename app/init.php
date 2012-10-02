@@ -1,6 +1,19 @@
 <?php
 
+$LIB_VERSION = '5.0.1';
+$LIB_DATE = '2012.09.10';
+
 require_once 'config/config.php';
+
+use Fuga\Component\Container;
+use Fuga\Component\Cache;
+use Fuga\Component\Log\Log;
+use Fuga\Component\Util;
+use Fuga\Component\Router;
+use Fuga\Component\Templating;
+use Fuga\CMSBundle\Security\SecurityHandler;
+use Fuga\CMSBundle\Security\Controller\SecurityController;
+use Fuga\CMSBundle\Controller\ExceptionController;
 
 $se_mask = "/(Yandex|Googlebot|StackRambler|Yahoo Slurp|WebAlta|msnbot)/";
 if (preg_match($se_mask,$_SERVER['HTTP_USER_AGENT']) > 0) {
@@ -11,9 +24,6 @@ if (preg_match($se_mask,$_SERVER['HTTP_USER_AGENT']) > 0) {
 } else {
 	session_start();
 }
-
-$LIB_VERSION = '5.0.1';
-$LIB_DATE = '2012.09.10';
 
 function exception_handler($exception) 
 {	
@@ -56,20 +66,10 @@ function autoloader($className)
 set_exception_handler('exception_handler');
 spl_autoload_register('autoloader');
 
-use Fuga\Component\Container;
-use Fuga\Component\Cache;
-use Fuga\Component\Log\Log;
-use Fuga\Component\Util;
-use Fuga\Component\Router;
-use Fuga\Component\Templating;
-use Fuga\CMSBundle\Security\SecurityHandler;
-use Fuga\CMSBundle\Security\Controller\SecurityController;
-use Fuga\CMSBundle\Controller\ExceptionController;
-
 // ID запрашиваемой страницы
 $GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']));
 
-// Включаем кеш
+// Кеш
 //	$options = array(
 //	    'cacheDir' => $PRJ_DIR.'/app/cache/',
 //	    'lifeTime' => 24*60*14,

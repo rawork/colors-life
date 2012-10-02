@@ -17,10 +17,11 @@ DirectoryIndex index.php
   php_value magic_quotes_gpc                0
   php_value magic_quotes_runtime            0
   php_value register_globals                0
-  php_value error_reporting		2047
-  php_value display_errors		0
-  php_value post_max_size		50M
-  php_value upload_max_filesize		50M
+  php_value session.auto_start              0
+  php_value error_reporting					2047
+  php_value display_errors					1
+  php_value post_max_size					50M
+  php_value upload_max_filesize				50M
 </IfModule>
 
 <IfModule mod_expires.c>
@@ -54,5 +55,6 @@ DirectoryIndex index.php
     </IfModule>
 
 	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
