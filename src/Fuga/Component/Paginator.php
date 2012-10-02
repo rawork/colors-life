@@ -16,9 +16,10 @@ class Paginator {
 	private $maxDisplayPages= 15; //max_display
 	private $table			= null;
 
-	private $navigationContent = null;
+	private $content;
 	
 	public function paginate($table, $baseUrl, $where = '', $rowPerPage = 25, $currentPage = 1, $maxDisplayPages = 10, $templateName = 'default') {
+		$this->content = null;
 		$this->table			= $table;
 		$this->maxDisplayPages	= $maxDisplayPages;
 		$this->rowPerPage			= $rowPerPage;
@@ -55,15 +56,15 @@ class Paginator {
 	}
 
 	public function render() {
-		if (!$this->navigationContent) {
+		if (!$this->content) {
 			if ($this->quantity > 1) {
 				if ($this->currentPage > 1) {
-					$this->get('smarty')->assign('prev_link', $this->getLinkURL($this->currentPage-1));
-					$this->get('smarty')->assign('begin_link', $this->getLinkURL(1));
+					$prev_link = $this->getLink($this->currentPage-1);
+					$begin_link = $this->getLink(1);
 				}
 				if ($this->currentPage < $this->quantity) {
-					$this->get('smarty')->assign('next_link', $this->getLinkURL($this->currentPage+1));
-					$this->get('smarty')->assign('end_link', $this->getLinkURL($this->quantity-1));
+					$next_link = $this->getLink($this->currentPage+1);
+					$end_link = $this->getLink($this->quantity);
 				}
 				if ($this->currentPage >= $this->quantity - ceil($this->maxDisplayPages/2) && $this->quantity > $this->maxDisplayPages) {
 					$min_page = $this->quantity - $this->maxDisplayPages + 1;
@@ -76,23 +77,25 @@ class Paginator {
 					$min_page = 1;
 					$max_page = $this->maxDisplayPages > $this->quantity ? $this->quantity : $this->maxDisplayPages;
 				}
-				$aPages = array();
+				$pages = array();
 				for ($k = $min_page; $k <= $max_page; $k++) {
-					$aPages[] = array('name' => $k, 'ref' => $this->getLinkURL($k));
+					$pages[] = array('name' => $k, 'ref' => $this->getLink($k));
 				}
-				$this->get('smarty')->assign('totalItems', $this->entityQuantity);
-				$this->get('smarty')->assign('currentItems', $this->min_rec.' - '.$this->max_rec);
-				$this->get('smarty')->assign('page', $this->currentPage);
-				$this->get('smarty')->assign('pages', $aPages);
-				$this->navigationContent = $this->get('smarty')->fetch($this->template);
+				$totalItems = $this->entityQuantity;
+				$currentItems = $this->min_rec.' - '.$this->max_rec;
+				$page = $this->currentPage;
+				$this->content = $this->get('templating')->render(
+					$this->template, 
+					compact('prev_link', 'begin_link', 'next_link', 'end_link', 'totalItems', 'currentItems', 'page', 'pages')
+				);
 			} else {
-				$this->navigationContent = '&nbsp;';
+				$this->content = '&nbsp;';
 			}
 		}
-		return $this->navigationContent;
+		return $this->content;
 	}
 
-	public function getLinkURL($page, $urlTemplate = '') {
+	public function getLink($page, $urlTemplate = '') {
 		if(!$urlTemplate) {
 			$urlTemplate = $this->baseUrl;
 		}

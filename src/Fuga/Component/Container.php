@@ -337,18 +337,17 @@ class Container
 				$controller = new \Fuga\CMSBundle\Controller\PublicController($methodData['module_name']);
 			}
 
-			$this->get('smarty')->assign('settings', $controller->params);
-			$this->get('smarty')->assign('ref', '/'.$this->get('router')->getParam('node').'/');
+			$this->get('templating')->setParam('settings', $controller->params);
+			$this->get('templating')->setParam('ref', '/'.$this->get('router')->getParam('node').'/');
 		}
 		if ($methodData['template'] && file_exists($PRJ_DIR.$methodData['template'])) {
 			if ($methodData['module_name'] == 'tree' && $methodData['name'] == 'index' && !count($paramsData)) {
 				$paramsData[] = '/';
 			}
 			foreach ($paramsData as $key => $param) {
-				$this->get('smarty')->assign('param'.$key, $param);
+				$this->get('templating')->setParam('param'.$key, $param);
 			}
-			$this->get('smarty')->assign('methodName', $methodData['name']);
-			return $this->get('smarty')->fetch($PRJ_DIR.$methodData['template']);
+			return $this->get('templating')->render($methodData['template']);
 		} else {
 			throw new \Exception('Method template error: '.$methodData['module_id_name'].'.'.$methodData['name'].'. <a href="/">Перейти на главную</a>');
 		}

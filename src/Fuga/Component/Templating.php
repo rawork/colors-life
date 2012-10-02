@@ -7,13 +7,16 @@ class Templating {
 	private $engine;
 	private $assignMethod;
 	private $renderMethod;
-	private $basePath = '/app/Resources/views/';
+	private $basePath		= '/app/Resources/views/';
+	private $baseCachePath	= '/app/cache/smarty/';
+	private $realPath		= '';
 	
 	public function __construct($engine, $options = array()) {
 		global $PRJ_DIR;
 		$this->engine = $engine;
-		$this->engine->template_dir = $PRJ_DIR.'/app/Resources/views/';
-		$this->engine->compile_dir = $PRJ_DIR.'/app/cache/smarty/';
+		$this->realPath = $PRJ_DIR.$this->basePath;
+		$this->engine->template_dir = $PRJ_DIR.$this->basePath;
+		$this->engine->compile_dir = $PRJ_DIR.$this->baseCachePath;
 		$this->engine->compile_check = true;
 		$this->engine->debugging = false;
 		$this->assignMethod = 'assign';
@@ -37,8 +40,18 @@ class Templating {
 		}
 	}
 	
+	public function setParam($paramName, $paramValue) {
+		$method = $this->assignMethod;
+		$this->engine->$method($paramName, $paramValue);
+	}
+	
 	public function render($template, $params = array(), $silent = false) {
-		if ($this->exists($template)) {
+		if (empty($template)) {
+			throw new \Exception('Шаблон без названия');
+		}
+		$template = str_replace($this->realPath, '', $template);
+		$template = str_replace($this->basePath, '', $template);
+		if ($this->exists($this->realPath.$template)) {
 			$method = $this->renderMethod;
 			$this->setParams($params);
 			return $this->engine->$method($template);
@@ -50,8 +63,7 @@ class Templating {
 	}
 	
 	public function exists($template) {
-		global $PRJ_DIR;
-		return file_exists($PRJ_DIR.$this->basePath.$template);
+		return file_exists($template);
 	}
 	
 }

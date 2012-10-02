@@ -108,22 +108,24 @@ class Form {
 	}
 
 	public function getText() {
-	global $PRJ_DIR;
+		global $PRJ_DIR;
 		$ret = '';
-		if (sizeof($this->items) > 0) {
-			foreach ($this->items as $k => $v) {
-				$this->items[$k] = $this->parseItem($v);
-				if (!empty($v['not_empty'])) $this->dbform['needed'] = true;
+		if (count($this->items)) {
+			foreach ($this->items as $k => $item) {
+				$this->items[$k] = $this->parseItem($item);
+				if (!empty($item['not_empty'])) $this->dbform['needed'] = true;
 			}
-			$this->get('smarty')->assign('action', $this->action);
-			$this->get('smarty')->assign('dbform', $this->dbform);
-			$this->get('smarty')->assign('items', $this->items);
-			$this->get('smarty')->assign('frmMessage', $this->message);
-			$this->get('smarty')->assign('pass_postfix', $this->pass_postfix);
+			$params = array (
+				'action' => $this->action,
+				'dbform' => $this->dbform,
+				'items' => $this->items,
+				'frmMessage' => $this->message,
+				'pass_postfix' => $this->pass_postfix,
+			);
 			if (empty($this->dbform['template'])) {
-				$ret = $this->get('smarty')->fetch('service/form.tpl');
+				$ret = $this->get('templating')->render('service/form.tpl', $params);
 			} else {
-				$ret = $this->get('smarty')->fetch($PRJ_DIR.$this->dbform['template']);
+				$ret = $this->get('templating')->render($this->dbform['template'], $params);
 			}
 		} else {
 			$ret = 'Пустая форма '.$this->name;
@@ -157,13 +159,13 @@ class Form {
 		global $MAX_FILE_SIZE;
 		$ret = array('', '');
 		$fields = array();
-		foreach ($this->items as $k => $field){
+		foreach ($this->items as $field){
 			$value = $this->get('util')->_postVar($field['name']);
 			if ($field['not_empty'] && empty($value)) {
 				$ret[0] = 'error';
-				$this->get('smarty')->assign('ftitle', $field['title']);
+				$this->get('templating')->setParam('ftitle', $field['title']);
 				$GLOBALS['tplvar_message'] = $params['text_not_inserted'];
-				$ret[1] .= ($ret[1] ? '<br>' : '').$this->get('smarty')->fetch('var:message');
+				$ret[1] .= ($ret[1] ? '<br>' : '').$this->get('templating')->render('var:message');
 			}
 			if ($field['type'] == 'checkbox') {
 				$value = (empty($value) ? 'нет' : 'да').'<br>';
@@ -183,10 +185,10 @@ class Form {
 		} else {
 			if ($this->defense)
 				$fields[] = array('value' => $this->get('util')->_postVar('keystring'), 'title' => 'Код безопасности');
-				$this->get('smarty')->assign('fields', $fields);
+				$this->get('templating')->setParam('fields', $fields);
 				$this->get('mailer')->send(
 					$this->dbform['title'].' на сайте '.$_SERVER['SERVER_NAME'],
-					$this->get('smarty')->fetch('service/form.mail.tpl'),
+					$this->get('templating')->render('service/form.mail.tpl'),
 					$this->email
 				);	
 		}

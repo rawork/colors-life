@@ -18,19 +18,15 @@ class AjaxController extends Controller {
 		return $sCartText;
 	}
 	
-	function voteProcess($formData) {
-		parse_str($formData, $elements);
-		$_POST = array_merge($_POST, $elements);
-		$manager = new VoteManager();
-		return json_encode(array('content' => $manager->getResult()));
+	public function voteProcess($voteName, $formData = null) {
+		$elements = null;
+		if ($formData) {
+			parse_str($formData, $elements);
+		}
+		$controller = new VoteManager();
+		return json_encode(array('content' => $controller->getResult($voteName, $elements)));
 	}                                                                       
                                                                                 
-	function voteResult($voteId) {
-		$_POST['vote_question'] = $voteId;
-		$manager = new VoteManager();
-		return json_encode(array('content' => $manager->getResult()));
-	}  
-	
 	public function addCartItem($productId, $quantity = 1, $price = 0, $priceId = 0) {
 		$this->get('router')->setParams('/cart/');
 		$cart = new CartController();

@@ -1,6 +1,6 @@
 <div class="map{$block}_links">
-{foreach key=k item=it from=$items}
-<a href="{$it.ref}">{$it.title}</a>
-{$it.sub}
+{foreach from=$nodes item=node}
+<a href="{$node.ref}">{$node.title}</a>
+{$node.sub}
 {/foreach}
 </div>

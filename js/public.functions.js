@@ -73,16 +73,12 @@ function register(e) {
 
 /* start ajax */
 
-function voteProcess(voteName) {
-	formData = $('#frm'+voteName).serialize();
-	$.post("/ajax/", {method: 'voteProcess', formData: formData},
-	function(data){
-		$('#'+voteName).html(data.content);
-	}, "json");
-}
-
-function voteResult(voteName, voteId) {
-	$.post("/ajax/", {method: 'voteResult', voteId: voteId},
+function voteProcess(voteName, isProcess) {
+	formData = null;
+	if (isProcess == 1) {
+		formData = $('#frm'+voteName).serialize();
+	}
+	$.post("/ajax/", {method: 'voteProcess', voteName: voteName, formData: formData},
 	function(data){
 		$('#'+voteName).html(data.content);
 	}, "json");

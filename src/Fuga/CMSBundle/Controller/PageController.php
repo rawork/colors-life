@@ -4,6 +4,7 @@ namespace Fuga\CMSBundle\Controller;
 
 use Fuga\CMSBundle\Model\TemplateManager;
 use Fuga\CMSBundle\Model\MetaManager;
+use Fuga\CMSBundle\Controller\PublicController;
 use Fuga\PublicBundle\Controller\AuthController;
 
 class PageController extends Controller {
@@ -56,16 +57,14 @@ class PageController extends Controller {
 			
 			if ($nodes[0]['name'] != '/')
 				$nodes = array_merge(array(array('name' => '/', 'title' => $PATH_MAINPAGE_TITLE[$this->get('router')->getParam('lang')])), $nodes);
-			foreach ($nodes as $k => $v) {
-				if (isset($v['name']) && empty($v['ref'])) 
-					$nodes[$k]['ref'] = $this->getUrl($v);
-				if (isset($v['name']) && $v['name'] == '/')
-					$nodes[$k]['title'] = $PATH_MAINPAGE_TITLE[$this->get('router')->getParam('lang')];
+			foreach ($nodes as &$node) {
+				if (isset($node['name']) && empty($node['ref'])) 
+					$node['ref'] = $this->getUrl($node);
+				if (isset($node['name']) && $node['name'] == '/')
+					$node['title'] = $PATH_MAINPAGE_TITLE[$this->get('router')->getParam('lang')];
 			}
-			$this->get('smarty')->assign('pathitems', $nodes);
-			$this->get('smarty')->assign('methodName', $this->get('router')->getParam('methodName'));
-			$this->get('smarty')->assign('delimeter', $delimeter);
-			return $this->get('smarty')->fetch('service/breadscrumb.tpl');
+			unset($node);
+			return $this->render('service/breadscrumb.tpl', compact('nodes', 'delimeter'));
 		}
 	}
 
@@ -107,21 +106,20 @@ class PageController extends Controller {
 
 	/* Map */
 	function getMapList($uri = 0) {
-		$a = $this->getNodes($uri);
+		$nodes = $this->getNodes($uri);
 		$block = strval($uri) == '0' ? '' :  '_sub';
-		if (count($a)) {
-			foreach ($a as $k => $i) {
-				$a[$k]['sub'] = '';
-				if (isset($i['module_id_name'])) {
-					$unit = new \Controller\Controller($i['module_id_name']);
-					$a[$k]['sub'] = $unit->getMap();
+		if (count($nodes)) {
+			foreach ($nodes as $node) {
+				$node['sub'] = '';
+				if (isset($node['module_id_name'])) {
+					$unit = new PublicController($node['module_id_name']);
+					$node['sub'] = $unit->getMap();
 				}
-				$a[$k]['sub'] .= $this->getMapList($i['id']);
+				$node['sub'] .= $this->getMapList($node['id']);
 			}
+			unset($node);
 		}
-		$this->get('smarty')->assign('items', $a);
-		$this->get('smarty')->assign('block', $block);
-		return $this->get('smarty')->fetch('service/map.tpl');
+		return $this->render('service/map.tpl', compact('nodes', 'block'));
 	}
 
 	public function getMap() {
@@ -152,7 +150,7 @@ class PageController extends Controller {
 		$this->get('templating')->setParams(array_merge($this->get('container')->getVars(), $params));
 		
 		$templateManager = new TemplateManager();
-		$data = $this->get('smarty')->fetch($templateManager->getByNode($this->node));
+		$data = $this->render($templateManager->getByNode($this->node));
 		if ($data) {
 //			$this->get('cache')->save($data, $GLOBALS['cur_page_id']);
 			echo $data;
@@ -166,8 +164,7 @@ class PageController extends Controller {
 		global $LIB_DIR;
 		
 		if (preg_match('/^\/notice\/[\d]{6}$/', $_SERVER['REQUEST_URI'])) {
-			$this->get('smarty')->assign('order', str_replace('/notice/', '', $_SERVER['REQUEST_URI']));
-			echo $this->get('smarty')->fetch('page.notice.tpl');
+			echo $this->render('page.notice.tpl', array('order' => str_replace('/notice/', '', $_SERVER['REQUEST_URI'])));
 			exit;
 		}
 		
@@ -177,7 +174,7 @@ class PageController extends Controller {
 		
 		$this->node = $this->get('router')->getParam('node');
 		$this->methodName = $this->get('router')->getParam('methodName');
-
+		$this->get('templating')->setParam('methodName', $this->methodName);
 		$this->nodeEntity = $this->get('container')->getItem('tree_tree', "name='$this->node'");
 		if (!$this->nodeEntity) {
 			throw $this->createNotFoundException('Несуществующая страница');

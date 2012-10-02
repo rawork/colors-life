@@ -13,7 +13,6 @@ class PublicController extends Controller {
 		$this->name = $name;
 		$this->lang = $this->get('router')->getParam('lang');
 		$this->addTables();
-		$this->get('smarty')->assign('methodName', $this->get('router')->getParam('methodName'));
 		$settings = $this->get('connection')->getItems('unit.settings', "SELECT * FROM config_settings WHERE komponent='$name'");
 		$this->params = array();
 		foreach ($settings as $setting) {
@@ -27,20 +26,20 @@ class PublicController extends Controller {
 
 	/*** template methods */
 	function getTpl($name) {
-		return $this->get('smarty')->fetch($name.'.tpl');
+		return $this->render($name.'.tpl');
 	}
 
 	function getMapList($id = 0) {
-		$a = $this->get('connection')->getItems('get_cats', "SELECT id,name as title,name,p_id FROM catalog_categories WHERE p_id=".$id." ORDER BY ord");
-		if (sizeof($a) > 0) {
-			foreach ($a as $k => $i) {
-				$a[$k]['ref'] = '/catalog/index.'.$i['id'].'.htm';
-				$a[$k]['sub'] .= $this->getMapList($i['id']);
+		$nodes = $this->get('connection')->getItems('get_cats', "SELECT id,name as title,name,p_id FROM catalog_categories WHERE p_id=".$id." ORDER BY ord");
+		$block ='_sub';
+		if (count($nodes)) {
+			foreach ($nodes as &$node) {
+				$node['ref'] = '/catalog/index.'.$node['id'].'.htm';
+				$node['sub'] .= $this->getMapList($node['id']);
 			}
+			unset($node);
 		}
-		$this->get('smarty')->assign('items', $a);
-		$this->get('smarty')->assign('block', '_sub');
-		return $this->get('smarty')->fetch('service/map.tpl');
+		return $this->render('service/map.tpl', compact('nodes', 'block'));
 	}
 
 	function getMap() {
