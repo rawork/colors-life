@@ -114,11 +114,7 @@ http://".$_SERVER['SERVER_NAME']."/subscribe/email=".htmlspecialchars($email)."&
 				}
 			}
 		}
-		$this->get('smarty')->assign('server_name', $_SERVER['SERVER_NAME']);
-		$this->get('smarty')->assign('prj_ref', $GLOBALS['PRJ_REF']);
-		$this->get('smarty')->assign('success', $success);
-		$this->get('smarty')->assign('message', $message);
-		return json_encode(array('content' => $this->get('smarty')->fetch('service/ru/subscribe.tpl')));
+		return json_encode(array('content' => $this->render('service/subscribe/result.tpl', compact('success', 'message'))));
 	}
 	
 	public function sendStuffExist($productId, $email) {

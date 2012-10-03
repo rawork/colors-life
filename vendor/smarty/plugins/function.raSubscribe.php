@@ -18,7 +18,7 @@
  */
 
 function smarty_function_raSubscribe($params, &$smarty) {
-	return '<div id="subscribe_form">'.$smarty->fetch('service/ru/subscribe.form.tpl').'</div>';
+	return '<div id="subscribe_form">'.$smarty->fetch('service/subscribe/form.tpl').'</div>';
 }
 
 ?>

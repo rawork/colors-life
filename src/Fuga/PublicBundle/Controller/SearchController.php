@@ -14,47 +14,46 @@ class SearchController extends PublicController {
 
 	function getContent() {
 		$searchText = $this->get('util')->_getVar('text', false, '');
-		$this->get('smarty')->assign('searchText', $searchText);
-		$content = $this->get('smarty')->fetch('service/search/'.$this->lang.'/search.form.tpl');
+		
 		if ($searchText) {
 			$results = $this->get('search')->getResults($searchText);
 			if (count($results)) {
-				$this->get('smarty')->assign('search_text', addslashes($searchText));
 				$this->page = $this->get('util')->_getVar('page', true, 1);
-				$max_per_page = 20;
-				$pages_quantity = ceil(count($results)/$max_per_page);
-				if ($pages_quantity > 1){
-					$pages = '<div>';
+				$maxPerPage = 20;
+				$pagesQuantity = ceil(count($results)/$maxPerPage);
+				$ptext = '';
+				if ($pagesQuantity > 1){
+					$ptext = '<div>';
 					if ($this->page > 1) {
 						$ref = '?text='.urlencode($this->get('util')->_getVar('text')).'&page='.($this->page-1);
-						$pages .= '<a title="назад" href="'.$ref.'">&larr;</a>';
+						$ptext .= '<a title="назад" href="'.$ref.'">&larr;</a>';
 					}
-					for ($i = 1; $i<=$pages_quantity; $i++){
-						$pages .= $i == $this->page ? ' '.$i.' ' : ' <a href="?text='.urlencode($this->get('util')->_getVar('text')).'&page='.$i.'">'.$i.'</a> ';
+					for ($i = 1; $i<=$pagesQuantity; $i++){
+						$ptext .= $i == $this->page ? ' '.$i.' ' : ' <a href="?text='.urlencode($this->get('util')->_getVar('text')).'&page='.$i.'">'.$i.'</a> ';
 					}
-					if ($this->page < $pages_quantity) {
+					if ($this->page < $pagesQuantity) {
 						$ref = '?text='.urlencode($this->get('util')->_getVar('text')).'&page='.($this->page+1);
-						$pages .= '<a title="вперед" href="'.$ref.'">&rarr;</a>';
+						$ptext .= '<a title="вперед" href="'.$ref.'">&rarr;</a>';
 					}
-					$pages .= '</div>';
-					$this->get('smarty')->assign('ptext', $pages);
+					$ptext .= '</div>';
+					
 				}
-				if ($this->page == $pages_quantity &&  (sizeof($results) % $max_per_page) > 0) {
-					$max_per_page_cur = count($results) % $max_per_page;
+				if ($this->page == $pagesQuantity &&  (sizeof($results) % $maxPerPage) > 0) {
+					$max_per_page_cur = count($results) % $maxPerPage;
 				} else {
-					$max_per_page_cur = $max_per_page;
+					$max_per_page_cur = $maxPerPage;
 				}
 				$items = array();
 				for ($i = 1; $i <= $max_per_page_cur; $i++) {
-					$j = $i+($this->page-1)*$max_per_page;
+					$j = $i+($this->page-1)*$maxPerPage;
 					$results[$j-1]['num'] = $j;
 					$items[] = $results[$j-1];
 				}
-				$this->get('smarty')->assign('items', $items);
-				$content .= $this->get('smarty')->fetch('service/search/'.$this->lang.'/search.list.tpl');
+				$content .= $this->render('service/search/list.tpl', compact('ptext', 'items', 'searchText'));
 			} else {
-				$content .= $this->get('smarty')->fetch('service/search/'.$this->lang.'/search.empty.tpl');
+				$content .= $this->render('service/search/empty.tpl');
 			}
+			$content = $this->render('service/search/form.tpl', compact('searchText')).$content;
 		}
 		return $content;
 	}
