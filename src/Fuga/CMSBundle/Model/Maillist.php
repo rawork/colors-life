@@ -53,7 +53,7 @@ class Maillist {
 		));
 
 		$this->tables[] = array(
-			'name' => 'users',
+			'name' => 'subscriber',
 			'component' => 'maillist',
 			'title' => 'Подписчики',
 			'order_by' => 'name',

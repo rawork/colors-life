@@ -5,7 +5,7 @@ namespace Fuga\CMSBundle\Model;
 class MaillistManager extends ModelManager {
 	
 	protected $entityTable = 'maillist_lists';
-	protected $subscriberTable = 'maillist_users';
+	protected $subscriberTable = 'maillist_subscriber';
 
 	public function processMessage() {
 		$letter = $this->get('container')->getItem($this->entityTable, 'TO_DAYS(date) <= TO_DAYS(NOW())');
@@ -30,14 +30,14 @@ class MaillistManager extends ModelManager {
 	
 	public function subscribe($email, $name, $lastname) {
 		$email = trim($email);
-		$subscriber = $this->get('container')->getItem('maillist_users', "email='".$this->get('connection')->escapeStr($email)."'");
+		$subscriber = $this->get('container')->getItem($this->subscriberTable, "email='".$this->get('connection')->escapeStr($email)."'");
 		$key = md5($this->get('util')->genKey(20));
 		if ($subscriber) {
 			$message = array(
 				'message' => 'Адрес '.htmlspecialchars($email).' уже есть в списке рассылки',
 				'success' => false
 			);	
-		} elseif ($this->get('container')->addItem('maillist_users', 'lastname,name,email,date,is_active,hashkey', "'".addslashes($lastname)."','".addslashes($name)."','".addslashes($email)."', NOW(), '', '".$key."'")) {
+		} elseif ($this->get('container')->addItem($this->subscriberTable, 'lastname,name,email,date,is_active,hashkey', "'".addslashes($lastname)."','".addslashes($name)."','".addslashes($email)."', NOW(), '', '".$key."'")) {
 			$letterText = "Уважаемый пользователь!\n\n
 Вы подписались на рассылку на сайте http://".$_SERVER['SERVER_NAME']."\n
 Для подтверждения, пожалуйста, проследуйте по ссылке:\n
@@ -68,13 +68,13 @@ http://".$_SERVER['SERVER_NAME']."/subscribe/?key=".$key;
 	
 	public function unsubscribe($email) {
 		$email = trim($email);
-		$subscriber = $this->get('container')->getItem('maillist_users', "email='".addslashes($email)."'");
+		$subscriber = $this->get('container')->getItem($this->subscriberTable, "email='".addslashes($email)."'");
 		if (!$subscriber) {
 			$message = array(
 				'message' => 'Адреса '.htmlspecialchars($email).' нет в списке рассылки',
 				'success' => false
 			);	
-		} elseif ($this->get('connection')->execQuery('delete_user_maillist', "DELETE FROM maillist_users WHERE email='".addslashes($email)."'")) {
+		} elseif ($this->get('connection')->execQuery('delete_user_maillist', "DELETE FROM ".$this->subscriberTable." WHERE email='".addslashes($email)."'")) {
 			$message = array(
 				'message' => 'Адрес '.htmlspecialchars($email).' удален из списка рассылки',
 				'success' => true
@@ -90,9 +90,9 @@ http://".$_SERVER['SERVER_NAME']."/subscribe/?key=".$key;
 	
 	public function activate($key) {
 		$key = addslashes(trim($key));
-		$subscriber = $this->get('container')->getItem('maillist_users', "hashkey='".$key."'");
+		$subscriber = $this->get('container')->getItem($this->subscriberTable, "hashkey='".$key."'");
 		if ($subscriber) {
-			$this->get('container')->updateItem('maillist_users', $subscriber['id'], "is_active='on',hashkey=''");
+			$this->get('container')->updateItem($this->subscriberTable, $subscriber['id'], "is_active='on',hashkey=''");
 			$message = 'Адрес '.htmlspecialchars($subscriber['email']).' активирован';
 		} else {
 			$message = 'Ошибка активации адреса подписки';
