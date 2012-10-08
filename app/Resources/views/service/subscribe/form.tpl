@@ -1,3 +1,4 @@
+{if $subscribe_message}<div class="subscribe-message">{$subscribe_message}</div>{/if}
 <div class="subscribe-form">
   <div class="popup-title">Подписаться на рассылку</div>
   новостей компании &laquo;Цвета жизни&raquo;, чтобы в<br> числе первых узнавать о скидках,<br> акциях и новинках.

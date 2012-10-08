@@ -18,6 +18,10 @@
  */
 
 function smarty_function_raSubscribe($params, &$smarty) {
+	if (isset($_SESSION['subscribe_message'])) {
+		$smarty->assign('subscribe_message', $_SESSION['subscribe_message']);
+		unset($_SESSION['subscribe_message']);
+	}
 	return '<div id="subscribe_form">'.$smarty->fetch('service/subscribe/form.tpl').'</div>';
 }
 

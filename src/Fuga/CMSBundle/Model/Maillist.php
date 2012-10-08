@@ -79,6 +79,12 @@ class Maillist {
 				'width' => '24%',
 				'search'=> true
 			),
+			'hashkey' => array (
+				'name'  => 'hashkey',
+				'title' => 'Активационный ключ',
+				'type'  => 'string',
+				'readonly' => true
+			),
 			'date' => array (
 				'name'  => 'date',
 				'title' => 'Дата регистрации',

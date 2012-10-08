@@ -2032,3 +2032,8 @@ div.cart-item div.price a{
 	color: #EE2A2A;
 }
 
+div.subscribe-message{
+	font-size: 16px;
+	padding: 10px 0 20px 0;
+	color: #EE2A2A;
+}

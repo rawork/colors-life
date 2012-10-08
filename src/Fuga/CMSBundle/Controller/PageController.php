@@ -168,6 +168,13 @@ class PageController extends Controller {
 			exit;
 		}
 		
+		if (preg_match('/^\/subscribe\//', $_SERVER['REQUEST_URI'])) {
+			$key = $this->get('util')->_getVar('key');
+			$_SESSION['subscribe_message'] = $this->get('container')->getManager('maillist')->activate($key);
+			header('location: /subscribe-process.htm');
+			exit;
+		}
+		
 		if (!$this->get('router')->hasParam('node')) {
 			throw $this->createNotFoundException('Неcуществующая страница');
 		}
