@@ -4,18 +4,19 @@ namespace Fuga\PublicBundle\Controller;
 
 use Fuga\CMSBundle\Controller\Controller;
 use Fuga\PublicBundle\Controller\CartController;
+use Fuga\PublicBundle\Controller\AuthController;
 use Fuga\CMSBundle\Model\VoteManager;
 
 class AjaxController extends Controller {	
 	
 	private function getCartText($quantity, $sum) {
-		$sCartText = '';
+		$widgetText = '';
 		if ($quantity) {
-			$sCartText = '<span>'.$quantity.'</span> товара(ов)<br> на сумму <span>'.$sum.'</span> руб.';
+			$widgetText = '<span>'.$quantity.'</span> товара(ов)<br> на сумму <span>'.$sum.'</span> руб.';
 		} else {
-			$sCartText = 'Нет выбранных<br/> товаров';
+			$widgetText = 'Нет выбранных<br/> товаров';
 		}
-		return $sCartText;
+		return $widgetText;
 	}
 	
 	public function voteProcess($voteName, $formData = null) {
@@ -39,7 +40,7 @@ class AjaxController extends Controller {
 	public function deleteCartItem($productGuid) {
 		$result = array();
 		$this->get('router')->setParams('/cart/');
-		$this->get('container')->register('auth', new \Controller\AuthController());
+		$this->get('container')->register('auth', new AuthController());
 		$cart = new CartController();
 		$cart->deleteItem($productGuid);
 		$result['cart_count'] = $this->getCartText($cart->getTotalQuantity(), $cart->getTotalPriceRus());

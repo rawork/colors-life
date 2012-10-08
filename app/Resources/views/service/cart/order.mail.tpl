@@ -20,22 +20,22 @@
 <td class="price">Цена</td>
 <td></td>
 </tr>
-{foreach from=$cart item=aCartItem}
+{foreach from=$cart item=item}
 <tr>
 <td>
-<p>[{$aCartItem.stuff.id}] {$aCartItem.stuff.name} {if isset($aCartItem.priceEntity.id)}(Вариант исполнения:{$aCartItem.priceEntity.size_id_name} - {$aCartItem.priceEntity.color_id_name}){/if}<br>
-Производитель: {$aCartItem.stuff.producer_id_name}
+<p>[{$item.stuff.id}] {$item.stuff.name} {if isset($item.priceEntity.id)}(Вариант исполнения:{$item.priceEntity.size_id_name} - {$item.priceEntity.color_id_name}){/if}<br>
+Производитель: {$item.stuff.producer_id_name}
 </p>
 </td>
-<td>{$aCartItem.counter}</td>
-<td class="price">{$aCartItem.price}<span>&nbsp;руб.</span></td>
+<td>{$item.counter}</td>
+<td class="price">{$item.price}<span>&nbsp;руб.</span></td>
 <td></td>
 </tr>
 {/foreach}
 <tr class="lastRow">
 <td colspan="2">Стоимость заказа {if $discount}	с учетом скидки {$discount}%{/if}:&nbsp;</td>
 <td> <span>
-{if $discount}{$totalPriceDiscount}{else}{$totalPrice}{/if}</span><span class="rub">&nbsp;руб.</span>
+{if $discount}{$totalPriceDiscount}{else}{$totalPriceRus}{/if}</span><span class="rub">&nbsp;руб.</span>
 </td>
 <td></td>
 </tr>
@@ -44,7 +44,8 @@
 </table>
 </div>
 <p><b>Параметры заказа:</b></p>
-<p>Получение товара: {$deliveryType}, {$deliveryAddress}
+<p>Получение товара: {$deliveryType.name}, {$deliveryAddress}
+<br>Способ оплаты: {$payType.name}	
 <br>Контактное лицо: {$deliveryPerson}
 <br>Эл. почта: {$deliveryEmail}
 <br>Телефон: <span class="wmi-callto">{$deliveryPhone}</span>
@@ -52,7 +53,7 @@
 {if $deliveryComment}<br>Комментарий к заказу: {$deliveryComment}</span>{/if}
 </p>
 <br>
-{if $payTypeId == 2}<p>Пожалуйста, <a target="_blank" href="http://colors-life.ru/notice/{$orderNumber}">распечатайте</a> бланк квитанции.</p>{/if}
+{if $payType.id == 2}<p>Пожалуйста, <a target="_blank" href="http://colors-life.ru/notice/{$orderNumber}">распечатайте</a> бланк квитанции.</p>{/if}
 {if $user}
 <p>Состояние заказа можно  посмотреть в <a target="_blank" href="http://colors-life.ru/cabinet/">личном кабинете</a>.</p>
 {/if}

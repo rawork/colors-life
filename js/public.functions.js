@@ -114,7 +114,6 @@ function deleteCartItem(productGuid) {
 			$('#discount').html(data.discount);
 			$('#totalSumDiscount').html(data.totalSumDiscount);
 			$('#stuff_'+productGuid).remove();
-			$('#delim_'+productGuid).remove();
 		}
 	}, "json");
 }
@@ -349,55 +348,6 @@ function setPrice(it) {
  *
  */
  
-this.screenshotPreview = function(){	
-	/* CONFIG */
-		
-		xOffset = 10;
-		yOffset = 30;
-		
-		// these 2 variable determine popup's distance from the cursor
-		// you might want to adjust to get the right result
-		
-	/* END CONFIG */
-	$("a.screenshot").hover(function(e){
-		this.t = this.title;
-		this.title = "";	
-		var c = (this.t != "") ? "<br/>" + this.t : "";
-		$("body").append("<p id='screenshot'><img src='"+ this.rel +"' alt='url preview' />"+ c +"</p>");								 
-		$("#screenshot")
-			.css("top",(e.pageY - xOffset) + "px")
-			.css("left",(e.pageX + yOffset) + "px")
-			.fadeIn("fast");						
-    },
-	function(){
-		this.title = this.t;	
-		$("#screenshot").remove();
-    });	
-	$("a.screenshot").mousemove(function(e){
-		$("#screenshot")
-			.css("top",(e.pageY - xOffset) + "px")
-			.css("left",(e.pageX + yOffset) + "px");
-	});			
-};
-
-
-$(document).ready(function () { 
-	var options = {
-	    zoomWidth: 350,
-	    zoomHeight: 350,
-        xOffset: 10,
-        yOffset: 0,
-		offset: 5,
-		preload:1,
-        position: "right" //and MORE OPTIONS
-	};
-
-	$(".jqzoom").jqzoom(options);
-	
-	screenshotPreview();
-});
-
-
 var passComplete = false;
 function comparePasswords(first, repeate){
     if(repeate.value != first.value) {
@@ -486,13 +436,10 @@ function isPhone(phone)
 function checkLoginForm()
 {
  f = document.mainForm;
- btn = document.getElementById('loginBtn');
+ btn = document.getElementById('submitBtn');
  a = trim(f.login.value);
  b = trim(f.password.value);
- var flag = ((a == '' || b == '') || !isEmail(a) || b.length < 3) ? true : false;
- btn.disabled = flag;
- //f.remember.disabled = flag;
- //document.getElementById('rememberLabel').setAttribute("disabled", flag);
+ btn.disabled = ((a == '' || b == '') || !isEmail(a) || b.length < 3) ? true : false;
 }
 
 function checkInfoForm()
@@ -501,8 +448,8 @@ function checkInfoForm()
  btn = document.getElementById('submitBtn');
  a = trim(f.userFName.value);
  b = trim(f.userEmail.value);
- c = trim(f.userPhone.value).length < 6 && trim(f.userPhone.value).length > 0;
- btn.disabled = ((a == '' || b == '' || c) || !isEmail(b)) ? true : false;
+ c = trim(f.userPhone.value);
+ btn.disabled = ((a == '' || b == '') || !isPhone(c) || !isEmail(b)) ? true : false;
 }
 
 function checkForgetForm()
@@ -511,8 +458,7 @@ function checkForgetForm()
  btn = document.getElementById('submitBtn');
  a = trim(f.login.value);
  c = trim(f.captcha.value);
- var flag = (!isEmail(a) || c.length < 5) ? true : false;
- btn.disabled = flag;
+ btn.disabled = (!isEmail(a) || c.length < 5) ? true : false;
 }
 
 function checkDetailForm()
@@ -559,4 +505,76 @@ function showMailForm(stuff_id) {
 	return false;
 }
 
+
+function bindDetailForm() {
+	$('.required').bind({
+		blur: function() {
+			checkDetailForm()
+		},
+		focus: function() {
+			checkDetailForm()
+		},
+		keypress: function() {
+			checkDetailForm()
+		},
+		keyup: function() {
+			checkDetailForm()
+		}
+	});
+	checkDetailForm();
+}
+
+function bindLoginForm() {
+	$(document).ready(function(){
+		$('.required').bind({
+			blur: function() {
+				checkLoginForm()
+			},
+			focus: function() {
+				checkLoginForm()
+			},
+			keypress: function() {
+				checkLoginForm()
+			},
+			keyup: function() {
+				checkLoginForm()
+			}
+		});
+		checkLoginForm();
+	});
+}
+
+function bindInfoForm() {
+	$(document).ready(function(){
+		$('.required').bind({
+			blur: function() {
+				checkInfoForm()
+			},
+			focus: function() {
+				checkInfoForm()
+			},
+			keypress: function() {
+				checkInfoForm()
+			},
+			keyup: function() {
+				checkInfoForm()
+			}
+		});
+		checkInfoForm();
+	});
+}
+
+function bindZoom() {
+	var options = {
+		zoomWidth: 350,
+		zoomHeight: 350,
+		xOffset: 10,
+		yOffset: 0,
+		offset: 5,
+		preload:1,
+		position: "right" //and MORE OPTIONS
+	};
+
+	$(".jqzoom").jqzoom(options);
+}
 

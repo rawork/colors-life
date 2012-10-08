@@ -434,7 +434,7 @@ class Container
 	
 	public function getManager($name) {
 		if (!isset($this->managers[$name])) {
-			$className = '\\Fuga\\CMSBundle\\Model\\'.ucfirst().'Manager';
+			$className = '\\Fuga\\CMSBundle\\Model\\'.ucfirst($name).'Manager';
 			$this->managers[$name] = new $className();
 		}
 		return $this->managers[$name];

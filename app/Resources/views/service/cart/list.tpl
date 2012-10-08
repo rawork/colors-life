@@ -1,4 +1,4 @@
-{if count($aItems)}
+{if count($items)}
 <h1> 
 	Уточнение заказа &rarr;
 	{if !$user.id}<span>Авторизация</span> &rarr;{/if}
@@ -8,100 +8,30 @@
 <br>
 <form name="frmCart" id="frmCart" method="post">
 	<input type="hidden" name="recalculate" value="1">
-	<table width="100%" cellpadding="0" cellspacing="0" border="0">
-		<tr>
-			<td height="100%">
-			{foreach from=$aItems key=guid item=g}
-			<table class="stuff-table" id="stuff_{$guid}" cellpadding="0" cellspacing="0" border="0">
-				<tr>
-					<td>
-					<table width="100%" cellpadding="0" cellspacing="0" border="0">
-						<tr>
-							<td height="100%">
-								<table style="height:100%" cellpadding="0" cellspacing="0" border="0">
-									<tr>
-										<td><img src="/img/stuff_lt.gif"></td>
-									</tr>
-									<tr>
-										<td height="100%" style="background:url('/img/stuff_l2.gif') no-repeat left bottom;"></td>
-									</tr>
-								</table>
-							</td>
-							<td width="100%">
-							<table width="100%" cellpadding="0" cellspacing="0" border="0">
-								<tr>
-								
-								<td class="stuff-title">
-								<a href="{raURL node=catalog method=stuff prms=$g.stuff.id}">{$g.stuff.name}</a> {raItems var=prices table=catalog_prices query="stuff_id=`$g.stuff.id` AND publish='on'" sort="ord,size_id"}
-								{if count($prices)}
-								&nbsp;&nbsp;
-								<select style="width:200px;" name="price_{$guid}" id="price_{$guid}">
-								<option value="0">Стандартное исполнение</option>
-								{foreach from=$prices item=price}
-								<option{if $price.id == $g.priceEntity.id} selected{/if} value="{$price.id}">
-								{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.
-								</option>
-								{/foreach}
-								</select>
-								{/if}
-								</td>
-								<td style="background:url('/img/price_cart_bg2_left.gif') left top no-repeat;">
-								<img src="/img/0.gif" width="4" height="1">
-								</td>
-								<td class="stuff-description2">
-								<table width="100%" cellpadding="0" cellspacing="0" border="0">
-								<tr>
-								<td>
-								<img src="/img/0.gif" width="244" height="1" border="0" style="display:block;">
-								<table class="stuff-cart" width="100%" cellpadding="0" cellspacing="0">
-								
-								<tr>
-								
-								<td style="padding-left:10px;">
-								<div class="stuff-price">
-								<span>
-								{$g.price|number_format:2:',':' '}
-								</span>
-								 руб.
-								</div>
-								</td>
-								<td>
-								 Кол-во
-								<input type="text" style="width:30px;" value="{$g.counter}" name="amount_{$guid}" id="amount_{$guid}">
-								</td>
-								<td>
-								<a href="javascript:deleteCartItem('{$guid}')"><img src="/img/delete_btn.gif" style="margin:0;" border="0"></a>
-								</td>
-								
-								</tr>
-								
-							</table>
-							</td>
-						</tr>
-					</table>
-					</td>
-					<td height="100%"><table width="100%" style="height:100%" cellpadding="0" cellspacing="0" border="0">
-							<tr>
-								<td><img src="/img/price_cart_bg2_right_top.gif"></td>
-							</tr>
-							<tr>
-								<td height="100%" style="background:url('/img/price_cart_bg2_right.gif') bottom right no-repeat;"><img src="/img/0.gif" width="11" height="40"></td>
-							</tr>
-						</table></td>
-				</tr>
-			</table>
-			</td>
-		</tr>
-	</table>
-	</td>
-	</tr>
-	</table>
-	<div class="cart-item-delim" id="delim_{$guid}"></div>
-	{/foreach}
-	</td>
-	</tr>
-	</table>
-<div class="cart-total">Всего <strong id="totalQuantity">{$smarty.session.number}</strong> товара(ов) на сумму: <span id="totalSum">{$list_total|number_format:2:',':' '} руб.</span></div>
+	{foreach from=$items key=guid item=item}
+	<div class="cart-item" id="stuff_{$guid}">
+	<div class="item-title">
+		<a href="{raURL node=catalog method=stuff prms=$item.stuff.id}">{$item.stuff.name}</a> {raItems var=prices table=catalog_prices query="stuff_id=`$item.stuff.id` AND publish='on'" sort="ord,size_id"}
+		{if count($prices)}
+		&nbsp;&nbsp;<br>
+		<select style="width:200px;" name="price_{$guid}" id="price_{$guid}">
+		<option value="0">Стандартное исполнение</option>
+		{foreach from=$prices item=price}
+		<option{if $price.id == $item.priceEntity.id} selected{/if} value="{$price.id}">
+		{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.
+		</option>
+		{/foreach}
+		</select>
+		{/if}
+	</div>
+	<div class="price">
+		<span>{$item.price|number_format:2:',':' '}</span> руб.
+		<i>Кол-во</i>
+		<input type="text" style="width:30px;" value="{$item.counter}" name="amount_{$guid}" id="amount_{$guid}">
+		<a href="javascript:deleteCartItem('{$guid}')">×</a></div>
+	</div>	
+	{/foreach}	
+<div class="cart-total">Всего <strong id="totalQuantity">{$smarty.session.number}</strong> товара(ов) на сумму: <span id="totalSum">{$totalPriceRus} руб.</span></div>
 {if $discount > 0}
 <div class="cart-total">Скидка: <strong id="discount">{$discount}%</strong></div>
 <div class="cart-total">Сумма с учетом скидки: <span id="totalSumDiscount">{$totalPriceDiscount} руб.</span></div>

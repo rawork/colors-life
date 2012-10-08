@@ -41,7 +41,11 @@ class AuthController extends PublicController {
 		'no_user' => 'С указанным эл. адресом нет зарегистрированных пользователей',
 		'db_error' => 'Ошибка обработки запроса. Обратитесь к администратору сайта.',
 		'incorrect_password' => 'Неправильный пароль! Для изменения пароля необходимо ввести текущий пароль!',
-		'incorrect_securecode' => 'Вы неправильно ввели цифры указанные на картинке'
+		'incorrect_securecode' => 'Вы неправильно ввели цифры указанные на картинке',
+		'user_present' => 'Пользователь с логином <b>%s</b> уже есть в базе!',
+		'wrong_password' => 'Ошибка пароля!',
+		'notreg' => 'Пользователь <b>%s</b> не зарегистрирован!',
+		'securecode' => 'Вы неправильно ввели цифры указанные на картинке'
 	);
 
 	function __construct() {
@@ -50,8 +54,7 @@ class AuthController extends PublicController {
 	}
 
 	public function initializeUser() {
-		$this->user = $this->get('container')->getItem('auth_users', "session_id='".session_id()."'");
-		$this->user = count($this->user) ? $this->user : null;
+		$this->user = $this->get('container')->getManager('user')->getCurrentUser();
 		$this->currentUser = $this->user;
 		if (!$_SESSION['deliveryAddress']) {
 			$_SESSION['deliveryAddress'] = $this->getAddress();
@@ -61,7 +64,7 @@ class AuthController extends PublicController {
 	}
 
 	public function getUser() {
-		unset($this->currentUser['password']);
+		//unset($this->currentUser['password']);
 		return $this->currentUser;
 	}
 
@@ -90,7 +93,7 @@ class AuthController extends PublicController {
 		}
 	}
 
-	private function _getLogout() {
+	private function logoutAction() {
 		if ($this->get('container')->getTable('auth_users')->update("session_id='' WHERE login='".$this->user['login']."'")) {
 			unset($_SESSION['deliveryAddress']);
 			unset($_SESSION['deliveryPhone']);
@@ -103,175 +106,168 @@ class AuthController extends PublicController {
 
 	}
 
-	private function _getInfoForm() {
+	private function infoAction() {
 		if ($this->get('util')->_postVar('processInfo')) {
-			$this->get('smarty')->assign('error_message', $this->_processInfoForm());
+			$error_message = $this->_processInfoForm();
 		}
 
-		$aUser = $this->getUser();
-		$aUser['birthday'] = explode('.', $aUser['birthday']);
+		$user = $this->getUser();
+		$user['birthday'] = explode('.', $user['birthday']);
 
-		$this->get('smarty')->assign('cabinetMenu', $this->_getMenu());
-		$this->get('smarty')->assign('userInfo', $aUser);
-		$this->get('smarty')->assign('Months', $this->months);
+		$cabinetMenu = $this->_getMenu();
+		$userInfo = $user;
+		$months = $this->months;
 
-		return $this->getTpl('service/auth/'.$this->lang.'/info.form');;
+		return $this->render('service/auth/info.form.tpl', compact('error_message', 'cabinetMenu', 'userInfo', 'months'));
 	}
 
 	private function _processInfoForm() {
-		$aErrors = array();
+		$errors = array();
 
-		$aUser = $this->getUser();
+		$user = $this->getUser();
 
-		$sLogin = $this->get('util')->_postVar('userEmail');
-		$sUserName = $this->get('util')->_postVar('userFName');
-		$sUserLName = $this->get('util')->_postVar('userLName');
-		$sPhone = $this->get('util')->_postVar('userPhone');
-		$sAddress = $this->get('util')->_postVar('userAddress');
-		$sGender = $this->get('util')->_postVar('userGender');
-		$sDay = $this->get('util')->_postVar('userDay');
-		$sMonth = $this->get('util')->_postVar('userMonth');
-		$sYear = $this->get('util')->_postVar('userYear');
-		$sBirthday = '';
-		if ($sDay && $sMonth && $sYear) {
-			$sBirthday = $sDay .'.'. $sMonth .'.'. $sYear;
+		$login = $this->get('util')->_postVar('userEmail');
+		$userName = $this->get('util')->_postVar('userFName');
+		$userLName = $this->get('util')->_postVar('userLName');
+		$phone = $this->get('util')->_postVar('userPhone');
+		$address = $this->get('util')->_postVar('userAddress');
+		$gender = $this->get('util')->_postVar('userGender');
+		$day = $this->get('util')->_postVar('userDay');
+		$month = $this->get('util')->_postVar('userMonth');
+		$year = $this->get('util')->_postVar('userYear');
+		$birthday = '';
+		if ($day && $month && $year) {
+			$birthday = $day .'.'. $month .'.'. $year;
 		}
-		$sUpdate = "login='$sLogin'";
-		$sUpdate .= ",email='$sLogin'";
-		$sUpdate .= ",name='$sUserName'";
-		$sUpdate .= ",lastname='$sUserLName'";
-		$sUpdate .= ",phone='$sPhone'";
-		$sUpdate .= ",address='$sAddress'";
-		$sUpdate .= ",gender='$sGender'";
-		$sUpdate .= ",birthday='$sBirthday'";
+		$updateQuery = "login='$login'";
+		$updateQuery .= ",email='$login'";
+		$updateQuery .= ",name='$userName'";
+		$updateQuery .= ",lastname='$userLName'";
+		$updateQuery .= ",phone='$phone'";
+		$updateQuery .= ",address='$address'";
+		$updateQuery .= ",gender='$gender'";
+		$updateQuery .= ",birthday='$birthday'";
 
 		if (
-			($sLogin != $aUser['email']) &&
-			$this->get('container')->getTable('auth_users')->selectWhere("login='".$sLogin."' OR email='".$sLogin."'") &&
+			($login != $user['email']) &&
+			$this->get('container')->getTable('auth_users')->selectWhere("login='".$login."' OR email='".$login."'") &&
 			$this->get('container')->getTable('auth_users')->getNumRows()
 		) {
-			$this->get('smarty')->assign('login', $sLogin);
-			$aErrors[] = $this->getTpl('service/auth/'.$this->lang.'/error.userpresent');
+			$errors[] = sprintf($this->errors['user_present'], $login);
 		} else {
-			if ($this->get('container')->getTable('auth_users')->update($sUpdate.", change_date = NOW() WHERE email='".$aUser['email']."'")) {
+			if ($this->get('container')->getTable('auth_users')->update($updateQuery.", change_date = NOW() WHERE email='".$user['email']."'")) {
 				header('location: /cabinet/');
 			} else {
-				$aErrors[] = $this->errors['db_error'];
+				$errors[] = $this->errors['db_error'];
 			}
 		}
-		return implode('errors', $aErrors);
+		return implode('errors', $errors);
 	}
 
-	private function _getLoginForm() {
-		var_dump($this->lang);
+	private function loginAction() {
 		if ($this->get('util')->_postVar('processLogin')) {
-			$this->get('smarty')->assign('error_message', $this->_processLoginForm());
+			$error_message = $this->_processLoginForm();
 		}
-		return $this->getTpl('service/auth/'.$this->lang.'/login.form');
+		return $this->render('service/auth/login.form.tpl', compact('error_message'));
 	}
 
 	private function _processLoginForm() {
-		$aErrors = array();
-		$sFromPage = $this->get('util')->_postVar('fromPage');
-		$sLogin = $this->get('util')->_postVar('login');
-		$sPassword = $this->get('util')->_postVar('password');
+		$errors = array();
+		$fromPage = $this->get('util')->_postVar('fromPage');
+		$login = $this->get('util')->_postVar('login');
+		$password = $this->get('util')->_postVar('password');
 		$t = $this->get('container')->getTable('auth_users');
-		if ($aUser = $this->get('container')->getItem('auth_users', "email='$sLogin' OR login='$sLogin'")) {
-			if ($aUser['password'] == $sPassword) {
-				if ($t->update("session_id='".session_id()."', logindate=NOW() WHERE login='$sLogin' OR email='$sLogin'")) {
-					$this->get('smarty')->assign('login', $sLogin);
-					header('location: '.($sFromPage ? $sFromPage : '/'));
+		if ($user = $this->get('container')->getItem('auth_users', "email='$login' OR login='$login'")) {
+			if ($user['password'] == $password) {
+				if ($t->update("session_id='".session_id()."', logindate=NOW() WHERE login='$login' OR email='$login'")) {
+					header('location: '.($fromPage ? $fromPage : '/'));
 				} else {
-					$aErrors[] = $this->errors['db_error'];
+					$errors[] = $this->errors['db_error'];
 				}
 			} else {
-				$aErrors[] = $this->getTpl('service/auth/'.$this->lang.'/error.pass');
+				$errors[] = $this->errors['wrong_password'];
 			}
 		} else {
-			$this->get('smarty')->assign('login', $sLogin);
-			$aErrors[] = $this->getTpl('service/auth/'.$this->lang.'/error.notreg');
+			$errors[] = sprintf($this->errors['notreg'], $login);
 		}
-		return implode('<br>', $aErrors);
+		return implode('<br>', $errors);
 	}
 
-	private function _getRegistrationForm() {
+	private function registrationAction() {
 		if ($this->get('util')->_postVar('processRegistration')) {
-			$this->get('smarty')->assign('error_message', $this->_processRegistrationForm());
+			$error_message = $this->_processRegistrationForm();
 		}
-		return $this->getTpl('service/auth/'.$this->lang.'/registration.form');
+		return $this->render('service/auth/registration.form.tpl', compact('error_message'));
 	}
 
 	private function _processRegistrationForm() {
-		$aErrors = array();
-		$sFromPage = $this->get('util')->_postVar('fromPage');
-		$sLogin = $this->get('util')->_postVar('newUserEmail');
-		$sPassword = $this->get('util')->_postVar('newUserPassword');
-		$sPasswordConfirm = $this->get('util')->_postVar('newUserPasswordConfirm');
-		$sUserName = $this->get('util')->_postVar('newUserFName');
-		$sUserLName = $this->get('util')->_postVar('newUserLName');
-		$sPhone = $this->get('util')->_postVar('newUserPhone');
+		$errors = array();
+		$fromPage = $this->get('util')->_postVar('fromPage');
+		$login = $this->get('util')->_postVar('newUserEmail');
+		$password = $this->get('util')->_postVar('newUserPassword');
+		$passwordConfirm = $this->get('util')->_postVar('newUserPasswordConfirm');
+		$userName = $this->get('util')->_postVar('newUserFName');
+		$userLName = $this->get('util')->_postVar('newUserLName');
+		$phone = $this->get('util')->_postVar('newUserPhone');
 		$t = $this->get('container')->getTable('auth_users');
 		if($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)){
-			$aErrors[] = $this->getTpl('service/auth/'.$this->lang.'/error.securecode');
+			$errors[] = $this->errors['securecode'];
 		} else {
 			if (
-				$t->selectWhere("login='".$sLogin."' OR email='".$sLogin."'") &&
+				$t->selectWhere("login='".$login."' OR email='".$login."'") &&
 				$t->getNumRows()
 			) {
-				$this->get('smarty')->assign('login', $sLogin);
-				$aErrors[] = $this->getTpl('service/auth/'.$this->lang.'/error.userpresent');
+				$errors[] = sprintf($this->errors['user_present'], $login);
 			} else {
-				$sUpdate = "password='$sPassword'";
-				$sUpdate .= ",name='$sUserName'";
-				$sUpdate .= ",lastname='$sUserLName'";
-				$sUpdate .= ",phone='$sPhone'";
+				$updateQuery = "password='$password'";
+				$updateQuery .= ",name='$userName'";
+				$updateQuery .= ",lastname='$userLName'";
+				$updateQuery .= ",phone='$phone'";
 				if (
-					$t->insert('login,email', "'".$sLogin."','".$sLogin."'") &&
-					$t->update($sUpdate.", credate = NOW(), change_date = NOW() WHERE email='".$sLogin."'")
+					$t->insert('login,email', "'".$login."','".$login."'") &&
+					$t->update($updateQuery.", credate = NOW(), change_date = NOW() WHERE email='".$login."'")
 				) {
-					if ($sLogin) {
-						$this->get('smarty')->assign('Name', $sUserName);
-						$this->get('smarty')->assign('Lastname', $sUserLName);
-						$this->get('smarty')->assign('Login', $sLogin);
-						$this->get('smarty')->assign('Password', $sPassword);
-
+					if ($login) {
+						$letterText = $this->render('service/auth/registration.mail.tpl', compact('userName', 'userLName', 'login', 'password'));
 						$this->get('mailer')->send(
 							'Регистрация в магазине Цвета жизни',
-							$this->get('smarty')->fetch('service/auth/'.$this->lang.'/registration.mail.tpl'),
-							$sLogin.','.$this->params['email']
+							$letterText,
+							$login.','.$this->params['email']
 						);
 					}
-					if ($t->update("session_id='".session_id()."' WHERE login='$sLogin' OR email='$sLogin'")) {
+					if ($t->update("session_id='".session_id()."' WHERE login='$login' OR email='$login'")) {
 						header('location: /cabinet/');
 					} else {
-						$aErrors[] = $this->errors['db_error'];
+						$errors[] = $this->errors['db_error'];
 					}
 				} else {
-					$aErrors = $this->errors['db_error'];
+					$errors = $this->errors['db_error'];
 				}
 			}
 		}
-		return implode('<br>', $aErrors);
+		return implode('<br>', $errors);
 	}
 
 	private function _getMenu() {
-		return $this->get('smarty')->fetch('service/auth/'.$this->lang.'/menu.tpl');
+		return $this->render('service/auth/menu.tpl');
 	}
 
-	private function _getOrders() {
-		$this->get('smarty')->assign('user', $this->getUser());
-		$this->get('smarty')->assign('cabinetMenu', $this->_getMenu());
-		return $this->get('smarty')->fetch('service/auth/'.$this->lang.'/orders.tpl');
+	private function ordersAction() {
+		$params = array(
+			'user' => $this->getUser(),
+			'cabinetMenu' => $this->_getMenu()
+		);
+		return $this->render('service/auth/orders.tpl', $params);
 	}
 
-	private function _getPasswordForm() {
+	private function passwordAction() {
 		if ($this->get('util')->_postVar('processPassword')) {
-			$aMessages = $this->_processPasswordForm();
-			$this->get('smarty')->assign('error_message', implode('<br>', $aMessages['errors']));
-			$this->get('smarty')->assign('info_message', implode('<br>', $aMessages['info']));
+			$messages = $this->_processPasswordForm();
+			$error_message = implode('<br>', $messages['errors']);
+			$info_message = implode('<br>', $messages['info']);
 		}
-		$this->get('smarty')->assign('cabinetMenu', $this->_getMenu());
-		return $this->getTpl('service/auth/'.$this->lang.'/password.form');
+		$cabinetMenu = $this->_getMenu();
+		return $this->render('service/auth/password.form.tpl', compact('error_message', 'info_message', 'cabinetMenu'));
 	}
 
 	private function _processPasswordForm() {
@@ -282,20 +278,19 @@ class AuthController extends PublicController {
 
 		$t = $this->get('container')->getTable('auth_users');
 
-		$aUser = $this->getUser();
-		$sLogin = $aUser['email'];
-		$sOldPassword = $this->get('util')->_postVar('passwd');
-		$sNewPassword = $this->get('util')->_postVar('newpasswd');
+		$user = $this->getUser();
+		$login = $user['email'];
+		$oldPassword = $this->get('util')->_postVar('passwd');
+		$newPassword = $this->get('util')->_postVar('newpasswd');
 
-		if ($aUser['password'] == $sOldPassword) {
-			$sUpdate = "password='$sNewPassword'";
-			if ($t->update($sUpdate.", change_date = NOW() WHERE email='".$sLogin."'")) {
-				$this->get('smarty')->assign('Login', $sLogin);
-				$this->get('smarty')->assign('NewPassword', $sNewPassword);
+		if ($user['password'] == $oldPassword) {
+			$updateQuery = "password='$newPassword'";
+			if ($t->update($updateQuery.", change_date = NOW() WHERE email='".$login."'")) {
+				$letterText = $this->render('service/auth/password.mail.tpl', compact('login', 'password'));
 				$this->get('mailer')->send(
 					'Новый пароль в магазине Цвета жизни',
-					$this->get('smarty')->fetch('service/auth/'.$this->lang.'/password.mail.tpl'),
-					array($sLogin)
+					$letterText,
+					array($login)
 				);
 				$aMessages['info'][] = $this->info['change_password'];
 			}
@@ -306,68 +301,64 @@ class AuthController extends PublicController {
 		return $aMessages;
 	}
 
-	private function _getForgetForm() {
+	private function forgetAction() {
 		if ($this->get('util')->_postVar('processForget')) {
-			$aMessages = $this->_processForgetForm();
-			$this->get('smarty')->assign('error_message', implode('<br>', $aMessages['errors']));
-			$this->get('smarty')->assign('info_message', implode('<br>', $aMessages['info']));
+			$messages = $this->_processForgetForm();
+			$error_message = implode('<br>', $messages['errors']);
+			$info_message = implode('<br>', $messages['info']);
 		}
-		return $this->getTpl('service/auth/'.$this->lang.'/forget.form');
+		return $this->render('service/auth/forget.form.tpl', compact('error_message', 'info_message'));
 	}
 
 	private function _processForgetForm() {
-		$aMessages = array(
+		$messages = array(
 			'info' => array(),
 			'errors' => array()
 		);
 		$t = $this->get('container')->getTable('auth_users');
 		if ($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)) {
-			$aMessages['errors'][] = $this->errors['incorrect_securecode'];
+			$messages['errors'][] = $this->errors['incorrect_securecode'];
 		} else {
-			$sLogin = $this->get('util')->_postVar('login');
-			if ($aUser = $this->get('container')->getItem('auth_users', "email='$sLogin'")) {
-				$sNewPassword = $this->get('util')->genKey(6);
-				$sUpdate = "password='$sNewPassword'";
-				if ($t->update($sUpdate.", change_date = NOW() WHERE email='".$sLogin."'")) {
-					$this->get('smarty')->assign('Login', $sLogin);
-					$this->get('smarty')->assign('NewPassword', $sNewPassword);
+			$login = $this->get('util')->_postVar('login');
+			if ($user = $this->get('container')->getItem('auth_users', "email='$login'")) {
+				$newPassword = $this->get('util')->genKey(6);
+				$updateQuery = "password='$newPassword'";
+				if ($t->update($updateQuery.", change_date = NOW() WHERE email='".$login."'")) {
+					$letterText = $this->render('service/auth/forget.mail.tpl', compact('login', 'newPassword'));
 					$this->get('mailer')->send(
 						'Восстановление пароля в магазине Цвета жизни',
-						$this->get('smarty')->fetch('service/auth/'.$this->lang.'/forget.mail.tpl'),
-						array($sLogin)
+						$letterText,
+						array($login)
 					);
-					$aMessages['info'][] = $this->info['send_password'];
+					$messages['info'][] = $this->info['send_password'];
 				}
 			} else {
-				$this->get('smarty')->assign('login', $sLogin);
-				$aMessages['errors'][] = $this->errors['no_user'];
+				$messages['errors'][] = $this->errors['no_user'];
 			}
 		}
-		return $aMessages;
+		return $messages;
 	}
 
 	public function getContent() {
 		if ($this->getUser()) {
 			switch ($this->get('router')->getParam('methodName')) {
 				case 'logout':
-					return $this->_getLogout();
+					return $this->logoutAction();
 				case 'orders':
-					return $this->_getOrders();
-				case 'orders-history':
-					return $this->_getOrders();
+					return $this->ordersAction();
 				case 'password':
-					return $this->_getPasswordForm();
+					return $this->passwordAction();
 				default:
-					return $this->_getInfoForm();
+					return $this->infoAction();
 			}
 		} else {
 			switch ($this->get('router')->getParam('methodName')) {
 				case 'forget':
-					return $this->_getForgetForm();
+					return $this->forgetAction();
 				case 'registration':
-					return $this->_getRegistrationForm();
+					return $this->registrationAction();
 				default:
-					return $this->_getLoginForm();
+					return $this->loginAction();
 			}
 		}
 	}

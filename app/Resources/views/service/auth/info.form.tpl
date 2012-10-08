@@ -14,19 +14,19 @@
 <tr><td>&nbsp;</td><td>{if $error_message}<div class="tree-error">{$error_message}</div>{/if}</td></tr>
 <tr>
 <td><span>Электронная почта</span></td>
-<td><input onblur="checkInfoForm()" onkeypress="checkInfoForm()" onkeyup="checkInfoForm()" type="text" value="{$userInfo.email}" class="simple-text" maxlength="30" name="userEmail" /></td>
+<td><input type="text" value="{$userInfo.email}" class="simple-text required" maxlength="100" name="userEmail" /></td>
 </tr>
 <tr>
 <td><span>Имя</span></td>
-<td><input onblur="checkInfoForm()" onkeypress="checkInfoForm()" onkeyup="checkInfoForm()" type="text" value="{$userInfo.name}" class="simple-text" maxlength="30" name="userFName" /></td>
+<td><input type="text" value="{$userInfo.name}" class="simple-text required" maxlength="30" name="userFName" /></td>
 </tr>
 <tr>
 <td>Фамилия</td>
-<td><input onblur="checkInfoForm()" onkeypress="checkInfoForm()" onkeyup="checkInfoForm()" type="text" value="{$userInfo.lastname}" class="simple-text" maxlength="50" name="userLName" /></td>
+<td><input type="text" value="{$userInfo.lastname}" class="simple-text" maxlength="50" name="userLName" /></td>
 </tr>
 <tr>
 <td><span>Телефон</span></td>
-<td><input onblur="checkInfoForm()" onkeypress="checkInfoForm()" onkeyup="checkInfoForm()" type="text" value="{$userInfo.phone}" class="simple-text" maxlength="30" name="userPhone" />
+<td><input type="text" value="{$userInfo.phone}" class="simple-text required" maxlength="30" name="userPhone" />
 <p class="comment">Формат: +7 (XXX) XXX-XX-XX</p></td>
 </tr>
 <tr>
@@ -42,20 +42,20 @@
 </tr>
  <tr><td>День рождения</td>
 <td style="vertical-align: top;">
-  <input type="text" value="{$userInfo.birthday[0]}" name="userDay" maxlength="2" style="width:2em;height: 18px;margin-bottom:3px;">
-  <select style="height: 25px;" name="userMonth">
-{foreach from=$Months key=MonthNumber item=MonthName}
-<option  value="{$MonthNumber}"{if $MonthNumber == $userInfo.birthday[1]} selected{/if}>{$MonthName}</option>
+  <input type="text" value="{$userInfo.birthday[0]}" name="userDay" maxlength="2" style="width:3em;">
+  <select name="userMonth">
+{foreach from=$months key=monthNumber item=monthName}
+<option  value="{$monthNumber}"{if $monthNumber == $userInfo.birthday[1]} selected{/if}>{$monthName}</option>
 {/foreach}
 </select>
-  <input type="text" maxlength="4" name="userYear" style="width:3em;height: 18px;margin-bottom:3px;" value="{$userInfo.birthday[2]}"></td>
+  <input type="text" maxlength="4" name="userYear" style="width:4em;" value="{$userInfo.birthday[2]}"></td>
 </tr>
 <tr>
 <td></td>
 <td><input type="submit" id="submitBtn" disabled="true" value="Сохранить" /></td>
 </tr>
  </table>
-<script>
-checkInfoForm();
-<script>
 </form>
+<script>
+bindInfoForm();
+</script>

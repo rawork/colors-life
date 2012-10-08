@@ -24,11 +24,6 @@ class PublicController extends Controller {
 		$this->tables = $this->get('container')->getTables($this->name);
 	}
 
-	/*** template methods */
-	function getTpl($name) {
-		return $this->render($name.'.tpl');
-	}
-
 	function getMapList($id = 0) {
 		$nodes = $this->get('connection')->getItems('get_cats', "SELECT id,name as title,name,p_id FROM catalog_categories WHERE p_id=".$id." ORDER BY ord");
 		$block ='_sub';

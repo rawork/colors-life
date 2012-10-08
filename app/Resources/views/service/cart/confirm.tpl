@@ -1,4 +1,4 @@
-{if count($aItems)}
+{if count($items)}
 <h1>
 <a href="/cart/">Уточнение заказа</a> &rarr;
 {if !$user.id}<a href="/cart/authorize.htm">Авторизация</a> &rarr;{/if}
@@ -18,22 +18,22 @@
 <tr>
 	<th>Наименование</th>
 	<th>Кол-во</th>
-	<th>Цена</th>
+	<th>Цена, руб.</th>
 </tr>	
-{foreach from=$aItems item=aItem}
+{foreach from=$items item=item}
 <tr>
-	<td><a target="_blank" href="{raURL node=$aItem.stuff.dir_id_name method=stuff prms=$aItem.stuff.id}">{$aItem.stuff.name}</a>
-	{if $aItem.priceEntity.id} 
-	<div class="stuff-sizes">Вариант исполнения: {$aItem.priceEntity.size_id_name} - {$aItem.priceEntity.color_id_name}</div>
+	<td><a target="_blank" href="{raURL node=catalog method=stuff prms=$item.stuff.id}">{$item.stuff.name}</a>
+	{if $item.priceEntity.id} 
+	<div class="stuff-sizes">Вариант исполнения: {$item.priceEntity.size_id_name} - {$item.priceEntity.color_id_name}</div>
 	{/if}
 	</td>
-	<td class="quantity">{$aItem.counter}</td>
-	<td class="price">{$aItem.price|number_format:2:',':' '} руб.</td>
+	<td class="quantity">{$item.counter}</td>
+	<td class="price">{$item.price|number_format:2:',':' '}</td>
 </tr>
 {/foreach}
 </tbody>
 </table>
-<div class="cart-total">Всего {$smarty.session.number} товара(ов) на сумму: <span>{$list_total|number_format:2:',':' '} руб.</span></div>
+<div class="cart-total">Всего {$smarty.session.number} товара(ов) на сумму: <span>{$totalPriceRus} руб.</span></div>
 {if $discount > 0}
 <div class="cart-total">Скидка: <strong>{$discount}%</strong></div>
 <div class="cart-total">Сумма с учетом скидки: <span>{$totalPriceDiscount} руб.</span></div>
@@ -61,8 +61,8 @@
    <tr><td>Эл. почта:</td><td>{$smarty.session.deliveryEmail}</td></tr>
    <tr><td>Телефон:</td><td>{$smarty.session.deliveryPhone}</td></tr>
    {if $smarty.session.deliveryPhoneAdd}<tr><td>Дополнительный телефон:</td><td>{$smarty.session.deliveryPhoneAdd}</td></tr>{/if}
-   <tr><td>Способ оплаты:</td><td>{$sPayType}</td></tr>
-   <tr><td>Получение товара:</td><td>{$sDeliveryType}</td></tr>
+   <tr><td>Способ оплаты:</td><td>{$payType.name}</td></tr>
+   <tr><td>Получение товара:</td><td>{$deliveryType.name}</td></tr>
    <tr><td>Адрес доставки:</td><td>{$smarty.session.deliveryAddress}</td></tr>
    <tr><td>Комментарий к заказу:</td><td><textarea name="deliveryComment" style="width:500px;height:70px" ></textarea></td></tr>
 </tbody>
