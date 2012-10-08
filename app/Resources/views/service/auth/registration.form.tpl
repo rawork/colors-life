@@ -14,7 +14,7 @@
 </tr>
 <tr>
 <td>Фамилия</td>
-<td><input onblur="checkRegForm()" onkeypress="checkRegForm()" onkeyup="checkRegForm()" type="text" class="simple-text" maxlength="50" name="newUserLName" /></td>
+<td><input type="text" class="simple-text" maxlength="50" name="newUserLName" /></td>
 </tr>
 <tr>
 <td><span>Электронная почта</span></td>
@@ -42,6 +42,11 @@
 </td>
 <td><input type="text" maxlength="5" size="5" onblur="checkRegForm()" onkeypress="checkRegForm()" onkeyup="checkRegForm()" class="simple-captcha" maxlength="50" name="captcha" />
 </td>
+</tr>
+<tr>
+<td>Подписка</td>
+<td><p>Вы хотите получать новости и другие предложения? Поставьте галочку </p>
+	<input type="checkbox" name="newUserSubscribe" value="1" /></td>
 </tr>
 <tr>
 <td></td>

@@ -62,60 +62,19 @@ class AjaxController extends Controller {
 	
 	public function showSubscribeResult($formData) {
 		parse_str($formData);
-		$message = 'Не указан e-mail';
-		$success = false;
-		if (!empty($email) && $email != 'e-mail') {
-			if (!$this->get('util')->valid_email($email)) {
-				$message = 'Неправильный e-mail';
-			} else {
-				$a = $this->get('container')->getItem('maillist_users', "email='".$this->get('connection')->escapeStr($email)."'");
-				if (is_array($a)) {
-					// в базе есть - отписываем
-					if ($subscribe_type == 2) {
-						if ($this->get('connection')->execQuery('delete_user_maillist', "DELETE FROM maillist_users WHERE email='".$this->get('connection')->escapeStr($email)."'")) {
-							$message = 'Адрес '.htmlspecialchars($email).' удален из списка рассылки';
-							$success = true;
-						} else {
-							$message = 'Ошибка базы данных при удалении';
-						}
-					} else {
-						$message='Адрес '.htmlspecialchars($email).' уже есть в списке рассылки';
-					}
-				} else {
-					// в базе нет - подписываем
-					if ($subscribe_type == 1) {
-						$email = substr($email, 0, 100);
-						$success = true;
-						if ($this->get('container')->addItem('maillist_users', 'lastname,name,email, date, is_active', "'".addslashes($lastname)."','".addslashes($name)."','".addslashes($email)."', NOW(), ''")) {
-							$letterText = "Уважаемый пользователь!\n\n
-Вы подписались на рассылку на сайте http://".$_SERVER['SERVER_NAME']."\n
-Для подтверждения, пожалуйста, проследуйте по ссылке:\n
-http://".$_SERVER['SERVER_NAME']."/subscribe/email=".htmlspecialchars($email)."&action=active";
-							$this->get('mailer')->send(
-								'Оповещение о подписке на рассылку на сайте '.$_SERVER['SERVER_NAME'],
-								nl2br($letterText),
-								$email
-							);
-							$letterText = "На e-mail ".$email." оформлена подписка на рассылку на сайте http://".$_SERVER['SERVER_NAME']."\n";
-							$this->get('mailer')->send(
-								'Оповещение о подписке на рассылку на сайте '.$_SERVER['SERVER_NAME'],
-								nl2br($letterText),
-								array('content@colors-life.ru', 'rawork@yandex.ru')
-							);
-							$message='Адрес '.htmlspecialchars($email).' занесен в список рассылки';
-						} else {
-							$success = false;
-						}
-						if (!$success) {
-							$message = 'Ошибка базы данных при добавлении';
-						}
-					} else {
-						$message='Адреса '.htmlspecialchars($email).' нет в списке рассылки';
-					}
-				}
+		$message = array(
+			'message' => 'Неправильный E-mail',
+			'success' => false
+		);	
+		if (!$this->get('util')->valid_email($email)) {
+		} else {
+			if ($subscribe_type == 2) {
+				$message = $this->get('container')->getManager('maillist')->unsubscribe($email);
+			} elseif ($subscribe_type == 1) {
+				$message = $this->get('container')->getManager('maillist')->subscribe($email, $name, $lastname);
 			}
 		}
-		return json_encode(array('content' => $this->render('service/subscribe/result.tpl', compact('success', 'message'))));
+		return json_encode(array('content' => $this->render('service/subscribe/result.tpl', $message)));
 	}
 	
 	public function sendStuffExist($productId, $email) {

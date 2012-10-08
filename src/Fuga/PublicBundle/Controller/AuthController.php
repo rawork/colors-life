@@ -209,6 +209,7 @@ class AuthController extends PublicController {
 		$userName = $this->get('util')->_postVar('newUserFName');
 		$userLName = $this->get('util')->_postVar('newUserLName');
 		$phone = $this->get('util')->_postVar('newUserPhone');
+		$isSubscribe = $this->get('util')->_postVar('newUserSubscribe');
 		$t = $this->get('container')->getTable('auth_users');
 		if($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)){
 			$errors[] = $this->errors['securecode'];
@@ -227,14 +228,15 @@ class AuthController extends PublicController {
 					$t->insert('login,email', "'".$login."','".$login."'") &&
 					$t->update($updateQuery.", credate = NOW(), change_date = NOW() WHERE email='".$login."'")
 				) {
-					if ($login) {
-						$letterText = $this->render('service/auth/registration.mail.tpl', compact('userName', 'userLName', 'login', 'password'));
-						$this->get('mailer')->send(
-							'Регистрация в магазине Цвета жизни',
-							$letterText,
-							$login.','.$this->params['email']
-						);
-					}
+					$letterText = $this->render('service/auth/registration.mail.tpl', compact('userName', 'userLName', 'login', 'password'));
+					$this->get('mailer')->send(
+						'Регистрация в магазине Цвета жизни',
+						$letterText,
+						$login.','.$this->params['email']
+					);
+					if ($isSubscribe) {
+						$this->get('container')->getManager('maillist')->subscribe($login, $userName, $userLName);
+					}		
 					if ($t->update("session_id='".session_id()."' WHERE login='$login' OR email='$login'")) {
 						header('location: /cabinet/');
 					} else {
