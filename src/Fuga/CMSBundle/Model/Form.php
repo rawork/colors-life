@@ -2,7 +2,7 @@
 
 namespace Fuga\CMSBundle\Model;
 
-class Forms {
+class Form {
 	
 	public $tables;
 
@@ -10,8 +10,8 @@ class Forms {
 
 		$this->tables = array();
 		$this->tables[] = array(
-			'name' => 'forms',
-			'component' => 'forms',
+			'name' => 'form',
+			'component' => 'form',
 			'title' => 'Веб формы',
 			'order_by' => 'name', 
 			'is_lang' => true,
@@ -56,8 +56,8 @@ class Forms {
 		));
 
 		$this->tables[] = array(
-			'name' => 'fields',
-			'component' => 'forms',
+			'name' => 'field',
+			'component' => 'form',
 			'title' => 'Поля формы',
 			'order_by' => 'form_id,ord', 
 			'is_sort' => true, 
@@ -81,7 +81,7 @@ class Forms {
 				'name' => 'form_id',
 				'title' => 'Форма',
 				'type' => 'select',
-				'l_table' => 'forms_forms',
+				'l_table' => 'form_form',
 				'l_field' => 'title',
 				'l_lang' => true,
 				'width' => '30%',

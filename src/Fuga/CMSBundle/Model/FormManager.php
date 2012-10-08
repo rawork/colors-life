@@ -19,10 +19,10 @@ class FormManager extends ModelManager {
 	public function getForm($query = 'id=0', $params = array()){
 		$this->params = array_merge($this->params, $params);
 		$content = '';
-		$formData = $this->get('container')->getItem('forms_forms', $query);
+		$formData = $this->get('container')->getItem('form_form', $query);
 		$tableName = !empty($params['table']) ? $params['table'] : '';
 		if (count($formData)) {
-			$formData['fields'] = $this->get('container')->getItems('forms_fields', 'form_id='.$formData['id']);
+			$formData['fields'] = $this->get('container')->getItems('form_field', 'form_id='.$formData['id']);
 			$form = new Form('', $formData);
 			$form->items = $formData['fields'];
 			$form->message = $this->processForm($form, $tableName);

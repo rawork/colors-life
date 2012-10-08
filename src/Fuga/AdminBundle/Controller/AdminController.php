@@ -110,12 +110,6 @@ class AdminController extends Controller {
 				'name' => 'Отправка писем'
 			);
 		}
-		if ($this->get('security')->isDeveloper()) {
-			$ret[] = array (
-				'ref' => $this->getBaseTableRef().'/method',
-				'name' => 'Методы'
-			);
-		}
 		return $ret;
 	}
 
