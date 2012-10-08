@@ -2,7 +2,7 @@
 	
 namespace Fuga\CMSBundle\Model;
 
-class Templates {
+class Template {
 	
 	public $tables;
 
@@ -10,8 +10,8 @@ class Templates {
 
 		$this->tables = array();
 		$this->tables[] = array(
-		'name' => 'templates',
-		'component' => 'templates',
+		'name' => 'template',
+		'component' => 'template',
 		'title' => 'Шаблоны',
 		'order_by' => 'name',
 		'is_lang' => true,
@@ -30,7 +30,7 @@ class Templates {
 		));
 		$this->tables[] = array(
 		'name' => 'version',
-		'component' => 'templates',
+		'component' => 'template',
 		'title' => 'Версионирование',
 		'order_by' => 'credate',
 		'is_hidden' => true,
@@ -64,8 +64,8 @@ class Templates {
 			)
 		));
 		$this->tables[] = array(
-		'name' => 'rules',
-		'component' => 'templates',
+		'name' => 'rule',
+		'component' => 'template',
 		'title' => 'Правила шаблонов',
 		'order_by' => 'ord',
 		'is_lang' => true,
@@ -75,7 +75,7 @@ class Templates {
 				'name' => 'template_id',
 				'title' => 'Шаблон',
 				'type' => 'select',
-				'l_table' => 'templates_templates',
+				'l_table' => 'template_template',
 				'l_field' => 'name',
 				'l_lang' => true,
 				'width' => '31%',

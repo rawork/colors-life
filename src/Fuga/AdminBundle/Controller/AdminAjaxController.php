@@ -239,7 +239,7 @@ class AdminAjaxController extends Controller {
 	// Окно с версиями шаблона
 	function showTemplateVersion($versionId) {
 		global $PRJ_DIR;
-		$version = $this->get('container')->getItem('templates_version', $versionId);
+		$version = $this->get('container')->getItem('template_version', $versionId);
 		$text = @file_get_contents($PRJ_DIR.$version['file']);
 		return json_encode( array(
 			'title' => 'Версия шаблона', 

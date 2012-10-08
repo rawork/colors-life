@@ -70,7 +70,7 @@ class Config {
 				'name' => 'template_id',
 				'title' => 'Макет',
 				'type' => 'select',
-				'l_table' => 'templates_templates',
+				'l_table' => 'template_template',
 				'l_field' => 'name',
 				'search' => true,
 				'width' => '25%',

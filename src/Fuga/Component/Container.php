@@ -229,7 +229,7 @@ class Container
 		foreach ($items as $a) {
 			if ($this->tables[$class]->params['is_system']) {
 				foreach ($this->tables as $t) {
-					if ($t->cname != 'users' && $t->cname != 'templates' && $t->cname != 'tree') {
+					if ($t->cname != 'user' && $t->cname != 'template' && $t->cname != 'tree') {
 						foreach ($t->fields as $f) {
 							$ft = $t->createFieldType($f);
 							if (stristr($ft->params['type'], 'select') && $ft->params['l_table'] == $class) {
