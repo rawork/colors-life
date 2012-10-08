@@ -2,7 +2,7 @@
 
 namespace Fuga\CMSBundle\Model;
 
-class Tree {
+class Page {
 	
 	public $tables;
 
@@ -10,8 +10,8 @@ class Tree {
 
 		$this->tables = array();
 		$this->tables[] = array(
-			'name' => 'tree',
-			'component' => 'tree',
+			'name' => 'page',
+			'component' => 'page',
 			'title' => 'Разделы',
 			'order_by' => 'ord,name', 
 			'is_lang' => true,
@@ -46,7 +46,7 @@ class Tree {
 				'name' => 'p_id',
 				'title' => 'Находится в',
 				'type' => 'select_tree',
-				'l_table' => 'tree_tree',
+				'l_table' => 'page_page',
 				'l_field' => 'title',
 				'l_sort' => 'ord,title',
 				'l_lang' => true
@@ -72,8 +72,8 @@ class Tree {
 		));
 
 		$this->tables[] = array(
-			'name' => 'blocks',
-			'component' => 'tree',
+			'name' => 'block',
+			'component' => 'page',
 			'title' => 'Инфоблоки',
 			'order_by' => 'name', 
 			'is_lang' => true,

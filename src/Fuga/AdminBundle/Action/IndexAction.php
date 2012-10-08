@@ -124,7 +124,7 @@ class IndexAction extends Action {
 					}
 					if ($num == 0) {
 						$tableHtml .= '</span>';
-						if ($this->dataTable->getDBTableName() == 'tree_tree') {
+						if ($this->dataTable->getDBTableName() == 'page_page') {
 							$module = $this->get('container')->getModuleById($node['module_id']);
 							if ( $module ) {
 								$tableHtml .= ' (модуль:'.$module['title'].')';

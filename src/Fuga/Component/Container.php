@@ -229,7 +229,7 @@ class Container
 		foreach ($items as $a) {
 			if ($this->tables[$class]->params['is_system']) {
 				foreach ($this->tables as $t) {
-					if ($t->cname != 'user' && $t->cname != 'template' && $t->cname != 'tree') {
+					if ($t->cname != 'user' && $t->cname != 'template' && $t->cname != 'page') {
 						foreach ($t->fields as $f) {
 							$ft = $t->createFieldType($f);
 							if (stristr($ft->params['type'], 'select') && $ft->params['l_table'] == $class) {
@@ -329,7 +329,7 @@ class Container
 
 	function callMethodInstance($methodData, $paramsData) {
 		global $PRJ_DIR, $LIB_DIR;
-		if ($methodData['module_name'] != 'tree') {
+		if ($methodData['module_name'] != 'page') {
 			if (file_exists($LIB_DIR.'/Fuga/PublicBundle/Controller/'.ucfirst($methodData['module_name']).'Controller.php')) {
 				$className = '\\Fuga\\PublicBundle\\Controller\\'.ucfirst($methodData['module_name']).'Controller';
 				$controller = new $className();
@@ -341,7 +341,7 @@ class Container
 			$this->get('templating')->setParam('ref', '/'.$this->get('router')->getParam('node').'/');
 		}
 		if ($methodData['template'] && file_exists($PRJ_DIR.$methodData['template'])) {
-			if ($methodData['module_name'] == 'tree' && $methodData['name'] == 'index' && !count($paramsData)) {
+			if ($methodData['module_name'] == 'page' && $methodData['name'] == 'index' && !count($paramsData)) {
 				$paramsData[] = '/';
 			}
 			foreach ($paramsData as $key => $param) {

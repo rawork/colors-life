@@ -16,8 +16,8 @@ class PageController extends Controller {
 
 	public function getNodes($uri = 0, $where = "publish='on'", $limit = false) {
 		$ret = $this->get('container')->getNativeItems(
-			'SELECT t1.*, t3.name as module_id_name FROM tree_tree as t1 '.
-			'LEFT JOIN tree_tree as t2 ON t1.p_id=t2.id '.
+			'SELECT t1.*, t3.name as module_id_name FROM page_page as t1 '.
+			'LEFT JOIN page_page as t2 ON t1.p_id=t2.id '.
 			'LEFT JOIN config_modules as t3 ON t1.module_id=t3.id '.
 			"WHERE t1.publish='on' AND t1.lang='".$this->get('router')->getParam('lang')."' AND ".(is_numeric($uri) ? ($uri == 0 ? ' t1.p_id=0 ' : 't2.id='.$uri.' ') : "t2.name='".$uri."' ").
 			'ORDER BY t1.ord,t1.name '.
@@ -43,7 +43,7 @@ class PageController extends Controller {
 	function getPathArray() {
 		$nodes = array();
 		if (isset($this->nodeEntity))
-			$nodes = $this->get('container')->getTable('tree_tree')->getPrev($this->nodeEntity['id']);
+			$nodes = $this->get('container')->getTable('page_page')->getPrev($this->nodeEntity['id']);
 		if ($this->controller instanceof PublicController) {
 			$nodes = array_merge($nodes, $this->controller->getPathArray());
 		}
@@ -128,7 +128,7 @@ class PageController extends Controller {
 	
 	public function indexAction() {
 		
-		$this->get('container')->register('tree', $this);
+		$this->get('container')->register('page', $this);
 		$this->get('container')->register('auth', new AuthController());
 		$this->get('container')->register('meta', new MetaManager());
 		
@@ -143,7 +143,7 @@ class PageController extends Controller {
 			'h1' => $this->getH1(),
 			'meta' => $this->get('meta')->getMeta(),
 			'mail_to' => $GLOBALS['ADMIN_EMAIL'],
-			'tree' => $this->get('tree'),
+			'page' => $this->get('page'),
 			'auth' => $this->get('auth'),
 		);
 		
@@ -182,7 +182,7 @@ class PageController extends Controller {
 		$this->node = $this->get('router')->getParam('node');
 		$this->methodName = $this->get('router')->getParam('methodName');
 		$this->get('templating')->setParam('methodName', $this->methodName);
-		$this->nodeEntity = $this->get('container')->getItem('tree_tree', "name='$this->node'");
+		$this->nodeEntity = $this->get('container')->getItem('page_page', "name='$this->node'");
 		if (!$this->nodeEntity) {
 			throw $this->createNotFoundException('Несуществующая страница');
 		}

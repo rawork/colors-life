@@ -81,8 +81,8 @@ class SearchEngine {
 		$sql = "SELECT id,".$fields_text." FROM ".$tableName." WHERE (".$search_query.') '.$where.' ORDER BY id';
 		$items = $this->get('connection')->getItems('get_search_items', $sql);
 		foreach ($items as $item) {
-			if ($tableName == 'tree_tree') {
-				$link = $this->get('tree')->getUrl($item);
+			if ($tableName == 'page_page') {
+				$link = $this->get('page')->getUrl($item);
 			} else {
 				$link = vsprintf($options['link'], array($options['nodeName'], $item['id']));
 			}
@@ -110,9 +110,9 @@ class SearchEngine {
 	function getResults($text) {
 		$text = $this->getMorphoForm($text);
 		$ret = array();
-		$trees = $this->get('container')->getItems('tree_tree', "publish='on' AND module_id<>0");
-		if (is_array($trees)) {
-			foreach ($trees as $node) {
+		$pages = $this->get('container')->getItems('page_page', "publish='on' AND module_id<>0");
+		if (is_array($pages)) {
+			foreach ($pages as $node) {
 				if (isset($this->modules[$node['module_id_name']])) {
 					$tables = $this->modules[$node['module_id_name']];
 					foreach ($tables as $tableName => $options) {
@@ -122,7 +122,7 @@ class SearchEngine {
 					}
 				}
 			}
-			$results = $this->getTableSearchResults($text, 'tree_tree', $this->pages);
+			$results = $this->getTableSearchResults($text, 'page_page', $this->pages);
 			foreach ($results as $a) {
 				$ret[] = $a;
 			}

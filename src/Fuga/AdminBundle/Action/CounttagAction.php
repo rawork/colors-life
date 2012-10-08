@@ -155,7 +155,7 @@ class CounttagAction extends Action {
 </url>
 EOD;
 		fwrite($fh, $link."\n");
-		$aSections = $this->getTreeEntities('tree_tree', 0);
+		$aSections = $this->getTreeEntities('page_page', 0);
 		$sChange = 'weekly';
 		foreach ($aSections as $aSection) {
 			$sURL = $aSection['module_id'] ? $aSection['name'].'/' : $aSection['name'].'.htm';

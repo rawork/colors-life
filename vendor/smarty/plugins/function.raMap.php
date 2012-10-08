@@ -18,7 +18,7 @@
  */
 
 function smarty_function_raMap($params, &$smarty) {
-	return $GLOBALS['container']->get('tree')->getMap();
+	return $GLOBALS['container']->get('page')->getMap();
 }
 
 ?>

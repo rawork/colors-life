@@ -87,8 +87,8 @@
     <td><table class="mainmenu" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><img src="/img/mainmenu_left.gif" /></td>
-          {raDir var=trees query=/}
-          {foreach from=$trees item=menuitem}
+          {raDir var=pages query=/}
+          {foreach from=$pages item=menuitem}
           <td width="14%"><a href="{$menuitem.ref}">{$menuitem.title}</a></td>
           {/foreach}
           <td><img src="/img/mainmenu_right.gif" /></td>

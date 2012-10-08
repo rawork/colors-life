@@ -22,7 +22,7 @@ function smarty_function_raDir($params, &$smarty) {
 	} else {
 		$smarty->assign(
 			$params['var'], 
-			$GLOBALS['container']->get('tree')->getNodes(
+			$GLOBALS['container']->get('page')->getNodes(
 				!empty($params['query']) ? $params['query'] : 0, 
 				!empty($params['where']) ? $params['where'] : "publish='on'"
 			)
