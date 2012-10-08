@@ -137,20 +137,20 @@ class Table {
 	}
 	function updateGlobals() {
 		$entityId = $this->get('util')->_postVar('id', true);
-		$aEntity = $this->getItem($entityId);
+		$entity = $this->getItem($entityId);
 		$categoryId = 0;
 		$sql = '';
-		foreach ($this->fields as $aField) {
-			if ($aField['type'] != 'listbox') {
-				$ft = $this->createFieldType($aField, $aEntity);
-				if ($aField['name'] == 'c_id')
+		foreach ($this->fields as $fieldData) {
+			if ($fieldData['type'] != 'listbox') {
+				$ft = $this->createFieldType($fieldData, $entity);
+				if ($fieldData['name'] == 'c_id')
 					$categoryId = $ft->getValue();
-				if ($this->getDBTableName() == 'users_users' && $aField['name'] == 'login' && $entityId == 1) {
+				if ($this->getDBTableName() == 'user_user' && $fieldData['name'] == 'login' && $entityId == 1) {
 					$sql .= ($sql ? ', ' : '').$ft->getName()."='admin'";
-				} elseif ($aField['name'] == 'change_date') {
+				} elseif ($fieldData['name'] == 'change_date') {
 					$sql .= ($sql ? ', ' : '').$ft->getName().'= NOW()';
-				} elseif (empty($aField['readonly'])) {
-					if (stristr($aField['type'], 'date') || $aField['type'] == 'select' || $aField['type'] == 'select_tree' || $aField['type'] == 'number' || $aField['type'] == 'currency')
+				} elseif (empty($fieldData['readonly'])) {
+					if (stristr($fieldData['type'], 'date') || $fieldData['type'] == 'select' || $fieldData['type'] == 'select_tree' || $fieldData['type'] == 'number' || $fieldData['type'] == 'currency')
 						$sql .= ($sql ? ', ' : '').$ft->getName().'='.$ft->getSQLValue(); 
 					else
 						$sql .= ($sql ? ', ' : '').$ft->getName()."='".$ft->getSQLValue()."'";
@@ -159,25 +159,25 @@ class Table {
 		}
 		// Обновление значений дополнительных свойств
 		if ($this->getDBTableName() == 'catalog_stuff1') {
-			$aCategory = $this->get('connection')->getItem('get_cat', 'SELECT id, name,filters from catalog_categories where id='.$categoryId);
-			if ($aCategory) {
-				$aFeatures = $this->get('connection')->getItems('get_features', 'SELECT * from catalog_features where id IN('.$aCategory['filters'].')');
-				foreach($aFeatures as $aFeature) {
-					$iFeatureId = $aFeature['id'];
-					$mFilterValue = $this->get('util')->_postVar('filter_'.$iFeatureId, true);
-					$feature_value = $this->get('connection')->getItem('get_value', 'SELECT id, feature_value_id FROM catalog_features_values WHERE feature_id='.$iFeatureId.' AND stuff_id='.$entityId);
+			$category = $this->get('connection')->getItem('get_cat', 'SELECT id, name,filters from catalog_categories where id='.$categoryId);
+			if ($category) {
+				$features = $this->get('connection')->getItems('get_features', 'SELECT * from catalog_features where id IN('.$category['filters'].')');
+				foreach($features as $featureData) {
+					$featureId = $featureData['id'];
+					$filterValue = $this->get('util')->_postVar('filter_'.$featureId, true);
+					$feature_value = $this->get('connection')->getItem('get_value', 'SELECT id, feature_value_id FROM catalog_features_values WHERE feature_id='.$featureId.' AND stuff_id='.$entityId);
 					if ($feature_value){
-						$values = "feature_value_id=".$mFilterValue;
+						$values = "feature_value_id=".$filterValue;
 						$this->get('connection')->execQuery('upd_value', "UPDATE catalog_features_values set ".$values." where id=".$feature_value['id']);
 					} else { 
-						$values = $mFilterValue.','.$iFeatureId.','.$entityId;
+						$values = $filterValue.','.$featureId.','.$entityId;
 						$this->get('connection')->execQuery('add_value', "INSERT INTO catalog_features_values (feature_value_id,feature_id,stuff_id) VALUES (".$values.")");
 					}
 				}
 			}
 		}
 		$where = '';
-		if (($this->getDBTableName() == 'users_users' || $this->getDBTableName() == 'users_groups') && !$this->get('security')->isSuperuser())
+		if (($this->getDBTableName() == 'user_user' || $this->getDBTableName() == 'user_group') && !$this->get('security')->isSuperuser())
 			$where = ' AND id<>1';
 
 		return $this->update($sql.' WHERE id='.$entityId.$where);

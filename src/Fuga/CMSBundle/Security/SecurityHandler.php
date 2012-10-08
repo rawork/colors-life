@@ -20,8 +20,8 @@ class SecurityHandler {
 	}
 	
 	public function getCurrentUser() {
-		$user = $this->get('connection')->getItem('users_users',
-			"SELECT uu.*, ug.rules FROM users_users uu LEFT JOIN users_groups ug ON uu.group_id=ug.id WHERE uu.syslogin='".$this->get('util')->_sessionVar('user')."'");
+		$user = $this->get('connection')->getItem('user',
+			"SELECT uu.*, ug.rules FROM user_user uu LEFT JOIN user_group ug ON uu.group_id=ug.id WHERE uu.login='".$this->get('util')->_sessionVar('user')."'");
 		unset($user['password']);
 		return $user;
 	}
@@ -29,15 +29,15 @@ class SecurityHandler {
 	private function checkUser() {
 		if (!empty($_COOKIE['userkey'])) {
 			if ($_COOKIE['userkey'] == md5(_DEV_PASS.substr(_DEV_USER, 0, 3).$_SERVER['REMOTE_ADDR'])) {
-				$user = array('syslogin' => _DEV_USER);
+				$user = array('login' => _DEV_USER);
 			} else {
-				$user = $this->get('connection')->getItem('users_users',
-					"SELECT syslogin FROM users_users
-					WHERE MD5(CONCAT(syspassword, SUBSTRING(syslogin, 1, 3),'".$_SERVER['REMOTE_ADDR']."')) = '".$_COOKIE['userkey']."'"
+				$user = $this->get('connection')->getItem('user',
+					"SELECT login FROM user_user
+					WHERE MD5(CONCAT(password, SUBSTRING(login, 1, 3),'".$_SERVER['REMOTE_ADDR']."')) = '".$_COOKIE['userkey']."'"
 				);
 			}
 			if (count($user)) {
-				$_SESSION['user'] = $user['syslogin'];
+				$_SESSION['user'] = $user['login'];
 				$this->user = $_SESSION['ukey'] = $_COOKIE['userkey'];
 				setcookie('userkey', $_COOKIE['userkey'], time()+3600*24*1000);	
 			}
@@ -54,12 +54,12 @@ class SecurityHandler {
 	public function login($inputUser, $inputPass, $isRemember = false ) {
 		$inputPass = md5($inputPass);
 		if ($inputUser == _DEV_USER && $inputPass == _DEV_PASS) {
-			$user = array('syslogin' => $inputUser);
+			$user = array('login' => $inputUser);
 		} else {
-			$user = $this->get('connection')->getItem('users_users', "SELECT syslogin FROM users_users WHERE syslogin='$inputUser' AND syspassword='".$inputPass."' AND is_active='on'");
+			$user = $this->get('connection')->getItem('user', "SELECT login FROM user_user WHERE login='$inputUser' AND password='".$inputPass."' AND is_active='on'");
 		}
 		if ($user){
-			$_SESSION['user'] = $user['syslogin'];
+			$_SESSION['user'] = $user['login'];
 			$_SESSION['ukey'] = $this->userHash($inputUser, $inputPass);
 			if ($isRemember) {
 				setcookie('userkey', $this->userHash($inputUser, $inputPass), time()+3600*24*1000);
@@ -71,8 +71,8 @@ class SecurityHandler {
 		
 	}
 	
-	private function userHash($user, $pass) {
-		return md5($pass.substr($user, 0, 3).$_SERVER['REMOTE_ADDR']);
+	private function userHash($login, $password) {
+		return md5($password.substr($login, 0, 3).$_SERVER['REMOTE_ADDR']);
 	}
 
 	public function isAdmin() {

@@ -50,10 +50,10 @@ class SecurityController extends Controller {
 		$inputEmail = $this->get('connection')->escapeStr($this->get('util')->_postVar('_email'));
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if ($inputUser) {
-				$user = $this->get('connection')->getItem('users_users', "SELECT * FROM users_users WHERE syslogin='".$inputUser."'");
+				$user = $this->get('connection')->getItem('user', "SELECT * FROM user_user WHERE login='".$inputUser."'");
 			} 
 			if ($inputEmail && !$user) {
-				$user = $this->get('connection')->getItem('users_users', "SELECT * FROM users_users WHERE email='".$inputEmail."'");
+				$user = $this->get('connection')->getItem('user', "SELECT * FROM user_user WHERE email='".$inputEmail."'");
 			}
 			if ($user) {
 				$key = $this->get('util')->genKey(32);
@@ -62,7 +62,7 @@ class SecurityController extends Controller {
 				$letterText .= 'Вы запросили ваши регистрационные данные.'."\n\n";
 				$letterText .= 'Ваша регистрационная информация:'."\n";
 				$letterText .= 'ID пользователя: '.$user['id']."\n";
-				$letterText .= 'Логин: '.$user['syslogin']."\n\n";
+				$letterText .= 'Логин: '.$user['login']."\n\n";
 				$letterText .= 'Для смены пароля перейдите по следующей ссылке:'."\n";
 				$letterText .= 'http://'.$_SERVER['SERVER_NAME'].'/admin/password?key='.$key."\n\n";
 				$letterText .= 'Сообщение сгенерировано автоматически.'."\n";
@@ -71,7 +71,7 @@ class SecurityController extends Controller {
 					nl2br($letterText),
 					$user['email']
 				);
-				$this->get('connection')->execQuery('users_users', "UPDATE users_users SET hashkey='".$key."' WHERE id=".$user['id']);
+				$this->get('connection')->execQuery('user', "UPDATE user_user SET hashkey='".$key."' WHERE id=".$user['id']);
 				$message = array(
 					'type' => 'success',
 					'text' => 'Новые параметры авторизации отправлены Вам на <b>Электронную почту</b>!'
@@ -100,16 +100,16 @@ class SecurityController extends Controller {
 	public function passwordAction() {
 		global $PRJ_REF;
 		if ($this->get('util')->_getVar('key')) {
-			$user = $this->get('connection')->getItem('users_users', "SELECT id,syslogin,email FROM users_users WHERE hashkey='".$this->get('util')->_getVar('key')."'");
+			$user = $this->get('connection')->getItem('user', "SELECT id,login,email FROM user_user WHERE hashkey='".$this->get('util')->_getVar('key')."'");
 			if (!empty($user) && !empty($user['email'])) {
 				$newPassword = $this->get('util')->genKey();
-				$this->get('connection')->execQuery('users_users', "UPDATE users_users SET syspassword=MD5('".$newPassword."'), hashkey='' WHERE hashkey='".$this->get('util')->_getVar('key')."'");
+				$this->get('connection')->execQuery('user', "UPDATE user_user SET password=MD5('".$newPassword."'), hashkey='' WHERE hashkey='".$this->get('util')->_getVar('key')."'");
 				$letterText = 'Информационное сообщение сайта '.$_SERVER['SERVER_NAME']."\n";
 				$letterText .= '------------------------------------------'."\n";
 				$letterText .= 'Вы запросили ваши регистрационные данные.'."\n";
 				$letterText .= 'Ваша регистрационная информация:'."\n";
 				$letterText .= 'ID пользователя: '.$user['id']."\n";
-				$letterText .= 'Логин: '.$user['syslogin']."\n";
+				$letterText .= 'Логин: '.$user['login']."\n";
 				$letterText .= 'Пароль: '.$newPassword."\n\n";
 				$letterText .= 'Сообщение сгенерировано автоматически.'."\n";
 				$this->get('mailer')->send(

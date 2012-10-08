@@ -18,7 +18,7 @@ class TableAction extends Action {
 		$params = array(	
 			'types' => $types,
 			'fields' => $this->dataTable->fields,
-			'groups' => $this->get('container')->getItems('users_groups'),
+			'groups' => $this->get('container')->getItems('user_group'),
 			'rights' => array(
 				'' => 'По-умолчанию (чтение)',
 				'D' => 'Закрыт',

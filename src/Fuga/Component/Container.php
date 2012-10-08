@@ -215,7 +215,7 @@ class Container
 		if (!isset($this->tables[$class])) {
 			throw new \Exception('Class not found: '.$class);
 		} else {
-			$query .= $class == 'users_users' || $class == 'users_groups' ? ' AND id<>1' : '';
+			$query .= $class == 'user_user' || $class == 'user_group' ? ' AND id<>1' : '';
 			if ($ids = $this->delRel($class, $this->getItems($class, !empty($query) ? $query : '1<>1'))) 
 				return $this->tables[$class]->delete('id IN ('.$ids.')');
 			else

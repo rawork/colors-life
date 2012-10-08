@@ -7,7 +7,7 @@ if(strpos($page, '/restore.php') !== 0)
 if(isset($_SERVER["BX_PERSONAL_ROOT"]) && $_SERVER["BX_PERSONAL_ROOT"] <> "")
 	define("BX_PERSONAL_ROOT", $_SERVER["BX_PERSONAL_ROOT"]);
 else
-	define("BX_PERSONAL_ROOT", "/admin");
+	define("BX_PERSONAL_ROOT", "/app");
 
 if (!defined("BX_DIR_PERMISSIONS"))
 	define("BX_DIR_PERMISSIONS", 0755);
@@ -1003,7 +1003,7 @@ class CDBRestore
 			}
 			$sql = "";
 		}
-		$result = @mysql_query("UPDATE SET syspassword=MD5('demo') WHERE syslogin='admin'", $this->db_Conn);
+		$result = @mysql_query("UPDATE user_user SET password=MD5('demo') WHERE login='admin'", $this->db_Conn);
 
 		return true;
 	}

@@ -2,7 +2,7 @@
 
 namespace Fuga\CMSBundle\Model;
 
-class Users {
+class User {
 	
 	public $tables;
 
@@ -11,19 +11,19 @@ class Users {
 		$this->tables = array();
 
 		$this->tables[] = array(
-		'name' => 'users',
-		'component' => 'users',
+		'name' => 'user',
+		'component' => 'user',
 		'title' => 'Список пользователей',
-		'order_by' => 'syslogin',
+		'order_by' => 'login',
 		'fieldset' => array (
-			'syslogin' => array (
-				'name' => 'syslogin',
+			'login' => array (
+				'name' => 'login',
 				'title' => 'Логин',
 				'type' => 'string',
 				'width' => '25%',
 			),
-			'syspassword' => array (
-				'name' => 'syspassword',
+			'password' => array (
+				'name' => 'password',
 				'title' => 'Пароль',
 				'type' => 'password',
 			),
@@ -48,12 +48,12 @@ class Users {
 				'name' => 'group_id',
 				'title' => 'Группа',
 				'type' => 'select',
-				'l_table' => 'users_groups',
+				'l_table' => 'user_group',
 				'l_field' => 'name',
 				'width' => '25%'
 
 			),
-		'is_admin' => array (
+			'is_admin' => array (
 				'name' => 'is_admin',
 				'title' => 'Админ',
 				'type' => 'checkbox',
@@ -70,8 +70,8 @@ class Users {
 		));
 
 		$this->tables[] = array(
-		'name' => 'groups',
-		'component' => 'users',
+		'name' => 'group',
+		'component' => 'user',
 		'title' => 'Группы пользователей',
 		'order_by' => 'name',
 		'fieldset' => array (
