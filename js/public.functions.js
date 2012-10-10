@@ -593,6 +593,6 @@ function initVK() {
 }
 
 function initVKLike() {
-	VK.Widgets.Like("vk_like", {type: "button", height: 24});
+	VK.Widgets.Like("vk_like", {type: "button", height: 20});
 }
 
