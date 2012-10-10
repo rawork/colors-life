@@ -121,10 +121,19 @@
 			<div class="faq-block"><a href="/subscribe-process.htm"><img src="/img/maillist_btn.gif"></a></div>
             
             {raMethod ref=/catalog/brands.htm}
-			
 			<br><br><br>
-			<!-- Include counters.tpl -->
+			<div class="widgets" style="padding-left: 15px;">
+			<div id="fb-root"></div>
+			<script>initFB()</script>
+			<script type="text/javascript" src="//vk.com/js/api/openapi.js?56"></script>
+			<script type="text/javascript">initVK();</script>
+			<div class="fb-like-box" data-href="http://www.facebook.com/colors-life.ru" data-width="200" data-show-faces="true" data-stream="false" data-header="false"></div>
+			<br><br>
+			<div id="vk_groups"></div>
+			<script type="text/javascript">initVKLikebox();</script>
+			<br><br>
 			{include file='counters.tpl'}
+			</div>
 			</td>
           <td><img src="/img/0.gif" width="40" height="1"></td>
           <td class="maincontent">

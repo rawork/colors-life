@@ -596,3 +596,6 @@ function initVKLike() {
 	VK.Widgets.Like("vk_like", {type: "button", height: 20});
 }
 
+function initVKLikebox() {
+	VK.Widgets.Group("vk_groups", {mode: 0, width: "200", height: "290"}, 21028918);
+}
