@@ -1,5 +1,5 @@
 {raItem var=cat table=catalog_category query=$param0}	
-<h1>{$cat.name}</h1>
+<h1>{$cat.title}</h1>
 <div class="cat-description">{$cat.description}</div>
 {if $param1 != 'sort' && $param1 != 'price' && $param1 != 'name'}
 {assign var=param1 value=sort}
@@ -36,7 +36,7 @@
 	{else} <a href="{raURL node=catalog method=$methodNname prms="`$param0`.price"}">цене</a> 
 	<span>названию</span> {/if}</td>
 <td width="60%" align="right">Показать товары: 
-	<a href="{raURL node=$node.name method=index prms=$param0}">таблицей</a> 
+	<a href="{raURL node=catalog method=index prms=$param0}">таблицей</a> 
 	<span>списком</span>
 по <select name="cpage" onChange="setCatalogRTT(this, {$rtt}, {$page})">
 		<option value="10"{if $rtt == 10} selected{/if}>10</option>
