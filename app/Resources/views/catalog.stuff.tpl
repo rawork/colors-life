@@ -1,6 +1,10 @@
 {if !$param0}{raException}{/if}
 {raItem var=item table=catalog_product query=$param0}
 {if $item.publish}
+	<div id="fb-root"></div>
+	<script>initFB()</script>
+	<script type="text/javascript" src="//vk.com/js/api/openapi.js?56"></script>
+	<script type="text/javascript">initVK();</script>
 	{raSetVar var=title value=$item.name}
 	<h1>{$item.name}</h1>
 	<table class="stuff-table" cellpadding="0" cellspacing="0" border="0">
@@ -41,8 +45,11 @@
 					<td class="stuff-description"><table width="100%" cellpadding="0" cellspacing="0" border="0">
 						<tr> 
 						{raItem var=cat0 table=catalog_category query=$item.category_id_root_id}
-						<td height="100%" valign="top"><div class="stuff-cat" style="background-image:url('{$cat0.logo}');"><a href="{raURL node=catalog method=index prms=$item.category_id}">{$item.category_id_name}</a></div>
+						<td height="100%" valign="top"><div class="stuff-cat" style="background-image:url('{$cat0.logo}');"><a href="{raURL node=catalog method=index prms=$item.category_id}">{$item.category_id_title}</a></div>
 							<div class="stuff-producer"><a href="{raURL node=catalog method=brand prms=$item.producer_id}">{$item.producer_id_name}</a> ({$item.producer_id_country})</div>
+							<div class="fb-like" style="display: inline-block;margin:10px 5px;" data-href="http://{$smarty.server.SERVER_NAME}{raURL node=$item.node_id_name method=read prms=$item.id}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div>
+							<div style="display: inline-block;" id="vk_like"></div>
+							<script type="text/javascript">initVKLike()</script>
 							<div class="stuff-description">{$item.description}</div>
 							{if $item.discount_description}
 							<div class="stuff-description">{$item.discount_description}</div>
