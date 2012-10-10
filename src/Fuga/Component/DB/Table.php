@@ -181,24 +181,24 @@ class Table {
 	}
 
 	function group_update() {
-		$recs = $this->getArraysWhere('id IN('.$this->get('util')->_postVar('ids').')');
+		$entities = $this->getArraysWhere('id IN('.$this->get('util')->_postVar('ids').')');
 		$query = '';
-		foreach ($recs as $a) {
+		foreach ($entities as $entity) {
 			$values = '';
-			foreach ($this->fields as $f) {
-				if ($f['type'] != 'listbox') {
-					$ft = $this->createFieldType($f, $a);
-					if ($f['type'] == 'checkbox' && !isset($_POST[$ft->getName().$a['id']])) {
-						$values .= ($values ? ',' : '').$ft->getName()."=''";	
-					} elseif (isset($_POST[$ft->getName().$a['id']]) || isset($_FILES[$ft->getName().$a['id']]))
-						if (stristr($f['type'], 'date') || $f['type'] == 'select' || $f['type'] == 'select_tree' || $f['type'] == 'number' || $f['type'] == 'currency')
-							$values .= ($values ? ', ' : '').$ft->getName().'='.$ft->getGroupSQLValue(); 
+			foreach ($this->fields as $fieldData) {
+				if ($fieldData['type'] != 'listbox') {
+					$fieldType = $this->createFieldType($fieldData, $entity);
+					if ($fieldData['type'] == 'checkbox' && !isset($_POST[$fieldType->getName().$entity['id']])) {
+						$values .= ($values ? ',' : '').$fieldType->getName()."=0";	
+					} elseif (isset($_POST[$fieldType->getName().$entity['id']]) || isset($_FILES[$fieldType->getName().$entity['id']]))
+						if (stristr($fieldData['type'], 'date') || $fieldData['type'] == 'select' || $fieldData['type'] == 'select_tree' || $fieldData['type'] == 'number' || $fieldData['type'] == 'currency')
+							$values .= ($values ? ', ' : '').$fieldType->getName().'='.$fieldType->getGroupSQLValue(); 
 						else
-							$values .= ($values ? ', ' : '').$ft->getName()."='".$ft->getGroupSQLValue()."'";
+							$values .= ($values ? ', ' : '').$fieldType->getName()."='".$fieldType->getGroupSQLValue()."'";
 				}	
 			}
 			if ($values)
-				$query .= 'UPDATE '.$this->getDBTableName().' SET '.$values.' WHERE id='.$a['id'].';#|#|#';
+				$query .= 'UPDATE '.$this->getDBTableName().' SET '.$values.' WHERE id='.$entity['id'].';#|#|#';
 		}
 		return $this->get('connection')->execQuery($this->getDBTableName().'_update', $query);
 	}

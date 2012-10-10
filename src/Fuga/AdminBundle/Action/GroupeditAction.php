@@ -9,9 +9,10 @@ class GroupeditAction extends Action {
 	
 	function getText() {
 		$ids = $this->get('util')->_postVar('ids');
-		if (count($ids) == 0 || $this->get('util')->_postVar('edited', true, 0)) {
+		if (!$ids || $this->get('util')->_postVar('edited', true, 0)) {
 			$this->messageAction($this->dataTable->group_update() ? 'Обновлено' : 'Ошибка обновления записей');
 		}
+		exit;
 		$content = '';
 		$this->dataTable->select(
 			array (
