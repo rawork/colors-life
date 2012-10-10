@@ -26,14 +26,14 @@ class CounttagAction extends Action {
 	}
 	
 	function calculateCatalog() {
-		$this->get('connection')->execQuery('truncate_tags', "TRUNCATE TABLE articles_tags");
-		$this->get('connection')->execQuery('truncate_tags', "TRUNCATE TABLE articles_tags_articles");
-		$this->get('connection')->execQuery('truncate_tags', "TRUNCATE TABLE articles_stuff_articles");
-		$articles = $this->get('connection')->getItems('get_art', "SELECT id,tags FROM articles_articles WHERE publish='on'");
+		$this->get('connection')->execQuery('truncate_tags', "TRUNCATE TABLE article_tag");
+		$this->get('connection')->execQuery('truncate_tags', "TRUNCATE TABLE article_tags_articles");
+		$this->get('connection')->execQuery('truncate_tags', "TRUNCATE TABLE article_products_articles");
+		$articles = $this->get('connection')->getItems('get_art', "SELECT id,tag FROM article_article WHERE publish=1");
 		$tags_full = array();
 		foreach ($articles as $article) {
 
-			$tags = $article['tags'];
+			$tags = $article['tag'];
 			$tags_array = explode(',', $tags);
 			foreach ($tags_array as $tag) {
 				$tag = trim($tag);
@@ -46,19 +46,19 @@ class CounttagAction extends Action {
 			}
 		}
 		foreach ($tags_full as $tag => $tag_info) {
-			$this->get('connection')->execQuery('add_tag', "INSERT INTO articles_tags(name, quantity) VALUES('$tag', ".$tag_info['q'].")");
+			$this->get('connection')->execQuery('add_tag', "INSERT INTO article_tag(name, quantity) VALUES('$tag', ".$tag_info['q'].")");
 			$last_id = $this->get('connection')->getInsertID();
 			foreach ($tag_info['articles'] as $article_id) {
-				$this->get('connection')->execQuery('add_tag_links', "INSERT INTO articles_tags_articles(tag_id, article_id) VALUES($last_id, $article_id)");
+				$this->get('connection')->execQuery('add_tag_links', "INSERT INTO article_tags_articles(tag_id, article_id) VALUES($last_id, $article_id)");
 			}
 		}
-		$tag_max_min = $this->get('connection')->getItems('get_tags', "SELECT max(quantity) as max, min(quantity) as min FROM articles_tags");
+		$tag_max_min = $this->get('connection')->getItems('get_tags', "SELECT max(quantity) as max, min(quantity) as min FROM article_tag");
 		$min = intval($tag_max_min[0]['min']);
 		$max = intval($tag_max_min[0]['max']);
 
 		$minsize = 1;
 		$maxsize = 10;
-		$tags = $this->get('connection')->getItems('get_tags', "SELECT id, name, quantity FROM articles_tags");
+		$tags = $this->get('connection')->getItems('get_tags', "SELECT id, name, quantity FROM article_tag");
 		foreach ($tags as $tag) {
 
 			if ($min == $max) {
@@ -68,11 +68,11 @@ class CounttagAction extends Action {
 				$num = ($tag['quantity'] - $min)/($max - $min)*($maxsize - $minsize) + $minsize;
 				$fontSize = round($num);
 			}
-			$this->get('connection')->execQuery('update_tag_info', "UPDATE articles_tags SET position='".$fontSize."' WHERE id=".$tag['id']);
+			$this->get('connection')->execQuery('update_tag_info', "UPDATE article_tag SET weight='".$fontSize."' WHERE id=".$tag['id']);
 		}
 
 
-		$brands = $this->get('connection')->getItems('get_brands', "SELECT cp.id, cp.name, count(cs.id) as quantity FROM catalog_producers cp JOIN catalog_stuff cs ON cp.id=cs.producer_id WHERE cs.publish='on' GROUP BY cp.id");
+		$brands = $this->get('connection')->getItems('get_brands', "SELECT cp.id, cp.name, count(cs.id) as quantity FROM catalog_producer cp JOIN catalog_product cs ON cp.id=cs.producer_id WHERE cs.publish=1 GROUP BY cp.id");
 		$min = $brands[0]['quantity'];
 		$max = $brands[0]['quantity'];
 		foreach ($brands as $brand) {
@@ -82,10 +82,10 @@ class CounttagAction extends Action {
 			if ($brand['quantity'] < $min) {
 				$min = $brand['quantity'];
 			}
-			$this->get('connection')->execQuery('update_tag_info', "UPDATE catalog_producers SET quantity='".$brand['quantity']."' WHERE id=".$brand['id']);
+			$this->get('connection')->execQuery('update_tag_info', "UPDATE catalog_producer SET quantity='".$brand['quantity']."' WHERE id=".$brand['id']);
 		}
 
-		$brands = $this->get('connection')->getItems('get_brands', "SELECT id, name, quantity FROM catalog_producers");
+		$brands = $this->get('connection')->getItems('get_brands', "SELECT id, name, quantity FROM catalog_producer");
 		foreach ($brands as $brand) {
 
 			if ($min == $max) {
@@ -95,39 +95,39 @@ class CounttagAction extends Action {
 				$num = ($brand['quantity'] - $min)/($max - $min)*($maxsize - $minsize) + $minsize;
 				$fontSize = round($num);
 			}
-			$this->get('connection')->execQuery('update_tag_info', "UPDATE catalog_producers SET position='".$fontSize."' WHERE id=".$brand['id']);
+			$this->get('connection')->execQuery('update_tag_info', "UPDATE catalog_producer SET weight='".$fontSize."' WHERE id=".$brand['id']);
 		}
 		//die();
 
 		foreach ($tags as $tag) {
-			$items = $this->get('connection')->getItems('get_stuff', "SELECT id,name FROM catalog_stuff WHERE tags LIKE '%".$tag['name']."%'");
+			$items = $this->get('connection')->getItems('get_products', "SELECT id,name FROM catalog_product WHERE tag LIKE '%".$tag['name']."%'");
 			if (count($items)) {
-				$articles = $this->get('connection')->getItems('get_articles', "SELECT article_id FROM articles_tags_articles WHERE tag_id=".$tag['id']);
+				$articles = $this->get('connection')->getItems('get_articles', "SELECT article_id FROM article_tags_articles WHERE tag_id=".$tag['id']);
 				foreach ($items as $item) {
 					foreach ($articles as $article) {
-						$this->get('connection')->execQuery('add_stuff_links', "INSERT INTO articles_stuff_articles(stuff_id, article_id) VALUES(".$item['id'].", ".$article['article_id'].")");
+						$this->get('connection')->execQuery('add_products_links', "INSERT INTO article_products_articles(product_id, article_id) VALUES(".$item['id'].", ".$article['article_id'].")");
 					}
 				}
 			}
 		}
 
-		$categories = $this->get('connection')->getItems('get_cats', "SELECT id,p_id,name FROM catalog_categories WHERE p_id=0");
+		$categories = $this->get('connection')->getItems('get_cats', "SELECT id,parent_id,title FROM catalog_category WHERE parent_id=0");
 		foreach ($categories as $category) {
-			$categories2 = $this->get('connection')->getItems('get_cats', "SELECT id,p_id,name FROM catalog_categories WHERE p_id=".$category['id']);
+			$categories2 = $this->get('connection')->getItems('get_cats', "SELECT id,parent_id,title FROM catalog_category WHERE parent_id=".$category['id']);
 			foreach ($categories2 as $category2) {
-				$this->get('connection')->execQuery('add_stuff_links', "UPDATE catalog_categories SET root_c_id=".$category['id']." WHERE id=".$category['id']." OR id=".$category2['id']." OR p_id=".$category2['id']);
+				$this->get('connection')->execQuery('add_products_links', "UPDATE catalog_category SET root_id=".$category['id']." WHERE id=".$category['id']." OR id=".$category2['id']." OR parent_id=".$category2['id']);
 			}
 		}
 	}
 	
 	function getEntities($sTableName) {
-		$aEntities = $this->get('connection')->getItems('eee', "SELECT id FROM $sTableName WHERE publish='on'");
+		$aEntities = $this->get('connection')->getItems('eee', "SELECT id FROM $sTableName WHERE publish=1");
 		return $aEntities;
 	}
 
 	function getTreeEntities($sTableName, $iParentId = 0) {
 		$aEntities = array();
-		$aTempEntities = $this->get('connection')->getItems('eee', "SELECT * FROM $sTableName WHERE publish='on' AND p_id = $iParentId");
+		$aTempEntities = $this->get('connection')->getItems('eee', "SELECT * FROM $sTableName WHERE publish=1 AND parent_id = $iParentId");
 		foreach ($aTempEntities as $aTempEntity) {
 			$aSubEntities = $this->getTreeEntities($sTableName, $aTempEntity['id']);
 			$aEntities[] = $aTempEntity;
@@ -168,9 +168,9 @@ EOD;
 EOD;
 			fwrite($fh, $link."\n");
 		}
-		$aCategories = $this->getTreeEntities('catalog_categories', 0);
-		foreach ($aCategories as $aCategory) {
-			$sURL = 'catalog/index.'.$aCategory['id'].'.htm';
+		$categories = $this->getTreeEntities('catalog_category', 0);
+		foreach ($categories as $category) {
+			$sURL = 'catalog/index.'.$category['id'].'.htm';
 			$link = <<<EOD
 <url>
 	<loc>http://www.colors-life.ru/$sURL</loc>
@@ -181,7 +181,7 @@ EOD;
 			fwrite($fh, $link."\n");
 		}
 
-		$aEntities = $this->getEntities('articles_articles');
+		$aEntities = $this->getEntities('article_article');
 		foreach ($aEntities as $aEntity) {
 			$sURL = 'articles/read.'.$aEntity['id'].'.htm';
 			$link = <<<EOD
@@ -194,7 +194,7 @@ EOD;
 			fwrite($fh, $link."\n");
 		}
 
-		$aEntities = $this->getEntities('catalog_stuff');
+		$aEntities = $this->getEntities('catalog_product');
 		foreach ($aEntities as $aEntity) {
 			$sURL = 'catalog/stuff.'.$aEntity['id'].'.htm';
 			$link = <<<EOD
@@ -230,7 +230,7 @@ EOD;
 		$ymlcontent = ""; // контент yml файла
 		$f = fopen($filepath.$filename, "w") or die("Error opening file"); // открываем файл на запись
 
-		$aCategories = $this->getTreeEntities('catalog_categories');
+		$aCategories = $this->getTreeEntities('catalog_category');
 		// блок создания контента
 		$ymlcontent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";   // файл формата XML 1.0
 		$ymlcontent .= "<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">\n";   //  тип файла - файл Yandex Маркета
@@ -243,18 +243,18 @@ EOD;
 		$ymlcontent .= "<categories>\n";  // описываем категории продукции, у каждой категории свой уникальный ID
 		foreach ($aCategories as $aCategory) {
 			$iId		= $aCategory['id'];
-			$iParentId	= $aCategory['p_id'];
-			$sName		= htmlspecialchars(strip_tags($aCategory['name']));
+			$iParentId	= $aCategory['parent_id'];
+			$sName		= htmlspecialchars(strip_tags($aCategory['title']));
 			$ymlcontent .= "<category id=\"$iId\" parentId=\"$iParentId\">$sName</category>\n";  // у нас всего одна категория
 		}
 		$ymlcontent .= "</categories>\n";
 		$ymlcontent .= "<offers>\n";
 
-		$aStuff = $this->get('container')->getItems('catalog_stuff', "publish='on' AND price<>'0.00'"); // выбираем все товары
+		$aStuff = $this->get('container')->getItems('catalog_product', "publish=1 AND price<>'0.00'"); // выбираем все товары
 		foreach ($aStuff as $aRow) // в цикле обрабатываем каждый товар
 		{
 			$sName			= htmlspecialchars(strip_tags($aRow['name']));
-			$sProducer		= htmlspecialchars(strip_tags($aRow['producer_id_name']));
+			$sProducer		= htmlspecialchars(strip_tags((isset($aRow['producer_id_name']) ? $aRow['producer_id_name'] : '')));
 			$sDescription	= str_replace('&laquo;', '&quot;', htmlspecialchars(strip_tags($aRow['description'])));
 			$sDescription	= str_replace('&raquo;', '&quot;', $sDescription);
 			$sAvailable		= $aRow['is_exist'] ? 'true' : 'false';
@@ -263,7 +263,7 @@ EOD;
 			$ymlcontent .= "<url>http://colors-life.ru/catalog/stuff.".$aRow['id'].".htm</url>\n";  // ссылка на страницу товара ( полностью )
 			$ymlcontent .= "<price>".$aRow['price']."</price>\n";  // стоимость продукта
 			$ymlcontent .= "<currencyId>RUR</currencyId>\n"; // валюта
-			$ymlcontent .= "<categoryId>".$aRow['c_id']."</categoryId>\n"; // ID категории
+			$ymlcontent .= "<categoryId>".$aRow['category_id']."</categoryId>\n"; // ID категории
 			$ymlcontent .= "<picture>http://colors-life.ru".$aRow['image']."</picture>\n";  // ссылка на картинку ( полностью )
 			$ymlcontent .= "<delivery>true</delivery>\n";
 			//$ymlcontent .= "<local_delivery_cost>375</local_delivery_cost>\n";
@@ -271,7 +271,7 @@ EOD;
 			$ymlcontent .= "<vendor>".$sProducer."</vendor>\n";
 			$ymlcontent .= "<vendorCode>".$aRow['articul']."</vendorCode>\n";
 			$ymlcontent .= "<description>$sDescription</description>\n"; // описание продукта
-			$ymlcontent .= "<country_of_origin>".$aRow['producer_id_country']."</country_of_origin>\n";
+			$ymlcontent .= "<country_of_origin>".(isset($aRow['producer_id_country']) ? $aRow['producer_id_country'] : '')."</country_of_origin>\n";
 			$ymlcontent .= "</offer>\n";
 		}
 		$ymlcontent .= "</offers>\n";  // дописываем закрывающие тэги
@@ -285,7 +285,7 @@ EOD;
 
 	function correctImages() {
 		global $PRJ_DIR;
-		$items = $this->get('connection')->getItems('items', "SELECT id, image, small_image, big_image FROM catalog_stuff");
+		$items = $this->get('connection')->getItems('items', "SELECT id, image, small_image, big_image FROM catalog_product");
 		foreach ($items as $item) {
 			$basename = 'stuff_';
 			$sNewPath1 = '';
@@ -306,15 +306,15 @@ EOD;
 				$sNewPath3 = $path_parts['dirname'].'/'.$basename.$item['id']."_big.".$path_parts['extension'];
 				rename($PRJ_DIR.$item['big_image'], $PRJ_DIR.$sNewPath3);
 			}
-			$this->get('connection')->execQuery('upd', "UPDATE catalog_stuff SET image='$sNewPath1', small_image='$sNewPath2', big_image='$sNewPath3' WHERE id=".$item['id']);
+			$this->get('connection')->execQuery('upd', "UPDATE catalog_product SET image='$sNewPath1', small_image='$sNewPath2', big_image='$sNewPath3' WHERE id=".$item['id']);
 		}
 	}
 
 	private function _clearImages() {
-		$items = $this->get('connection')->getItems('items', "SELECT id, image, small_image, big_image FROM catalog_stuff");
+		$items = $this->get('connection')->getItems('items', "SELECT id, image, small_image, big_image FROM catalog_product");
 		foreach ($items as $item) {
 			if ($item['big_image'] && $item['big_image'] != '/upload/stuff_'.$item['id'].'_big.jpg' ) {
-				$this->get('connection')->execQuery('upd', "UPDATE catalog_stuff SET big_image='' WHERE id=".$item['id']);
+				$this->get('connection')->execQuery('upd', "UPDATE catalog_product SET big_image='' WHERE id=".$item['id']);
 			}
 
 		}
@@ -325,7 +325,7 @@ EOD;
 		$date = new \Datetime('2012-01-01');
 		$step = 50;
 		$i = 50;
-		$items = $this->get('connection')->getItems('items', "SELECT id, image, small_image, big_image FROM catalog_stuff");
+		$items = $this->get('connection')->getItems('items', "SELECT id, image, small_image, big_image FROM catalog_product");
 		foreach ($items as $item) {
 			if ($i >= $step) {
 				$date->add(new \DateInterval('P1D'));
@@ -358,7 +358,7 @@ EOD;
 				continue;
 			}
 			
-			$this->get('connection')->execQuery('upd', "UPDATE catalog_stuff SET small_image='".$smallImage."',image='".$image."',big_image='".$bigImage."' WHERE id=".$item['id']);
+			$this->get('connection')->execQuery('upd', "UPDATE catalog_product SET small_image='".$smallImage."',image='".$image."',big_image='".$bigImage."' WHERE id=".$item['id']);
 			$i++;
 		}
 	}

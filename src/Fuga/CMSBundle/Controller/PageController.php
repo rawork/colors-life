@@ -14,13 +14,13 @@ class PageController extends Controller {
 	private $nodeEntity;
 	private $isService;
 
-	public function getNodes($uri = 0, $where = "publish='on'", $limit = false) {
+	public function getNodes($uri = 0, $where = "publish=1", $limit = false) {
 		$ret = $this->get('container')->getNativeItems(
 			'SELECT t1.*, t3.name as module_id_name FROM page_page as t1 '.
-			'LEFT JOIN page_page as t2 ON t1.p_id=t2.id '.
+			'LEFT JOIN page_page as t2 ON t1.parent_id=t2.id '.
 			'LEFT JOIN config_modules as t3 ON t1.module_id=t3.id '.
-			"WHERE t1.publish='on' AND t1.lang='".$this->get('router')->getParam('lang')."' AND ".(is_numeric($uri) ? ($uri == 0 ? ' t1.p_id=0 ' : 't2.id='.$uri.' ') : "t2.name='".$uri."' ").
-			'ORDER BY t1.ord,t1.name '.
+			"WHERE t1.publish=1 AND t1.locale='".$this->get('router')->getParam('lang')."' AND ".(is_numeric($uri) ? ($uri == 0 ? ' t1.parent_id=0 ' : 't2.id='.$uri.' ') : "t2.name='".$uri."' ").
+			'ORDER BY t1.sort,t1.name '.
 			'LIMIT '.($limit ? $limit : '0,100')
 		);
 		foreach ($ret as $k => $v) {

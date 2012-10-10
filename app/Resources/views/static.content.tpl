@@ -1,1 +1,1 @@
-{$node.body}
+{$node.content}

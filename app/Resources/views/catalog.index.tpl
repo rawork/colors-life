@@ -1,13 +1,13 @@
 {if empty($param0)}
-{raItems var=cats table=catalog_categories query="publish='on' AND p_id=0"}
+{raItems var=cats table=catalog_category query="publish=1 AND parent_id=0"}
 <div class="catalog-index-cats">
 {foreach from=$cats item=cat}
-<span class="cat-item{$cat.id}"><a href="javascript:toggleCatBlock({$cat.id})">{$cat.name}</a></span>
+<span class="cat-item{$cat.id}"><a href="javascript:toggleCatBlock({$cat.id})">{$cat.title}</a></span>
 {/foreach}
 </div>
 {foreach from=$cats item=cat}
-{raItems var=subcats table=catalog_categories query="publish='on' AND p_id=`$cat.id`"}
-{raCount var=count_subcats table=catalog_categories query="publish='on' AND p_id=`$cat.id`"}
+{raItems var=subcats table=catalog_category query="publish=1 AND parent_id=`$cat.id`"}
+{raCount var=count_subcats table=catalog_category query="publish=1 AND parent_id=`$cat.id`"}
 {if count($subcats)}
 <div id="index_cat_{$cat.id}" style="display:none">
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -36,10 +36,10 @@
                       {foreach from=$subcats item=subcat}
                       {if $cnt == 1}
                       <td>{/if}
-                        <div class="cat-level2"><a href="{raURL node=$node.name method=index prms=$subcat.id}"><b>{$subcat.name}</b></a></div>
-                        <div class="cat-level3"> {raItems var=subcats2 table=catalog_categories query="publish='on' AND p_id=`$subcat.id`"}
+                        <div class="cat-level2"><a href="{raURL node=$node.name method=index prms=$subcat.id}"><b>{$subcat.title}</b></a></div>
+                        <div class="cat-level3"> {raItems var=subcats2 table=catalog_category query="publish=1 AND parent_id=`$subcat.id`"}
                           {foreach from=$subcats2 item=subcat2}
-                          &mdash; <a href="{raURL node=$node.name method=index prms=$subcat2.id}">{$subcat2.name} </a> <br>
+                          &mdash; <a href="{raURL node=$node.name method=index prms=$subcat2.id}">{$subcat2.title} </a> <br>
                           {/foreach} </div>
                         {if $cnt >= $maxPerColumn}</td>
                       {counter assign=cnt start=1}{else}{counter assign=cnt}{/if}
@@ -69,12 +69,12 @@
 {/foreach}
 {raMethod ref=/catalog/hit.htm}           
 {else}
-{raItem var=cat table=catalog_categories query=$param0}	
+{raItem var=cat table=catalog_category query=$param0}	
 <h1>{$cat.name}</h1>
 <div class="cat-description">{$cat.description}</div>		
-{if $cat.p_id == 0}			
-{raItems var=subcats table=catalog_categories query="publish='on' AND p_id=`$cat.id`"}
-{raCount var=count_subcats table=catalog_categories query="publish='on' AND p_id=`$cat.id`"}	
+{if $cat.parent_id == 0}			
+{raItems var=subcats table=catalog_category query="publish=1 AND parent_id=`$cat.id`"}
+{raCount var=count_subcats table=catalog_category query="publish=1 AND parent_id=`$cat.id`"}	
 <table class="subcats-block" width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr>
 	<td class="cat-subcats{$cat.id}"><table width="100%" cellpadding="5" cellspacing="0" border="0">
@@ -83,10 +83,10 @@
 			{foreach from=$subcats item=subcat}
 			{if $cnt == 1}
 			<td>{/if}
-			<div class="cat-level2"><a href="{raURL node=$node.name method=index prms=$subcat.id}"><b>{$subcat.name}</b></a></div>
-			<div class="cat-level3"> {raItems var=subcats2 table=catalog_categories query="publish='on' AND p_id=`$subcat.id`"}
+			<div class="cat-level2"><a href="{raURL node=$node.name method=index prms=$subcat.id}"><b>{$subcat.title}</b></a></div>
+			<div class="cat-level3"> {raItems var=subcats2 table=catalog_category query="publish=1 AND parent_id=`$subcat.id`"}
 				{foreach from=$subcats2 item=subcat2}
-				&mdash; <a href="{raURL node=$node.name method=index prms=$subcat2.id}">{$subcat2.name} </a> <br>
+				&mdash; <a href="{raURL node=$node.name method=index prms=$subcat2.id}">{$subcat2.title} </a> <br>
 				{/foreach} </div>
 			{if $cnt >= $maxPerColumn}</td>
 			{counter assign=cnt start=1}{else}{counter assign=cnt}{/if}
@@ -96,8 +96,8 @@
 </table>
 {raMethod ref=/catalog/hit.htm} 
 {else}
-{raItems var=subcats table=catalog_categories query="publish='on' AND p_id=`$cat.id`"}
-{raCount var=count_subcats table=catalog_categories query="publish='on' AND p_id=`$cat.id`"}
+{raItems var=subcats table=catalog_category query="publish=1 AND parent_id=`$cat.id`"}
+{raCount var=count_subcats table=catalog_category query="publish=1 AND parent_id=`$cat.id`"}
 {if $count_subcats > 0}	
 <table class="subcats-block" width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr>
@@ -107,7 +107,7 @@
 			{foreach from=$subcats item=subcat}
 			{if $cnt == 1}
 			<td>{/if}
-			<div class="cat-level2"><a href="{raURL node=catalog method=index prms=$subcat.id}">{$subcat.name}</a></div>
+			<div class="cat-level2"><a href="{raURL node=catalog method=index prms=$subcat.id}">{$subcat.title}</a></div>
 			{if $cnt >= $maxPerColumn}</td>
 			{counter assign=cnt start=1}{else}{counter assign=cnt}{/if}
 			{/foreach} </tr>
@@ -120,8 +120,8 @@
 {/if}
 
 
-{if $param1 != 'ord' && $param1 != 'price' && $param1 != 'name'}
-{assign var=param1 value=ord}
+{if $param1 != 'sort' && $param1 != 'price' && $param1 != 'name'}
+{assign var=param1 value=sort}
 {/if}
 {if !$param2}
 {assign var=param2 value="0"}
@@ -143,12 +143,12 @@
 {assign var=page value=1}
 {/if}
 
-{if $cat}
-{raSetVar var=title value=$cat.name}
+{if $cat.title}
+{raSetVar var=title value=$cat.title}
 {/if}
 
-{raPaginator var=paginator table=catalog_stuff query="publish='on' AND c_id=`$param0` `$param2_where`" pref="`$ref``$methodName`.`$param0`.`$param1`.`$param2`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
-{raItems var=items table=catalog_stuff query="c_id=`$cat.id` AND publish='on' `$param2_where`" limit=$paginator->limit sort="is_exist DESC,`$param1`"}
+{raPaginator var=paginator table=catalog_product query="publish=1 AND category_id=`$param0` `$param2_where`" pref="`$ref``$methodName`.`$param0`.`$param1`.`$param2`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
+{raItems var=items table=catalog_product query="category_id=`$cat.id` AND publish=1 `$param2_where`" limit=$paginator->limit sort="is_exist DESC,`$param1`"}
 
 
 {if count($items)}
@@ -198,8 +198,8 @@
 					<tr>
 						<td height="100%" valign="top"><div class="stuff-name"><a href="{raURL node=catalog method=stuff prms=$item.id}"><span>{$item.name}</span></a></div>
 						<div class="stuff-producer"><a href="{raURL node=catalog method=brand prms=$item.producer_id}">{$item.producer_id_name}</a> ({$item.producer_id_country})</div>
-						{if $item.spec_description}
-						<div class="stuff-description">{$item.spec_description}</div>
+						{if $item.discount_description}
+						<div class="stuff-description">{$item.discount_description}</div>
 						{/if}
 
 						<div class="stuff-exist">{if $item.is_exist}<img src="/img/vnalich.png">{else}<img src="/img/zakaz.png">{/if}</div>
@@ -207,12 +207,12 @@
 						<a href="#" onclick="return showMailForm({$item.id})">Узнать, когда появится в продаже</a>
 						<div id="mailblock{$item.id}"><input type="text" onkeypress="checkEmailForm({$item.id})" onkeyup="checkEmailForm({$item.id})" onblur="procBlurEmail(this, 'Электронная почта', {$item.id})" onfocus="procFocus(this, 'Электронная почта')" value="Электронная почта" class="width-200" name="email{$item.id}" id="email{$item.id}"> <input type="button" class="btnEmail" id="btnEmail{$item.id}" onclick="sendStuffExist({$item.id})" disabled="true" value="Оставить заявку" /></div>
 						</div>{/if}
-						{raItems var=prices table=catalog_prices query="stuff_id=`$item.id` AND publish='on'" sort="ord,size_id"}
+						{raItems var=prices table=catalog_price query="product_id=`$item.id` AND publish=1" sort="sort,size_id"}
 			{if count($prices)}
 			<div class="stuff-sizes">
 			Размерный ряд:<br> 
 			<select name="stuff_price_{$item.id}" id="stuff_price_{$item.id}" onchange="setPrice({$item.id})">
-			<option rel="{if $item.spec_price == '0.00'}{$item.price}{else}{$item.spec_price}{/if}" value="0">...</option>
+			<option rel="{if $item.discount_price == '0.00'}{$item.price}{else}{$item.discount_price}{/if}" value="0">...</option>
 			{foreach from=$prices item=price}
 			<option rel="{$price.price}" value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.</option>
 			{/foreach} 
@@ -230,9 +230,9 @@
 								<table class="stuff-cart" width="100%" cellpadding="0" cellspacing="0" border="0">
 								<tr>
 									<td colspan="2">
-									{if $item.spec_price != '0.00'}
+									{if $item.discount_price != '0.00'}
 									<div class="stuff-price-no"><span>{$item.price}</span> руб.</div>
-									<div class="stuff-price"><span id="price_{$item.id}">{$item.spec_price}</span> руб.</div>
+									<div class="stuff-price"><span id="price_{$item.id}">{$item.discount_price}</span> руб.</div>
 									{else}
 									<div class="stuff-price"><span id="price_{$item.id}">{$item.price}</span> руб.</div>
 									{/if}

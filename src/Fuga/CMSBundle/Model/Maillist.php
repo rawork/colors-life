@@ -56,7 +56,7 @@ class Maillist {
 			'name' => 'subscriber',
 			'component' => 'maillist',
 			'title' => 'Подписчики',
-			'order_by' => 'name',
+			'order_by' => 'lastname',
 			'fieldset' => array (
 			'lastname' => array (
 				'name'  => 'lastname',

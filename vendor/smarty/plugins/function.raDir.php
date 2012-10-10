@@ -24,7 +24,7 @@ function smarty_function_raDir($params, &$smarty) {
 			$params['var'], 
 			$GLOBALS['container']->get('page')->getNodes(
 				!empty($params['query']) ? $params['query'] : 0, 
-				!empty($params['where']) ? $params['where'] : "publish='on'"
+				!empty($params['where']) ? $params['where'] : "publish=1"
 			)
 		);
 	}

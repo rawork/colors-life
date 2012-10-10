@@ -10,7 +10,7 @@ class PasswordType extends Type {
 	public function getInput($value = '', $name = '') {
 		$value = !$value ? $this->dbValue : $value;
 		$name = !$name ? $this->getName() : $name;
-		return '<input type="password" id="'.$name.'" name="'.$name.'" style="width:100%" value="">';
+		return '<input type="password" id="'.$name.'" name="'.$name.'">';
 	}
 
 	public function getSQLValue($name = '') {

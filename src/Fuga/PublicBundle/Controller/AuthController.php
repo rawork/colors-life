@@ -155,7 +155,7 @@ class AuthController extends PublicController {
 		) {
 			$errors[] = sprintf($this->errors['user_present'], $login);
 		} else {
-			if ($this->get('container')->getTable('auth_users')->update($updateQuery.", change_date = NOW() WHERE email='".$user['email']."'")) {
+			if ($this->get('container')->getTable('auth_users')->update($updateQuery.", updated = NOW() WHERE email='".$user['email']."'")) {
 				header('location: /cabinet/');
 			} else {
 				$errors[] = $this->errors['db_error'];
@@ -226,7 +226,7 @@ class AuthController extends PublicController {
 				$updateQuery .= ",phone='$phone'";
 				if (
 					$t->insert('login,email', "'".$login."','".$login."'") &&
-					$t->update($updateQuery.", credate = NOW(), change_date = NOW() WHERE email='".$login."'")
+					$t->update($updateQuery.", created = NOW(), updated = NOW() WHERE email='".$login."'")
 				) {
 					$letterText = $this->render('service/auth/registration.mail.tpl', compact('userName', 'userLName', 'login', 'password'));
 					$this->get('mailer')->send(
@@ -287,7 +287,7 @@ class AuthController extends PublicController {
 
 		if ($user['password'] == $oldPassword) {
 			$updateQuery = "password='$newPassword'";
-			if ($t->update($updateQuery.", change_date = NOW() WHERE email='".$login."'")) {
+			if ($t->update($updateQuery.", updated = NOW() WHERE email='".$login."'")) {
 				$letterText = $this->render('service/auth/password.mail.tpl', compact('login', 'password'));
 				$this->get('mailer')->send(
 					'Новый пароль в магазине Цвета жизни',
@@ -325,7 +325,7 @@ class AuthController extends PublicController {
 			if ($user = $this->get('container')->getItem('auth_users', "email='$login'")) {
 				$newPassword = $this->get('util')->genKey(6);
 				$updateQuery = "password='$newPassword'";
-				if ($t->update($updateQuery.", change_date = NOW() WHERE email='".$login."'")) {
+				if ($t->update($updateQuery.", updated = NOW() WHERE email='".$login."'")) {
 					$letterText = $this->render('service/auth/forget.mail.tpl', compact('login', 'newPassword'));
 					$this->get('mailer')->send(
 						'Восстановление пароля в магазине Цвета жизни',

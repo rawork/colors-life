@@ -13,7 +13,10 @@ if (preg_match('/^\/secureimage\//', $_SERVER['REQUEST_URI'])) {
 	$_SESSION['captchaHash'] = md5($captcha->getKeyString().'FWK');
 	exit;
 } else {	
-
+	
+//	require_once('app_dev.php');
+//	exit;
+	
 	require_once('app/init.php');
 	
 	if (preg_match('/^\/ajax\//', $_SERVER['REQUEST_URI'])) {

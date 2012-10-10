@@ -1,8 +1,8 @@
-{raItem var=cat table=catalog_categories query=$param0}	
+{raItem var=cat table=catalog_category query=$param0}	
 <h1>{$cat.name}</h1>
 <div class="cat-description">{$cat.description}</div>
-{if $param1 != 'ord' && $param1 != 'price' && $param1 != 'name'}
-{assign var=param1 value=ord}
+{if $param1 != 'sort' && $param1 != 'price' && $param1 != 'name'}
+{assign var=param1 value=sort}
 {/if}
 {if !$param2}
 {assign var=param2 value="0"}
@@ -24,8 +24,8 @@
 {assign var=page value=1}
 {/if}
 
-{raPaginator var=paginator table=catalog_stuff query="publish='on' AND c_id=`$param0` `$param2_where`" pref="`$ref``$methodName`.`$param0`.`$param1`.`$param2`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
-{raItems var=items table=catalog_stuff query="c_id=`$cat.id` AND publish='on' `$param2_where`" limit=$paginator->limit sort="is_exist DESC,`$param1`"}
+{raPaginator var=paginator table=catalog_product query="publish=1 AND category_id=`$param0` `$param2_where`" pref="`$ref``$methodName`.`$param0`.`$param1`.`$param2`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
+{raItems var=items table=catalog_product query="category_id=`$cat.id` AND publish=1 `$param2_where`" limit=$paginator->limit sort="is_exist DESC,`$param1`"}
 <table class="stuff-selector" width="100%" cellpadding="5" cellspacing="0" border="0">
 <tr>
 <td width="40%">Сортировать по: {if $param1 != 'price' && $param1 != 'name'} 
@@ -66,10 +66,10 @@
 			<td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
 				<td class="stuff-title"><a class="screenshot" href="{raURL node=catalog method=stuff prms=$item2.id}" rel="{$item2.small_image}">{$item2.name}</a>
-				{raItems var=prices table=catalog_prices query="stuff_id=`$item2.id`"}
+				{raItems var=prices table=catalog_price query="product_id=`$item2.id` AND publish=1" sort="sort,size_id"}
 				{if count($prices)}
 				&nbsp;&nbsp;<select name="stuff_price_{$item2.id}" id="stuff_price_{$item2.id}" onchange="setPrice({$item2.id})">
-				<option rel="{if $item.spec_price == '0.00'}{$item.price}{else}{$item.spec_price}{/if}" value="0">...</option>
+				<option rel="{if $item.discount_price == '0.00'}{$item.price}{else}{$item.discount_price}{/if}" value="0">...</option>
 				{foreach from=$prices item=price}
 				<option rel="{$price.price}" value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.</option>
 				{/foreach}
@@ -85,7 +85,7 @@
 							<td colspan="3"><img src="/img/0.gif" width="274" height="1" border="0"></td>
 							</tr>
 							<tr>
-								<td style="white-space:nowrap;text-align:right;padding-right: 5px;"><div class="stuff-price"><span id="price_{$item2.id}">{if $item2.spec_price != '0.00'}{$item2.spec_price}{else}{$item2.price}{/if}</span> руб.</div></td>
+								<td style="white-space:nowrap;text-align:right;padding-right: 5px;"><div class="stuff-price"><span id="price_{$item2.id}">{if $item2.discount_price != '0.00'}{$item2.discount_price}{else}{$item2.price}{/if}</span> руб.</div></td>
 								<td style="white-space:nowrap;"> Кол-во
 								<input type="hidden" value="0" name="stuff_price_{$item2.id}" id="stuff_price_{$item2.id}">
 								<input type="text" name="amount_{$item2.id}" id="amount_{$item2.id}" style="width:30px;" value="1">

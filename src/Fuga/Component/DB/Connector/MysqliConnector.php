@@ -6,8 +6,8 @@ class MysqliConnector extends AbstractConnector{
 	protected $stmt;
 
 	public $real_field_types = array (
-		'html' => 'text', 'checkbox' => 'char(2)', 'currency' => 'decimal(14,2)', 'select' => 'int(11)',
-		'select_tree' => 'int(11)', 'select_list' => 'varchar(255)', 'date' => 'date', 'datetime' => 'datetime',
+		'html' => 'text', 'checkbox' => 'tinyint(1)', 'currency' => 'decimal(14,2)', 'select' => 'int(11)',
+		'select_tree' => 'int(11)', 'select_list' => 'varchar(255)', 'date' => 'date', 'datetime' => 'timestamp',
 		'text' => 'text', 'password' => 'varchar(255)', 'enum' => 'varchar(255)', 'image' => 'varchar(255)',
 		'string' => 'varchar(255)', 'file' => 'varchar(255)', 'number' => 'int(11)', 'template' => 'varchar(255)'
 	);

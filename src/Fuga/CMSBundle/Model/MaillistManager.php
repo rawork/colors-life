@@ -11,7 +11,7 @@ class MaillistManager extends ModelManager {
 		$letter = $this->get('container')->getItem($this->entityTable, 'TO_DAYS(date) <= TO_DAYS(NOW())');
 		if ($letter) {
 			$emails = array();
-			$subscribers = $this->get('container')->getItems($this->subscriberTable, "is_active='on'");
+			$subscribers = $this->get('container')->getItems($this->subscriberTable, "is_active=1");
 			foreach ($subscribers as $subscriber) {
 				$emails[] = $subscriber['email'];
 			}
@@ -92,7 +92,7 @@ http://".$_SERVER['SERVER_NAME']."/subscribe/?key=".$key;
 		$key = addslashes(trim($key));
 		$subscriber = $this->get('container')->getItem($this->subscriberTable, "hashkey='".$key."'");
 		if ($subscriber) {
-			$this->get('container')->updateItem($this->subscriberTable, $subscriber['id'], "is_active='on',hashkey=''");
+			$this->get('container')->updateItem($this->subscriberTable, $subscriber['id'], "is_active=1,hashkey=''");
 			$message = 'Адрес '.htmlspecialchars($subscriber['email']).' активирован';
 		} else {
 			$message = 'Ошибка активации адреса подписки';

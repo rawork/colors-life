@@ -10,7 +10,7 @@ class Vote {
 
 		$this->tables = array();
 		$this->tables[] = array(
-			'name'      => 'questions',
+			'name'      => 'question',
 			'component' => 'vote',
 			'title'     => 'Опрос',
 			'order_by'  => 'date_beg DESC', 
@@ -32,14 +32,14 @@ class Vote {
 				'search' => true
 			),
 			'date_beg' => array (
-				'name'  => 'date_beg',
+				'name'  => 'datefrom',
 				'title' => 'Начало показа',
 				'type'  => 'datetime',
 				'width' => '15%',
 				'search'=> true
 			),
 			'date_end' => array (
-				'name'  => 'date_end',
+				'name'  => 'datetill',
 				'title' => 'Конец показа',
 				'type'  => 'datetime',
 				'width' => '15%',
@@ -81,10 +81,10 @@ class Vote {
 		));
 
 		$this->tables[] = array(
-			'name'       => 'answers',
+			'name'       => 'answer',
 			'component'  => 'vote',
 			'title'      => 'Ответ',
-			'order_by'   => 'ord,name', 
+			'order_by'   => 'sort,name', 
 			'is_lang'    => true,
 			'is_publish' => true,
 			'is_sort'    => true,
@@ -100,7 +100,7 @@ class Vote {
 				'name'    => 'question_id',
 				'title'   => 'Вопрос',
 				'type'    => 'select',
-				'l_table' => 'vote_questions',
+				'l_table' => 'vote_question',
 				'l_field' => 'title',
 				'l_lang'  => true,
 				'width'   => '45%',
@@ -136,7 +136,7 @@ class Vote {
 				'name'   => 'question_id',
 				'title'  => 'Опрос',
 				'type'   => 'select',
-				'l_table'=> 'vote_questions',
+				'l_table'=> 'vote_question',
 				'l_field'=> 'title',
 				'width'  => '40%',
 				'search' => true

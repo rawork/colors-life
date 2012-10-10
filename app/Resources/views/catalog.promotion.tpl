@@ -1,4 +1,4 @@
-{raItem var=item table=catalog_offers query=$param0}
+{raItem var=item table=catalog_commercial query=$param0}
 {if $item}
 <h1>{$item.name}</h1>
 <div class="promotion-dates"> C {$item.datefrom|fdate:'d F Y'} по {$item.datetill|fdate:'d F Y'}</div>

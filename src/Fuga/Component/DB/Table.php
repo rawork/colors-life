@@ -66,12 +66,12 @@ class Table {
 	 * @throws Exception 
 	 */
 	function readDBConfig() {
-		$fields = $this->get('connection')->getItems('table_fields', "SELECT * FROM table_attributes WHERE publish='on' AND table_id=".$this->id." ORDER by ord");
+		$fields = $this->get('connection')->getItems('table_fields', "SELECT * FROM table_attributes WHERE publish=1 AND table_id=".$this->id." ORDER by sort");
 		if (sizeof($fields) > 0) {
 			foreach ($fields as $f) {
-				$f['group_update'] = $f['group_update'] == 'on';
-				$f['readonly'] = $f['readonly'] == 'on';
-				$f['search'] = $f['search'] == 'on';
+				$f['group_update'] = $f['group_update'] == 1;
+				$f['readonly'] = $f['readonly'] == 1;
+				$f['search'] = $f['search'] == 1;
 				if (!empty($f['params'])) {
 					$aparams = explode(';', trim($f['params']));
 					foreach ($aparams as $ap) {
@@ -84,9 +84,6 @@ class Table {
 				$this->fields[$f['name']] = $f;
 			}
 
-			foreach ($this->fields as $k => $f) {
-
-			}
 		} else {
 			throw new \Exception('No fields in table: '.$this->getDBTableName());
 		}
@@ -122,7 +119,7 @@ class Table {
 		foreach ($this->fields as $aField) {
 			if ($aField['type'] != 'listbox') {
 				$ft = $this->createFieldType($aField);
-				if ($aField['name'] == 'credate') {
+				if ($aField['name'] == 'created') {
 					$sQuery .= ($sQuery ? ', ' : ' ').'NOW()';
 				} elseif (stristr($aField['type'], 'date')) {
 					$sQuery .= ($sQuery ? ', ' : '').$ft->getSQLValue();
@@ -143,11 +140,11 @@ class Table {
 		foreach ($this->fields as $fieldData) {
 			if ($fieldData['type'] != 'listbox') {
 				$ft = $this->createFieldType($fieldData, $entity);
-				if ($fieldData['name'] == 'c_id')
+				if ($fieldData['name'] == 'category_id')
 					$categoryId = $ft->getValue();
 				if ($this->getDBTableName() == 'user_user' && $fieldData['name'] == 'login' && $entityId == 1) {
 					$sql .= ($sql ? ', ' : '').$ft->getName()."='admin'";
-				} elseif ($fieldData['name'] == 'change_date') {
+				} elseif ($fieldData['name'] == 'updated') {
 					$sql .= ($sql ? ', ' : '').$ft->getName().'= NOW()';
 				} elseif (empty($fieldData['readonly'])) {
 					if (stristr($fieldData['type'], 'date') || $fieldData['type'] == 'select' || $fieldData['type'] == 'select_tree' || $fieldData['type'] == 'number' || $fieldData['type'] == 'currency')
@@ -158,20 +155,20 @@ class Table {
 			}	
 		}
 		// Обновление значений дополнительных свойств
-		if ($this->getDBTableName() == 'catalog_stuff1') {
-			$category = $this->get('connection')->getItem('get_cat', 'SELECT id, name,filters from catalog_categories where id='.$categoryId);
+		if ($this->getDBTableName() == 'catalog_product1') {
+			$category = $this->get('connection')->getItem('get_cat', 'SELECT id,title,name,filters from catalog_category where id='.$categoryId);
 			if ($category) {
 				$features = $this->get('connection')->getItems('get_features', 'SELECT * from catalog_features where id IN('.$category['filters'].')');
 				foreach($features as $featureData) {
 					$featureId = $featureData['id'];
 					$filterValue = $this->get('util')->_postVar('filter_'.$featureId, true);
-					$feature_value = $this->get('connection')->getItem('get_value', 'SELECT id, feature_value_id FROM catalog_features_values WHERE feature_id='.$featureId.' AND stuff_id='.$entityId);
+					$feature_value = $this->get('connection')->getItem('get_value', 'SELECT id, feature_value_id FROM catalog_features_values WHERE feature_id='.$featureId.' AND product_id='.$entityId);
 					if ($feature_value){
 						$values = "feature_value_id=".$filterValue;
 						$this->get('connection')->execQuery('upd_value', "UPDATE catalog_features_values set ".$values." where id=".$feature_value['id']);
 					} else { 
 						$values = $filterValue.','.$featureId.','.$entityId;
-						$this->get('connection')->execQuery('add_value', "INSERT INTO catalog_features_values (feature_value_id,feature_id,stuff_id) VALUES (".$values.")");
+						$this->get('connection')->execQuery('add_value', "INSERT INTO catalog_features_values (feature_value_id,feature_id,product_id) VALUES (".$values.")");
 					}
 				}
 			}
@@ -260,7 +257,7 @@ class Table {
 			}
 			$search_fields = '';
 			foreach ($this->fields as $f) {
-				if (($f['type'] == 'html' || $f['type'] == 'text' || $f['type'] == 'string') && $f['name'] != 'lang' && $f['name'] != 'ord') {
+				if (($f['type'] == 'html' || $f['type'] == 'text' || $f['type'] == 'string') && $f['name'] != 'lang' && $f['name'] != 'sort') {
 					$search_fields .= ($search_fields ? ',' : '').$f['name'];
 				}
 			}
@@ -356,7 +353,7 @@ class Table {
 				@copy($GLOBALS['PRJ_DIR'].$filepath,$GLOBALS['PRJ_DIR'].$dest);
 				unset($photo['id']);
 				$photo['file'] 		= $dest;
-				$photo['credate'] 	= date("Y-m-d H:i:s");
+				$photo['created'] 	= date("Y-m-d H:i:s");
 				$photo['entity_id'] = $iLastInsertID;
 				$names = implode(',', array_keys($photo));
 				array_walk($photo, "fillValue");
@@ -385,7 +382,7 @@ class Table {
 	}
 	function select($a = null) {
 		if ($this->params['is_lang']) {
-			$a['where'] = empty($a['where']) ? "lang='".$this->get('util')->_sessionVar('lang', false, 'ru')."'" : $a['where']." AND lang='".$this->get('util')->_sessionVar('lang', false, 'ru')."'";
+			$a['where'] = empty($a['where']) ? "locale='".$this->get('util')->_sessionVar('lang', false, 'ru')."'" : $a['where']." AND locale='".$this->get('util')->_sessionVar('lang', false, 'ru')."'";
 		}
 		return $this->get('connection')->execQuery($this->getDBTableName(),
 			'SELECT '.(!empty($a['select']) ? $a['select'] : '*').' FROM '.
@@ -478,7 +475,7 @@ class Table {
 	}
 
 	/*** tree methods */
-	function getPrev($id, $linkName = 'p_id') {
+	function getPrev($id, $linkName = 'parent_id') {
 		if ($a = $this->getItem(intval($id))) {
 			$ret = $this->getPrev($a[$linkName], $linkName);
 			$ret[] = $a;
@@ -488,7 +485,7 @@ class Table {
 		return $ret;
 	}
 
-	function getSub($id, $linkName = 'p_id') {
+	function getSub($id, $linkName = 'parent_id') {
 		$id = intval($id);
 		$ret = $id;
 		if (sizeof($a = $this->getArraysWhere($linkName.'='.$id)) > 0) {
@@ -499,7 +496,7 @@ class Table {
 		return $ret;
 	}
 
-	function getSubAsArray($id, $linkName = 'p_id') {
+	function getSubAsArray($id, $linkName = 'parent_id') {
 		return preg_split(',', $this->getSub($id, $linkName));
 	}
 
@@ -535,8 +532,8 @@ class Table {
 		}
 
 		if ($this->params['is_sort']) {
-			$this->fields['ord'] = array(
-				'name' => 'ord',
+			$this->fields['sort'] = array(
+				'name' => 'sort',
 				'title' => 'Сорт.',
 				'type' => 'number',
 				'width' => '5%',
@@ -555,21 +552,21 @@ class Table {
 			);
 		}
 		if ($this->params['is_lang']) {
-			$this->fields['lang'] = array (
-				'name'  => 'lang',
-				'title' => 'Язык',
+			$this->fields['locale'] = array (
+				'name'  => 'locale',
+				'title' => 'Локаль',
 				'type'  => 'string',
 				'readonly' => true
 			);
 		}
-		$this->fields['credate'] = array (
-			'name'  => 'credate',
+		$this->fields['created'] = array (
+			'name'  => 'created',
 			'title' => 'Дата создания',
 			'type'  => 'datetime',
 			'readonly' => true
 		);
-		$this->fields['change_date'] = array (
-			'name'  => 'change_date',
+		$this->fields['updated'] = array (
+			'name'  => 'updated',
 			'title' => 'Дата изменения',
 			'type'  => 'datetime',
 			'readonly' => true

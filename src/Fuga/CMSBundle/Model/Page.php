@@ -13,7 +13,7 @@ class Page {
 			'name' => 'page',
 			'component' => 'page',
 			'title' => 'Разделы',
-			'order_by' => 'ord,name', 
+			'order_by' => 'sort,name', 
 			'is_lang' => true,
 			'is_publish' => true,
 			'is_sort' => true,
@@ -42,13 +42,13 @@ class Page {
 				'title' => 'Ссылка',
 				'type' => 'string'
 			),
-			'p_id' => array (
-				'name' => 'p_id',
+			'parent_id' => array (
+				'name' => 'parent_id',
 				'title' => 'Находится в',
 				'type' => 'select_tree',
 				'l_table' => 'page_page',
 				'l_field' => 'title',
-				'l_sort' => 'ord,title',
+				'l_sort' => 'sort,title',
 				'l_lang' => true
 			),
 			'module_id' => array (
@@ -59,8 +59,8 @@ class Page {
 				'l_field' => 'title',
 				'query' => "id NOT IN(17)"
 			),
-			'body' => array (
-				'name' => 'body',
+			'content' => array (
+				'name' => 'content',
 				'title' => 'Текст',
 				'type' => 'html'
 			),
@@ -94,10 +94,46 @@ class Page {
 				'width' => '40%',
 				'search'=> true
 			),
-			'body' => array (
-				'name'  => 'body',
+			'content' => array (
+				'name'  => 'content',
 				'title' => 'Текст',
 				'type' => 'html'
+			)
+		));
+		
+		$this->tables[] = array(
+			'name' => 'seo',
+			'component' => 'page',
+			'title' => 'SEO',
+			'fieldset' => array (
+			'words' => array (
+				'name' => 'words',
+				'title' => 'Строки URI',
+				'type' => 'text',
+				'help' => 'Через запятую',
+				'width' => '20%'
+			),
+			'keywords' => array (
+				'name' => 'keywords',
+				'title' => 'Подстроки URI',
+				'type' => 'text',
+				'help' => 'Через запятую',
+				'width' => '20%'
+			),
+			'title' => array (
+				'name' => 'title',
+				'title' => 'Тайтл',
+				'type' => 'text',
+				'width' => '25%',
+				'search' => true
+			),
+			'meta' => array (
+				'name' => 'meta',
+				'title' => 'Метатеги',
+				'type' => 'text',
+				'width' => '25%',
+				'help' => 'Включая служебные символы',
+				'search' => true
 			)
 		));
 	}

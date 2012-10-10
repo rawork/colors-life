@@ -6,20 +6,20 @@ use Fuga\Component\Form\Widget\DiagramWidget;
 
 class VoteManager extends ModelManager {
 	
-	protected $entityTable = 'vote_questions';
-	protected $answerTable = 'vote_answers';
+	protected $entityTable = 'vote_question';
+	protected $answerTable = 'vote_answer';
 	protected $cacheTable = 'vote_cache';
 	
 	// TODO убрать отсюда
 	function getForm($voteName) {
 		$vote = $this->get('container')->getItem(
 				$this->entityTable, 
-				"name='".$voteName."' AND date_beg<'".date('Y-m-d H:i:s')."' AND date_end>'".date('Y-m-d H:i:s')."'"
+				"name='".$voteName."' AND datefrom<'".date('Y-m-d H:i:s')."' AND datetill>'".date('Y-m-d H:i:s')."'"
 		);
 		if ($vote) {
 			$answers = $this->get('container')->getItems(
 				$this->answerTable,
-				'question_id='.$vote['id']." AND publish='on'"
+				'question_id='.$vote['id']." AND publish=1"
 			);		
 			return $this->get('templating')->render('service/vote/form.tpl', compact('vote', 'answers'));
 		} else {
@@ -63,7 +63,7 @@ class VoteManager extends ModelManager {
 		$error = $this->updateData($formData);
 		$vote = $this->get('container')->getItem($this->entityTable, 'name="'.$voteName.'"');
 		if ($vote) {
-			$answers = $this->get('container')->getItems($this->answerTable, 'question_id='.$vote['id']." AND publish='on'");
+			$answers = $this->get('container')->getItems($this->answerTable, 'question_id='.$vote['id']." AND publish=1");
 			$rows = array();
 			foreach ($answers as &$answer){
 				$answer['percent'] = round($answer['quantity'] ? intval($answer['quantity'])/intval($vote['quantity'])*100 : 0, 2);

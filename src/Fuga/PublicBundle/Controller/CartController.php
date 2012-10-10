@@ -21,14 +21,14 @@ class CartController extends PublicController {
 
 	private function _add($id, $amount = 1, $price = '', $priceId = 0) {
 		$amount = intval($amount);
-		if ($product = $this->get('container')->getItem('catalog_stuff', $id)) {
+		if ($product = $this->get('container')->getItem('catalog_product', $id)) {
 			if ($priceId) {
-				$priceData = $this->get('container')->getItem('catalog_prices', $priceId);
+				$priceData = $this->get('container')->getItem('catalog_price', $priceId);
 			} else {
 				$priceData  = array();
 			}
 			if ($price == '0.00') {
-				$price = $product['spec_price'] == '0.00' ? $product['price'] : $product['spec_price'];
+				$price = $product['discount_price'] == '0.00' ? $product['price'] : $product['discount_price'];
 			}
 			$guid = md5($product['id'].$price);
 			if (isset($_SESSION["cart"][$guid])) {
@@ -95,7 +95,7 @@ class CartController extends PublicController {
 		if ($user) {
 			$discount = $user['discount'];
 		}
-		$discountData = $this->get('container')->getItem('cart_discount', "publish='on' AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
+		$discountData = $this->get('container')->getItem('cart_discount', "publish=1 AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
 		if ($discountData && intval($discountData['discount']) > $discount) {
 			$discount = $discountData['discount'];
 		}
@@ -129,8 +129,8 @@ class CartController extends PublicController {
 			$itemIds[] = $item['stuff']['id'];
 		}
 		$totalPrice = $this->getTotalPrice();
-		$gifts = $this->get('container')->getItems('catalog_gifts', "stuff_id IN (".implode(',', $itemIds).")");
-		$gifts2 = $this->get('container')->getItems('cart_gifts', "publish='on' AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
+		$gifts = $this->get('container')->getItems('catalog_gift', "product_id IN (".implode(',', $itemIds).")");
+		$gifts2 = $this->get('container')->getItems('cart_gift', "publish=1 AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
 		$this->get('templating')->setParams(array(
 			'items' => $cartItems,
 			'gifts' => array_merge($gifts, $gifts2),
@@ -157,7 +157,7 @@ class CartController extends PublicController {
 				$stuffitem['counter'] = $_POST['amount_'.$id];
 			}
 			if (!empty($_POST['price_'.$id])) {
-				$aPriceEntity = $this->get('container')->getItem('catalog_prices', $_POST['price_'.$id]);
+				$aPriceEntity = $this->get('container')->getItem('catalog_price', $_POST['price_'.$id]);
 				$stuffitem['priceEntity'] = $aPriceEntity;
 				$stuffitem['price'] = $aPriceEntity['price'];
 			}
@@ -187,7 +187,7 @@ class CartController extends PublicController {
 		
 		$orderText = $this->_getOrderText();
 		$this->get('container')->addItem('cart_order',
-				"user_id, counter, summa, discount, status, fio, email, phone, phone2, pay_type, delivery_type, address, additions, order_txt, credate",
+				"user_id, counter, summa, discount, status, fio, email, phone, phone2, pay_type, delivery_type, address, additions, order_txt, created",
 				($user ? $user['id'] : 0).
 				",'".$_SESSION['number'].
 				"','".$this->getTotalPriceDiscount().
@@ -298,8 +298,8 @@ class CartController extends PublicController {
 		if (empty($_SESSION['deliveryEmail'])) {
 			$_SESSION['deliveryEmail'] = $user ? $user['email'] : '';
 		}
-		$payTypes = $this->get('connection')->getItems('get_pay', "SELECT id,name FROM cart_pay_type WHERE publish='on' ORDER BY ord");
-		$deliveryTypes = $this->get('connection')->getItems('get_delivery', "SELECT id,name,description FROM cart_delivery_type WHERE publish='on' ORDER BY ord");
+		$payTypes = $this->get('connection')->getItems('get_pay', "SELECT id,name FROM cart_pay_type WHERE publish=1 ORDER BY ord");
+		$deliveryTypes = $this->get('connection')->getItems('get_delivery', "SELECT id,name,description FROM cart_delivery_type WHERE publish=1 ORDER BY ord");
 		return $this->render('service/cart/detail.tpl', compact('payTypes', 'deliveryTypes', 'user'));
 	}
 

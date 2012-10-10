@@ -66,7 +66,7 @@ class AdminAjaxController extends Controller {
 </tr></thead>';
 		$where = '';
 		if (!empty($field['l_lang'])) {
-			$where .= " AND lang='".$this->get('router')->getParam('lang')."'";
+			$where .= "locale='".$this->get('router')->getParam('lang')."'";
 		}
 		$paginator = $this->get('paginator');
 		$paginator->paginate($this->get('container')->getTable($field['l_table']), 'javascript:showPage(\'selectlist\',\''.$tableName.'\', \''.$fieldName.'\', '.$entityId.', ###)', $where, 8, 1, 6);
@@ -101,7 +101,7 @@ class AdminAjaxController extends Controller {
 </tr></thead>';
 		$where = '';
 		if (!empty($field['l_lang'])) {
-			$where = "lang='".$this->get('router')->getParam('lang')."'";
+			$where = "locale='".$this->get('router')->getParam('lang')."'";
 		}
 		$paginator = $this->get('paginator');
 		$paginator->paginate($this->get('container')->getTable($field['l_table']), 'javascript:showPage(\''.$divId.'\',\''.$tableName.'\', \''.$fieldName.'\', '.$entityId.', ###)', $where, 8, $page, 6);
@@ -135,7 +135,7 @@ class AdminAjaxController extends Controller {
 <ul id="navigation">
 <li><a href="javascript:void(0)" rel="0" class="popup-item">Корень</a></li>';
 		if (!empty($field['l_lang'])) {
-			$lang_where = "lang='".$this->get('router')->getParam('lang')."'";
+			$lang_where = "locale='".$this->get('router')->getParam('lang')."'";
 		} else {
 			$lang_where = '';
 		}
@@ -149,10 +149,10 @@ class AdminAjaxController extends Controller {
 			$readyNodes[$node['id']] = $node;
 		}
 		foreach ($readyNodes as $node) {
-			if ($node['p_id'] == 0) {
+			if ($node['parent_id'] == 0) {
 				$rootNodes[$node['id']] = $node;
-			} elseif (isset($readyNodes[$node['p_id']])) {
-				$readyNodes[$node['p_id']]['children'][$node['id']] = $node;
+			} elseif (isset($readyNodes[$node['parent_id']])) {
+				$readyNodes[$node['parent_id']]['children'][$node['id']] = $node;
 			}
 			
 		}
@@ -209,7 +209,7 @@ class AdminAjaxController extends Controller {
 	
     function getPopupList($field, $values) {
 		$content = '';
-		$lang_where = !empty($field['l_lang']) ? "lang='".$this->get('util')->_sessionVar('lang', false, 'ru')."'" : '';
+		$lang_where = !empty($field['l_lang']) ? "locale='".$this->get('util')->_sessionVar('lang', false, 'ru')."'" : '';
 		if (!empty($field['query'])) {
 			$lang_where .= ($lang_where ? ' AND ' : '').'('.$field['query'].')';
 		}
@@ -354,8 +354,7 @@ class AdminAjaxController extends Controller {
 		return json_encode(array('content' => $ret));
 	}
 	
-	function getPriceList($stuff_id) {
-		global $THEME_REF;		
+	function getPriceList($productId) {
 		$ret = '<table class="table table-condensed">';
 		$ret .= '<thead><tr>';
     	$ret .= '<th width="30%">Размер</th>';
@@ -366,14 +365,14 @@ class AdminAjaxController extends Controller {
 		$ret .= '<th><i class="icon-align-justify"></i></th>';
     	$ret .= '</tr></thead>';
 				
-		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.ord, p.publish FROM catalog_prices p JOIN catalog_sizes s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.stuff_id=".$stuff_id." ORDER BY p.price";
+		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.sort, p.publish FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id=".$productId." ORDER BY p.price";
 		$prices = $this->get('connection')->getItems('sizelist', $sql);
 		foreach ($prices as $priceitem) {
 			$ret .= '<tr id="price_'.$priceitem['id'].'">';
 			$ret .= '<td>'.$priceitem['size_id_name'].'</td>';
 			$ret .= '<td>'.$priceitem['color_id_name'].'</td>';
 			$ret .= '<td><input type="text" class="input-mini right" name="price_'.$priceitem['id'].'" value="'.$priceitem['price'].'" /></td>';
-			$ret .= '<td><input type="text" class="input-mini" name="ord_'.$priceitem['id'].'" value="'.$priceitem['ord'].'" /></td>';
+			$ret .= '<td><input type="text" class="input-mini" name="sort_'.$priceitem['id'].'" value="'.$priceitem['sort'].'" /></td>';
 			$ret .= '<td><input type="checkbox" name="publish_'.$priceitem['id'].'" value="on"'.($priceitem['publish'] ? ' checked' : '').'></td>';
 			$ret .= '<td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$priceitem['id'].')"><i class="icon-trash icon-white"></i></a></td>'."\n";
 			$ret .= '</tr>';	
@@ -384,15 +383,15 @@ class AdminAjaxController extends Controller {
 	
 	function addPrice($formdata) {
 		parse_str($formdata);
-		$sql = "INSERT INTO catalog_prices(stuff_id,size_id,color_id,price,ord,publish,credate) VALUES(".$stuff_id.",".$size_id.",".$color_id.",'".$price."','".$ord."','".(isset($publish) ? 'on' : '')."',NOW())";
+		$sql = "INSERT INTO catalog_price(product_id,size_id,color_id,price,sort,publish,created) VALUES(".$product_id.",".$size_id.",".$color_id.",'".$price."','".$sort."','".(isset($publish) ? 1 : 0)."',NOW())";
 		$this->get('connection')->execQuery('addprice', $sql);
-		$text = $this->getPriceList($stuff_id);
+		$text = $this->getPriceList($product_id);
 		
 		return json_encode(array('content' => $text));
 	}
 	
 	function delPrice($priceId) {
-		$sql = "DELETE FROM catalog_prices WHERE id=".$priceId;
+		$sql = "DELETE FROM catalog_price WHERE id=".$priceId;
 		$this->get('connection')->execQuery('delprice', $sql);
 		
 		return json_encode(array('status' => 'ok'));
@@ -400,19 +399,19 @@ class AdminAjaxController extends Controller {
 	
 	function updatePrices($formdata){
 		parse_str($formdata);
-		$sql = "SELECT p.id, p.stuff_id FROM catalog_prices p JOIN catalog_sizes s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.stuff_id=".$stuff_id." ORDER BY p.price";
+		$sql = "SELECT p.id, p.product_id FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id=".$product_id." ORDER BY p.price";
 		$items = $this->get('connection')->getItems('sizelist', $sql);
 		foreach ($items as $item) {
 			$priceName = 'price_'.$item['id'];
-			$ordName = 'ord_'.$item['id'];
+			$sortName = 'sort_'.$item['id'];
 			$publishName = 'publish_'.$item['id'];
 			$price = isset($$priceName) ? $$priceName : 0;
-			$ord = isset($$ordName) ? $$ordName : 0;
-			$publish = isset($$publishName) ? $$publishName : '';
-			$sql = "UPDATE catalog_prices SET price='$price', ord='$ord', publish='$publish' WHERE id=".$item['id'];
+			$sort = isset($$sortName) ? $$sortName : 0;
+			$publish = isset($$publishName) ? 1 : 0;
+			$sql = "UPDATE catalog_price SET price='$price', sort='$sort', publish='$publish' WHERE id=".$item['id'];
 			$this->get('connection')->execQuery('updateprice', $sql);
 		}
-		$text = $this->getPriceList($stuff_id);
+		$text = $this->getPriceList($product_id);
 		
 		return json_encode(array('content' => $text));
 	}

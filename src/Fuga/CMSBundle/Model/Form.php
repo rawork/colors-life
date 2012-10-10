@@ -59,7 +59,7 @@ class Form {
 			'name' => 'field',
 			'component' => 'form',
 			'title' => 'Поля формы',
-			'order_by' => 'form_id,ord', 
+			'order_by' => 'form_id,sort', 
 			'is_sort' => true, 
 			'is_lang' => true,
 			//'is_hidden' => true,

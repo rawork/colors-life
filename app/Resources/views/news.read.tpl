@@ -8,7 +8,7 @@
 <tr>
 <td valign="top">{if $news.image}<a href=""><img width="72" height="72" src="{$news.image}"></a>{/if}</td>
 <td valign="top">
-<div class="news-title"><span>{$news.credate|fdate:"d.m.Y H:i"}</span></div>
+<div class="news-title"><span>{$news.created|fdate:"d.m.Y H:i"}</span></div>
 <div class="news-text">{$news.body}</div>
 </td>
 </tr>

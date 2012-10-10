@@ -52,7 +52,7 @@
 	<tr>
 		<td rowspan="9" class="bord_rn" valign="bottom" width="211">&nbsp;&nbsp;&nbsp;Кассир<br><br></td>
 		<td rowspan="9" class="bord_n" valign="bottom" width="11"></td>
-		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$iOrder+100000} от {$oOrder.credate|fdate} </td>
+		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$iOrder+100000} от {$oOrder.created|fdate} </td>
 	</tr>
 	<tr>
 		<td valign="bottom" width="75"></td>
@@ -134,7 +134,7 @@
 	<tr>
 		<td rowspan="9" class="bord_r" valign="bottom" width="211">&nbsp;&nbsp;&nbsp;Кассир<br><br></td>
 		<td rowspan="9" valign="bottom" width="11"></td>
-		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$iOrder+100000} от {$oOrder.credate|fdate}</td>
+		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$iOrder+100000} от {$oOrder.created|fdate}</td>
 	</tr>
 	<tr>
 		<td valign="bottom" width="75"></td>

@@ -1,5 +1,5 @@
 {if $methodName == 'index' && $param0}
-{raItem var=cat table=catalog_categories query=$param0}
+{raItem var=cat table=catalog_category query=$param0}
 {if $cat} 
 {raItems var=filters table=catalog_features query="id IN (`$cat.filters`)"}
 {if count($filters)}

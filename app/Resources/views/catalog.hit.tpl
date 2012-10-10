@@ -1,5 +1,5 @@
 {if $methodName == 'stuff'}
-{raItems var=items table=catalog_stuff nquery="SELECT s.* FROM catalog_categories t1 JOIN catalog_stuff s ON t1.id=s.c_id WHERE s.publish='on' AND s.is_hit='on' AND t1.root_c_id=`$item.c_id_root_c_id` AND s.id<>`$item.id` ORDER BY RAND() LIMIT `$settings.limit_hit`" }
+{raItems var=items table=catalog_product nquery="SELECT s.* FROM catalog_category t1 JOIN catalog_product s ON t1.id=s.category_id WHERE s.publish=1 AND s.is_hit=1 AND t1.root_id=`$item.category_id_root_id` AND s.id<>`$item.id` ORDER BY RAND() LIMIT `$settings.limit_hit`" }
 {if count($items)}
 <h3><span>Хиты продаж:</span></h3>
 
@@ -19,10 +19,10 @@
                       <td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
                           <tr>
                             <td class="stuff-title"><a class="screenshot" href="{raURL node=catalog method=stuff prms=$item2.id}" rel="{$item2.small_image}">{$item2.name}</a>
-							{raItems var=prices table=catalog_prices query="stuff_id=`$item2.id`"}
+							{raItems var=prices table=catalog_price query="product_id=`$item2.id`"}
 							{if count($prices)}
 							&nbsp;&nbsp;<select name="stuff_price_{$item2.id}" id="stuff_price_{$item2.id}" onchange="setPrice({$item2.id})">
-							<option rel="{if $item.spec_price == '0.00'}{$item.price}{else}{$item.spec_price}{/if}" value="0">...</option>
+							<option rel="{if $item.discount_price == '0.00'}{$item.price}{else}{$item.discount_price}{/if}" value="0">...</option>
 							{foreach from=$prices item=price}
 							<option rel="{$price.price}" value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.</option>
 							{/foreach}
@@ -38,7 +38,7 @@
 										<td colspan="3"><img src="/img/0.gif" width="244" height="1" border="0"></td>
 										</tr>
                                         <tr>
-                                          <td style="white-space:nowrap;"><div class="stuff-price"><span id="price_{$item2.id}">{if $item2.spec_price != '0.00'}{$item2.spec_price}{else}{$item2.price}{/if}</span> руб.</div></td>
+                                          <td style="white-space:nowrap;"><div class="stuff-price"><span id="price_{$item2.id}">{if $item2.discount_price != '0.00'}{$item2.discount_price}{else}{$item2.price}{/if}</span> руб.</div></td>
                                           <td style="white-space:nowrap;"> Кол-во
                                            <input type="text" name="amount_{$item2.id}" id="amount_{$item2.id}" style="width:30px;" value="1">
                                             <a href="javascript:addCartItem({$item2.id})">Купить</a></td>
@@ -67,10 +67,10 @@
  {/if}
 {else}
 {if empty($param0)}
-{raItems var=items table=catalog_stuff query="publish='on' AND is_hit='on'" limit=$settings.limit_hit sort="RAND()"}
+{raItems var=items table=catalog_product query="publish=1 AND is_hit=1" limit=$settings.limit_hit sort="RAND()"}
 {else}
-{raItem var=cat table=catalog_categories query=$param0}	
-{raItems var=items table=catalog_stuff nquery="SELECT s.*, p.name as producer_id_name, p.country as producer_id_country,t1.name as c_id_name, t1.root_c_id as c_id_root_c_id FROM catalog_categories t1 JOIN catalog_stuff s ON t1.id=s.c_id JOIN catalog_producers p ON p.id=s.producer_id WHERE s.publish='on' AND s.is_hit='on' AND t1.root_c_id=`$cat.root_c_id` ORDER BY RAND() LIMIT `$settings.limit_hit`" }
+{raItem var=cat table=catalog_category query=$param0}	
+{raItems var=items table=catalog_product nquery="SELECT s.*, p.name as producer_id_name, p.country as producer_id_country,t1.name as category_id_name, t1.root_id as category_id_root_id FROM catalog_category t1 JOIN catalog_product s ON t1.id=s.category_id JOIN catalog_producer p ON p.id=s.producer_id WHERE s.publish=1 AND s.is_hit=1 AND t1.root_id=`$cat.root_id` ORDER BY RAND() LIMIT `$settings.limit_hit`" }
 {/if}
 {if count($items)}
 <div class="spec-link"><a href="javascript:void(0)">Хиты продаж</a></div>       
@@ -93,20 +93,20 @@
                             <td class="stuff-description"><table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                 
-                                {raItem var=cat0 table=catalog_categories query=$item.c_id_root_c_id}
+                                {raItem var=cat0 table=catalog_category query=$item.category_id_root_id}
                                 
-                                  <td height="100%" valign="top"><div class="stuff-cat" style="background-image:url('{$cat0.logo}');"><a href="{raURL node=catalog method=index prms=$item.c_id}">{$item.c_id_name}</a></div>
+                                  <td height="100%" valign="top"><div class="stuff-cat" style="background-image:url('{$cat0.logo}');"><a href="{raURL node=catalog method=index prms=$item.category_id}">{$item.category_id_title}</a></div>
                                     <div class="stuff-name"><a href="{raURL node=catalog method=stuff prms=$item.id}"><span>{$item.name}</span></a></div>
                                     <div class="stuff-producer"><a href="{raURL node=catalog method=brand prms=$item.producer_id}">{$item.producer_id_name}</a> ({$item.producer_id_country})</div>
-									<div class="stuff-description">{$item.short_description}</div>
+									<div class="stuff-description">{$item.preview}</div>
 									
 									<div class="stuff-exist">{if $item.is_exist}<img src="/img/vnalich.png">{else}<img src="/img/zakaz.png">{/if}</div>
-									{raItems var=prices table=catalog_prices query="stuff_id=`$item.id` AND publish='on'" sort="ord,size_id"}
+									{raItems var=prices table=catalog_price query="product_id=`$item.id` AND publish=1" sort="sort,size_id"}
                         {if count($prices)}
                         <div class="stuff-sizes">
                         Размерный ряд:<br> 
                         <select name="stuff_price_{$item.id}" id="stuff_price_{$item.id}" onchange="setPrice({$item.id})">
-                        <option rel="{if $item.spec_price == '0.00'}{$item.price}{else}{$item.spec_price}{/if}" value="0">...</option>
+                        <option rel="{if $item.discount_price == '0.00'}{$item.price}{else}{$item.discount_price}{/if}" value="0">...</option>
                         {foreach from=$prices item=price}
                         <option rel="{$price.price}" value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.</option>
                         {/foreach} 
@@ -123,9 +123,9 @@
                                         <td><img src="/img/0.gif" width="128" height="1" style="display:block;">
                                             <table class="stuff-cart" width="100%" cellpadding="0" cellspacing="0">
                                               <tr><td colspan="2">
-											  {if $item.spec_price != '0.00'}
+											  {if $item.discount_price != '0.00'}
 											  <div class="stuff-price-no"><span>{$item.price}</span> руб.</div>
-											  <div class="stuff-price"><span id="price_{$item.id}">{$item.spec_price}</span> руб.</div>
+											  <div class="stuff-price"><span id="price_{$item.id}">{$item.discount_price}</span> руб.</div>
 											  {else}
 											  <div class="stuff-price"><span id="price_{$item.id}">{$item.price}</span> руб.</div>
 											  {/if}

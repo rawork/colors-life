@@ -1,8 +1,8 @@
-{raItems var=cats table=catalog_categories query="publish='on' AND p_id=0"}
+{raItems var=cats table=catalog_category query="publish=1 AND parent_id=0"}
 {foreach from=$cats item=cat}
 <div class="selectors" id="cat_{$cat.id}">
-{raItems var=subcats table=catalog_categories query="publish='on' AND p_id=`$cat.id`"}
-{raCount var=count_subcats table=catalog_categories query="publish='on' AND p_id=`$cat.id`"}
+{raItems var=subcats table=catalog_category query="publish=1 AND parent_id=`$cat.id`"}
+{raCount var=count_subcats table=catalog_category query="publish=1 AND parent_id=`$cat.id`"}
 {if count($subcats)}
 <table width="640" cellpadding="0" cellspacing="0" border="0">
   <tr>
@@ -28,10 +28,10 @@
                       {foreach from=$subcats item=subcat}
                       {if $cnt == 1}
                       <td>{/if}
-                        <div class="cat-level2"><a href="{raURL node=catalog method=index prms=$subcat.id}"><b>{$subcat.name}</b></a></div>
-                        <div class="cat-level3"> {raItems var=subcats2 table=catalog_categories query="publish='on' AND p_id=`$subcat.id`"}
+                        <div class="cat-level2"><a href="{raURL node=catalog method=index prms=$subcat.id}"><b>{$subcat.title}</b></a></div>
+                        <div class="cat-level3"> {raItems var=subcats2 table=catalog_category query="publish=1 AND parent_id=`$subcat.id`"}
                           {foreach from=$subcats2 item=subcat2}
-                          &mdash; <a href="{raURL node=catalog method=index prms=$subcat2.id}">{$subcat2.name} </a> <br>
+                          &mdash; <a href="{raURL node=catalog method=index prms=$subcat2.id}">{$subcat2.title} </a> <br>
                           {/foreach} </div>
                         {if $cnt >= $maxPerColumn}</td>
                       {counter assign=cnt start=1}{else}{counter assign=cnt}{/if}

@@ -22,7 +22,7 @@ c <input readonly="readonly" value="" name="datefrom" id="datefrom">
 {raItems var=orders table=cart_order query="user_id=`$user.id`"}
 {foreach from=$orders item=order}
 <tr>
-<td>{$order.credate|fdate}</td>
+<td>{$order.created|fdate}</td>
 <td><a href="javascript:showOrderDetail({$order.id})">{$order.id+100000}</a></td>
 <td>{$order.status}</td>
 <td>{$order.counter}</td>

@@ -32,7 +32,7 @@ class Template {
 		'name' => 'version',
 		'component' => 'template',
 		'title' => 'Версионирование',
-		'order_by' => 'credate',
+		'order_by' => 'created',
 		'is_hidden' => true,
 		'fieldset' => array (
 			'cls' => array (
@@ -67,7 +67,7 @@ class Template {
 		'name' => 'rule',
 		'component' => 'template',
 		'title' => 'Правила шаблонов',
-		'order_by' => 'ord',
+		'order_by' => 'sort',
 		'is_lang' => true,
 		'is_sort' => true,
 		'fieldset' => array (
@@ -97,13 +97,13 @@ class Template {
 				'group_update' => true
 			),
 			'date_beg' => array (
-				'name' => 'date_beg',
+				'name' => 'datefrom',
 				'title' => 'Начало показа',
 				'type' => 'datetime',
 				'width' => '12%'
 			),
 			'date_end' => array (
-				'name' => 'date_end',
+				'name' => 'datetill',
 				'title' => 'Конец показа',
 				'type' => 'datetime',
 				'width' => '12%'

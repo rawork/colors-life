@@ -1,4 +1,4 @@
-{raItems var=items table=catalog_offers query="publish='on'" limit=5}
+{raItems var=items table=catalog_commercial query="publish=1" limit=5}
 {if count($items)}
 <table cellpadding="0" cellspacing="0" border="0">
   <tr>

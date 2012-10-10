@@ -25,7 +25,7 @@ class PublicController extends Controller {
 	}
 
 	function getMapList($id = 0) {
-		$nodes = $this->get('connection')->getItems('get_cats', "SELECT id,name as title,name,p_id FROM catalog_categories WHERE p_id=".$id." ORDER BY ord");
+		$nodes = $this->get('connection')->getItems('get_cats', "SELECT id,title,name,parent_id FROM catalog_category WHERE parent_id=".$id." ORDER BY sort");
 		$block ='_sub';
 		if (count($nodes)) {
 			foreach ($nodes as &$node) {
@@ -50,20 +50,20 @@ class PublicController extends Controller {
 		$params = $this->get('router')->getParam('params');
 		if ($this->name == 'catalog' && $this->get('router')->getParam('methodName') == 'index') {
 			if (isset($params[0])) {
-				$path = $this->tables['categories']->getPrev($params[0]);
+				$path = $this->tables['category']->getPrev($params[0]);
 				foreach ($path as $k => $item) {
-					$path[$k]['title'] = $item['name'];
+					$path[$k]['title'] = $item['title'];
 					$path[$k]['ref'] = $this->get('container')->href($this->get('router')->getParam('node'), 'index', array($item['id']));
 				}
 				$nodes = $path;
 			}
 		} elseif ($this->name == 'catalog' && $this->get('router')->getParam('methodName') == 'stuff') {
 			if (isset($params[0])) {
-				$product = $this->get('container')->getItem('catalog_stuff', $params[0]);
-				if (isset($product['c_id'])) {
-					$path = $this->tables['categories']->getPrev($product['c_id']);
+				$product = $this->get('container')->getItem('catalog_product', $params[0]);
+				if (isset($product['category_id'])) {
+					$path = $this->tables['category']->getPrev($product['category_id']);
 					foreach ($path as $k => $item) {
-						$path[$k]['title'] = $item['name'];
+						$path[$k]['title'] = $item['title'];
 						$path[$k]['ref'] = $this->get('container')->href($this->get('router')->getParam('node'), 'index', array($item['id']));
 					}
 					$nodes = $path;

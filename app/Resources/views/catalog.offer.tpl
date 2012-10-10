@@ -1,4 +1,4 @@
-{raItems var=items table=catalog_stuff query="publish='on' AND is_spec='on'" limit=$settings.limit_spec}
+{raItems var=items table=catalog_product query="publish=1 AND is_discount=1" limit=$settings.limit_spec}
 <table class="stuff-table" cellpadding="0" cellspacing="0" border="0">
               {counter assign=cnt start=1}
               {foreach from=$items item=item}
@@ -17,19 +17,19 @@
                             <td class="stuff-image"><a href="{raURL node=catalog method=stuff prms=$item.id}">{if $item.small_image}<img src="{$item.small_image}">{else}<img src="/img/noimage_small.jpg">{/if}</a></td>
                             <td class="stuff-description"><table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
-                                {raItem var=cat0 table=catalog_categories query=$item.c_id_root_c_id}
-                                  <td height="100%" valign="top"><div class="stuff-cat" style="background-image:url('{$cat0.logo}');"><a href="{raURL node=catalog method=index prms=$item.c_id}">{$item.c_id_name}</a></div>
+                                {raItem var=cat0 table=catalog_category query=$item.category_id_root_id}
+                                  <td height="100%" valign="top"><div class="stuff-cat" style="background-image:url('{$cat0.logo}');"><a href="{raURL node=catalog method=index prms=$item.category_id}">{$item.category_id_title}</a></div>
                                     <div class="stuff-name"><a href="{raURL node=catalog method=stuff prms=$item.id}"><span>{$item.name}</span></a></div>
                                     <div class="stuff-producer"><a href="{raURL node=catalog method=brand prms=$item.producer_id}">{$item.producer_id_name}</a> ({$item.producer_id_country})</div>
-									<div class="stuff-description">{$item.spec_description}</div>
+									<div class="stuff-description">{$item.discount_description}</div>
 									
 									<div class="stuff-exist">{if $item.is_exist}<img src="/img/vnalich.png">{else}<img src="/img/zakaz.png">{/if}</div>
-									{raItems var=prices table=catalog_prices query="stuff_id=`$item.id` AND publish='on'" sort="ord,size_id"}
+									{raItems var=prices table=catalog_price query="product_id=`$item.id` AND publish=1" sort="sort,size_id"}
                         {if count($prices)}
                         <div class="stuff-sizes">
                         Размерный ряд:<br> 
                         <select name="stuff_price_{$item.id}" id="stuff_price_{$item.id}" onchange="setPrice({$item.id})">
-                        <option rel="{if $item.spec_price == '0.00'}{$item.price}{else}{$item.spec_price}{/if}" value="0">...</option>
+                        <option rel="{if $item.discount_price == '0.00'}{$item.price}{else}{$item.discount_price}{/if}" value="0">...</option>
                         {foreach from=$prices item=price}
                         <option rel="{$price.price}" value="{$price.id}">{$price.size_id_name} {if $price.color_id}- {$price.color_id_name}{/if} - {$price.price} руб.</option>
                         {/foreach} 
@@ -47,9 +47,9 @@
                                         <td><img src="/img/0.gif" width="128" height="1" style="display:block;">
                                             <table class="stuff-cart" width="100%" cellpadding="0" cellspacing="0">
                                               <tr><td colspan="2">
-											  {if $item.spec_price != '0.00'}
+											  {if $item.discount_price != '0.00'}
 											  <div class="stuff-price-no"><span>{$item.price}</span> руб.</div>
-											  <div class="stuff-price"><span id="price_{$item.id}">{$item.spec_price}</span> руб.</div>
+											  <div class="stuff-price"><span id="price_{$item.id}">{$item.discount_price}</span> руб.</div>
 											  {else}
 											  <div class="stuff-price"><span id="price_{$item.id}">{$item.price}</span> руб.</div>
 											  {/if}

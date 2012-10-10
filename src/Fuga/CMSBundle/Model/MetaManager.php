@@ -4,7 +4,7 @@ namespace Fuga\CMSBundle\Model;
 
 class MetaManager extends ModelManager {
 	
-	protected $entityTable = 'meta_items';
+	protected $entityTable = 'page_seo';
 	
 	public function getMeta($uri = false) {
 		return $this->getItem('meta', $uri);

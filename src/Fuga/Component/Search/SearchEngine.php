@@ -10,39 +10,39 @@ class SearchEngine {
 	public function __construct() {
 		$this->modules = array(
 			'catalog' => array(
-				'catalog_stuff' => array(
-					'fields' => array('name', 'articul', 'short_description', 'description', 'spec_description', 'tags'),
+				'catalog_product' => array(
+					'fields' => array('name', 'articul', 'preview', 'description', 'discount_description', 'tags'),
 					'link' => '/%s/stuff.%s.htm',
-					'where' => "publish='on'",
+					'where' => "publish=1",
 					'title' => 'name'
 				),
-				'catalog_categories' => array(
+				'catalog_category' => array(
 					'fields' => array('name', 'description'),
 					'link' => '/%s/index.%s.htm',
-					'where' => "publish='on'",
+					'where' => "publish=1",
 					'title' => 'name'
 				),
-				'catalog_producers' => array(
+				'catalog_producer' => array(
 					'fields' => array('name', 'description', 'country'),
 					'link' => '/%s/brand.%s.htm',
-					'where' => "publish='on'",
+					'where' => "publish=1",
 					'title' => 'name'
 				),
 			),
-			'articles' => array(
-				'articles_articles' => array(
-					'fields' => array('name', 'announce', 'body', 'tags', 'termin'),
+			'article' => array(
+				'article_article' => array(
+					'fields' => array('name', 'preview', 'body', 'tags', 'termin'),
 					'link' => '/%s/read.%s.htm',
-					'where' => "publish='on'",
+					'where' => "publish=1",
 					'title' => 'name'
 
 				)
 			),
 			'news' => array(
 				'news_news' => array(
-					'fields' => array('name', 'announce', 'body'),
+					'fields' => array('name', 'preview', 'body'),
 					'link' => '/%s/read.%s.htm',
-					'where' => "publish='on'",
+					'where' => "publish=1",
 					'title' => 'name'
 				)
 			)
@@ -50,13 +50,13 @@ class SearchEngine {
 		$this->pages = array(
 			'fields' => array('title', 'name', 'body'),
 			'link' => '/%s.htm',
-			'where' => "publish='on'",
+			'where' => "publish=1",
 			'title' => 'title'
 		);	
 	}
 	
 	function getSearchResultRef($a, $methodName = '') {
-		return $this->get('container')->href(!empty($a['dir_id']) ? $a['dir_id_name'] : $this->name, $methodName, array($a['id']));
+		return $this->get('container')->href(!empty($a['node_id']) ? $a['node_id_name'] : $this->name, $methodName, array($a['id']));
 	}
 
 	private function getTableSearchResults($words, $tableName, $options) {
@@ -110,7 +110,7 @@ class SearchEngine {
 	function getResults($text) {
 		$text = $this->getMorphoForm($text);
 		$ret = array();
-		$pages = $this->get('container')->getItems('page_page', "publish='on' AND module_id<>0");
+		$pages = $this->get('container')->getItems('page_page', "publish=1 AND module_id<>0");
 		if (is_array($pages)) {
 			foreach ($pages as $node) {
 				if (isset($this->modules[$node['module_id_name']])) {

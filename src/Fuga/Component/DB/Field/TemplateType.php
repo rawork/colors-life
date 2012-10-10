@@ -77,7 +77,7 @@ class TemplateType extends Type {
 			$vers = $this->get('connection')->getItems('select_version', "SELECT * FROM template_version WHERE cls='".$this->params['cls']."' AND fld='".$this->getName()."' AND rc=".$this->dbId.' ORDRER BY id');
 			if (sizeof($vers) >= __VERSION_QUANTITY)
 				$this->get('connection')->execQuery('template_version', 'DELETE FROM template_version WHERE id='.$vers[0]['id']);
-			$db_ret = $this->get('connection')->execQuery('add_version', 'INSERT INTO template_version(cls,fld,rc,credate,file) VALUES('.$values.')');
+			$db_ret = $this->get('connection')->execQuery('add_version', 'INSERT INTO template_version(cls,fld,rc,created,file) VALUES('.$values.')');
 		}
 		return $ret;
 	}
@@ -104,7 +104,7 @@ class TemplateType extends Type {
 			if (count($versions)) {
 				$content .= '<span>Предудущие версии:</span> <select onChange="templateState(this, \''.$name.'\')" id="'.$name.'_version" name="'.$name.'_version"><option value="0">Не выбрано</option>'."\n";
 				foreach ($versions as $version) {
-					$content .= '<option value="'.$version['id'].'">'.$version['credate'].'</option>';
+					$content .= '<option value="'.$version['id'].'">'.$version['created'].'</option>';
 				}
 				$content .= '</select> <input type="button" class="btn btn-success btn-large closed" id="'.$name.'_view" onClick="showTemplateVersion(\''.$name.'_version\')" value="Просмотр">';
 			}

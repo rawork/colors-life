@@ -50,12 +50,12 @@ class EditAction extends Action {
 					$ret .= '</td></tr>';
 				}
 				/* Реализация дополнительных параметров */
-				/*if ($this->t->getDBTableName() == 'catalog_stuff' && $a['c_id'] != 0) {
+				/*if ($this->t->getDBTableName() == 'catalog_product' && $a['category_id'] != 0) {
 
-					$features = $this->get('connection')->getItems('get_filters', 'SELECT id,name FROM catalog_features where id IN ('.$a['c_id_filters'].') order by name');
+					$features = $this->get('connection')->getItems('get_filters', 'SELECT id,name FROM catalog_features where id IN ('.$a['category_id_filters'].') order by name');
 					foreach ($features as $feature) {
 						$feature_variants = $this->get('connection')->getItems('get_feature_variants', "SELECT id,name FROM catalog_features_variants WHERE filter_id=".$feature['id']);
-						$feature_value_item = $this->get('connection')->getItem('get_feature_value', 'SELECT * from catalog_features_values where stuff_id='.$a['id'].' AND feature_id='.$feature['id']); 
+						$feature_value_item = $this->get('connection')->getItem('get_feature_value', 'SELECT * from catalog_features_values where product_id='.$a['id'].' AND feature_id='.$feature['id']); 
 						$ret .= '<tr><td width="150" align=left>'.$feature['name'].'</td><td>';
 						$ret .= '<select name="filter_'.$feature['id'].'">';
 						$ret .= '<option value="0">Выберите...</option>';
@@ -81,13 +81,13 @@ class EditAction extends Action {
 
 	function getPricesForm() {
 		$entity = $this->item;
-		$sizes = $this->get('connection')->getItems('get_sizes', "SELECT id,name FROM catalog_sizes ORDER BY name");
+		$sizes = $this->get('connection')->getItems('get_sizes', "SELECT id,name FROM catalog_size ORDER BY name");
 		$colors = $this->get('connection')->getItems('get_colors', "SELECT id,name FROM catalog_color ORDER BY name");
-		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.ord, p.publish FROM catalog_prices p JOIN catalog_sizes s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.stuff_id=".$entity['id']." ORDER BY p.ord, p.price";
+		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.sort, p.publish FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id=".$entity['id']." ORDER BY p.sort, p.price";
 		$prices = $this->get('connection')->getItems('sizelist', $sql);
 		$content = '';
 		$content .= '<form method="post" name="frmUpdatePrice" id="frmUpdatePrice" action="">
-<input type="hidden" name="stuff_id" value="'.$entity['id'].'" />
+<input type="hidden" name="product_id" value="'.$entity['id'].'" />
 <div id="pricelist">
 <table class="table table-condensed">
 <thead><tr>
@@ -104,7 +104,7 @@ class EditAction extends Action {
 <td>'.$priceitem['size_id_name'].'</td>
 <td>'.$priceitem['color_id_name'].'</td>
 <td><input type="text" class="input-mini right" name="price_'.$priceitem['id'].'" value="'.$priceitem['price'].'" /></td>
-<td><input type="text" class="input-mini" name="ord_'.$priceitem['id'].'" value="'.$priceitem['ord'].'" /></td>
+<td><input type="text" class="input-mini" name="sort_'.$priceitem['id'].'" value="'.$priceitem['sort'].'" /></td>
 <td><input type="checkbox" name="publish_'.$priceitem['id'].'" value="on"'.($priceitem['publish'] ? ' checked' : '').'></td>
 <td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$priceitem['id'].')"><i class="icon-trash icon-white"></i></a></td>
 </tr>';	
@@ -117,7 +117,7 @@ class EditAction extends Action {
 </div>
 <br>
 <form method="post" name="frmAddPrice" id="frmAddPrice" action="">
-<input name="stuff_id" value="'.$entity['id'].'" type="hidden">
+<input name="product_id" value="'.$entity['id'].'" type="hidden">
 <table class="table table-condensed">
 <thead><tr><td><strong>Добавить</strong></td><th></th></tr></thead>
 <tr id="add_size_id"><td width="180"><b>Размер</b> <span class="sfnt">{size_id}</span></td>
@@ -133,8 +133,8 @@ class EditAction extends Action {
 		}
 		$content .= '</select></td></tr>
 <tr id="add_price"><td width="180"><strong>Цена</strong> <span>{price}</span></td><td><input name="price" style="text-align: right;" value="" type="text"></td></tr>
-<tr id="add_ord"><td width="180"><strong>Порядок</strong> <span>{ord}</span></td><td><input name="ord" style="text-align: right;" value="" type="text"></td></tr>
-<tr id="add_ord"><td width="180"><strong>Акт</strong> <span>{publish}</span></td><td><input type="checkbox" name="publish"></td></tr>
+<tr id="add_sort"><td width="180"><strong>Порядок</strong> <span>{sort}</span></td><td><input name="sort" style="text-align: right;" value="" type="text"></td></tr>
+<tr id="add_sort"><td width="180"><strong>Акт</strong> <span>{publish}</span></td><td><input type="checkbox" name="publish"></td></tr>
 </table><input class="btn btn-success" onclick="addPrice(\'AddPrice\')" value="Добавить" type="button"></form>';
 
 		return $content;
@@ -152,7 +152,7 @@ class EditAction extends Action {
 <th><i class="icon-align-justify"></i></th>
 </tr></thead>';
 
-			$sql = "SELECT * FROM system_files WHERE table_name='".$this->dataTable->getDBTableName()."' AND entity_id=".$a['id']." ORDER BY credate";
+			$sql = "SELECT * FROM system_files WHERE table_name='".$this->dataTable->getDBTableName()."' AND entity_id=".$a['id']." ORDER BY created";
 			$files = $this->get('connection')->getItems('filelist', $sql);
 			foreach ($files as $fileitem) {
 				$content .= '<tr id="file_'.$fileitem['id'].'">

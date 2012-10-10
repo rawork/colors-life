@@ -11,7 +11,7 @@
 	{foreach from=$items key=guid item=item}
 	<div class="cart-item" id="stuff_{$guid}">
 	<div class="item-title">
-		<a href="{raURL node=catalog method=stuff prms=$item.stuff.id}">{$item.stuff.name}</a> {raItems var=prices table=catalog_prices query="stuff_id=`$item.stuff.id` AND publish='on'" sort="ord,size_id"}
+		<a href="{raURL node=catalog method=stuff prms=$item.stuff.id}">{$item.stuff.name}</a> {raItems var=prices table=catalog_price query="product_id=`$item.stuff.id` AND publish=1" sort="sort,size_id"}
 		{if count($prices)}
 		&nbsp;&nbsp;<br>
 		<select style="width:200px;" name="price_{$guid}" id="price_{$guid}">
@@ -65,13 +65,13 @@
 					<td class="stuff-image2"><a href="{raURL node=catalog method=stuff prms=$gift.gift_id}">{if $gift.gift_id_small_image}<img src="{$gift.gift_id_small_image}">{/if}</a></td>
 					<td class="stuff-description3">
 						<table width="100%" cellpadding="0" cellspacing="0" border="0">
-							<tr> {raItem var=item table=catalog_stuff query=$gift.gift_id}
-								{if $item.c_id_p_id == 0}
-								{raItem var=cat0 table=catalog_categories query=$item.c_id}
+							<tr> {raItem var=item table=catalog_product query=$gift.gift_id}
+								{if $item.category_id_parent_id == 0}
+								{raItem var=cat0 table=catalog_category query=$item.category_id}
 								{else}
-								{raItem var=cat0 table=catalog_categories query=$item.c_id_p_id}
+								{raItem var=cat0 table=catalog_category query=$item.category_id_parent_id}
 								{/if}
-								<td height="100%" valign="top"><div class="stuff-cat" style="background-image:url('{$cat0.logo}');"><a href="{raURL node=catalog method=index prms=$item.c_id}">{$item.c_id_name}</a></div>
+								<td height="100%" valign="top"><div class="stuff-cat" style="background-image:url('{$cat0.logo}');"><a href="{raURL node=catalog method=index prms=$item.category_id}">{$item.category_id_name}</a></div>
 									<div class="stuff-name"><a href="{raURL node=catalog method=stuff prms=$gift.gift_id}">{$gift.gift_id_name}</a></div>
 									<div class="stuff-description"></div></td>
 							</tr>

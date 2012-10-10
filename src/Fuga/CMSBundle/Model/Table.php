@@ -13,7 +13,7 @@ class Table {
 			'name'			=> 'tables',
 			'component'		=> 'table',
 			'title'			=> 'Таблицы',
-			'order_by'		=> 'module_id,ord,name',
+			'order_by'		=> 'module_id,sort,name',
 			'is_sort'		=> true,
 			'is_publish'	=> true,
 			'fieldset'		=> array (
@@ -120,7 +120,7 @@ class Table {
 			'name'		=> 'attributes',
 			'component' => 'table',
 			'title'		=> 'Поля',
-			'order_by'	=> 'table_id,ord',
+			'order_by'	=> 'table_id,sort',
 			'is_sort'	=> true,
 			'is_publish' => true,
 			'fieldset'	=> array (

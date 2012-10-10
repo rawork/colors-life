@@ -171,6 +171,11 @@ function showSelectPopup(inputId, tableName, fieldName, dbId, title){
 	}, "json");
 }
 
+function emptySelect(inputId) {
+	$('#'+inputId).attr('value', 0);
+	$('#'+inputId+'_title').attr('value', 'Не выбрано');
+}
+
 function showPage(divId, tableName, fieldName, entityId, page) {
 	$.post("/adminajax/", {method: 'showPage', divId: divId, tableName: tableName, fieldName: fieldName, entityId: entityId, page: page},
 	function(data){

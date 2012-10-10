@@ -8,11 +8,11 @@ class CheckboxType extends Type {
 	}
 
 	public function getSQL() {
-		return $this->getName().' char(2) NULL';
+		return $this->getName()." TINYINT(1) NULL DEFAULT  '0'";
 	}
 
 	public function getSQLValue($name = '') {
-		return $this->getValue($name) == 'on' ? $this->getValue($name) : '';
+		return $this->getValue($name) == '1' ? $this->getValue($name) : 0;
 	}
 
 	public function getStatic() {
@@ -20,27 +20,27 @@ class CheckboxType extends Type {
 	}
 
 	public function getInput($value = '', $name = '') {
-		return '<input type="checkbox" name="'.($name ? $name : $this->getName()).'" '.(empty($this->dbValue) ? '' : 'checked').'>';
+		return '<input type="checkbox" value="1" name="'.($name ? $name : $this->getName()).'" '.(empty($this->dbValue) ? '' : 'checked').'>';
 	}
 
 	public function getSearchInput() {
 		$name = parent::getSearchName();
 		$value = parent::getSearchValue();
 		$yes = $no = $no_matter = "";
-		if ($value == 'on') {
+		if ($value == 1) {
 			$yes = 'checked';
-		} else if ($value == 'off') {
+		} else if ($value == 0) {
 			$no = 'checked';
 		} else {
 			$no_matter = 'checked';
 		}
 		return '
 <label class="radio inline">
-  <input type="radio" name="'.$name.'" id="'.$name.'_yes" value="on" '.$yes.'>
+  <input type="radio" name="'.$name.'" id="'.$name.'_yes" value="1" '.$yes.'>
   да
 </label>
 <label class="radio inline">
-  <input type="radio" name="'.$name.'" id="'.$name.'_no" value="off" '.$no.'>
+  <input type="radio" name="'.$name.'" id="'.$name.'_no" value="0" '.$no.'>
   нет
 </label>
 <label class="radio inline">

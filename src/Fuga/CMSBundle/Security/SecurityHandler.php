@@ -56,7 +56,7 @@ class SecurityHandler {
 		if ($inputUser == _DEV_USER && $inputPass == _DEV_PASS) {
 			$user = array('login' => $inputUser);
 		} else {
-			$user = $this->get('connection')->getItem('user', "SELECT login FROM user_user WHERE login='$inputUser' AND password='".$inputPass."' AND is_active='on'");
+			$user = $this->get('connection')->getItem('user', "SELECT login FROM user_user WHERE login='$inputUser' AND password='".$inputPass."' AND is_active=1");
 		}
 		if ($user){
 			$_SESSION['user'] = $user['login'];

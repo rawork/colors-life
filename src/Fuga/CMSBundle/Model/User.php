@@ -91,5 +91,90 @@ class User {
 				'width' => '70%'
 			)
 		));
+		
+		$this->tables[] = array(
+			'name'		=> 'address',
+			'component' => 'user',
+			'title'		=> 'Адреса доставки',
+			'order_by'	=> 'id DESC',
+			'show_created' => true,
+			'fieldset' => array (
+			'name' => array (
+				'name' => 'name',
+				'title' => 'ФИО получателя',
+				'type' => 'string'
+			),
+			'user_id' => array (
+				'name' => 'user_id',
+				'title' => 'Пользователь',
+				'type' => 'select',
+				'l_table' => 'auth_users',
+				'l_field' => 'name,lastname'
+			),
+			'town' => array (
+				'name' => 'town',
+				'title' => 'Город',
+				'type' => 'string',
+				'search' => true,
+				'not_empty' => true,
+				'form' => true,
+				'width' => '20%'
+			),
+			'street' => array (
+				'name' => 'street',
+				'title' => 'Улица',
+				'type' => 'string',
+				'search' => true,
+				'not_empty' => true,
+				'form' => true,
+				'width' => '20%'
+			),
+			'house' => array (
+				'name' => 'house',
+				'title' => 'Дом',
+				'type' => 'string',
+				'width' => '10%'
+			),
+			'corpus' => array (
+				'name' => 'corpus',
+				'title' => 'Корпус',
+				'type' => 'string',
+				'width' => '10%'
+			),
+			'building' => array (
+				'name' => 'building',
+				'title' => 'Строение',
+				'type' => 'string',
+				'width' => '10%'
+			),
+			'apartment' => array (
+				'name' => 'apartment',
+				'title' => 'Квартира',
+				'type' => 'string',
+				'width' => '10%'
+			),
+			'comment' => array (
+				'name' => 'comment',
+				'title' => 'Комментарий',
+				'type' => 'text',
+				'width' => '10%'
+			),
+			'phone' => array (
+				'name' => 'phone',
+				'title' => 'Телефон',
+				'type' => 'string',
+				'not_empty' => true,
+				'form' => true,
+				'width' => '15%'
+			),
+			'phone_extra' => array (
+				'name' => 'phone_extra',
+				'title' => 'Телефон (доп.)',
+				'type' => 'string',
+				'not_empty' => true,
+				'form' => true,
+				'width' => '15%'
+			)
+		));
 	}
 }

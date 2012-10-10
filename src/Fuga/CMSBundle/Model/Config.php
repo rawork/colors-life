@@ -13,7 +13,7 @@ class Config {
 			'name' => 'modules',
 			'component' => 'config',
 			'title' => 'Модули',
-			'order_by' => 'ord,title',
+			'order_by' => 'sort,title',
 			'fieldset' => array (
 			'title' => array (
 				'name' => 'title',
@@ -28,8 +28,8 @@ class Config {
 				'width' => '40%',
 				'search' => true
 			),
-			'ord' => array (
-				'name' => 'ord',
+			'sort' => array (
+				'name' => 'sort',
 				'title' => 'Сорт.',
 				'type' => 'number',
 				'group_update'  => true,

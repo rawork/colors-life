@@ -54,6 +54,6 @@ class FormManager extends ModelManager {
 	}
 
 	public function getBody() {
-		return $this->getForm('dir_id='.$this->name);
+		return $this->getForm('node_id='.$this->name);
 	}
 }

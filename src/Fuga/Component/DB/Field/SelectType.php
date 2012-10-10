@@ -21,6 +21,7 @@ class SelectType extends LookUpType {
 <div class="input-append">
 <input '.$class.' id="'.$input_id.'_title"  type="text" value="'.$this->getStatic($value).'" readonly>
 <button class="btn" href="javascript:void(0)" type="button" onClick="showSelectPopup(\''.$input_id.'\',\''.$table.'\',\''.$name.'\', \''.$id.'\', \''.$this->getStatic($value).'\');">&hellip;</button>
+<button class="btn" href="javascript:void(0)" type="button" onClick="emptySelect(\''.$input_id.'\');"><i class="icon-remove"></i></button>
 </div>
 <input type="hidden" name="'.$name.'" value="'.$value.'" id="'.$input_id.'">
 ';

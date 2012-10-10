@@ -48,15 +48,15 @@ class Container
 			if ($this->get('security')->isSuperuser()) {
 				$modules = $this->modules;
 			} elseif ($user = $this->get('security')->getCurrentUser()) {
-				$modules = $this->get('connection')->getItems('config_modules', ' SELECT id, ord, name, title, \'content\' AS ctype FROM config_modules WHERE id IN ('.$user['rules'].') ORDER BY ord, title');
+				$modules = $this->get('connection')->getItems('config_modules', ' SELECT id, sort, name, title, \'content\' AS ctype FROM config_modules WHERE id IN ('.$user['rules'].') ORDER BY sort, title');
 				if ($user['is_admin']) {
-					$query = "SELECT id, ord, name, title, 'settings' AS ctype FROM system_modules
-						UNION SELECT id, ord, name, title, 'service' AS ctype FROM system_services
-						ORDER BY ord, title";
+					$query = "SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules
+						UNION SELECT id, sort, name, title, 'service' AS ctype FROM system_services
+						ORDER BY sort, title";
 				} else {
-					$query = "SELECT id, ord, name, title, 'settings' AS ctype FROM system_modules WHERE name IN ('config', 'meta')
-						UNION SELECT id, ord, name, title, 'service' AS ctype FROM system_services
-						ORDER BY ord, title";
+					$query = "SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules WHERE name IN ('config', 'meta')
+						UNION SELECT id, sort, name, title, 'service' AS ctype FROM system_services
+						ORDER BY sort, title";
 				}
 				$modules = array_merge($modules , $this->get('connection')->getItems('modules', $query));
 			}
@@ -79,10 +79,10 @@ class Container
 		global $LIB_DIR;	
 		$ret = array();
 		$this->modules = array();
-		$query = "SELECT id, ord, name, title, 'content' AS ctype FROM config_modules
-		UNION SELECT id, ord, name, title, 'settings' AS ctype FROM system_modules
-		UNION SELECT id, ord, name, title, 'service' AS ctype FROM system_services
-		ORDER BY ord, title";
+		$query = "SELECT id, sort, name, title, 'content' AS ctype FROM config_modules
+		UNION SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules
+		UNION SELECT id, sort, name, title, 'service' AS ctype FROM system_services
+		ORDER BY sort, title";
 		$modules = $this->get('connection')->getItems('modules', $query);
 		foreach ($modules as $module) {
 			$tables = array();
@@ -96,7 +96,7 @@ class Container
 				}
 			}
 		}
-		$tables = $this->get('connection')->getItems('tables', "SELECT tt.*,cm.name as component FROM table_tables tt LEFT JOIN config_modules cm ON tt.module_id=cm.id WHERE publish='on' ORDER BY tt.ord");
+		$tables = $this->get('connection')->getItems('tables', "SELECT tt.*,cm.name as component FROM table_tables tt LEFT JOIN config_modules cm ON tt.module_id=cm.id WHERE publish=1 ORDER BY tt.sort");
 		foreach ($tables as $table) {
 			$ret[$table['component'].'_'.$table['name']] = new Table($table);
 		}
@@ -123,7 +123,7 @@ class Container
 	function getItem($class, $condition = 0, $sort = '', $select = '') {
 		$ret = array();
 		if (!isset($this->tables[$class])) {
-			throw new \Exception('Class not found: '.$class);
+			throw new \Exception('Table not found: '.$class);
 		} else {
 			$ret = $this->tables[$class]->getItem($condition, $sort, $select);
 		}
@@ -131,7 +131,7 @@ class Container
 
 	}
 
-	function getPrev($class, $id, $linkName = 'p_id') {
+	function getPrev($class, $id, $linkName = 'parent_id') {
 		if ($a = $this->getItem($class, intval($id))) {
 			$ret = $this->getPrev($class, $a[$linkName], $linkName);
 			$ret[] = $a;
@@ -144,7 +144,7 @@ class Container
 	function getItems($tableName, $query = '', $sort = '', $limit = false, $select = '', $detail = true) {
 		$ret = array();
 		if (!isset($this->tables[$tableName])) {
-			throw new \Exception('Class not found: '.$tableName);
+			throw new \Exception('Table not found: '.$tableName);
 		} else {
 			$a = array('where' => $query, 'order_by' => $sort, 'limit' => $limit);
 			if (trim($select) != '') 
@@ -176,7 +176,7 @@ class Container
 	function getCount($class, $condition = '') {
 		$ret = array();
 		if (!isset($this->tables[$class])) {
-			throw new \Exception('Class not found: '.$class);
+			throw new \Exception('Table not found: '.$class);
 		} else {
 			$ret = $this->tables[$class]->getCount($condition);
 		}

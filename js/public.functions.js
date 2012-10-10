@@ -500,8 +500,8 @@ function setDeliveryType(delivery_id) {
 	}
 }
 
-function showMailForm(stuff_id) {
-	$('#mailblock'+stuff_id).css('display', 'block');
+function showMailForm(productId) {
+	$('#mailblock'+productId).css('display', 'block');
 	return false;
 }
 

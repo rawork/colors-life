@@ -17,6 +17,7 @@ class IndexAction extends Action {
 
 	/* Кнопки управления записью */
 	private function _getUpdateDelete($id) {
+		$ref = explode('?', $this->fullRef);
 		$buttons = '<td>
 <div class="btn-group pull-right">
   <a class="btn btn-small dropdown-toggle admin-dropdown-toggle" id="drop'.$id.'" data-toggle="dropdown" href="#">
@@ -24,7 +25,7 @@ class IndexAction extends Action {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu admin-dropdown-menu">
-    <li><a href="'.$this->fullRef.'/edit/'.$id.'"><i class="icon-pencil"></i> Изменить</a></li>
+    <li><a href="'.$ref[0].'/edit/'.$id.'"><i class="icon-pencil"></i> Изменить</a></li>
     <li><a href="javascript: startDelete('.$id.')"><i class="icon-trash"></i> Удалить</a></li>
     <li><a href="javascript: showCopyDialog('.$id.')"><i class="icon-random"></i> Копировать</a></li>
   </ul>
@@ -70,7 +71,7 @@ class IndexAction extends Action {
 				}
 			}
 			if ( $this->dataTable->params['show_credate'] ) {
-				$tableHtml .= '<td>'.$entity['credate'].'</td>'."\n";
+				$tableHtml .= '<td>'.$entity['created'].'</td>'."\n";
 			}
 			$tableHtml .= $this->_getUpdateDelete($entity['id']).'</tr>'."\n";
 		}
@@ -93,7 +94,7 @@ class IndexAction extends Action {
 	private function getTree($parentId, $prefixWidth = 0, $styleClass = '') {
 		global $THEME_REF;
 		$tableHtml = '';
-		$where = 'p_id='.$parentId.' '.($this->search_sql ? ' AND '.$this->search_sql : '');
+		$where = 'parent_id='.$parentId.' '.($this->search_sql ? ' AND '.$this->search_sql : '');
 		$this->dataTable->select(
 			array(
 				'where'		=> $where,
@@ -104,7 +105,7 @@ class IndexAction extends Action {
 		$styleClass .= 't'.$parentId;
 		foreach ($nodes as $node) {
 			$this->elementsIds[] = $node['id'];
-			$tableHtml .= '<tr rel="'.$node['p_id'].'" class="'.$styleClass.'">';
+			$tableHtml .= '<tr rel="'.$node['parent_id'].'" class="'.$styleClass.'">';
 			$tableHtml .= '<td width="1%"><input type="checkbox" class="list-checker" value="'.$node['id'].'"></td><td width="1%">'.$node['id'].'</td>';
 			$num = 0;
 

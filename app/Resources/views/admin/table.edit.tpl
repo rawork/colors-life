@@ -60,7 +60,7 @@
               </tr>
               <tr>
                 <td>Сорт.:<br>
-                  <input type="text" name="ord" class="field-props-short" value="{$a.ord}" /></td>
+                  <input type="text" name="sort" class="field-props-short" value="{$a.sort}" /></td>
               </tr>
               <tr>
                 <td>Активный:<br>

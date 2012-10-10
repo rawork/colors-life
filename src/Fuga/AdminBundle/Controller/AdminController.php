@@ -98,7 +98,7 @@ class AdminController extends Controller {
 				'name' => 'Резервное копирование'
 			);
 		}
-		if ($this->module->name == 'articles' && $this->get('security')->isSuperuser()) {
+		if ($this->module->name == 'article' && $this->get('security')->isSuperuser()) {
 			$ret[] = array (
 				'ref' => $this->getBaseTableRef().'/counttag',
 				'name' => 'Расчет тегов'

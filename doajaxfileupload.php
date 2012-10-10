@@ -57,7 +57,7 @@ foreach ($_FILES[$fileElementName]["name"] as $i => $file) {
         	$filewidth = $fileInfo[0];
        		$fileheight = $fileInfo[1];
 	    }
-		$sql = "INSERT INTO system_files(name,mimetype,file,width,height,filesize,table_name,entity_id,credate) "
+		$sql = "INSERT INTO system_files(name,mimetype,file,width,height,filesize,table_name,entity_id,created) "
 			." VALUES('$filepath','$filetype','$fileref',$filewidth,$fileheight,'$filesize','$tableName','$entityId',NOW())";
 		$GLOBALS['container']->get('connection')->execQuery('addfile', $sql);
 	}
