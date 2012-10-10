@@ -2,7 +2,7 @@
 
 namespace Fuga\CMSBundle\Model;
 
-use Fuga\Component\Form\Form;
+use Fuga\Component\Form\Form as FormBuilder;
 
 class FormManager extends ModelManager {
 	
@@ -23,7 +23,7 @@ class FormManager extends ModelManager {
 		$tableName = !empty($params['table']) ? $params['table'] : '';
 		if (count($formData)) {
 			$formData['fields'] = $this->get('container')->getItems('form_field', 'form_id='.$formData['id']);
-			$form = new Form('', $formData);
+			$form = new FormBuilder('', $formData);
 			$form->items = $formData['fields'];
 			$form->message = $this->processForm($form, $tableName);
 			if ($form->message[0] == 'error')
