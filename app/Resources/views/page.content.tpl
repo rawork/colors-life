@@ -105,7 +105,7 @@
             <div class="leftmenu-grey-line"><img src="/img/0.gif" width="240" height="4"></div>
             {raMethod ref=/catalog/cats.htm}
             {if $node.id == 98}
-            {raMethod ref=/articles/cloud.htm}
+            {raMethod ref=/article/cloud.htm}
 			{/if}
             <div class="faq-block"><a href="/feedback.htm"><img src="/img/faq_btn.gif"></a></div>
             <div class="faq-block"><a href="/subscribe-process.htm"><img src="/img/maillist_btn.gif"></a></div>
