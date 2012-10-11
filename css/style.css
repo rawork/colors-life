@@ -817,6 +817,11 @@ div.mainpath span {
 	color:#9150a0;	
 }
 
+div.mainpath i{
+	font-size:10px;
+	font-style: normal;
+}
+
 div.mainpath a {
 	font-size:14px;
 	color: #000;

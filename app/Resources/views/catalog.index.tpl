@@ -27,7 +27,7 @@
         <tr>
           <td class="white-right"><img src="/img/0.gif" width="10" height="1" border="0"></td>
           <td class="white-content" style="background-image: url('{$cat.image}')" valign="top">
-		  <h4 class="cat-item{$cat.id}"><span>{$cat.name}</span></h4>
+		  <h4 class="cat-item{$cat.id}"><span>{$cat.title}</span></h4>
 		  <table class="subcats-block" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td class="cat-subcats{$cat.id}"><table width="100%" cellpadding="5" cellspacing="0" border="0">
@@ -70,7 +70,7 @@
 {raMethod ref=/catalog/hit.htm}           
 {else}
 {raItem var=cat table=catalog_category query=$param0}	
-<h1>{$cat.name}</h1>
+<h1>{$cat.title}</h1>
 <div class="cat-description">{$cat.description}</div>		
 {if $cat.parent_id == 0}			
 {raItems var=subcats table=catalog_category query="publish=1 AND parent_id=`$cat.id`"}
