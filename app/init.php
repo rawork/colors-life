@@ -3,6 +3,10 @@
 $LIB_VERSION = '5.0.1';
 $LIB_DATE = '2012.09.10';
 
+mb_http_input('UTF-8'); 
+mb_http_output('UTF-8'); 
+mb_internal_encoding("UTF-8");
+
 require_once 'config/config.php';
 
 use Fuga\Component\Container;
