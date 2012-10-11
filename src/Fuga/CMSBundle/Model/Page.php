@@ -68,6 +68,24 @@ class Page {
 				'name'  => 'h1_img',
 				'title' => 'Картинка H1',
 				'type' => 'image',
+			),
+			'left_key' => array (
+				'name'  => 'left_key',
+				'title' => 'Левый ключ',
+				'type'  => 'number',
+				'readonly' => true
+			),
+			'right_key' => array (
+				'name'  => 'right_key',
+				'title' => 'Правый ключ',
+				'type'  => 'number',
+				'readonly' => true
+			),
+			'level' => array (
+				'name'  => 'level',
+				'title' => 'Уровень',
+				'type'  => 'number',
+				'readonly' => true
 			)
 		));
 
