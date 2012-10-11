@@ -35,7 +35,7 @@
 <tr class="lastRow">
 <td colspan="2">Стоимость заказа {if $discount}	с учетом скидки {$discount}%{/if}:&nbsp;</td>
 <td> <span>
-{if $discount}{$totalPriceDiscount}{else}{$totalPriceRus}{/if}</span><span class="rub">&nbsp;руб.</span>
+{if $discount}{$totalPriceDiscount}{else}{$totalPrice}{/if}</span><span class="rub">&nbsp;руб.</span>
 </td>
 <td></td>
 </tr>
