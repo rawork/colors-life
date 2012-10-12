@@ -30,7 +30,7 @@
   {foreach from=$payTypes key=iKey item=payType}
   <input onclick="setPayType({$payType.id})" value="{$payType.id}" name="payType"{if !$iKey} checked="true"{/if} id="payType{$payType.id}" type="radio"> <label for="payType{$payType.id}">{$payType.name}</label>
   {/foreach}
-  <p class="cut" id="payDescr2" class="closed">Для жителей городов России временно доступен только один вид оплаты: квитанция банка.</p>
+  <p class="cut closed" id="payDescr2">Для жителей городов России временно доступен только один вид оплаты: квитанция банка.</p>
   </td>
 </tr>
 </tbody></table>

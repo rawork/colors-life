@@ -2042,3 +2042,7 @@ div.subscribe-message{
 	padding: 10px 0 20px 0;
 	color: #EE2A2A;
 }
+
+.closed {
+	display: none;
+}
