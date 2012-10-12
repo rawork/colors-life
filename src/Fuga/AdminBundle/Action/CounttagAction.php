@@ -15,6 +15,7 @@ class CounttagAction extends Action {
 //		$this->fixNews();
 //		$this->fixTables(); 
 		
+		$this->fixCatalog();
 		$this->calculateCatalog();
 		$this->buildSitemapXML();
 		$this->buildShopYML('shop.yml');
@@ -421,6 +422,83 @@ EOD;
 			$this->get('connection')->execQuery('upd', "UPDATE system_files SET file='".$newPath."' WHERE id=".$item['id']);
 			$i++;
 		}
+	}
+	
+	private function updateNestedSets($tableName = 'catalog_category' ,$parentId = 0, $level = 1, $leftKey = 1) {
+		$items = $this->get('connection')->getItems('items', 'SELECT id,title FROM '.$tableName.' WHERE parent_id='.$parentId.' ORDER BY sort');
+		if (count($items)) {
+			foreach ($items as $item) {
+				$right_key = $this->updateNestedSets($tableName, $item['id'], $level+1, $leftKey+1);
+				$name = 'catalog_category' == $tableName ? ',name=\''.strtolower($this->get('util')->translitStr(trim($item['title']))).'\'' : '';
+				$this->get('connection')->execQuery('upd', 
+					'UPDATE '.$tableName.' SET left_key='.$leftKey.
+					',right_key='.$right_key.',level='.$level.
+					$name
+					.' WHERE id='.$item['id']
+				);
+				$leftKey = $right_key+1;
+			}
+			$right_key++;
+		} else {
+			$right_key = $leftKey;
+		}
+		return $right_key;
+	}
+	
+	private function checkNestedSets($tableName = 'catalog_category') {
+		$items = $this->get('connection')->getItems('items', 'SELECT id FROM '.$tableName.' WHERE left_key >= right_key');
+		if (count($items)) {
+			echo $tableName.': ошибка nestedsets 1';
+			exit;
+		}
+		$item = $this->get('connection')->getItem('items', 'SELECT COUNT(id) as quantity, MIN(left_key) as min_key, MAX(right_key) as max_key FROM '.$tableName);
+		if (1 != $item['min_key']) {
+			echo $tableName.': ошибка nestedsets 2';
+			exit;
+		}
+		if ($item['quantity']*2 != $item['max_key']) {
+			echo $tableName.': ошибка nestedsets 3';
+			exit;
+		}
+		$items = $this->get('connection')->getItems('items', 'SELECT id, MOD((right_key - left_key) / 2) AS ostatok FROM '.$tableName.' WHERE ostatok = 0');
+		if (count($items)) {
+			echo $tableName.': ошибка nestedsets 4';
+			exit;
+		}
+		$items = $this->get('connection')->getItems('items', 'SELECT id, MOD((left_key – level + 2) / 2) AS ostatok FROM '.$tableName.' WHERE ostatok = 1');
+		if (count($items)) {
+			echo $tableName.': ошибка nestedsets 5';
+			exit;
+		}
+		$items = $this->get('connection')->getItems('items', 
+			'SELECT t1.id, COUNT(t1.id) AS rep, MAX(t3.right_key) AS max_right 
+FROM '.$tableName.' AS t1, '.$tableName.' AS t2, '.$tableName.' AS t3 
+WHERE t1.left_key <> t2.left_key AND t1.left_key <> t2.right_key AND t1.right_key <> t2.left_key AND t1.right_key <> t2.right_key 
+GROUP BY t1.id HAVING max_right <> SQRT(4 * rep + 1) + 1');
+		if (count($items)) {
+			echo $tableName.': ошибка nestedsets 6';
+			exit;
+		}
+	}
+	
+	private function updateLinkTables() {
+		$items = $this->get('connection')->getItems('items', 
+				'SELECT category_id, producer_id FROM `catalog_product` 
+				WHERE producer_id <> 0 AND category_id <> 0 
+				GROUP BY category_id, producer_id 
+				ORDER BY `catalog_product`.`producer_id` ASC');
+		$this->get('connection')->execQuery('truncate', "TRUNCATE TABLE catalog_categories_producers");
+		foreach ($items as $item) {
+			$this->get('connection')->execQuery('add', 'INSERT INTO catalog_categories_producers VALUES('.$item['category_id'].','.$item['producer_id'].')');
+		}
+	}
+	
+	private function fixCatalog() {
+		$this->updateNestedSets('catalog_category');
+		$this->checkNestedSets('catalog_category');
+		$this->updateNestedSets('page_page');
+		$this->checkNestedSets('page_page');
+		$this->updateLinkTables();
 	}
 	
 	private function fixTables() {
