@@ -8,7 +8,7 @@ class NumberType extends LookUpType {
 	}
 	
 	public function getGroupInput() {
-		return $this->getInput('', $this->getName().$this->dbId, 'span1');
+		return $this->getInput('', $this->getName().$this->dbId, 'input-mini');
 	}
 	
 	public function getSQLValue($name='') {
