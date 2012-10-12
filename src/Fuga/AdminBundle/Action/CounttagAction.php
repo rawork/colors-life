@@ -448,27 +448,22 @@ EOD;
 	private function checkNestedSets($tableName = 'catalog_category') {
 		$items = $this->get('connection')->getItems('items', 'SELECT id FROM '.$tableName.' WHERE left_key >= right_key');
 		if (count($items)) {
-			echo $tableName.': ошибка nestedsets 1';
-			exit;
+			$this->get('log')->write($tableName.': ошибка nestedsets 1');
 		}
 		$item = $this->get('connection')->getItem('items', 'SELECT COUNT(id) as quantity, MIN(left_key) as min_key, MAX(right_key) as max_key FROM '.$tableName);
 		if (1 != $item['min_key']) {
-			echo $tableName.': ошибка nestedsets 2';
-			exit;
+			$this->get('log')->write($tableName.': ошибка nestedsets 2');
 		}
 		if ($item['quantity']*2 != $item['max_key']) {
-			echo $tableName.': ошибка nestedsets 3';
-			exit;
+			$this->get('log')->write($tableName.': ошибка nestedsets 3');
 		}
 		$items = $this->get('connection')->getItems('items', 'SELECT id, MOD((right_key - left_key) / 2) AS ostatok FROM '.$tableName.' WHERE ostatok = 0');
 		if (count($items)) {
-			echo $tableName.': ошибка nestedsets 4';
-			exit;
+			$this->get('log')->write($tableName.': ошибка nestedsets 4');
 		}
 		$items = $this->get('connection')->getItems('items', 'SELECT id, MOD((left_key – level + 2) / 2) AS ostatok FROM '.$tableName.' WHERE ostatok = 1');
 		if (count($items)) {
-			echo $tableName.': ошибка nestedsets 5';
-			exit;
+			$this->get('log')->write($tableName.': ошибка nestedsets 5');
 		}
 		$items = $this->get('connection')->getItems('items', 
 			'SELECT t1.id, COUNT(t1.id) AS rep, MAX(t3.right_key) AS max_right 
@@ -476,8 +471,7 @@ FROM '.$tableName.' AS t1, '.$tableName.' AS t2, '.$tableName.' AS t3
 WHERE t1.left_key <> t2.left_key AND t1.left_key <> t2.right_key AND t1.right_key <> t2.left_key AND t1.right_key <> t2.right_key 
 GROUP BY t1.id HAVING max_right <> SQRT(4 * rep + 1) + 1');
 		if (count($items)) {
-			echo $tableName.': ошибка nestedsets 6';
-			exit;
+			$this->get('log')->write($tableName.': ошибка nestedsets 6');
 		}
 	}
 	
