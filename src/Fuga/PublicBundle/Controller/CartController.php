@@ -298,8 +298,8 @@ class CartController extends PublicController {
 		if (empty($_SESSION['deliveryEmail'])) {
 			$_SESSION['deliveryEmail'] = $user ? $user['email'] : '';
 		}
-		$payTypes = $this->get('connection')->getItems('get_pay', "SELECT id,name FROM cart_pay_type WHERE publish=1 ORDER BY ord");
-		$deliveryTypes = $this->get('connection')->getItems('get_delivery', "SELECT id,name,description FROM cart_delivery_type WHERE publish=1 ORDER BY ord");
+		$payTypes = $this->get('connection')->getItems('get_pay', "SELECT id,name FROM cart_pay_type WHERE publish=1 ORDER BY sort");
+		$deliveryTypes = $this->get('connection')->getItems('get_delivery', "SELECT id,name,description FROM cart_delivery_type WHERE publish=1 ORDER BY sort");
 		return $this->render('service/cart/detail.tpl', compact('payTypes', 'deliveryTypes', 'user'));
 	}
 
