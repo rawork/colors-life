@@ -333,6 +333,11 @@ function setCatalogRTT(el, cur_rtt, cur_page) {
 	window.location = url2;
 }
 
+function setCatalogRPP(el, ref) {
+	ref = ref + '&limit='+el.options[el.selectedIndex].value;
+	window.location = ref;
+}
+
 function setPrice(it) {
 	$('#price_'+it).html($('#stuff_price_'+it+' option:selected').attr('rel'))
 }
