@@ -51,7 +51,7 @@ class Templating {
 		}
 		$template = str_replace($this->realPath, '', $template);
 		$template = str_replace($this->basePath, '', $template);
-		if ($this->exists($this->realPath.$template)) {
+		if ($this->exists($template)) {
 			$method = $this->renderMethod;
 			$this->setParams($params);
 			return $this->engine->$method($template);
@@ -63,7 +63,7 @@ class Templating {
 	}
 	
 	public function exists($template) {
-		return file_exists($template);
+		return file_exists($this->realPath.$template);
 	}
 	
 }
