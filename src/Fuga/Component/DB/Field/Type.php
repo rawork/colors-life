@@ -6,7 +6,7 @@ class Type {
 	public $params;
 	protected $dbValue = null;
 	protected $dbId = 0;
-	public function __construct(&$params, $entity = null) {
+	public function __construct($params, $entity = null) {
 		$this->setParams($params);
 		$this->setEntity($entity);
 	}
@@ -18,10 +18,10 @@ class Type {
 		}
 	}
 
-	public function setEntity($aEntity = null) {
-		if (is_array($aEntity)) {
-			$this->dbId		= (int)$aEntity['id'];
-			$this->dbValue	= isset($aEntity[$this->getName()]) ? $aEntity[$this->getName()] : '';
+	public function setEntity($entity = null) {
+		if (is_array($entity)) {
+			$this->dbId		= (int)$entity['id'];
+			$this->dbValue	= isset($entity[$this->getName()]) ? $entity[$this->getName()] : '';
 		} elseif (!empty($this->params['defvalue'])) {
 			$this->dbValue	= $this->params['defvalue'];
 		}

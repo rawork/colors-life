@@ -83,9 +83,71 @@ function hidePopup() {
 	$('#modalDialog').modal('hide');
 }
 
+function emptySelect(inputId) {
+	$('#'+inputId).attr('value', 0);
+	$('#'+inputId+'_title').html('Не выбрано');
+}
+
+function defaultSelect(element, inputId) {
+	if ($(element).attr('checked')) {
+		$('#'+inputId).attr('value', $(element).attr('value'));
+		ids = new Array();
+		$('input[name|="'+inputId+'_default"]').each(function (index, domElement){
+			if ($(domElement).attr('value') != $(element).attr('value')) {
+				ids.push($(domElement).attr('value'));
+			}
+		});
+		$('#'+inputId+'_extra').attr('value', ids.join());
+	}
+}
+
+function deleteSelect(element, inputId) {
+	checked = $(element).prev().attr('checked');
+	$(element).parent().remove();
+	if (checked) {
+		if (firstElement = $('input[name|="'+inputId+'_default"]').first()) {
+			firstElement.attr('checked', true);
+			$('#'+inputId).attr('value', firstElement.attr('value'));
+		}	
+	}
+	ids = new Array();
+	$('input[name|="'+inputId+'_default"]').each(function (index, domElement){
+		if ($(domElement).attr('value') != $('#'+inputId).attr('value')) {
+			ids.push($(domElement).attr('value'));
+		}
+	});
+	if ($('input[name|="'+inputId+'_default"]').length == 0) {
+		$('#'+inputId).attr('value', 0);
+		$('#'+inputId+'_title').html('Не выбрано');
+		$('#'+inputId+'_extra').attr('value', '');
+	}
+	$('#'+inputId+'_extra').attr('value', ids.join());
+}
+
 function makePopupChoice(inputId) {
-	$('#'+inputId).attr('value', $('#popupChoiceId').attr('value'));
-	$('#'+inputId+'_title').attr('value', $('#popupChoiceTitle').html());
+	value = $('#popupChoiceId').attr('value');
+	valueTitle = $('#popupChoiceTitle').html();
+	type = $('#'+inputId+'_type').attr('value');
+	if (type == 'many') {
+		text = '<div>'+valueTitle+' <input type="radio" name="'+inputId+'_default" value="'+value+'" onclick="defaultSelect(this, \''+inputId+'\')"> По умолчанию <a href="javascript:void(0)" onclick="deleteSelect(this, \''+inputId+'\')"><i class="icon-remove"></i></a></div>';
+		if ($('input[name|="'+inputId+'_default"]').length == 0) {
+			$('#'+inputId+'_title').html(text);
+			$('#'+inputId).attr('value', value);
+			$('input[name|="'+inputId+'_default"]').first().attr('checked', true);
+		} else {
+			$('#'+inputId+'_title').append(text);
+		}
+		ids = new Array();
+		$('input[name|="'+inputId+'_default"]').each(function (index, domElement){
+			if ($(domElement).attr('value') != $('#'+inputId).attr('value')) {
+				ids.push($(domElement).attr('value'));
+			}
+		});
+		$('#'+inputId+'_extra').attr('value', ids.join());
+	} else {
+		$('#'+inputId).attr('value', value);
+		$('#'+inputId+'_title').html($('#popupChoiceTitle').html());
+	}
 	hidePopup();
 }
 
@@ -169,11 +231,6 @@ function showSelectPopup(inputId, tableName, fieldName, dbId, title){
 		});	
 		showPopup();
 	}, "json");
-}
-
-function emptySelect(inputId) {
-	$('#'+inputId).attr('value', 0);
-	$('#'+inputId+'_title').attr('value', 'Не выбрано');
 }
 
 function showPage(divId, tableName, fieldName, entityId, page) {

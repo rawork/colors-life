@@ -67,7 +67,7 @@ class Table {
 	 */
 	function readDBConfig() {
 		$fields = $this->get('connection')->getItems('table_fields', "SELECT * FROM table_attributes WHERE publish=1 AND table_id=".$this->id." ORDER by sort");
-		if (sizeof($fields) > 0) {
+		if (count($fields) > 0) {
 			foreach ($fields as $f) {
 				$f['group_update'] = $f['group_update'] == 1;
 				$f['readonly'] = $f['readonly'] == 1;
@@ -115,44 +115,92 @@ class Table {
 	}
 
 	function insertGlobals() {
-		$sQuery = '';
-		foreach ($this->fields as $aField) {
-			if ($aField['type'] != 'listbox') {
-				$ft = $this->createFieldType($aField);
-				if ($aField['name'] == 'created') {
-					$sQuery .= ($sQuery ? ', ' : ' ').'NOW()';
-				} elseif (stristr($aField['type'], 'date')) {
-					$sQuery .= ($sQuery ? ', ' : '').$ft->getSQLValue();
-				} elseif ($aField['name'] == 'lang') {
-					$sQuery .= ($sQuery ? ", '" : "'").$this->get('util')->_sessionVar('lang', false, 'ru')."'";
-				} else {
-					$sQuery .= ($sQuery ? ", '" : "'").$ft->getSQLValue()."'";
-				}
+		$query = '';
+		$extraIds = array();
+		foreach ($this->fields as $fieldParams) {
+			if ($fieldParams['type'] == 'listbox') {
+				continue;
+			}	
+			$ft = $this->createFieldType($fieldParams);
+			if ($fieldParams['name'] == 'created') {
+				$query .= ($query ? ', ' : ' ').'NOW()';
+			} elseif (stristr($fieldParams['type'], 'date')) {
+				$query .= ($query ? ', ' : '').$ft->getSQLValue();
+			} elseif ($fieldParams['name'] == 'lang') {
+				$query .= ($query ? ", '" : "'").$this->get('util')->_sessionVar('lang', false, 'ru')."'";
+			} else {
+				$query .= ($query ? ", '" : "'").$ft->getSQLValue()."'";
+			}
+			if (($fieldParams['type'] == 'select' 
+				|| $fieldParams['type'] == 'select_tree')
+				&& !empty($fieldParams['link_type']) 
+				&& $fieldParams['link_type'] == 'many'
+				) {
+				$extraIds = explode(',', $this->get('util')->_postVar($fieldParams['name'].'_extra'));
+				$linkTable = $fieldParams['link_table'];
+				$linkInversed = $fieldParams['link_inversed'];
+				$linkMapped = $fieldParams['link_mapped'];
 			}
 		}
-		return $this->insert($this->getSQLFieldsList(), $sQuery);
+		if ($ret = $this->insert($this->getSQLFieldsList(), $query)) {
+			$lastId = $this->get('connection')->getInsertID();
+			if (count($extraIds) > 0) {
+
+				foreach ($extraIds as $extraId) {
+					$this->get('connection')->execQuery('ins', 
+						'INSERT INTO '.$linkTable.'('.$linkInversed.','.$linkMapped.') VALUES('.$lastId.','.$extraId.')'
+					);
+				}
+			}
+			return $lastId;
+		} else {
+			return false;
+		}
+		
 	}
 	function updateGlobals() {
 		$entityId = $this->get('util')->_postVar('id', true);
 		$entity = $this->getItem($entityId);
 		$categoryId = 0;
 		$sql = '';
-		foreach ($this->fields as $fieldData) {
-			if ($fieldData['type'] != 'listbox') {
-				$ft = $this->createFieldType($fieldData, $entity);
-				if ($fieldData['name'] == 'category_id')
-					$categoryId = $ft->getValue();
-				if ($this->getDBTableName() == 'user_user' && $fieldData['name'] == 'login' && $entityId == 1) {
-					$sql .= ($sql ? ', ' : '').$ft->getName()."='admin'";
-				} elseif ($fieldData['name'] == 'updated') {
-					$sql .= ($sql ? ', ' : '').$ft->getName().'= NOW()';
-				} elseif (empty($fieldData['readonly'])) {
-					if (stristr($fieldData['type'], 'date') || $fieldData['type'] == 'select' || $fieldData['type'] == 'select_tree' || $fieldData['type'] == 'number' || $fieldData['type'] == 'currency')
-						$sql .= ($sql ? ', ' : '').$ft->getName().'='.$ft->getSQLValue(); 
-					else
-						$sql .= ($sql ? ', ' : '').$ft->getName()."='".$ft->getSQLValue()."'";
+		foreach ($this->fields as $fieldParams) {
+			if ($fieldParams['type'] == 'listbox') {
+				continue;
+			}
+			$ft = $this->createFieldType($fieldParams, $entity);
+			if ($fieldParams['name'] == 'category_id')
+				$categoryId = $ft->getValue();
+			if ($this->getDBTableName() == 'user_user' && $fieldParams['name'] == 'login' && $entityId == 1) {
+				$sql .= ($sql ? ', ' : '').$ft->getName()."='admin'";
+			} elseif ($fieldParams['name'] == 'updated') {
+				$sql .= ($sql ? ', ' : '').$ft->getName().'= NOW()';
+			} elseif (empty($fieldParams['readonly'])) {
+				if (stristr($fieldParams['type'], 'date') || $fieldParams['type'] == 'select' || $fieldParams['type'] == 'select_tree' || $fieldParams['type'] == 'number' || $fieldParams['type'] == 'currency')
+					$sql .= ($sql ? ', ' : '').$ft->getName().'='.$ft->getSQLValue(); 
+				else
+					$sql .= ($sql ? ', ' : '').$ft->getName()."='".$ft->getSQLValue()."'";
+			}
+			if (($fieldParams['type'] == 'select' 
+				|| $fieldParams['type'] == 'select_tree')
+				&& !empty($fieldParams['link_type']) 
+				&& $fieldParams['link_type'] == 'many'
+				) {
+				$extraIds = explode(',', $this->get('util')->_postVar($fieldParams['name'].'_extra'));
+				$linkTable = $fieldParams['link_table'];
+				$linkInversed = $fieldParams['link_inversed'];
+				$linkMapped = $fieldParams['link_mapped'];
+				$this->get('connection')->execQuery('ins', 
+					'DELETE FROM '.$linkTable.' WHERE '.$linkInversed.'='.$entityId
+				);
+				if (count($extraIds) > 0) {
+					
+					foreach ($extraIds as $extraId) {
+						$this->get('connection')->execQuery('ins', 
+							'INSERT INTO '.$linkTable.'('.$linkInversed.','.$linkMapped.') VALUES('.$entityId.','.$extraId.')'
+						);
+					}
 				}
-			}	
+			}
 		}
 		// Обновление значений дополнительных свойств
 		if ($this->getDBTableName() == 'catalog_product1') {

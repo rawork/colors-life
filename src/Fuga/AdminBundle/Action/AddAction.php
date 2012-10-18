@@ -11,8 +11,8 @@ class AddAction extends Action {
 	function getForm() {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			if ($this->get('util')->_postVar('utype')) {
-				if ($this->dataTable->insertGlobals()) {
-					$path = $this->fullRef.'/edit/'.$this->get('connection')->getInsertID();
+				if ($lastId = $this->dataTable->insertGlobals()) {
+					$path = $this->fullRef.'/edit/'.$lastId;
 					$_SESSION['message'] = 'Добавлено';
 				} else {
 					$path = $this->fullRef.'/add';

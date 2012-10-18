@@ -133,7 +133,7 @@ class AdminAjaxController extends Controller {
 		$text = '<input type="hidden" id="popupChoiceId" value="'.$entityId.'">
 Выбранный элемент: <span id="popupChoiceTitle">'.$title.'</span>
 <ul id="navigation">
-<li><a href="javascript:void(0)" rel="0" class="popup-item">Корень</a></li>';
+<li><a href="javascript:void(0)" rel="0" class="popup-item">Не выбрано</a></li>';
 		if (!empty($field['l_lang'])) {
 			$lang_where = "locale='".$this->get('router')->getParam('lang')."'";
 		} else {

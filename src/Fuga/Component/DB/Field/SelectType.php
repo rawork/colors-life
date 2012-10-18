@@ -8,6 +8,9 @@ class SelectType extends LookUpType {
 
 	public function __construct(&$params, $entity = null) {
 		parent::__construct($params, $entity);
+		if (empty($this->params['link_type'])) {
+			$this->params['link_type'] = 'one';
+		}
 	}
 
 	private function getSelectInput($value, $name, $class = '') {
@@ -18,12 +21,10 @@ class SelectType extends LookUpType {
 		$input_id = strtr($name, '[]', '__');
 		$class = $class ? 'class="'.$class.'"' : '';
 		$content = '
-<div class="input-append">
-<input '.$class.' id="'.$input_id.'_title"  type="text" value="'.$this->getStatic($value).'" readonly>
-<button class="btn" href="javascript:void(0)" type="button" onClick="showSelectPopup(\''.$input_id.'\',\''.$table.'\',\''.$name.'\', \''.$id.'\', \''.$this->getStatic($value).'\');">&hellip;</button>
-<button class="btn" href="javascript:void(0)" type="button" onClick="emptySelect(\''.$input_id.'\');"><i class="icon-remove"></i></button>
-</div>
+<div id="'.$input_id.'_title">'.$this->getStatic($value).' <a href="javascript:void(0)" onClick="emptySelect(\''.$input_id.'\')"><i class="icon-remove"></i></a></div>
+<button class="btn btn-success" href="javascript:void(0)" type="button" onClick="showSelectPopup(\''.$input_id.'\',\''.$table.'\',\''.$name.'\', \''.$id.'\', \''.$this->getStatic($value).'\');">Выбрать</button>
 <input type="hidden" name="'.$name.'" value="'.$value.'" id="'.$input_id.'">
+<input type="hidden" name="'.$name.'_type" value="'.$this->params['link_type'].'" id="'.$input_id.'_type">
 ';
 		
 		return $content;

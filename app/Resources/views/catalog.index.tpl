@@ -146,9 +146,9 @@
 {if $cat.title}
 {raSetVar var=title value=$cat.title}
 {/if}
-
-{raPaginator var=paginator table=catalog_product query="publish=1 AND category_id=`$param0` `$param2_where`" pref="`$ref``$methodName`.`$param0`.`$param1`.`$param2`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
-{raItems var=items table=catalog_product query="category_id=`$cat.id` AND publish=1 `$param2_where`" limit=$paginator->limit sort="is_exist DESC,`$param1`"}
+{raLinkedItems var=products table=catalog_products_categories query="category_id=`$cat.id`" value=product_id}
+{raPaginator var=paginator table=catalog_product query="publish=1 AND (category_id=`$cat.id` OR id IN(`$products`)) `$param2_where`" pref="`$ref``$methodName`.`$param0`.`$param1`.`$param2`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
+{raItems var=items table=catalog_product query="(category_id=`$cat.id` OR id IN(`$products`)) AND publish=1 `$param2_where`" limit=$paginator->limit sort="is_exist DESC,`$param1`"}
 
 
 {if count($items)}
