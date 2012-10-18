@@ -196,7 +196,7 @@
 			<td class="stuff-l"></td>	
 			<td class="stuff-content"><table style="height:100%" width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
-				<td class="stuff-image"><a href="{raURL node=catalog method=stuff prms=$item.id}">{if $item.small_imagenew}<img src="{$item.small_imagenew}">{else}<img src="/img/noimage_small.jpg">{/if}</a>{$item.small_imagenew}</td>
+				<td class="stuff-image"><a href="{raURL node=catalog method=stuff prms=$item.id}">{if $item.small_imagenew}<img src="{$item.small_imagenew}">{else}<img src="/img/noimage_small.jpg">{/if}</a></td>
 				<td class="stuff-description"><table width="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td height="100%" valign="top"><div class="stuff-name"><a href="{raURL node=catalog method=stuff prms=$item.id}"><span>{$item.name}</span></a></div>
