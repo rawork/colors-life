@@ -18,7 +18,7 @@
                         </table></td>
                       <td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
                           <tr>
-                            <td class="stuff-title"><a class="screenshot" href="{raURL node=catalog method=stuff prms=$item2.id}" rel="{$item2.small_image}">{$item2.name}</a>
+                            <td class="stuff-title"><a class="screenshot" href="{raURL node=catalog method=stuff prms=$item2.id}" rel="{$item2.small_imagenew}">{$item2.name}</a>
 							{raItems var=prices table=catalog_price query="product_id=`$item2.id`"}
 							{if count($prices)}
 							&nbsp;&nbsp;<select name="stuff_price_{$item2.id}" id="stuff_price_{$item2.id}" onchange="setPrice({$item2.id})">
@@ -89,7 +89,7 @@
 					  <td class="stuff-l"></td>
   					  <td class="stuff-content"><table style="height:100%" width="100%" cellpadding="0" cellspacing="0" border="0">
                           <tr>
-                            <td class="stuff-image"><a href="{raURL node=catalog method=stuff prms=$item.id}">{if $item.small_image}<img src="{$item.small_image}">{else}<img src="/img/noimage_small.jpg">{/if}</a></td>
+                            <td class="stuff-image"><a href="{raURL node=catalog method=stuff prms=$item.id}">{if $item.small_imagenew}<img src="{$item.small_imagenew}">{else}<img src="/img/noimage_small.jpg">{/if}</a></td>
                             <td class="stuff-description"><table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                 

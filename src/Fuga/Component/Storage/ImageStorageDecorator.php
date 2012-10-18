@@ -43,7 +43,7 @@ class ImageStorageDecorator implements StorageInterface {
 			foreach ($sizes as $size) {
 				$sizeParams = explode('|', $size);
 				if (count($sizeParams) == 2) {
-					$this->storageEngine->remove($pathParts['dirname'].'/'.$sizeParams[0].'_'.$pathParts['basename']);
+					$this->storageEngine->remove($pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension']);
 				}
 			}
 
@@ -76,7 +76,7 @@ class ImageStorageDecorator implements StorageInterface {
 			foreach ($sizes as $sizeData) {
 				$sizeParams = explode('|', $sizeData);
 				if (count($sizeParams) == 2) {
-					$path = $pathParts['dirname'].'/'.$sizeParams[0].'_'.$pathParts['basename'];
+					$path = $pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension'];
 					$files[] = array(
 						'name' => $sizeParams[0], 
 						'path' => $path,
@@ -147,13 +147,13 @@ class ImageStorageDecorator implements StorageInterface {
 								imagepng($thumb);
 							}
 							$data = ob_get_clean();
-							$fh = fopen($this->realPath($pathParts['dirname'].'/'.$sizeParams[0].'_'.$pathParts['basename']), 'w');
+							$fh = fopen($this->realPath($pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension']), 'w');
 							fwrite ($fh, $data);
 							fclose ($fh);
 							imagedestroy($thumb);
 							imagedestroy($source);
 						} else {
-							$this->copy($pathParts['dirname'].'/'.$sizeParams[0].'_'.$pathParts['basename'], $this->realPath($filename));
+							$this->copy($pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension'], $this->realPath($filename));
 						}
 					}
 				}

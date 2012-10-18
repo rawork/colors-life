@@ -65,7 +65,7 @@
 			</table></td>
 			<td width="100%"><table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
-				<td class="stuff-title"><a class="screenshot" href="{raURL node=catalog method=stuff prms=$item2.id}" rel="{$item2.small_image}">{$item2.name}</a>
+				<td class="stuff-title"><a class="screenshot" href="{raURL node=catalog method=stuff prms=$item2.id}" rel="{$item2.small_imagenew}">{$item2.name}</a>
 				{raItems var=prices table=catalog_price query="product_id=`$item2.id` AND publish=1" sort="sort,size_id"}
 				{if count($prices)}
 				&nbsp;&nbsp;<select name="stuff_price_{$item2.id}" id="stuff_price_{$item2.id}" onchange="setPrice({$item2.id})">

@@ -62,7 +62,7 @@
 		<td rowspan="2" class="stuff-content2">
 			<table style="height:100%" width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
-					<td class="stuff-image2"><a href="{raURL node=catalog method=stuff prms=$gift.gift_id}">{if $gift.gift_id_small_image}<img src="{$gift.gift_id_small_image}">{/if}</a></td>
+					<td class="stuff-image2"><a href="{raURL node=catalog method=stuff prms=$gift.gift_id}">{if $gift.gift_id_small_imagenew}<img src="{$gift.gift_id_small_imagenew}">{/if}</a></td>
 					<td class="stuff-description3">
 						<table width="100%" cellpadding="0" cellspacing="0" border="0">
 							<tr> {raItem var=item table=catalog_product query=$gift.gift_id}

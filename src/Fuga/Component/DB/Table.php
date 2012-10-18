@@ -311,27 +311,28 @@ class Table {
 	function insert($names, $values) {
 		return $this->get('connection')->execQuery($this->getDBTableName(), 'INSERT INTO '.$this->getDBTableName().'('.$names.') VALUES('.$values.')');
 	}
-	function insertArray(&$a) {
+	function insertArray($entity) {
 		$names = $values = '';
-		foreach ($a as $k => $v) {
-			foreach ($this->fields as $f) {
-				if ($k && $f['name'] == $k) {
-					$names = ($names ? $names.', ' : '').$f['name'];
-					if ($a[$f['name']] && ($f['type'] == 'image' || $f['type'] == 'file' || $f['type'] == 'template')) {
-						$ft = $this->createFieldType($f);
+		foreach ($entity as $key => $v) {
+			foreach ($this->fields as $fieldData) {
+				if ($key && $fieldData['name'] == $key) {
+					$names = ($names ? $names.', ' : '').$fieldData['name'];
+					if ($entity[$fieldData['name']] && ($fieldData['type'] == 'image' || $fieldData['type'] == 'file' || $fieldData['type'] == 'template')) {
+						$ft = $this->createFieldType($fieldData);
 						$dest = $this->get('util')->getNextFileName($v);
 						@copy($GLOBALS['PRJ_DIR'].$v,$GLOBALS['PRJ_DIR'].$dest);
 						$values = ($values ? $values.', ' : '')."'".$dest."'";
 
-						if ($f['type'] == 'image' && isset($ft->params['sizes'])) {
-							$path_parts = pathinfo($a[$ft->getName()]);
-							$asizes = explode(',', $ft->params['sizes']);
-							foreach ($asizes as $sz) {
-								$asz = explode('|', $sz);
-								if (sizeof($asz) == 2) {
-									$v = $path_parts['dirname'].'/'.$asz[0].'_'.$path_parts['basename'];
-									$dest = $this->get('util')->getNextFileName($v);
-									@copy($GLOBALS['PRJ_DIR'].$v,$GLOBALS['PRJ_DIR'].$dest);
+						if ($fieldData['type'] == 'image' && isset($ft->params['sizes'])) {
+							$pathParts0 = pathinfo($v);
+							$pathParts = pathinfo($dest);
+							$sizes = explode(',', $ft->params['sizes']);
+							foreach ($sizes as $sizeData) {
+								$sizeParams = explode('|', $sizeData);
+								if (count($sizeParams) == 2) {
+									$source = $pathParts0['dirname'].'/'.$pathParts0['filename'].'_'.$sizeParams[0].'.'.$pathParts0['extension'];
+									$dest = $pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension'];
+									@copy($GLOBALS['PRJ_DIR'].$source, $GLOBALS['PRJ_DIR'].$dest);
 								}
 							}
 						}
@@ -343,9 +344,9 @@ class Table {
 			}
 		}
 		$ret = $this->insert($names, $values);
-		$iLastInsertID = $this->get('connection')->getInsertID();
+		$lastId = $this->get('connection')->getInsertID();
 		if ($this->params['multifile']) {
-			$sql = "SELECT * FROM system_files WHERE entity_id={$a['id']} AND table_name='".$this->getDBTableName()."'";
+			$sql = "SELECT * FROM system_files WHERE entity_id={$entity['id']} AND table_name='".$this->getDBTableName()."'";
 			$photos = $this->get('connection')->getItems('get_system_files', $sql);
 			foreach ($photos as $photo) {
 				$filepath = $photo['file'];
@@ -354,7 +355,7 @@ class Table {
 				unset($photo['id']);
 				$photo['file'] 		= $dest;
 				$photo['created'] 	= date("Y-m-d H:i:s");
-				$photo['entity_id'] = $iLastInsertID;
+				$photo['entity_id'] = $lastId;
 				$names = implode(',', array_keys($photo));
 				array_walk($photo, "fillValue");
 				$values = implode(',', $photo);
@@ -417,15 +418,14 @@ class Table {
 						$ret[$ft->getName().'_height'] = $i[1];
 					}
 					if (isset($ft->params['sizes'])) {
-						$path_parts = pathinfo($PRJ_DIR.$ret[$ft->getName()]);
-						$path_parts2 = pathinfo($ret[$ft->getName()]);
-						$asizes = explode(',', $ft->params['sizes']);
-						foreach ($asizes as $sz) {
-							$asz = explode('|', $sz);
-							if (sizeof($asz) == 2 && is_array($i = @GetImageSize($path_parts['dirname'].'/'.$asz[0].'_'.$path_parts['basename']))) {
-								$ret[$asz[0].'_'.$ft->getName()] = $path_parts2['dirname'].'/'.$asz[0].'_'.$path_parts2['basename'];
-								$ret[$asz[0].'_'.$ft->getName().'_width'] = $i[0];
-								$ret[$asz[0].'_'.$ft->getName().'_height'] = $i[1];
+						$pathParts = pathinfo($ret[$ft->getName()]);
+						$sizes = explode(',', $ft->params['sizes']);
+						foreach ($sizes as $sizeData) {
+							$sizeParams = explode('|', $sizeData);
+							if (count($sizeParams) == 2 && is_array($i = @GetImageSize($PRJ_DIR.$pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension']))) {
+								$ret[$sizeParams[0].'_'.$ft->getName()] = $pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension'];
+								$ret[$sizeParams[0].'_'.$ft->getName().'_width'] = $i[0];
+								$ret[$sizeParams[0].'_'.$ft->getName().'_height'] = $i[1];
 							}
 						}
 					}

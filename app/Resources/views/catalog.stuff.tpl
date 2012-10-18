@@ -20,13 +20,13 @@
 			<td class="stuff-content"><table style="height:100%" width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td class="stuff-image"> 
-						{if $item.big_image}
-						<a href="{$item.big_image}" class="jqzoom" title="{$item.name}"><img src="{$item.image}"  title="{$item.name}" style="border: 0px solid #666;"></a>
+						{if $item.imagenew}
+						<a href="{$item.imagenew}" class="jqzoom" title="{$item.name}"><img src="{$item.middle_imagenew}"  title="{$item.name}" style="border: 0px solid #666;"></a>
 						<script type="text/javascript">
 							bindZoom();
 						</script>
-						{elseif $item.image}
-						<img width="260" src="{$item.image}">
+						{elseif $item.middle_imagenew}
+						<img width="260" src="{$item.middle_imagenew}">
 						{else}
 						<img src="/img/noimage_small.jpg">
 						{/if} 
