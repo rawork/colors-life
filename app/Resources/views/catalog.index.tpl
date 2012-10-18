@@ -147,8 +147,11 @@
 {raSetVar var=title value=$cat.title}
 {/if}
 {raLinkedItems var=products table=catalog_products_categories query="category_id=`$cat.id`" value=product_id}
-{raPaginator var=paginator table=catalog_product query="publish=1 AND (category_id=`$cat.id` OR id IN(`$products`)) `$param2_where`" pref="`$ref``$methodName`.`$param0`.`$param1`.`$param2`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
-{raItems var=items table=catalog_product query="(category_id=`$cat.id` OR id IN(`$products`)) AND publish=1 `$param2_where`" limit=$paginator->limit sort="is_exist DESC,`$param1`"}
+{if $products} 
+{assign var=products_where value=" OR id IN(`$products`)"}	
+{/if}
+{raPaginator var=paginator table=catalog_product query="publish=1 AND (category_id=`$cat.id`  `$products_where`) `$param2_where`" pref="`$ref``$methodName`.`$param0`.`$param1`.`$param2`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
+{raItems var=items table=catalog_product query="(category_id=`$cat.id`  `$products_where`) AND publish=1 `$param2_where`" limit=$paginator->limit sort="is_exist DESC,`$param1`"}
 
 
 {if count($items)}
@@ -193,7 +196,7 @@
 			<td class="stuff-l"></td>	
 			<td class="stuff-content"><table style="height:100%" width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
-				<td class="stuff-image"><a href="{raURL node=catalog method=stuff prms=$item.id}">{if $item.small_imagenew}<img src="{$item.small_imagenew}">{else}<img src="/img/noimage_small.jpg">{/if}</a></td>
+				<td class="stuff-image"><a href="{raURL node=catalog method=stuff prms=$item.id}">{if $item.small_imagenew}<img src="{$item.small_imagenew}">{else}<img src="/img/noimage_small.jpg">{/if}</a>{$item.small_imagenew}</td>
 				<td class="stuff-description"><table width="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td height="100%" valign="top"><div class="stuff-name"><a href="{raURL node=catalog method=stuff prms=$item.id}"><span>{$item.name}</span></a></div>
