@@ -9,7 +9,7 @@ class Admin {
 
 	function __construct($name) {
 		$this->name = $name;
-		$params = $this->get('connection')->getItems('unit.settings', "SELECT * FROM config_settings WHERE komponent='$name'");
+		$params = $this->get('connection')->getItems('unit.settings', "SELECT * FROM config_settings WHERE module='$name'");
 		$this->params = array();
 		foreach ($params as $param) {
 			$this->params[$param['name']] = ($param['type'] == 'int' ? intval($param['value']) : $param['value']);

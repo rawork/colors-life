@@ -13,7 +13,7 @@ class PublicController extends Controller {
 		$this->name = $name;
 		$this->lang = $this->get('router')->getParam('lang');
 		$this->addTables();
-		$settings = $this->get('connection')->getItems('unit.settings', "SELECT * FROM config_settings WHERE komponent='$name'");
+		$settings = $this->get('connection')->getItems('unit.settings', "SELECT * FROM config_settings WHERE module='$name'");
 		$this->params = array();
 		foreach ($settings as $setting) {
 			$this->params[$setting['name']] = $setting['type'] == 'int' ? intval($setting['value']) : $setting['value'];
