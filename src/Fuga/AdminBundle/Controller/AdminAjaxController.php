@@ -321,10 +321,10 @@ class AdminAjaxController extends Controller {
 	
 	
 	function delFile($id) {
-		$sql = "SELECT name,file FROM system_files WHERE id=$id";
+		$sql = "SELECT file FROM system_files WHERE id=$id";
 		$file = $this->get('connection')->getItem('delfile', $sql);
 		if ($file) {
-			@unlink($GLOBALS['PRJ_DIR'].$file['file']);
+			$this->get('filestorage')->remove($file['file']);
 			$sql = "DELETE FROM system_files WHERE id=".$id;
 			$this->get('connection')->execQuery('delfile', $sql);
 			return json_encode(array('status' => 'ok'));
