@@ -20,8 +20,9 @@ class SelectType extends LookUpType {
 		$id = $this->dbId ?: '0';
 		$input_id = strtr($name, '[]', '__');
 		$class = $class ? 'class="'.$class.'"' : '';
+		$empty = $value ? ' <a href="javascript:void(0)" onClick="emptySelect(\''.$input_id.'\')"><i class="icon-remove"></i></a>' : '';
 		$content = '
-<div id="'.$input_id.'_title">'.$this->getStatic($value).' <a href="javascript:void(0)" onClick="emptySelect(\''.$input_id.'\')"><i class="icon-remove"></i></a></div>
+<div id="'.$input_id.'_title">'.$this->getStatic($value).$empty.'</div>
 <button class="btn btn-success" href="javascript:void(0)" type="button" onClick="showSelectPopup(\''.$input_id.'\',\''.$table.'\',\''.$name.'\', \''.$id.'\', \''.$this->getStatic($value).'\');">Выбрать</button>
 <input type="hidden" name="'.$name.'" value="'.$value.'" id="'.$input_id.'">
 <input type="hidden" name="'.$name.'_type" value="'.$this->params['link_type'].'" id="'.$input_id.'_type">

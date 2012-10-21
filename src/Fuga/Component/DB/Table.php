@@ -126,8 +126,8 @@ class Table {
 				$query .= ($query ? ', ' : ' ').'NOW()';
 			} elseif (stristr($fieldParams['type'], 'date')) {
 				$query .= ($query ? ', ' : '').$ft->getSQLValue();
-			} elseif ($fieldParams['name'] == 'lang') {
-				$query .= ($query ? ", '" : "'").$this->get('util')->_sessionVar('lang', false, 'ru')."'";
+			} elseif ($fieldParams['name'] == 'locale') {
+				$query .= ($query ? ", '" : "'").$this->get('util')->_sessionVar('locale', false, 'ru')."'";
 			} else {
 				$query .= ($query ? ", '" : "'").$ft->getSQLValue()."'";
 			}
@@ -305,7 +305,7 @@ class Table {
 			}
 			$search_fields = '';
 			foreach ($this->fields as $f) {
-				if (($f['type'] == 'html' || $f['type'] == 'text' || $f['type'] == 'string') && $f['name'] != 'lang' && $f['name'] != 'sort') {
+				if (($f['type'] == 'html' || $f['type'] == 'text' || $f['type'] == 'string') && $f['name'] != 'locale' && $f['name'] != 'sort') {
 					$search_fields .= ($search_fields ? ',' : '').$f['name'];
 				}
 			}
@@ -431,7 +431,7 @@ class Table {
 	}
 	function select($a = null) {
 		if ($this->params['is_lang']) {
-			$a['where'] = empty($a['where']) ? "locale='".$this->get('util')->_sessionVar('lang', false, 'ru')."'" : $a['where']." AND locale='".$this->get('util')->_sessionVar('lang', false, 'ru')."'";
+			$a['where'] = empty($a['where']) ? "locale='".$this->get('util')->_sessionVar('locale', false, 'ru')."'" : $a['where']." AND locale='".$this->get('util')->_sessionVar('locale', false, 'ru')."'";
 		}
 		return $this->get('connection')->execQuery($this->getDBTableName(),
 			'SELECT '.(!empty($a['select']) ? $a['select'] : '*').' FROM '.

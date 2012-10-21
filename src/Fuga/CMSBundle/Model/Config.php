@@ -63,8 +63,7 @@ class Config {
 				'l_table' => 'config_modules',
 				'l_field' => 'title',
 				'search' => true,
-				'width' => '25%',
-				'group_update' => true
+				'width' => '25%'
 			),
 			'template_id' => array (
 				'name' => 'template_id',
@@ -73,8 +72,7 @@ class Config {
 				'l_table' => 'template_template',
 				'l_field' => 'name',
 				'search' => true,
-				'width' => '25%',
-				'group_update' => true
+				'width' => '25%'
 			),	
 			'processor' => array (
 				'name' => 'processor',

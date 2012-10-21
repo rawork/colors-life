@@ -12,15 +12,15 @@ class TemplateType extends Type {
 	}
 	
 	public function getPath() {
-		return '/app/Resources/views/'.$this->basepath;
+		return '/app/Resources/views'.$this->basepath;
 	}
 	
 	public function getBackupPath() {
-		return '/app/Resources/views/backup/';
+		return '/app/Resources/views/backup';
 	}
 
 	public function getSQLValue($name = '') {
-	global $VERSION_QUANTITY, $PRJ_DIR;
+	global $PRJ_DIR;
 		$name = $name ? $name : $this->getName();
 		$ret = $this->get('util')->_postVar($name.'_oldValue');
 		$date_stamp = date('Y_m_d_H_i_s');
@@ -53,14 +53,14 @@ class TemplateType extends Type {
 		if ($this->get('util')->_postVar($name.'_cre')) {
 			$ret = $this->get('util')->_postVar($name);
 			if (trim($ret) != '') {
-				$dest = $this->get('util')->getNextFileName($this->getPath().$this->get('util')->translitStr($ret));
+				$dest = $this->get('util')->getNextFileName($this->getPath().'/'.$this->get('util')->translitStr($ret));
 				$ret = $dest;
 				$f = fopen($PRJ_DIR.$ret, 'w');
 				fwrite($f, $_POST[$name."_temp"]);
 				fclose($f);
 				chmod($PRJ_DIR.$ret, 0666);
 			}
-		} elseif (is_array($_FILES) && sizeof($_FILES) > 0 && isset($_FILES[$name])
+		} elseif (is_array($_FILES) && count($_FILES) > 0 && isset($_FILES[$name])
 			&& $_FILES[$name]['name'] != '') {
 			if ($ret) {
 				$backup_ret = str_replace($this->getPath(), $this->getBackupPath(), $ret);
@@ -102,11 +102,11 @@ class TemplateType extends Type {
 			$content = '<span id="'.$name.'_delete">Текущая версия: '.$content.'<label for="del'.$randomId.'"><input name="'.$name.'_delete" type="checkbox" id="del'.$randomId.'"> удалить</label></span>';
 			$versions = $this->get('connection')->getItems('template_version', "SELECT * FROM template_version WHERE cls='".$this->params['cls']."' AND fld='".$name."' AND rc=".$this->dbId);
 			if (count($versions)) {
-				$content .= '<span>Предудущие версии:</span> <select onChange="templateState(this, \''.$name.'\')" id="'.$name.'_version" name="'.$name.'_version"><option value="0">Не выбрано</option>'."\n";
+				$content .= '<span>Предудущие версии:</span><br> <select onChange="templateState(this, \''.$name.'\')" id="'.$name.'_version" name="'.$name.'_version"><option value="0">Не выбрано</option>'."\n";
 				foreach ($versions as $version) {
 					$content .= '<option value="'.$version['id'].'">'.$version['created'].'</option>';
 				}
-				$content .= '</select> <input type="button" class="btn btn-success btn-large closed" id="'.$name.'_view" onClick="showTemplateVersion(\''.$name.'_version\')" value="Просмотр">';
+				$content .= '</select> <div class="closed" id="'.$name.'_view"><input type="button" class="btn btn-success" onClick="showTemplateVersion(\''.$name.'_version\')" value="Просмотр"></div>';
 			}
 		}
 		if (empty($value)){
@@ -117,9 +117,9 @@ class TemplateType extends Type {
 </div>';
 			$text = '<input type="hidden" name="'.$name.'_oldValue" value="'.$this->dbValue.'">'.$content.'<div><input id="'.$name.'_load" type="file" name="'.$name.'"></div>';
 		} else {
-			$text = '<input type="hidden" name="'.$name.'_oldValue" value="'.$this->dbValue.'">'.$content.'&nbsp;<br><span id="'.$name.'_load">Новый: <input type="file" name="'.$name.'"></span>';
 			$text = @file_get_contents($PRJ_DIR.$value);	
-			$text .= '<textarea wrap="off" id="'.$name.'_temp" name="'.$name.'_temp" style="width:95%" rows="10" cols="40">'.htmlspecialchars($text).'</textarea>';
+			$text = '<input type="hidden" name="'.$name.'_oldValue" value="'.$this->dbValue.'">'.$content.'&nbsp;<br><span id="'.$name.'_load">Новый: <input type="file" name="'.$name.'"></span>'.
+'<textarea wrap="off" id="'.$name.'_temp" name="'.$name.'_temp" style="width:95%" rows="10" cols="40">'.htmlspecialchars($text).'</textarea>';
 		}
 		return $text;
 	}
