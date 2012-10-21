@@ -164,18 +164,17 @@ function recursive($sPath,$sPath_base,$sName){
 }
 
 //ffilter
-function getExt($sFileName){
-	$sTmp=$sFileName;
-	while($sTmp!="") 
-		{
-		$sTmp=strstr($sTmp,".");
-		if($sTmp!="")
-			{
-			$sTmp=substr($sTmp,1);
-			$sExt=$sTmp;
-			}
+function getExt($fileName){
+	$ext = '';
+	$tmp = $fileName;
+	while($tmp != '') {
+		$tmp = strstr($tmp, '.');
+		if($tmp != '') {
+			$tmp = substr($tmp, 1);
+			$ext = $tmp;
 		}
-	return strtolower($sExt);
+	}
+	return strtolower($ext);
 }
 
 function writeFileSelections(){
@@ -200,7 +199,7 @@ function writeFileSelections(){
 	$files = array();
 	while($sItem=readdir($oItem)) 
 		{
-		if($sItem=="."||$sItem=="..") 
+		if($sItem=="." || $sItem==".." || $sItem==".gitkeep") 
 			{
 			} 
 		else 
@@ -258,8 +257,8 @@ function writeFileSelections(){
 						case 'mpeg':
 						case 'mpg':
 						case 'wmv':
-						case 'flv': $sIcon="/icons/video.gif"; break;
-						default: if (file_exists($GLOBALS['PRJ_DIR'].'/admin/editor/fmanager/images'.'/icons/'.$sExt.'.gif')) {$sIcon="/icons/".$sExt.".gif";}
+						case 'flv': $sIcon = "/icons/video.gif"; break;
+						default: $sIcon = file_exists('images'.'/icons/'.$sExt.'.gif') ? "/icons/".$sExt.".gif" : $sIcon;
 					}
 						
 					$sTmp1=strtolower($sItem);
@@ -282,7 +281,7 @@ function writeFileSelections(){
 	reset($files);
 	foreach($files as $f) {
 		echo "<tr style='background:".$f['sColorResult']."'>";
-		echo "<td><img src='images/".$f['sIcon']."'></td>";
+		echo "<td><img src='images".$f['sIcon']."'></td>";
 		echo "<td valign=top style='cursor:pointer;' onclick=\"selectFile(".$f['nIndex'].")\" width=100% ><u id=\"idFile".$f['nIndex']."\">".$f['sItem']."</u></td>";
 		echo "<input type=hidden name=inpFile".$f['nIndex']." id=inpFile".$f['nIndex']." value=\"".$f['sCurrent_virtual']."\">";
 		echo "<td valign=top align=right nowrap>".round(filesize($f['sCurrent'])/1024,1)." kb&nbsp;</td>";
