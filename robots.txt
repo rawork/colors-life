@@ -1,8 +1,8 @@
-# robots.txt for http://www.colors-life.ru
+# robots.txt for http://colors-life.ru
 
 User-agent: *
 Disallow: /admin/
 
 User-agent: Yandex
 Disallow: /admin/
-Host: www.colors-life.ru
+Host: colors-life.ru
