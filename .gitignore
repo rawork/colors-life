@@ -1,7 +1,9 @@
 
 # Uploads
 upload/*
+!upload/.htaccess
 img/files/*
+!img/files/.gitkeep
 yml/*
 sitemap.xml
 
@@ -9,11 +11,14 @@ sitemap.xml
 app/config/config.php
 app/config/database.php
 app/config/parameters.php
-.htaccess
+/.htaccess
 
 # Cache
 app/cache/*
 !app/cache/.gitkeep
+!app/cache/smarty
+app/cache/smarty/*
+!app/cache/smarty/.gitkeep
 app/logs/*
 !app/logs/.gitkeep
 app/backup/*
