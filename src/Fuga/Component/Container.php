@@ -161,9 +161,9 @@ class Container
 			$items = $this->get('connection')->getItems('nquery', $query);
 			foreach ($items as $item) {
 				if (isset($item['id'])) {
-					$res[$item['id']] = $item;
+					$ret[$item['id']] = $item;
 				} else {
-					$res[] = $item;
+					$ret[] = $item;
 				}
 			}
 			$this->get('connection')->freeResult('nquery');
