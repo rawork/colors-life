@@ -60,9 +60,9 @@
                 <td colspan="2">
 				<div class="head-auth-link">
 				{if $auth->user}
-				<b>{$auth->user.name} {$auth->user.lastname}</b> | <a href="/cabinet/">Личный кабинет</a> | <a href="/cabinet/logout.htm">Выйти</a>
+				<b>{$auth->user.name} {$auth->user.lastname}</b> / <a href="/cabinet/">Личный кабинет</a> / <a href="/cabinet/logout.htm">Выйти</a>
 				{else}
-				<a href="/cabinet/">У меня уже есть логин</a> | <a href="/cabinet/registration.htm">Регистрация</a>
+				<a href="/cabinet/">У меня уже есть логин</a> / <a href="/cabinet/registration.htm">Регистрация</a>
 				{/if}
 				</div></td>
               </tr>
@@ -96,12 +96,12 @@
       </table></td>
   </tr>
   <tr>
-    <td><table class="mainmenu" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <td width="100%"><table class="mainmenu" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><img src="/img/mainmenu_left.gif" /></td>
           {raDir var=pages query=/}
           {foreach from=$pages item=menuitem}
-          <td width="14%"><a href="{$menuitem.ref}">{$menuitem.title}</a></td>
+          <td width="12.5%"><a href="{$menuitem.ref}">{$menuitem.title}</a></td>
           {/foreach} 
           <td><img src="/img/mainmenu_right.gif" /></td>
         </tr>

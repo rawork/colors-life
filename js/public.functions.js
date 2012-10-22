@@ -254,11 +254,10 @@ function changeTab(tab_id) {
 
 var cur_advert = 1;
 var showAdvertTimer;
-var time_after_click = 6000;
+var time_after_click = 3000;
 var max_advert = 5;
 
-function showAdvertClick(it) {
-	
+function showAdvert(it) {
 	showAdvert(it);
 }
 
@@ -266,13 +265,11 @@ function showAdvert(it){
 	clearTimeout(showAdvertTimer);
 	if (it != cur_advert) {
 		
-		$('#adv_text_'+cur_advert).fadeOut(800, function () {
-            $('#adv_text_'+it).fadeIn(400);
+		$('#adv_text_'+cur_advert).fadeOut(600, function () {
+            $('#adv_text_'+it).fadeIn(300);
           });
-		//$('#adv_text_'+cur_advert).css('display', 'none');
 		$('#adv_tab_'+cur_advert).toggleClass('adv-btn-active');
 		$('#adv_tab_'+cur_advert).toggleClass('adv-btn');
-		//$('#adv_text_'+it).css('display', 'block');
 		$('#adv_tab_'+it).toggleClass('adv-btn');
 		$('#adv_tab_'+it).toggleClass('adv-btn-active');
 		cur_advert = it

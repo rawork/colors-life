@@ -7,7 +7,7 @@ html, body {
 table.main {
 	min-width:990px;
 	max-width:1280px;
-	width:expression(document.body.clientWidth > 1280? "1280px": "100%");
+	width:expression(document.body.clientWidth > 1280 ? "1280px": "100%");
 	background-color:#fff;
 	/*background-image: url('../img/ny_bg.jpg');
 	background-position: top center;
@@ -19,7 +19,7 @@ table.main {
 td, div, p{
 	padding: 0;
 	margin: 0;
-	font-family:Tahoma, Geneva, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:12px;
 }
 
@@ -167,10 +167,9 @@ h4.cat-item50 span{
 
 
 h5 {
-	font-family:Georgia, "Times New Roman", Times, serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:18px;
 	font-weight:bold;
-	font-style:italic;
 	margin: 0 0 10px 0;
 	padding:0;
 }
@@ -201,7 +200,7 @@ td.head-cart {
 div.head-mode {
 	padding-top: 20px;
 	color:#686868;
-	font-family:Tahoma, Geneva, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:12px;
 }
 
@@ -211,8 +210,8 @@ div.head-mode span{
 
 div.head-phone {
 	padding-top: 10px; 
-	font-family:Georgia, "Times New Roman", Times, serif;
-	font-size:38px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size:26px;
 }
 
 div.head-phone span{
@@ -225,7 +224,7 @@ div.head-contacts-link{
 }
 
 div.head-contacts-link a{
-	font-family:Tahoma, Geneva, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:11px;
 	color:#686868;
 	text-decoration:underline;
@@ -243,7 +242,7 @@ div.head-auth-link {
 
 div.head-auth-link a{
 	color:#3a6ac1; /*#686868;*/
-	font-family:Arial,Tahoma, Geneva, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	text-decoration:underline;
 	border: 0;
 	/*border-bottom: 1px dotted #686868;*/
@@ -272,7 +271,7 @@ div.head-cart-link{
 }
 
 div.head-cart-link a{
-	font-family:Arial,Tahoma, Geneva, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:14px;
 	color:#3a6ac1;
 	text-decoration:underline;
@@ -303,11 +302,9 @@ table.mainmenu td {
 
 table.mainmenu td a {
 	text-decoration:underline;
-	color:#FFF;
-	font-family:Georgia, "Times New Roman", Times, serif;
-	font-size:14px;
-	font-weight:bold;
-	font-style:italic;
+	color:#fff;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
 }
 
 table.mainmenu td a:hover {
@@ -352,7 +349,7 @@ td.partners-right {
 }
 
 td.partners-title {
-	font-family:Georgia, "Times New Roman", Times, serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:14px;
 	color:#929290;
 	font-weight:bold;
@@ -397,45 +394,6 @@ td.maincontent-inner {
 	padding-bottom: 25px;
 	padding-right: 15px;
 	vertical-align:top;
-}
-
-table.adv-selectors td {
-	color:#fff;
-	font-size:18px;
-	font-family:Georgia, "Times New Roman", Times, serif;
-	font-weight:bold;
-	font-style:italic;
-	padding:5px 20px 7px 7px;
-}
-
-td.adv-image {
-	border:1px solid #37c6f4;
-	vertical-align:bottom;
-}
-
-div.adv-text0{
-	padding: 20px 10px;
-	background:url(../img/adv_text_bg.png) no-repeat top right;
-	width: 400px;
-	height:123px;
-	z-index:5;
-	position: absolute;
-	top:320px;
-	vertical-align:bottom;
-	/*border: 1px solid #000;*/
-} 
-
-div.adv-title {
-	margin-bottom:5px;
-}
-
-div.adv-title a{
-	color: #f7fa03;
-	font-weight:bold;
-}
-
-div.adv-text{
-	color: #f7fa03;	
 }
 
 table.stuff-table {
@@ -1005,16 +963,6 @@ table.cart-order-stuff td.price {
 	white-space: nowrap;
 }
 
-td.adv-btn-active {
-	background:url('../img/adv_icon_active.gif') no-repeat;
-	cursor:pointer;
-}
-
-td.adv-btn {
-	background:url('../img/adv_icon.gif') no-repeat;
-	cursor:pointer;
-}
-
 form#frmfeedback input{
 	width:240px;	
 }
@@ -1215,13 +1163,13 @@ table.producer-categories td a {
 div.cat-level2 {
 	padding: 2px 0px 5px 2px;
 	font-size: 12px;
-	font-family: Verdana, Arial;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 div.cat-level3 {
 	padding: 2px 0px 5px 10px;
 	font-size: 11px;
-	font-family: Verdana, Arial;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 td.cat-subcats1  div.cat-level3, td.cat-subcats1  div.cat-level3 a, td.cat-subcats1  div.cat-level2 a{
@@ -1264,7 +1212,7 @@ div.cabinet-menu {
 	border-left: 2px solid #EE2A2A;
 	padding: 5px;
 	font-size: 14px;
-	font-family: Arial;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-style: italic;
 }
 
@@ -1304,7 +1252,7 @@ div.subscribe-form {
 
 div.popup-title {
 	font-size: 14px;
-	font-family: Verdana;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-weight:bold;
 }
 
@@ -2045,4 +1993,42 @@ div.subscribe-message{
 
 .closed {
 	display: none;
+}
+
+div.advert {
+	margin: 0;
+	float:left;
+}
+
+div.advert-buttons {
+	margin: 0;
+	float: left;
+}
+
+div.advert .item {
+	margin: 0;
+}
+
+div.advert .item img {
+	border:1px solid #37c6f4;
+}
+
+div.adv-btn-active {
+	background:url('../img/adv_icon_active.gif') no-repeat;
+	cursor:pointer;
+}
+
+div.adv-btn {
+	background:url('../img/adv_icon.gif') no-repeat;
+	cursor:pointer;
+}
+
+div.advert-buttons div {
+	color:#fff;
+	font-size:18px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight:bold;
+	padding: 5px 0 0 8px;
+	height: 28px;
+	width: 33px;
 }
