@@ -487,7 +487,11 @@ class Table {
 		$ret = array();
 		if ($this->getNumRows())
 			while ($a = $this->getNextArray($bDetailed))
-				$ret[] = $a;
+				if (isset($a['id'])) {
+					$ret[$a['id']] = $a;
+				} else {
+					$ret[] = $a;
+				}
 		return $ret;
 	}
 	function getArraysWhere($where = '', $limit = false, $sort = '', $detail = true) {

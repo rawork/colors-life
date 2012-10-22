@@ -70,7 +70,8 @@
 {raItems var=items table=catalog_product query="publish=1 AND is_hit=1" limit=$settings.limit_hit sort="RAND()"}
 {else}
 {raItem var=cat table=catalog_category query=$param0}	
-{raItems var=items table=catalog_product nquery="SELECT s.*, p.name as producer_id_name, p.country as producer_id_country,t1.name as category_id_name, t1.root_id as category_id_root_id FROM catalog_category t1 JOIN catalog_product s ON t1.id=s.category_id JOIN catalog_producer p ON p.id=s.producer_id WHERE s.publish=1 AND s.is_hit=1 AND t1.root_id=`$cat.root_id` ORDER BY RAND() LIMIT `$settings.limit_hit`" }
+{raIds var=ids query="SELECT s.id FROM catalog_category t1 JOIN catalog_product s ON t1.id=s.category_id WHERE s.publish=1 AND s.is_hit=1 AND t1.root_id=`$cat.root_id` ORDER BY RAND() LIMIT `$settings.limit_hit`"}
+{raItems var=items table=catalog_product query="id IN (`$ids`)" sort="RAND()"}
 {/if}
 {if count($items)}
 <div class="spec-link"><a href="javascript:void(0)">Хиты продаж</a></div>       
