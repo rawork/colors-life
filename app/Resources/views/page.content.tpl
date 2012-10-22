@@ -110,9 +110,6 @@
             <div class="faq-block"><a href="/feedback.htm"><img src="/img/faq_btn.gif"></a></div>
             <div class="faq-block"><a href="/subscribe-process.htm"><img src="/img/maillist_btn.gif"></a></div>
 			
-            {if $node.id == 82}
-			{raMethod ref=/catalog/filters.htm}
-			{/if}
 			{raMethod ref=/catalog/brands.htm}
             <br><br><br>
 			<!-- Include counters.tpl -->

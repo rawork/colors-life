@@ -158,7 +158,14 @@ class Container
 	function getNativeItems($query) {
 		$ret = array();
 		if (!stristr($query, 'delete') && !stristr($query, 'truncate') && !stristr($query, 'update') && !stristr($query, 'insert') && !stristr($query, 'drop') && !stristr($query, 'alter')) {
-			$ret = $this->get('connection')->getItems('nquery', $query);
+			$items = $this->get('connection')->getItems('nquery', $query);
+			foreach ($items as $item) {
+				if (isset($item['id'])) {
+					$res[$item['id']] = $item;
+				} else {
+					$res[] = $item;
+				}
+			}
 			$this->get('connection')->freeResult('nquery');
 		}
 		return $ret;
