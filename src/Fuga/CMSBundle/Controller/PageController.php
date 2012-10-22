@@ -136,6 +136,9 @@ class PageController extends Controller {
 		if (!$title) {
 			$title = strip_tags($this->getTitle());
 		}
+		
+		$this->get('templating')->setParam('h1', $this->getH1());
+		$this->get('templating')->setParam('title', $title);
 
 		$params = array(
 			'mainbody' => $this->getContent().' ',

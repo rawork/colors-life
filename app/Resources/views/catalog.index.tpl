@@ -69,7 +69,8 @@
 {/foreach}
 {raMethod ref=/catalog/hit.htm}           
 {else}
-{raItem var=cat table=catalog_category query=$param0}	
+{raItem var=cat table=catalog_category query=$param0}
+{raSetVar var=title value=$cat.title}
 <h1>{$cat.title}</h1>
 <div class="cat-description">{$cat.description}</div>		
 {if $cat.parent_id == 0}			
