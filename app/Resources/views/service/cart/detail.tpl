@@ -17,18 +17,18 @@
 <tbody>
 <tr><td>Получение товара</td>
  <td style="vertical-align: top;">
-  {foreach from=$deliveryTypes key=iKey item=deliveryType}
-  <input onclick="setDeliveryType({$deliveryType.id})" value="{$deliveryType.id}" name="deliveryType"{if !$iKey} checked="checked"{/if} id="deliveryType{$deliveryType.id}" type="radio"> <label for="deliveryType{$deliveryType.id}">{$deliveryType.name}</label>
+  {foreach from=$deliveryTypes item=deliveryType name=delivery}
+  <input onclick="setDeliveryType({$deliveryType.id})" value="{$deliveryType.id}" name="deliveryType"{if $smarty.foreach.delivery.index == 0} checked="checked"{/if} id="deliveryType{$deliveryType.id}" type="radio"> <label for="deliveryType{$deliveryType.id}">{$deliveryType.name}</label>
   {/foreach}
   {foreach from=$deliveryTypes key=iKey item=deliveryType}
-  <p class="comment delivery-text" id="deliveryDescr{$deliveryType.id}"{if $iKey} style="display:none"{/if}>{$deliveryType.description}</p>
+  <p class="comment delivery-text" id="deliveryDescr{$deliveryType.id}"{if $smarty.foreach.delivery.index != 0} style="display:none"{/if}>{$deliveryType.description}</p>
   {/foreach}
    </td>
 </tr>
 <tr><td>Способ оплаты</td>
  <td>
-  {foreach from=$payTypes key=iKey item=payType}
-  <input onclick="setPayType({$payType.id})" value="{$payType.id}" name="payType"{if !$iKey} checked="true"{/if} id="payType{$payType.id}" type="radio"> <label for="payType{$payType.id}">{$payType.name}</label>
+  {foreach from=$payTypes item=payType name=pay}
+  <input onclick="setPayType({$payType.id})" value="{$payType.id}" name="payType"{if $smarty.foreach.pay.index == 0} checked="true"{/if} id="payType{$payType.id}" type="radio"> <label for="payType{$payType.id}">{$payType.name}</label>
   {/foreach}
   <p class="cut closed" id="payDescr2">Для жителей городов России временно доступен только один вид оплаты: квитанция банка.</p>
   </td>

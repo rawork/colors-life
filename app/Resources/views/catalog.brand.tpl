@@ -10,7 +10,7 @@
 <tr>
 <td class="root-cat">{$items[0].root_title}</td>
 </tr>
-{foreach from=$items key=k item=item}
+{foreach from=$items item=item}
 {if $cur_root != $item.root_id}
 <tr>
 <td class="root-cat">{$item.root_title}</td>

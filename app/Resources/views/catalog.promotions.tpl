@@ -1,7 +1,7 @@
 {raSetVar var=title value="Акции и скидки"}
 <h1>Акции и скидки</h1>
 {raItems var=items table=catalog_commercial query="publish=1"}
-{foreach from=$items key=k item=item}
+{foreach from=$items item=item}
  <div class="article-block"> 
   <div class="article-title"><a href="{raURL node=catalog method=promotion prms=$item.id}">{$item.name}</a></div>
   <div class="promotion-dates"> C {$item.datefrom|fdate:'d F Y'} по {$item.datetill|fdate:'d F Y'}</div>

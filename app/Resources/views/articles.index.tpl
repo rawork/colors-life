@@ -8,7 +8,7 @@
 {raItems var=items table=article_article query="publish=1 AND node_id=`$node.id`" limit=$paginator->limit}
 {/if}
 {if is_object($paginator)}{$paginator->render()}{/if}
-{foreach from=$items key=k item=art}
+{foreach from=$items item=art}
  <div class="article-block"> 
     <div class="article-title"><a href="{raURL node=$art.node_id_name method=read prms=$art.id}">{$art.name}</a></div>
   <div class="article-text">{$art.preview}</div>

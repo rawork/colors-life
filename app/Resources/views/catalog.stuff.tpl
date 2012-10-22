@@ -33,8 +33,8 @@
 					{raItems var=fotos nquery="SELECT * FROM system_files WHERE table_name='catalog_product' AND entity_id=`$item.id` ORDER BY created"}
 					{if count($fotos)}
 					<div class="stuff-extra-image-links">Галерея:               
-					{foreach from=$fotos key=k item=foto}
-					<a rel="lightbox-tour" title="{$item.name}" href="{$foto.file}">{$k+1}</a>&nbsp;&nbsp;&nbsp;
+					{foreach from=$fotos key=k item=foto name=fotos}
+					<a rel="lightbox-tour" title="{$item.name}" href="{$foto.file}">{$smarty.foreach.fotos.index+1}</a>&nbsp;&nbsp;&nbsp;
 					{/foreach}
 					</div>
 					<script type="text/javascript">
