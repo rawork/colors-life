@@ -67,7 +67,7 @@ WHERE t0.'.$this->params['link_inversed'].'='.$this->dbId
 <div>'.$staticValue.$defaultValue.'</div> 
 '.$extraElements.'	
 </div>
-<button class="btn btn-success" href="javascript:void(0)" type="button" onClick="showTreePopup(\''.$input_id.'\',\''.$table.'\',\''.$name.'\', \''.$id.'\', \''.$this->getStatic($value).'\',\''.$value.'\');">Выбрать</button>
+<button class="btn btn-success" href="javascript:void(0)" type="button" onClick="showTreePopup(\''.$input_id.'\',\''.$table.'\',\''.$name.'\', \''.$id.'\', \''.htmlspecialchars($this->getStatic($value)).'\',\''.$value.'\');">Выбрать</button>
 <input type="hidden" name="'.$name.'" value="'.$value.'" id="'.$input_id.'">
 <input type="hidden" name="'.$name.'_extra" value="'.$extra.'" id="'.$input_id.'_extra">	
 <input type="hidden" name="'.$name.'_type" value="'.$this->params['link_type'].'" id="'.$input_id.'_type">

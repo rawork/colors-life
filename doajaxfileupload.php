@@ -4,7 +4,7 @@ $error = "";
 $msg = "";
 $fileElementName = 'fileToUpload';
 $date = new \Datetime();
-$upload_ref = $GLOBALS['UPLOAD_REF'].$date->format('/Y/d/m/');
+$upload_ref = $GLOBALS['UPLOAD_REF'].$date->format('/Y/m/d/');
 @mkdir($GLOBALS['PRJ_DIR'].$upload_ref, 0755, true);
 $upload_path = $GLOBALS['PRJ_DIR'].$upload_ref;
 $files_count = isset($_FILES[$fileElementName]["name"]) ? count($_FILES[$fileElementName]["name"]) : 0;
