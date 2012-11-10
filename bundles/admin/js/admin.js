@@ -146,7 +146,8 @@ function makePopupChoice(inputId) {
 		$('#'+inputId+'_extra').attr('value', ids.join());
 	} else {
 		$('#'+inputId).attr('value', value);
-		$('#'+inputId+'_title').html($('#popupChoiceTitle').html());
+		text = '<div>'+valueTitle+' <a href="javascript:void(0)" onclick="deleteSelect(this, \''+inputId+'\')"><i class="icon-remove"></i></a></div>';
+		$('#'+inputId+'_title').html(text);
 	}
 	hidePopup();
 }
