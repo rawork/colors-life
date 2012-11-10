@@ -233,17 +233,38 @@ class Table {
 		$query = '';
 		foreach ($entities as $entity) {
 			$values = '';
-			foreach ($this->fields as $fieldData) {
-				if ($fieldData['type'] != 'listbox') {
-					$fieldType = $this->createFieldType($fieldData, $entity);
-					if ($fieldData['type'] == 'checkbox' && !isset($_POST[$fieldType->getName().$entity['id']])) {
+			$entityId = $entity['id'];
+			foreach ($this->fields as $fieldParams) {
+				if ($fieldParams['type'] != 'listbox') {
+					$fieldType = $this->createFieldType($fieldParams, $entity);
+					if ($fieldParams['type'] == 'checkbox' && !isset($_POST[$fieldType->getName().$entity['id']])) {
 						$values .= ($values ? ',' : '').$fieldType->getName()."=0";	
 					} elseif (isset($_POST[$fieldType->getName().$entity['id']]) || isset($_FILES[$fieldType->getName().$entity['id']]))
-						if (stristr($fieldData['type'], 'date') || $fieldData['type'] == 'select' || $fieldData['type'] == 'select_tree' || $fieldData['type'] == 'number' || $fieldData['type'] == 'currency')
+						if (stristr($fieldParams['type'], 'date') || $fieldParams['type'] == 'select' || $fieldParams['type'] == 'select_tree' || $fieldParams['type'] == 'number' || $fieldParams['type'] == 'currency')
 							$values .= ($values ? ', ' : '').$fieldType->getName().'='.$fieldType->getGroupSQLValue(); 
 						else
 							$values .= ($values ? ', ' : '').$fieldType->getName()."='".$fieldType->getGroupSQLValue()."'";
-				}	
+				}
+				if (($fieldParams['type'] == 'select' 
+					|| $fieldParams['type'] == 'select_tree')
+					&& !empty($fieldParams['link_type']) 
+					&& $fieldParams['link_type'] == 'many'
+					) {
+					$extraIds = explode(',', $this->get('util')->_postVar($fieldParams['name'].$entityId.'_extra'));
+					$linkTable = $fieldParams['link_table'];
+					$linkInversed = $fieldParams['link_inversed'];
+					$linkMapped = $fieldParams['link_mapped'];
+					$this->get('connection')->execQuery('ins', 
+						'DELETE FROM '.$linkTable.' WHERE '.$linkInversed.'='.$entityId
+					);
+					if (count($extraIds) > 0) {
+						foreach ($extraIds as $extraId) {
+							$this->get('connection')->execQuery('ins', 
+								'INSERT INTO '.$linkTable.'('.$linkInversed.','.$linkMapped.') VALUES('.$entityId.','.$extraId.')'
+							);
+						}
+					}
+				}
 			}
 			if ($values)
 				$query .= 'UPDATE '.$this->getDBTableName().' SET '.$values.' WHERE id='.$entity['id'].';#|#|#';
