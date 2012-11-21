@@ -14,13 +14,6 @@
 {else}
 <span><a href="/cabinet/orders.htm">Текущие заказы</a></span>
 {/if}
-<!--
-{if $methodName == 'orders-history'}
-<span>История заказов</span>
-{else}
-<span><a href="/cabinet/orders-history.htm">История заказов</a></span>
-{/if}
--->
 <span><a href="/cabinet/logout.htm">Выйти</a></span>
 </div>
 <br><br>

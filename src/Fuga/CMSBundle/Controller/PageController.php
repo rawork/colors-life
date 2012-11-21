@@ -106,18 +106,19 @@ class PageController extends Controller {
 
 	/* Map */
 	function getMapList($uri = 0) {
-		$nodes = $this->getNodes($uri);
+		$nodes = array();
+		$items = $this->getNodes($uri);
 		$block = strval($uri) == '0' ? '' :  '_sub';
-		if (count($nodes)) {
-			foreach ($nodes as $node) {
+		if (count($items)) {
+			foreach ($items as $node) {
 				$node['sub'] = '';
 				if (isset($node['module_id_name'])) {
 					$unit = new PublicController($node['module_id_name']);
 					$node['sub'] = $unit->getMap();
 				}
 				$node['sub'] .= $this->getMapList($node['id']);
+				$nodes[] = $node;
 			}
-			unset($node);
 		}
 		return $this->render('service/map.tpl', compact('nodes', 'block'));
 	}
@@ -142,15 +143,14 @@ class PageController extends Controller {
 
 		$params = array(
 			'mainbody' => $this->getContent().' ',
-			'title' => $title,
-			'h1' => $this->getH1(),
 			'meta' => $this->get('meta')->getMeta(),
 			'mail_to' => $GLOBALS['ADMIN_EMAIL'],
 			'page' => $this->get('page'),
 			'auth' => $this->get('auth'),
 		);
 		
-		$this->get('templating')->setParams(array_merge($this->get('container')->getVars(), $params));
+		$this->get('templating')->setParams($params);
+		$this->get('templating')->setParams($this->get('container')->getVars());
 		
 		$templateManager = new TemplateManager();
 		$data = $this->render($templateManager->getByNode($this->node));

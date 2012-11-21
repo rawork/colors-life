@@ -1,4 +1,4 @@
-<h1>Ваш заказ принят</h1>
+<h4>Ваш заказ принят</h4>
 <br>
 <p>&nbsp;</p>
 <div class="cart-message">  

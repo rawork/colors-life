@@ -13,7 +13,7 @@ class SearchController extends PublicController {
 	}
 
 	function getContent() {
-		$searchText = $this->get('util')->_getVar('text', false, '');
+		$searchText = $this->get('util')->_getVar('text');
 		
 		if ($searchText) {
 			$results = $this->get('search')->getResults($searchText);
@@ -51,10 +51,10 @@ class SearchController extends PublicController {
 				}
 				$content .= $this->render('service/search/list.tpl', compact('ptext', 'items', 'searchText'));
 			} else {
-				$content .= $this->render('service/search/empty.tpl');
+				$content .= $this->render('service/search/empty.tpl', compact('searchText'));
 			}
-			$content = $this->render('service/search/form.tpl', compact('searchText')).$content;
 		}
+		$content = $this->render('service/search/form.tpl', compact('searchText')).$content;
 		return $content;
 	}
 }

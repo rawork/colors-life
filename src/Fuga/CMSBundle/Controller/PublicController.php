@@ -25,14 +25,15 @@ class PublicController extends Controller {
 	}
 
 	function getMapList($id = 0) {
-		$nodes = $this->get('connection')->getItems('get_cats', "SELECT id,title,name,parent_id FROM catalog_category WHERE parent_id=".$id." ORDER BY sort");
+		$nodes = array();
+		$items = $this->get('container')->getItems('catalog_category', "publish=1 AND parent_id=".$id);
 		$block ='_sub';
-		if (count($nodes)) {
-			foreach ($nodes as &$node) {
+		if (count($items) > 0) {
+			foreach ($items as $node) {
 				$node['ref'] = '/catalog/index.'.$node['id'].'.htm';
-				$node['sub'] .= $this->getMapList($node['id']);
+				$node['sub'] = $this->getMapList($node['id']);
+				$nodes[] = $node;
 			}
-			unset($node);
 		}
 		return $this->render('service/map.tpl', compact('nodes', 'block'));
 	}
@@ -67,6 +68,20 @@ class PublicController extends Controller {
 						$path[$k]['ref'] = $this->get('container')->href($this->get('router')->getParam('node'), 'index', array($item['id']));
 					}
 					$nodes = $path;
+				}
+			}
+		} elseif ($this->name == 'catalog' && $this->get('router')->getParam('methodName') == 'brand') {
+			if (isset($params[0])) {
+				$producer = $this->get('container')->getItem('catalog_producer', $params[0]);
+				if ($producer) {
+					$nodes[] = array(
+						'title' => 'Бренды',
+						'ref'   => $this->get('container')->href($this->get('router')->getParam('node'), 'brands', array())
+					);
+					$nodes[] = array(
+						'title' => $producer['name'],
+						'ref'   => $this->get('container')->href($this->get('router')->getParam('node'), 'brand', array($producer['id']))
+					);
 				}
 			}
 		}

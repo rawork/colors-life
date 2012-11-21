@@ -8,19 +8,15 @@
 {raSetVar var=title value=$news.name}
 {raSetVar var=h1 value=$news.name}
 <h1>{$news.name}</h1>
-<div class="fb-like" style="display: inline-block;" data-href="http://{$smarty.server.SERVER_NAME}{raURL node=news method=read prms=$item.id}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div>
+<div class="fb-like" style="display: inline-block;" data-href="http://{$smarty.server.SERVER_NAME}{raURL node=news method=read prms=$news.id}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div>
 <div style="display: inline-block;" id="vk_like"></div>
 <script type="text/javascript">initVKLike()</script>
 <br><br>
-<table class="news-table" cellpadding="0" cellspacing="0" border="0">
-<tr>
-<td valign="top">{if $news.image}<a href=""><img width="72" height="72" src="{$news.image}"></a>{/if}</td>
-<td valign="top">
+<div class="news-img pull-left">{if $news.image}<img width="72" height="72" src="{$news.image}">{/if}</div>
+<div class="news-content pull-left">
 <div class="news-title"><span>{$news.created|fdate:"d.m.Y H:i"}</span></div>
 <div class="news-text">{$news.body}</div>
-</td>
-</tr>
-</table>
+</div>
 {else}
 {raException}
 {/if}

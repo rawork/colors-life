@@ -107,7 +107,7 @@ class AuthController extends PublicController {
 	}
 
 	private function infoAction() {
-		if ($this->get('util')->_postVar('processInfo')) {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$error_message = $this->_processInfoForm();
 		}
 
@@ -165,7 +165,7 @@ class AuthController extends PublicController {
 	}
 
 	private function loginAction() {
-		if ($this->get('util')->_postVar('processLogin')) {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$error_message = $this->_processLoginForm();
 		}
 		return $this->render('service/auth/login.form.tpl', compact('error_message'));
@@ -194,7 +194,7 @@ class AuthController extends PublicController {
 	}
 
 	private function registrationAction() {
-		if ($this->get('util')->_postVar('processRegistration')) {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$error_message = $this->_processRegistrationForm();
 		}
 		return $this->render('service/auth/registration.form.tpl', compact('error_message'));
@@ -225,7 +225,7 @@ class AuthController extends PublicController {
 				$updateQuery .= ",lastname='$userLName'";
 				$updateQuery .= ",phone='$phone'";
 				if (
-					$t->insert('login,email', "'".$login."','".$login."'") &&
+					$t->insert('login,email', "'$login','$login'") &&
 					$t->update($updateQuery.", created = NOW(), updated = NOW() WHERE email='".$login."'")
 				) {
 					$letterText = $this->render('service/auth/registration.mail.tpl', compact('userName', 'userLName', 'login', 'password'));
@@ -263,7 +263,7 @@ class AuthController extends PublicController {
 	}
 
 	private function passwordAction() {
-		if ($this->get('util')->_postVar('processPassword')) {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$messages = $this->_processPasswordForm();
 			$error_message = implode('<br>', $messages['errors']);
 			$info_message = implode('<br>', $messages['info']);
@@ -273,7 +273,7 @@ class AuthController extends PublicController {
 	}
 
 	private function _processPasswordForm() {
-		$aMessages = array(
+		$messages = array(
 			'info' => array(),
 			'errors' => array()
 		);
@@ -288,23 +288,23 @@ class AuthController extends PublicController {
 		if ($user['password'] == $oldPassword) {
 			$updateQuery = "password='$newPassword'";
 			if ($t->update($updateQuery.", updated = NOW() WHERE email='".$login."'")) {
-				$letterText = $this->render('service/auth/password.mail.tpl', compact('login', 'password'));
+				$letterText = $this->render('service/auth/password.mail.tpl', compact('login', 'newPassword'));
 				$this->get('mailer')->send(
 					'Новый пароль в магазине Цвета жизни',
 					$letterText,
 					array($login)
 				);
-				$aMessages['info'][] = $this->info['change_password'];
+				$messages['info'][] = $this->info['change_password'];
 			}
 		} else {
-			$aMessages['errors'][] = $this->errors['incorrect_password'];
+			$messages['errors'][] = $this->errors['incorrect_password'];
 		}
 
-		return $aMessages;
+		return $messages;
 	}
 
 	private function forgetAction() {
-		if ($this->get('util')->_postVar('processForget')) {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$messages = $this->_processForgetForm();
 			$error_message = implode('<br>', $messages['errors']);
 			$info_message = implode('<br>', $messages['info']);

@@ -30,7 +30,7 @@ class CartController extends PublicController {
 			if ($price == '0.00') {
 				$price = $product['discount_price'] == '0.00' ? $product['price'] : $product['discount_price'];
 			}
-			$guid = md5($product['id'].$price);
+			$guid = md5($product['id'].$price.$priceId);
 			if (isset($_SESSION["cart"][$guid])) {
 				$_SESSION["cart"][$guid]["counter"] = intval($_SESSION["cart"][$guid]["counter"]) + $amount;
 			} else {
@@ -114,13 +114,23 @@ class CartController extends PublicController {
 	function getTotalPriceRus() {
 		return number_format($this->getTotalPrice(), 2, ',', ' ');
 	}
+	
+	function getTermination($quantity) {
+		$term = '';
+		$quantity2 = substr($quantity, -2);
+		$quantity = substr($quantity, -1);
+        if($quantity == 1 ) {$term = "";}
+        if($quantity > 1 ) {$term = "а";}
+		if($quantity2 > 10 && $quantity2 < 15) {$term = "ов";}
+        if($quantity > 4 || $quantity == 0) {$term = "ов";}
+		return $term;
+	}
 
 	function indexAction($editable = true) {
 		if ($this->get('util')->_postVar('recalculate')) {
 			$this->_recalculateCartItems();
 			header('location: /cart/');
 		}
-
 		$sessionItems = $_SESSION['cart'];
 		$cartItems = array();
 		$itemIds = array();
@@ -132,6 +142,7 @@ class CartController extends PublicController {
 		$gifts = $this->get('container')->getItems('catalog_gift', "product_id IN (".implode(',', $itemIds).")");
 		$gifts2 = $this->get('container')->getItems('cart_gift', "publish=1 AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
 		$this->get('templating')->setParams(array(
+			'wordEnd' => $this->getTermination($this->get('util')->_sessionVar('number', true, 0)),
 			'items' => $cartItems,
 			'gifts' => array_merge($gifts, $gifts2),
 			'discount' => $this->getDiscount(),
@@ -259,7 +270,7 @@ class CartController extends PublicController {
 	}
 
 	public function confirmAction() {
-		if (count($_SESSION['cart']) && $this->get('util')->_postVar('submited')) {
+		if (count($_SESSION['cart']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 			$this->_addOrder();
 			$_SESSION['cart'] = array();
 			$_SESSION['number'] = 0;
@@ -284,7 +295,7 @@ class CartController extends PublicController {
 	}
 
 	public function detailAction() {
-		if ($this->get('util')->_postVar('processDetail')) {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$_SESSION['payType'] = $this->get('util')->_postVar('payType');
 			$_SESSION['deliveryType'] = $this->get('util')->_postVar('deliveryType');
 			$_SESSION['deliveryAddress'] = $this->get('util')->_postVar('deliveryAddress');
@@ -302,6 +313,11 @@ class CartController extends PublicController {
 		$deliveryTypes = $this->get('connection')->getItems('get_delivery', "SELECT id,name,description FROM cart_delivery_type WHERE publish=1 ORDER BY sort");
 		return $this->render('service/cart/detail.tpl', compact('payTypes', 'deliveryTypes', 'user'));
 	}
+	
+	public function widgetAction() {
+		$wordEnd = $this->getTermination($this->get('util')->_sessionVar('number', true, 0));
+		return $this->render('service/cart/widget.tpl', compact('wordEnd'));
+	}
 
 	public function getContent() {
 		switch ($this->get('router')->getParam('methodName')) {
@@ -311,6 +327,8 @@ class CartController extends PublicController {
 				return $this->detailAction();
 			case "authorize":
 				return $this->authorizeAction();
+			case "widget":
+				return $this->widgetAction();
 			default:
 				return $this->indexAction();
 		}

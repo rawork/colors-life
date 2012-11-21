@@ -1,84 +1,72 @@
-<h1>
+{raSetVar var=title value="Параметры заказа"}
+<h4>
 <a href="/cart/">Уточнение заказа</a> &rarr;
 {if !$user.id}<a href="/cart/authorize.htm">Авторизация</a> &rarr;{/if}
 Параметры заказа &rarr;
 <span>Подтверждение заказа</span>
-</h1>
+</h4>
 <br>
-          
-<form name="mainForm" method="POST">
-<input type="hidden" name="processDetail" value="1">
+<form class="form-horizontal" name="mainForm" method="post">
 <!-- Блок способ оплаты -->
-<table class="forms" width="100%">
-<colgroup>
- <col width="30%">
- <col>
-</colgroup>
-<tbody>
-<tr><td>Получение товара</td>
- <td style="vertical-align: top;">
-  {foreach from=$deliveryTypes item=deliveryType name=delivery}
-  <input onclick="setDeliveryType({$deliveryType.id})" value="{$deliveryType.id}" name="deliveryType"{if $smarty.foreach.delivery.index == 0} checked="checked"{/if} id="deliveryType{$deliveryType.id}" type="radio"> <label for="deliveryType{$deliveryType.id}">{$deliveryType.name}</label>
-  {/foreach}
-  {foreach from=$deliveryTypes key=iKey item=deliveryType}
-  <p class="comment delivery-text" id="deliveryDescr{$deliveryType.id}"{if $smarty.foreach.delivery.index != 0} style="display:none"{/if}>{$deliveryType.description}</p>
-  {/foreach}
-   </td>
-</tr>
-<tr><td>Способ оплаты</td>
- <td>
-  {foreach from=$payTypes item=payType name=pay}
-  <input onclick="setPayType({$payType.id})" value="{$payType.id}" name="payType"{if $smarty.foreach.pay.index == 0} checked="true"{/if} id="payType{$payType.id}" type="radio"> <label for="payType{$payType.id}">{$payType.name}</label>
-  {/foreach}
-  <p class="cut closed" id="payDescr2">Для жителей городов России временно доступен только один вид оплаты: квитанция банка.</p>
-  </td>
-</tr>
-</tbody></table>
-<!-- адрес-->
-<table class="forms" width="100%">
-<colgroup>
- <col width="30%">
- <col>
-</colgroup>
- <tbody><tr valign="top">
-   <td>Адрес доставки</td>
-   <td>
-
-<table class="forms" style="width:100%">
-<colgroup>
- <col width="30%">
- <col>
-</colgroup>
-<tbody>
-   <tr>
-	   <td><span>Адрес доставки</span></td>
-	   <td><textarea class="simple-text required" rows="4" name="deliveryAddress" maxlength="500">{$smarty.session.deliveryAddress}</textarea></td></tr>
-   <tr>
-	   <td><span>ФИО получателя</span></td>
-	   <td><input class="simple-text required" name="deliveryPerson" maxlength="60" value="{$smarty.session.deliveryPerson}" type="text"></td></tr>
-   <tr>
-	   <td><span>Эл. почта</span></td>
-	   <td><input class="simple-text required" name="deliveryEmail" maxlength="60" value="{$smarty.session.deliveryEmail}" type="text"></td></tr>
-   <tr><td colspan="2"><p class="cut">Укажите номера телефонов, по которым с Вами можно связаться для согласования заказа</p></td></tr>
-   <tr>
-	   <td><span>Мобильный телефон</span>
-		   <p class="comment">Формат: +7 (XXX) XXX-XX-XX</p></td>
-	   <td><input maxlength="30" class="simple-text required" name="deliveryPhone" value="{$smarty.session.deliveryPhone}" type="text"></td></tr>
-
-   <tr><td>Дополнительный номер телефона
-		   <p class="comment">(с кодом города)</p></td>
-	   <td><input maxlength="30" name="deliveryPhoneAdd" value="{$smarty.session.deliveryPhoneAdd}" class="simple-text" type="text"></td></tr>
-  </tbody></table>
-  </td>
-  </tr>
- </tbody></table>
-<!-- //адрес-->
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr>
-<td width="50%">&nbsp;</td>
-<td width="50%" align="right"><input type="submit" disabled="disabled" id="submitBtn" value="Продолжить" /></td>
-</tr>
-</table>
+  <div class="control-group">
+    <label class="control-label">Получение товара</label>
+    <div class="controls">
+		{foreach from=$deliveryTypes item=deliveryType name=delivery}
+		<input onclick="setDeliveryType({$deliveryType.id})" value="{$deliveryType.id}" name="deliveryType"{if $smarty.foreach.delivery.index == 0} checked="checked"{/if} id="deliveryType{$deliveryType.id}" type="radio">&nbsp;{$deliveryType.name} &nbsp;
+		{/foreach}
+		{foreach from=$deliveryTypes key=iKey item=deliveryType name="delivery"}
+		<div class="delivery-text cut{if $smarty.foreach.delivery.index > 0} closed{/if}" id="deliveryDescr{$deliveryType.id}">{$deliveryType.description}</div>
+		{/foreach}
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Способ оплаты</label>
+    <div class="controls">
+		{foreach from=$payTypes item=payType name=pay}
+		<input onclick="setPayType({$payType.id})" value="{$payType.id}" name="payType"{if $smarty.foreach.pay.index == 0} checked="true"{/if} id="payType{$payType.id}" type="radio"> {$payType.name}
+		{/foreach}
+		<p class="cut closed" id="payDescr2">Для жителей городов России временно доступен только один вид оплаты: квитанция банка.</p>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Адрес доставки</label>
+    <div class="controls">
+		<dl class="dl-horizontal">
+			<dt class="required">Адрес доставки</dt>
+			<dd><textarea class="required2" rows="4" name="deliveryAddress" maxlength="500">{$smarty.session.deliveryAddress}</textarea></dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt class="required">ФИО получателя</dt>
+			<dd><input class="required2" name="deliveryPerson" maxlength="60" value="{$smarty.session.deliveryPerson}" type="text"></dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt class="required">Электронная почта</dt>
+			<dd>
+				<input class="required2" name="deliveryEmail" maxlength="60" value="{$smarty.session.deliveryEmail}" type="text">
+			</dd>
+		</dl>
+		<p class="cut">Укажите номера телефонов, по которым с Вами можно связаться для согласования заказа</p>	
+		<dl class="dl-horizontal">
+			<dt class="required">Мобильный телефон</dt>
+			<dd>
+				<input maxlength="30" class="required2" name="deliveryPhone" value="{$smarty.session.deliveryPhone}" type="text">
+				<p class="comment">Формат: +7 (XXX) XXX-XX-XX</p>
+			</dd>
+		</dl>
+		<dl class="dl-horizontal">
+			<dt>Дополнительный номер<br> телефона
+		   <p class="comment">(с кодом города)</p></dt>
+			<dd>
+				<input maxlength="30" name="deliveryPhoneAdd" value="{$smarty.session.deliveryPhoneAdd}" type="text">
+			</dd>
+		</dl>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls pull-right">
+      <input type="submit" class="btn btn-large btn-warning" disabled="true" id="submitBtn" value="Продолжить" />
+    </div>
+  </div>			
 </form>
 <script type="text/javascript">
 	bindDetailForm();

@@ -1,6 +1,7 @@
 {if $ok}
 <div class="cart-add"> Товар успешно добавлен в корзину!<br><br><br>
-<a href="/cart/">Оформить заказ</a> &nbsp;&nbsp;&nbsp;<a href="#" onclick="return closePopUp('popup')">Продолжить покупки</a>
+	<input type="button" class="btn btn-warning btn-large" onclick="window.location = '/cart/'" value="Оформить заказ">&nbsp;&nbsp;
+	<input type="button" class="btn btn-large" onclick="return closePopUp('popup')" value="Продолжить покупки">
 </div>
 {else}
 Ошибка добавления товара!

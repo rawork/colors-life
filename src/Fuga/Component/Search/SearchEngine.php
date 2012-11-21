@@ -17,10 +17,10 @@ class SearchEngine {
 					'title' => 'name'
 				),
 				'catalog_category' => array(
-					'fields' => array('name', 'description'),
+					'fields' => array('title', 'name', 'description'),
 					'link' => '/%s/index.%s.htm',
 					'where' => "publish=1",
-					'title' => 'name'
+					'title' => 'title'
 				),
 				'catalog_producer' => array(
 					'fields' => array('name', 'description', 'country'),

@@ -2,13 +2,12 @@
 <h1>Акции и скидки</h1>
 {raItems var=items table=catalog_commercial query="publish=1"}
 {foreach from=$items item=item}
- <div class="article-block"> 
-  <div class="article-title"><a href="{raURL node=catalog method=promotion prms=$item.id}">{$item.name}</a></div>
-  <div class="promotion-dates"> C {$item.datefrom|fdate:'d F Y'} по {$item.datetill|fdate:'d F Y'}</div>
-  {if $item.file}
+<div class="article-block"> 
+<div class="article-title"><a href="{raURL node=catalog method=promotion prms=$item.id}">{$item.name}</a></div>
+<div class="promotion-dates"> C {$item.datefrom|fdate:'d F Y'} по {$item.datetill|fdate:'d F Y'}</div>
 <br>
+{if $item.file}
 <div id="flashcontent{$item.id}"></div>
-<br>
 <script type="text/javascript">
 	// <![CDATA[
 				
@@ -19,11 +18,10 @@
 	// ]]>
 </script>
 {elseif $item.image}
-<br>
 <div><img src="{$item.image}"></div>
-<br>
 {/if}
+<br>
   <!--<div class="article-text">{$item.body}</div> -->
   <!--<div class="article-link"><a href="{raURL node=catalog method=promotion prms=$item.id}">Подробнее &gt;</a></div> -->
 </div>
-  {/foreach}
+{/foreach}

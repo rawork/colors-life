@@ -1027,6 +1027,7 @@ div.tree-accept {
 	color: #000;
 	background: #E9FAD0;
 	font-size: 14px;
+	margin-bottom: 10px;
 }
 
 div.tree-error {
@@ -1037,6 +1038,7 @@ div.tree-error {
 	color: #EE2A2A;
 	background: #FAEBD7;
 	font-size: 14px;
+	margin-bottom: 10px;
 }
 
 div.stuff-sizes {

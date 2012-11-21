@@ -9,16 +9,6 @@ use Fuga\CMSBundle\Model\VoteManager;
 
 class AjaxController extends Controller {	
 	
-	private function getCartText($quantity, $sum) {
-		$widgetText = '';
-		if ($quantity) {
-			$widgetText = '<span>'.$quantity.'</span> товара(ов)<br> на сумму <span>'.$sum.'</span> руб.';
-		} else {
-			$widgetText = 'Нет выбранных<br/> товаров';
-		}
-		return $widgetText;
-	}
-	
 	public function voteProcess($voteName, $formData = null) {
 		$elements = null;
 		if ($formData) {
@@ -33,7 +23,7 @@ class AjaxController extends Controller {
 		$cart = new CartController();
 		$result = array();
 		$result['popup_content'] = $cart->addCartItem($productId, $quantity, $price, $priceId);
-		$result['cart_count'] = $this->getCartText($cart->getTotalQuantity(), $cart->getTotalPriceRus());
+		$result['cart_info'] = $cart->widgetAction();
 		return json_encode($result);
 	}
 	
@@ -43,7 +33,7 @@ class AjaxController extends Controller {
 		$this->get('container')->register('auth', new AuthController());
 		$cart = new CartController();
 		$cart->deleteItem($productGuid);
-		$result['cart_count'] = $this->getCartText($cart->getTotalQuantity(), $cart->getTotalPriceRus());
+		$result['cart_info'] = $cart->widgetAction();
 		$result['totalQuantity'] = $cart->getTotalQuantity();
 		$result['totalSum'] = $cart->getTotalPriceRus().' руб.';
 		$result['totalSumDiscount'] = $cart->getTotalPriceDiscount().' руб.';
@@ -62,11 +52,11 @@ class AjaxController extends Controller {
 	
 	public function showSubscribeResult($formData) {
 		parse_str($formData);
-		$message = array(
-			'message' => 'Неправильный E-mail',
-			'success' => false
-		);	
 		if (!$this->get('util')->valid_email($email)) {
+			$message = array(
+				'message' => 'Неправильный E-mail',
+				'success' => false
+			);
 		} else {
 			if ($subscribe_type == 2) {
 				$message = $this->get('container')->getManager('maillist')->unsubscribe($email);

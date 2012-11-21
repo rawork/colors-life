@@ -1,5 +1,4 @@
-<div class="producers-title"><span>От А до Я</span></div>
-
+<h4>От А до Я</h4>
 {raItems var=items table=article_tag sort=name limit=100}            
 {if count($items)}
     <div class="tag-cloud">
@@ -10,6 +9,7 @@
 	</ul>
 	<br><a href="{raURL node=articles method=tags}">все метки</a>
     </div>
+	<div class="clearfix"></div>
 {else}
 Данные не найдены.
 {/if}			

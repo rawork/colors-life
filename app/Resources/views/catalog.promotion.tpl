@@ -1,5 +1,7 @@
 {raItem var=item table=catalog_commercial query=$param0}
-{if $item}
+{if !$param0}{raException}{/if}
+{if $item.publish}
+{raSetVar var=title value=$item.name}	
 <h1>{$item.name}</h1>
 <div class="promotion-dates"> C {$item.datefrom|fdate:'d F Y'} по {$item.datetill|fdate:'d F Y'}</div>
 {if $item.file}
@@ -22,5 +24,5 @@
 {/if}
 <div class="article-text">{$item.body}</div>
 {else}
-Статья не найдена
+{raException}
 {/if}

@@ -4,36 +4,30 @@
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr valign="top">
 <td>                                
-  <table width="100%" class="frmContainer" border="0" cellspacing="0" cellpadding="3">
-            <tr id="tr_fio">
-      <td><div>ФИО&nbsp;<span class="required">*</span></div>
-        <input type="string" class="txt" title="ФИО" name="fio" value="" /></td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="3">
+    <tr>
+      <td><div>ФИО <span class="required">*</span></div>
+        <input type="text" title="ФИО" name="fio" /></td>
     </tr>
-                <tr id="tr_email">
+    <tr>
       <td><div>E-mail&nbsp;<span class="required">*</span></div>
-        <input type="string" class="txt" title="E-mail" name="email" value="" /></td>
+        <input type="text" title="E-mail" name="email" /></td>
     </tr>
-                <tr id="tr_phone">
+    <tr>
       <td><div>Телефон</div>
-        <input type="string" class="txt" title="" name="phone" value="" /></td>
+        <input type="text" title="" name="phone" /></td>
     </tr>
-                <tr id="tr_address">
-      <td><div>Адрес</div>
-        <input type="string" class="txt" title="" name="address" value="" /></td>
-    </tr>
-                               
-                
-        <tr>
+    <tr>
       <td><strong><span class="required">*</span></strong> &#8212; обязательные поля</td>
-    </tr>    <tr>
+    </tr>    
+	<tr>
       <td><input type="submit" class="btn" value="Отправить" /></td>
     </tr>
   </table>
 </td>
 <td>
-<table width="100%" class="frmContainer" border="0" cellspacing="0" cellpadding="3">
-            
-                <tr id="tr_thema">
+<table width="100%">
+    <tr>
       <td><div>Тема сообщения</div>
         <select title="" name="thema"> 
         <option value="0">...</option>
@@ -57,12 +51,11 @@
                 <option value="Чистящие средства">Чистящие средства</option>
                 </select></td>
     </tr>
-                <tr id="tr_body">
-      <td><div>Сообщение&nbsp;<span class="required">*</span></div>
+    <tr>
+      <td><div>Сообщение <span class="required">*</span></div>
         <textarea rows="5" title="Сообщение" name="body" /></textarea></td>
     </tr>
-                
-        <tr>
+    <tr>
       <td><strong><span class="required">*</span></strong> &#8212; обязательные поля</td>
     </tr>    
   </table>

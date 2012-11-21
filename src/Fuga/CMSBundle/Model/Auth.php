@@ -35,6 +35,7 @@ class Auth {
 				'name' => 'email',
 				'title' => 'E-Mail',
 				'type' => 'string',
+				'search' => true,
 				'not_empty' => true,
 				'form' => true,
 				'width' => '15%'

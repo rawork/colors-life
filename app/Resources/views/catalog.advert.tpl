@@ -28,6 +28,6 @@
 	<div class="adv-btn{if $key == 1}-active{/if}" id="adv_tab_{$key}" onclick="showAdvert({$key});">{$key}</div>
 	{/foreach}
 </div>
-<div class="clear"></div>
+<div class="clearfix"></div>
 <script type="text/javascript"> max_advert = {$key}; showAdvertTime(1)</script>
 {/if}

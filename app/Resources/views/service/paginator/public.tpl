@@ -1,11 +1,11 @@
-<div class="pager2"> Страницы: 
-{if $begin_link ne ''}<a href="{$begin_link}">Нач.</a>&nbsp;{/if}
-{if $prevblock_link ne ''}<a href="{$prevblock_link}">...</a>&nbsp;{/if}	
-{if $prev_link ne ''}<a href="{$prev_link}">&larr;&nbsp;Предыдущая</a>&nbsp;{/if}
+<div class="pagination pagination-small">
+  <ul>
+<li{if $begin_link == ''} class="disabled"{/if}><a href="{$begin_link}">Начало</a></li>
+<li{if $prev_link == ''} class="disabled"{/if}><a href="{$prev_link}">&laquo;</a></li>
 {foreach from=$pages key=k item=i}
-{if $page == $i.name}<span>{$i.name}</span>&nbsp;{else}<a href="{$i.ref}">{$i.name}</a>&nbsp;{/if}
+<li{if $page == $i.name} class="active"{/if}><a href="{$i.ref}">{$i.name}</a></li>
 {/foreach}
-{if $next_link ne ''}<a href="{$next_link}">Следующая&nbsp;&rarr;</a>&nbsp;{/if}
-{if $nextblock_link ne ''}<a href="{$nextblock_link}">...</a>&nbsp;{/if}
-{if $end_link ne ''}<a href="{$end_link}">Кон.</a>&nbsp;{/if}
+<li{if $next_link == ''} class="disabled"{/if}><a href="{$next_link}">&raquo;</a></li>
+<li{if $end_link == ''} class="disabled"{/if}><a href="{$end_link}">Конец</a></li>
+  </ul>
 </div>

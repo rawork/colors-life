@@ -1,26 +1,29 @@
-<form name="mainForm" method="POST">
+{raSetVar var=title value="Вход в личный кабинет"}
 <h1>Вход в личный кабинет</h1>
-<input type="hidden" name="fromPage" value="">
-<input name="processLogin" value="1" type="hidden">
-<table class="forms" width="100%">
-<colgroup>
- <col width="30%" />
- <col />
-</colgroup>
-<tr><td>&nbsp;</td><td>{if $error_message}<div class="tree-error">{$error_message}</div>{/if}</td></tr>
-<tr>
-<td><span>Электронный адрес</span></td>
-<td><input maxlength="50" type="text" class="simple-text required" name="login" id="l" /></td>
-</tr>
-<tr>
-<td><span>Пароль</span></td>
-<td><input maxlength="50" type="password" class="simple-text required" name="password" id="p" /></td>
-</tr>
-  <tr><td>&nbsp;</td><td><input type="submit" disabled="disabled" id="submitBtn" value="Войти" /></td></tr>
-  <tr><td>&nbsp;</td><td><p><a href="/cabinet/forget.htm">Уже регистрировались и забыли пароль?</a></p>
-                         <p><br /><a href="/cabinet/registration.htm">Хочу зарегистрироваться</a></td></tr>
- </table>
- <input type="hidden" value="false" name="passOk" />
+{if $error_message}<div class="alert alert-error">{$error_message}</div>{/if}
+<form class="form-horizontal" name="mainForm" method="post">
+<input type="hidden" name="fromPage" value="{$fromPage}">
+<input type="hidden" value="false" name="passOk" />
+  <div class="control-group">
+    <label class="control-label" for="l">Электронный адрес</label>
+    <div class="controls">
+		<input type="text" id="l" class="required" name="login">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="p">Пароль</label>
+    <div class="controls">
+		<input type="password" id="p" class="required" name="password">
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <input type="submit" class="btn" id="submitBtn" disabled="true" value="Войти" />
+	  <div>&nbsp;</div>
+	  <div><a href="/cabinet/forget.htm">Уже регистрировались и забыли пароль?</a></div>
+      <div><a href="/cabinet/registration.htm">Хочу зарегистрироваться</a></div>
+    </div>
+  </div>
 </form>
 <script type="text/javascript">
 bindLoginForm();

@@ -1,57 +1,70 @@
+{raSetVar var=title value="Регистрация"}
 <h1>Регистрация</h1>
-<form name="registrationForm" method="POST">
+{if $error_message}<div class="alert alert-error">{$error_message}</div>{/if}
+<form class="form-horizontal" name="registrationForm" method="post">
 <input type="hidden" name="fromPage" value="{$fromPage}" />
-<input name="processRegistration" value="1" type="hidden">
-<table width="67%" class="forms">
-<colgroup>
- <col width="30%" />
- <col />
-</colgroup>
-<tr><td>&nbsp;</td><td>{if $error_message}<div class="tree-error">{$error_message}</div>{/if}</td></tr>
-<tr>
-<td><span>Имя</span></td>
-<td><input onblur="checkRegForm()" onkeypress="checkRegForm()" onkeyup="checkRegForm()" type="text" class="simple-text" maxlength="30" name="newUserFName" /></td>
-</tr>
-<tr>
-<td>Фамилия</td>
-<td><input type="text" class="simple-text" maxlength="50" name="newUserLName" /></td>
-</tr>
-<tr>
-<td><span>Электронная почта</span></td>
-<td><input onblur="checkRegForm()" onkeypress="checkRegForm()" onkeyup="checkRegForm()" type="text" class="simple-text" maxlength="30" name="newUserEmail" /></td>
-</tr>
-<tr>
-<td><span>Телефон</span></td>
-<td><input onblur="checkRegForm()" onkeypress="checkRegForm()" onkeyup="checkRegForm()" type="text" class="simple-text" maxlength="30" name="newUserPhone" />
-<p class="comment">Формат: +7 (XXX) XXX-XX-XX</p></td>
-</tr>
-<tr>
-<td><span>Пароль</span></td>
-<td><input type="password" class="simple-pass" maxlength="50" name="newUserPassword" />
-<p class="comment">Пароль должен содержать не менее 6 символов из списка:<br>A-z, 0-9, ! @ # $ % ^ &amp; * ( ) _ - +, и не может совпадать с электронным адресом</p></td>
-</tr>
-<tr>
-<td><span>Подтверждение пароля</span></td>
-<td><input onblur="checkPass(this,this.form.newUserPassword)" onkeypress="checkPass(this,this.form.newUserPassword)" onkeyup="checkPass(this,this.form.newUserPassword)" type="password" class="simple-pass" maxlength="50" name="newUserPasswordConfirm" />
-<p class="comment" id="passStatus">введите, пожалуйста, новый пароль еще раз</p></td>
-</tr>
-<tr>
-<td><span>Введите цифры</span><div class="clear"></div>
-<img id="secure_image" src="/secureimage/?{$smarty.session.name}={$smarty.session.id}">
-<a href="#" border="0" style="padding-bottom:15px;" onclick="document.getElementById('secure_image').src='/secureimage/?rnd='+Math.random()+'&{$smarty.session.name}={$smarty.session.id}';return false"><img src="/img/reload.gif"></a>
-</td>
-<td><input type="text" maxlength="5" size="5" onblur="checkRegForm()" onkeypress="checkRegForm()" onkeyup="checkRegForm()" class="simple-captcha" maxlength="50" name="captcha" />
-</td>
-</tr>
-<tr>
-<td>Подписка</td>
-<td><p>Вы хотите получать новости и другие предложения? Поставьте галочку </p>
-	<input type="checkbox" name="newUserSubscribe" value="1" /></td>
-</tr>
-<tr>
-<td></td>
-<td><input type="submit" id="submitBtn" disabled="true" value="Продолжить" /></td>
-</tr>
-</table>
 <input type="hidden" value="false" name="passOk" />
+  <div class="control-group">
+    <label class="control-label required" for="newUserFName">Имя</label>
+    <div class="controls">
+		<input type="text" class="required" id="newUserFName" maxlength="30" name="newUserFName" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="newUserLName">Фамилия</label>
+    <div class="controls">
+		<input type="text" id="newUserLName" maxlength="30" name="newUserLName" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label required" for="newUserPhone">Телефон</label>
+    <div class="controls">
+		<input type="text" class="required" id="newUserPhone" maxlength="20" name="newUserPhone" />
+		<p class="comment">Формат: +7 (XXX) XXX-XX-XX</p>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label required" for="newUserEmail">Электронная почта</label>
+    <div class="controls">
+		<input type="text" class="required" id="newUserEmail" maxlength="100" name="newUserEmail" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label required" for="p">Пароль</label>
+    <div class="controls">
+		<input type="password" id="p" class="required" name="newUserPassword">
+		<p class="comment">Пароль должен содержать не менее 6 символов из списка:<br>A-z, 0-9, ! @ # $ % ^ &amp; * ( ) _ - +, и не может совпадать с электронным адресом</p>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label required" for="p2">Подтверждение пароля</label>
+    <div class="controls">
+		<input onblur="checkPass(this,this.form.newUserPassword)" onkeypress="checkPass(this,this.form.newUserPassword)" onkeyup="checkPass(this,this.form.newUserPassword)" type="password" id="p2" name="newUserPasswordConfirm">
+		<p class="comment" id="passStatus">введите, пожалуйста, новый пароль еще раз</p>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label required" for="p2">Введите цифры
+		<img id="secure_image" src="/secureimage/?{$smarty.session.name}={$smarty.session.id}">
+		<a href="#" border="0" onclick="document.getElementById('secure_image').src='/secureimage/?rnd='+Math.random()+'&{$smarty.session.name}={$smarty.session.id}';return false"><img src="/img/reload.gif"></a>
+	</label>
+    <div class="controls">
+		<input type="text" maxlength="5" size="5" class="required" name="captcha" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="newUserSubscribe">Подписка</label>
+    <div class="controls">
+		<p>Вы хотите получать новости и другие предложения? Поставьте галочку </p>
+		<input type="checkbox" id="newUserSubscribe" name="newUserSubscribe" value="1" />
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <input type="submit" class="btn" id="submitBtn" disabled="true" value="Продолжить" />
+    </div>
+  </div>
 </form>
+<script type="text/javascript">
+bindRegistrationForm();
+</script>
