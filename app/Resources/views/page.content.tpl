@@ -34,6 +34,16 @@
 
 </script>
 {/literal}
+{literal}
+<script src="http://api-maps.yandex.ru/1.1/index.xml?key=ADjBvVABAAAA0VYoMwIAWZz2PwgN8gA95sB2W2czZv1IA5cAAAAAAAAAAAAmIENgCwLBDKzv33T5rukLvT_Gpw=="
+        type="text/javascript"></script>
+<script type="text/javascript">
+	window.onload = function () {
+		var map = new YMaps.Map(document.getElementById("YMapsID"));
+		map.setCenter(new YMaps.GeoPoint(37.64, 55.76), 10);
+	}
+</script>
+{/literal}
 </head>
 <body>
 {literal}
