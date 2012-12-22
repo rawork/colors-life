@@ -17,7 +17,7 @@ class Templating {
 		$this->realPath = $PRJ_DIR.$this->basePath;
 		$this->engine->template_dir = $PRJ_DIR.$this->basePath;
 		$this->engine->compile_dir = $PRJ_DIR.$this->baseCachePath;
-		$this->engine->compile_check = true;
+		$this->engine->compile_check = false;
 		$this->engine->debugging = false;
 		$this->assignMethod = 'assign';
 		$this->renderMethod = 'fetch';
