@@ -8,7 +8,7 @@ mb_http_output('UTF-8');
 mb_internal_encoding("UTF-8");
 
 require_once 'config/config.php';
-require_once 'vendor/autoload.php';
+//require_once 'vendor/autoload.php';
 
 use Fuga\Component\Container;
 use Fuga\Component\Cache;
