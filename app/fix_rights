@@ -1,15 +1,31 @@
 #!/bin/bash
 
-chmod -R 777 log/
-chmod 644 log/.gitkeep
+if [ ! -f config/config.php ]
+then
+cp config/config.php.example config/config.php
+fi
+if [ ! -f config/database.php ]
+then
+cp config/database.php.example config/database.php
+fi
+if [ ! -f config/parameters.php ]
+then
+cp config/parameters.php.example config/parameters.php
+fi
+if [ ! -f ../.htaccess ]
+then
+cp ../.htaccess.example ../.htaccess
+fi
+
+chmod -R 777 logs/
+chmod 644 logs/.gitkeep
 chmod -R 777 cache/
 chmod 644 cache/.gitkeep
 chmod 644 cache/smarty/.gitkeep
 chmod -R 777 ../img/files/
+chmod 644 ../img/files/.gitkeep
 chmod -R 777 ../upload/
 chmod 644 ../upload/.htaccess
-chmod -R 777 ../yml/
-chmod 644 ../yml/.gitkeep
-chmod -R 666 ../sitemap.xml
+chmod 644 ../upload/.gitkeep
 chmod -R 777 backup/
 chmod 644 backup/.gitkeep
