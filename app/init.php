@@ -8,13 +8,15 @@ mb_http_output('UTF-8');
 mb_internal_encoding("UTF-8");
 
 require_once 'config/config.php';
+require_once 'vendor/autoload.php';
 
 use Fuga\Component\Container;
 use Fuga\Component\Cache;
 use Fuga\Component\Log\Log;
 use Fuga\Component\Util;
 use Fuga\Component\Router;
-use Fuga\Component\Templating;
+use Fuga\Component\Templating\TemplatingAdapter;
+use Fuga\Component\Templating\TemplatingFactory;
 use Fuga\CMSBundle\Security\SecurityHandler;
 use Fuga\CMSBundle\Controller\SecurityController;
 use Fuga\CMSBundle\Controller\ExceptionController;
@@ -86,13 +88,12 @@ try {
 	$className = '\\Fuga\\Component\\DB\\Connector\\'.ucfirst($GLOBALS['DB_TYPE']).'Connector';
 	$container->register('connection', new $className($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS'], $GLOBALS['DB_BASE']));
 } catch (\Exception $e) {
-	throw new \Exception('DB connection type error (DB_TYPE). Possible value: mysql,mysqli. Check DB connection params');
+	throw new \Exception('DB connection type error (DB_TYPE). Possible value: mysql,mysqli. Check DB connection parameters');
 }
 
-$container->register('smarty', new Smarty());
 $container->register('templating', 
-	new Templating(
-		$container->get('smarty'), 
+	new TemplatingAdapter(
+		new Smarty(), 
 		array('assignMethod' => 'assign', 'renderMethod' => 'fetch'
 )));
 

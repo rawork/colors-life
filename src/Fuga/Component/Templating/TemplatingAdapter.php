@@ -1,8 +1,8 @@
 <?php
 
-namespace Fuga\Component;
+namespace Fuga\Component\Templating;
 
-class Templating {
+class TemplatingAdapter {
 	
 	private $engine;
 	private $assignMethod;
