@@ -23,3 +23,9 @@ app/logs/*
 !app/logs/.gitkeep
 app/backup/*
 !app/backup/.gitkeep
+
+# Vendors
+composer.lock
+vendor/twig/*
+vendor/composer/*
+vendor/autoload.php
