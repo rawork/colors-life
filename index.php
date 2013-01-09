@@ -25,6 +25,7 @@ if (preg_match('/^\/secureimage\//', $_SERVER['REQUEST_URI'])) {
 			$obj = new \ReflectionClass('Fuga\PublicBundle\Controller\AjaxController');
 			$post = $_POST;
 			unset($post['method']);
+			header("HTTP/1.0 200 OK");
 			echo $obj->getMethod($_POST['method'])->invokeArgs($controller, $post);
 		} catch (\Exception $e) {
 			$container->get('log')->write(json_encode($_POST));

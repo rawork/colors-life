@@ -156,6 +156,7 @@ class PageController extends Controller {
 		$data = $this->render($templateManager->getByNode($this->node));
 		if ($data) {
 //			$this->get('cache')->save($data, $GLOBALS['cur_page_id']);
+			header("HTTP/1.0 200 OK");
 			echo $data;
 		} else {
 			throw new \Exception('Template calculate error');
