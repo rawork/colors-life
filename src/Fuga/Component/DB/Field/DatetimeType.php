@@ -48,7 +48,7 @@ class DatetimeType extends Type {
 		return $this->day.'.'.$this->month.'.'.$this->year.' '.$this->time;
 	}
 
-	public function getInput($value = '', $name = '') {
+	public function getInput($value = '', $name = '', $class = '') {
 		return $this->dateType_getInput(($name ? $name : $this->getName()), $this->dbValue);
 	}
 
@@ -77,7 +77,7 @@ class DatetimeType extends Type {
 		return $ret;	
 	}
 
-	public function getSearchURL() {
+	public function getSearchURL($name = '') {
 		$ret = '';
 		if (parent::getSearchURL('beg')) {
 			$ret .= parent::getSearchURL('beg');

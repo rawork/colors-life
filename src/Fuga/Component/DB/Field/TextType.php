@@ -28,7 +28,7 @@ class TextType extends Type {
 		return $ret;
 	}
 
-	public function getSQLValue() {
+	public function getSQLValue($name = '') {
 		return addslashes($this->getValue());
 
 	}

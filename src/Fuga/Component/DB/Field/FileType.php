@@ -39,7 +39,7 @@ class FileType extends Type {
 		return $ret;
 	}
 
-	public function getInput($value = '', $name = '') {
+	public function getInput($value = '', $name = '', $class = '') {
 		$name = $name ? $name : $this->getName();
 		if ($s = $this->getStatic()) {
 			$r = rand(0, getrandmax());

@@ -19,7 +19,7 @@ class CheckboxType extends Type {
 		return $this->dbValue ? 'Да' : 'Нет';
 	}
 
-	public function getInput($value = '', $name = '') {
+	public function getInput($value = '', $name = '', $class = '') {
 		return '<input type="checkbox" value="1" name="'.($name ? $name : $this->getName()).'" '.(empty($this->dbValue) ? '' : 'checked').'>';
 	}
 
