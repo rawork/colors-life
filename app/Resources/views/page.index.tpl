@@ -3,7 +3,7 @@
 <title>{$title}</title>
 {$meta}
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="/bundles/bootstrap/css/bootstrap.css" type="text/css">
+<link rel="stylesheet" href="/bundles/bootstrap/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="/css/default.css" type="text/css">
 <link rel="stylesheet" href="/css/cat-selectors.css" type="text/css">
 <link href=”/favicon.ico” rel=”icon” type=”image/x-icon” />
