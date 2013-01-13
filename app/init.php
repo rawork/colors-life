@@ -14,9 +14,9 @@ use Fuga\Component\Container;
 use Fuga\Component\Cache;
 use Fuga\Component\Log\Log;
 use Fuga\Component\Util;
+use Fuga\Component\Registry;
 use Fuga\Component\Router;
-use Fuga\Component\Templating\TemplatingAdapter;
-use Fuga\Component\Templating\TemplatingFactory;
+use Fuga\Component\Templating\SmartyTemplating;
 use Fuga\CMSBundle\Security\SecurityHandler;
 use Fuga\CMSBundle\Controller\SecurityController;
 use Fuga\CMSBundle\Controller\ExceptionController;
@@ -79,6 +79,8 @@ if ($_SERVER['SCRIPT_NAME'] != '/restore.php' && file_exists($PRJ_DIR.'/restore.
 // ID запрашиваемой страницы
 $GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace('?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']));
 
+//Registry::init('app/config/parameters.yml');
+
 $container = new Container();
 $container->register('log', new Log());
 $container->register('util', new Util());
@@ -92,7 +94,7 @@ try {
 }
 
 $container->register('templating', 
-	new TemplatingAdapter(
+	new SmartyTemplating(
 		new Smarty(), 
 		array('assignMethod' => 'assign', 'renderMethod' => 'fetch'
 )));

@@ -28,4 +28,7 @@ app/backup/*
 composer.lock
 vendor/twig/*
 vendor/composer/*
+vendor/doctrine/*
+vendor/symfony/*
+vendor/phpunit/*
 vendor/autoload.php

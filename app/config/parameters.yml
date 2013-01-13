@@ -1,0 +1,29 @@
+path:
+  prj_ref: ''
+  prj_dir: <?php echo __DIR__?>%prj_ref%
+  lib_dir: %prj_dir%/src
+  res_ref: %prj_ref%/img/files
+  res_dir: %prj_dir%/img/files
+  upload_ref: %prj_ref%/upload
+  upload_dir: %prj_dir%/upload
+  backup_ref: %prj_ref%/app/backup'
+  backup_dir: %prj_dir%/app/backup
+  cache_dir: %prj_dir% /app/cache/
+  cache_ttl: 86400;
+  pcre_res_ref: str_replace('/', '\/', $RES_REF)
+  theme_ref: %prj_ref%/bundles/admin
+  theme_dir: %prj_dir%/bundles/admin
+
+database:
+  dbname:   colors_test  
+  user:     root
+  password: q3rendsl
+  host:     localhost
+  driver:   pdo_mysql
+  
+captcha:  
+  hash: FWK
+
+developer:
+  username: dev
+  password: 27ee25711f69fa16bfe538f089f9fd95  

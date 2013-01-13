@@ -1,5 +1,8 @@
 {
     "require": {
-        "twig/twig": "1.*"
+        "twig/twig": "1.*",
+		"doctrine/dbal": "2.3.*",
+		"doctrine/mongodb": "1.0.1",
+		"phpunit/phpunit": "3.7.*"
     }
 }

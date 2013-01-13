@@ -2,7 +2,7 @@
 
 namespace Fuga\Component\Templating;
 
-class TemplatingAdapter {
+class SmartyTemplating {
 	
 	private $engine;
 	private $assignMethod;
@@ -52,9 +52,8 @@ class TemplatingAdapter {
 		$template = str_replace($this->realPath, '', $template);
 		$template = str_replace($this->basePath, '', $template);
 		if ($this->exists($template)) {
-			$method = $this->renderMethod;
 			$this->setParams($params);
-			return $this->engine->$method($template);
+			return $this->engine->fetch($template);
 		} elseif ($silent) {
 			return false;
 		} else {	
