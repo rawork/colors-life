@@ -1,0 +1,55 @@
+<h4>Свойства</h4>
+<table style="width:350px;margin-left:15px" border="0" cellpadding="2" cellspacing="0">
+  <tr>
+	<td>Название:<br>
+	  <input type="text" name="title" class="field-props" value="{{ a.title }}" /></td>
+  </tr>
+  <tr>
+	<td>Системное имя:<br>
+	  <input type="text" name="name" class="field-props" value="{{ a.name }}" /></td>
+  </tr>
+  <tr>
+	<td>Сортировка:<br>
+	  <input type="text" name="order_by" class="field-props" value="{{ a.order_by }}" /></td>
+  </tr>
+  <tr>
+	<td><table width="100%" border="0" cellpadding="2" cellspacing="0">
+		<tr>
+		  <td><input type="checkbox" name="is_lang" {% if a.is_lang %}checked{% endif %} value="1" />
+			многоязычная</td>
+		  <td><input type="checkbox" name="no_insert" {% if a.no_insert %}checked{% endif %} value="1" />
+			запрет добавления</td>
+		</tr>
+		<tr>
+		  <td><input type="checkbox" name="is_sort" {% if a.is_sort %}checked{% endif %} value="1" />
+			с полем сортировки</td>
+		  <td><input type="checkbox" name="no_update" {% if a.no_update %}checked{% endif %} value="1" />
+			запрет редактирования</td>
+		</tr>
+		<tr>
+		  <td><input type="checkbox" name="is_publish" {% if a.is_publish %}checked{% endif %} value="1" />
+			c полем публикации</td>
+		  <td><input type="checkbox" name="no_delete" {% if a.no_delete %}checked{% endif %} value="1" />
+			запрет удаления</td>
+		</tr>
+		<tr>
+		  <td><input type="checkbox" name="is_view" {% if a.is_view %}checked{% endif %} value="1" />
+			вид "дерево"</td>
+		  <td><input type="checkbox" name="is_search" {% if a.is_search %}checked{% endif %} value="1" />
+			поисковое поле</td>
+		</tr>
+	  </table></td>
+  </tr>
+  <tr>
+	<td>Префикс поиска:<br>
+	  <input type="text" name="search_prefix" class="field-props-short" value="{{ a.search_prefix }}" /></td>
+  </tr>
+  <tr>
+	<td>Сорт.:<br>
+	  <input type="text" name="sort" class="field-props-short" value="{{ a.sort }}" /></td>
+  </tr>
+  <tr>
+	<td>Активный:<br>
+	  <input type="checkbox" name="publish" {% if a.publish %}checked{% endif %} value="on" /></td>
+  </tr>
+</table>

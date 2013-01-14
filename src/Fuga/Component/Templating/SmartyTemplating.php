@@ -2,57 +2,36 @@
 
 namespace Fuga\Component\Templating;
 
-class SmartyTemplating {
+class SmartyTemplating implements TemplatingInterface {
 	
 	private $engine;
-	private $assignMethod;
-	private $renderMethod;
 	private $basePath		= '/app/Resources/views/';
 	private $baseCachePath	= '/app/cache/smarty/';
 	private $realPath		= '';
 	
-	public function __construct($engine, $options = array()) {
+	public function __construct() {
 		global $PRJ_DIR;
-		$this->engine = $engine;
+		$this->engine = new \Smarty();
 		$this->realPath = $PRJ_DIR.$this->basePath;
 		$this->engine->template_dir = $PRJ_DIR.$this->basePath;
 		$this->engine->compile_dir = $PRJ_DIR.$this->baseCachePath;
 		$this->engine->compile_check = false;
 		$this->engine->debugging = false;
-		$this->assignMethod = 'assign';
-		$this->renderMethod = 'fetch';
-		$this->setOptions($options);
 	}
 	
-	public function setOptions($options = array()) {
-		if (isset($options['assignMethod'])) {
-			$this->assignMethod = $options['assignMethod'];
-		}
-		if (isset($options['renderMethod'])) {
-			$this->renderMethod = $options['renderMethod'];
-		}
-	}
-	
-	public function setParams($params = array()) {
-		$method = $this->assignMethod;
+	public function assign($params) {
 		foreach ($params as $paramName => $paramValue) {
-			$this->engine->$method($paramName, $paramValue);
+			$this->engine->assign($paramName, $paramValue);
 		}
-	}
-	
-	public function setParam($paramName, $paramValue) {
-		$method = $this->assignMethod;
-		$this->engine->$method($paramName, $paramValue);
 	}
 	
 	public function render($template, $params = array(), $silent = false) {
 		if (empty($template)) {
-			throw new \Exception('Шаблон без названия');
+			throw new \Exception('Для обработки передан шаблон без названия');
 		}
-		$template = str_replace($this->realPath, '', $template);
-		$template = str_replace($this->basePath, '', $template);
+		$template = str_replace(array($this->realPath, $this->basePath), '', $template);
 		if ($this->exists($template)) {
-			$this->setParams($params);
+			$this->assign($params);
 			return $this->engine->fetch($template);
 		} elseif ($silent) {
 			return false;
@@ -66,4 +45,3 @@ class SmartyTemplating {
 	}
 	
 }
-

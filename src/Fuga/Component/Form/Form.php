@@ -163,7 +163,7 @@ class Form {
 			$value = $this->get('util')->_postVar($field['name']);
 			if ($field['not_empty'] && empty($value)) {
 				$ret[0] = 'error';
-				$this->get('templating')->setParam('ftitle', $field['title']);
+				$this->get('templating')->assign(array('ftitle', $field['title']));
 				$GLOBALS['tplvar_message'] = $params['text_not_inserted'];
 				$ret[1] .= ($ret[1] ? '<br>' : '').$this->get('templating')->render('var:message');
 			}
@@ -185,7 +185,7 @@ class Form {
 		} else {
 			if ($this->defense)
 				$fields[] = array('value' => $this->get('util')->_postVar('keystring'), 'title' => 'Код безопасности');
-				$this->get('templating')->setParam('fields', $fields);
+				$this->get('templating')->assign(array('fields', $fields));
 				$this->get('mailer')->send(
 					$this->dbform['title'].' на сайте '.$_SERVER['SERVER_NAME'],
 					$this->get('templating')->render('service/form.mail.tpl'),

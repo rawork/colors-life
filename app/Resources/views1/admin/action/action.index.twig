@@ -1,0 +1,38 @@
+<br>
+{{ paginator.render()|raw }}
+<form id="frmGroupUpdate" name="frmGroupUpdate" action="{{ baseRef }}/groupedit" method="post">
+<input type="hidden" name="edited" value="1">
+<table class="table table-condensed table-normal">
+<thead>
+<tr>
+<th width="1%"><input type="checkbox" id="list-checker"></th>
+<th width="1%">#</th>
+{% for field in fields %}
+	{% if field.width %}
+	<th width="{{ field.width }}">{{ field.title }}</th>
+	{% endif %}
+{% endfor %}
+{% if showCredate %}
+<th width="10%">Дата создания</th>
+{% endif %}
+<th style="text-align:center;"><img alt="Действия" src="{{ theme_ref }}/img/action_head.gif" border=0></th>
+</tr>
+</thead>
+{{ tableData|raw }}
+</table>
+<div class="form-inline" id="control">
+	{% if showGroupSubmit %}
+		<a class="btn btn-small" title="Сохранить" onclick="startGroupUpdate(false)"><i class="icon-film"></i></a>
+	{% endif %}
+	<a class="btn btn-small" title="Изменить" onclick="startGroupUpdate(true)"><i class="icon-pencil"></i></a>
+	<a class="btn btn-small btn-danger" title="Удалить" onclick="startGroupDelete()"><i class="icon-trash icon-white"></i></a>
+	{% if rpps %}
+	<label>&nbsp;&nbsp;На странице:&nbsp;&nbsp; <select class="input-mini" name="rpp" onChange="updateRpp(this, '{{ tableName }}')">';
+	{% for rpp in rpps %}
+	<option value="{{ rpp }}" {% if rowPerPage == rpp %} selected{% endif %}>{{ rpp }}</option>
+	{% endfor %}
+	</select></label>
+	{% endif %}
+</div>
+<input type="hidden" name="ids" id="ids" value="{{ ids }}"></form>
+{{ paginator.render()|raw }}

@@ -141,7 +141,7 @@ class CartController extends PublicController {
 		$totalPrice = $this->getTotalPrice();
 		$gifts = $this->get('container')->getItems('catalog_gift', "product_id IN (".implode(',', $itemIds).")");
 		$gifts2 = $this->get('container')->getItems('cart_gift', "publish=1 AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
-		$this->get('templating')->setParams(array(
+		$this->get('templating')->assign(array(
 			'wordEnd' => $this->getTermination($this->get('util')->_sessionVar('number', true, 0)),
 			'items' => $cartItems,
 			'gifts' => array_merge($gifts, $gifts2),

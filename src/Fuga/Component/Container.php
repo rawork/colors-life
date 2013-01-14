@@ -344,17 +344,20 @@ class Container
 				$controller = new \Fuga\CMSBundle\Controller\PublicController($methodData['module_name']);
 			}
 
-			$this->get('templating')->setParam('settings', $controller->params);
-			$this->get('templating')->setParam('ref', '/'.$this->get('router')->getParam('node').'/');
+			$this->get('templating')->assign(array(
+				'settings' => $controller->params,
+				'ref' => '/'.$this->get('router')->getParam('node').'/'
+			));
 		}
 		if ($methodData['template'] && file_exists($PRJ_DIR.$methodData['template'])) {
 			if ($methodData['module_name'] == 'page' && $methodData['name'] == 'index' && !count($paramsData)) {
 				$paramsData[] = '/';
 			}
-			foreach ($paramsData as $key => $param) {
-				$this->get('templating')->setParam('param'.$key, $param);
+			$params = array();
+			foreach ($paramsData as $key => $value) {
+				$params['param'.$key] = $value;
 			}
-			return $this->get('templating')->render($methodData['template']);
+			return $this->get('templating')->render($methodData['template'], $params);
 		} else {
 			throw new \Exception('Method template error: '.$methodData['module_id_name'].'.'.$methodData['name'].'. <a href="/">Перейти на главную</a>');
 		}

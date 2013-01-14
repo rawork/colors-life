@@ -138,8 +138,10 @@ class PageController extends Controller {
 			$title = strip_tags($this->getTitle());
 		}
 		
-		$this->get('templating')->setParam('h1', $this->getH1());
-		$this->get('templating')->setParam('title', $title);
+		$this->get('templating')->assign(array(
+			'h1' => $this->getH1(),
+			'title' => $title
+		));
 
 		$params = array(
 			'mainbody' => $this->getContent().' ',
@@ -149,8 +151,8 @@ class PageController extends Controller {
 			'auth' => $this->get('auth'),
 		);
 		
-		$this->get('templating')->setParams($params);
-		$this->get('templating')->setParams($this->get('container')->getVars());
+		$this->get('templating')->assign($params);
+		$this->get('templating')->assign($this->get('container')->getVars());
 		
 		$templateManager = new TemplateManager();
 		$data = $this->render($templateManager->getByNode($this->node));
@@ -185,7 +187,7 @@ class PageController extends Controller {
 		
 		$this->node = $this->get('router')->getParam('node');
 		$this->methodName = $this->get('router')->getParam('methodName');
-		$this->get('templating')->setParam('methodName', $this->methodName);
+		$this->get('templating')->assign(array('methodName', $this->methodName));
 		$this->nodeEntity = $this->get('container')->getItem('page_page', "name='$this->node'");
 		if (!$this->nodeEntity) {
 			throw $this->createNotFoundException('Несуществующая страница');

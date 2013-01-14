@@ -4,7 +4,9 @@ namespace Fuga\CMSBundle\Model;
 
 interface ModelManagerInterface {
 	
-	function get($name);
+	public function get($id);
+//	public function create($params);
+//	public function delete($id);
 	
 }
 

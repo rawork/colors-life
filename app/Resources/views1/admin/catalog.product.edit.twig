@@ -1,0 +1,11 @@
+<br>
+<ul class="nav nav-tabs" id="myTab">
+  <li class="active"><a href="#editform">Основное</a></li>
+  <li><a href="#pricesform">Размеры и цены</a></li>
+  <li><a href="#filesform">Доп. файлы</a></li>
+</ul>
+<div id="myTabContent" class="tab-content">
+  <div class="tab-pane active" id="editform">{{ updateForm|raw }}</div>
+  <div class="tab-pane" id="pricesform">{{ sizesForm|raw }}</div>
+  <div class="tab-pane" id="filesform">{{ filesForm|raw }}</div>
+</div>

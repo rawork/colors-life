@@ -17,6 +17,7 @@ use Fuga\Component\Util;
 use Fuga\Component\Registry;
 use Fuga\Component\Router;
 use Fuga\Component\Templating\SmartyTemplating;
+//use Fuga\Component\Templating\TwigTemplating;
 use Fuga\CMSBundle\Security\SecurityHandler;
 use Fuga\CMSBundle\Controller\SecurityController;
 use Fuga\CMSBundle\Controller\ExceptionController;
@@ -84,6 +85,7 @@ $GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace(
 $container = new Container();
 $container->register('log', new Log());
 $container->register('util', new Util());
+$container->register('templating', new SmartyTemplating());
 
 // Соединение с базой и выполнение запросов
 try {
@@ -92,12 +94,6 @@ try {
 } catch (\Exception $e) {
 	throw new \Exception('DB connection type error (DB_TYPE). Possible value: mysql,mysqli. Check DB connection parameters');
 }
-
-$container->register('templating', 
-	new SmartyTemplating(
-		new Smarty(), 
-		array('assignMethod' => 'assign', 'renderMethod' => 'fetch'
-)));
 
 // инициализация переменных
 $params = array();
@@ -110,7 +106,7 @@ foreach ($vars as $var) {
 $params['theme_ref'] = $THEME_REF;
 $params['prj_ref'] = $PRJ_REF;
 
-$container->get('templating')->setParams($params);
+$container->get('templating')->assign($params);
 
 $security = new SecurityHandler();
 if (!$security->isAuthenticated() && $security->isSecuredArea()) {

@@ -1,0 +1,4 @@
+{% for mod in modules %}
+  <div><a href="javascript:getTableList('{{ state }}', '{{ mod.name }}');"><img border="0" src="{{ theme_ref }}/img/icons/icon_folder_{{ state }}.gif"> {{ mod.title }}</a></div>
+  <div class="admin-submenu{% if module != mod.name %} closed{% endif %}" id="tableMenu_{{ mod.name }}">{{ mod.tablelist|raw }}</div>
+{% endfor %}

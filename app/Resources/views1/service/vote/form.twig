@@ -1,0 +1,13 @@
+{% if vote %}
+<div id="{{ vote.name }}">
+<form id="frm{{ vote.name }}" action="" method="post">
+<input type="hidden" name="vote" value="{{ vote.id }}" />
+<div class="vote-title"><b>{{ vote.title }}</b></div><br>	
+{% for k,answer in answers %}
+<div class="vote-item">
+<input type="radio" name="answer" value="{{ answer.id }}"> {{ answer.name }}</div>
+{% endfor %}
+<div class="vote-button"><input type="button" onclick="voteProcess('{{ vote.name }}', 1)" value="Голосовать" /></div>
+<div class="vote-button"><input type="button" onclick="voteProcess('{{ vote.name }}')" value="Результаты" /></div>
+</form></div>
+{% endif %}
