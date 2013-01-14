@@ -10,6 +10,7 @@ use Fuga\Component\Storage\FileStorage;
 use Fuga\Component\Storage\ImageStorageDecorator;
 use Fuga\Component\Search\SearchEngine;
 use Fuga\Component\Cache\Cache;
+use Fuga\Component\Exception\AutoloadException;
 
 class Container 
 {
@@ -19,30 +20,35 @@ class Container
 	private $templateVars = array();
 	private $services = array();
 	private $managers = array();
-	
 
-	function __construct() {
+	function __construct() 
+	{
 		
 	}
 	
-	public function initialize() {
+	public function initialize() 
+	{
 		$this->tables = $this->getAllTables();
 	}
 
-	public function getModule($moduleName) {
+	public function getModule($moduleName) 
+	{
 		return empty($this->modules[$moduleName]) ? array() : $this->modules[$moduleName];
 	}
 
-	public function getModuleById($moduleId) {
+	public function getModuleById($moduleId) 
+	{
 		foreach ($this->modules as $module) {
 			if ($moduleId == $module['id']) {
 				return $module;
 			}
 		}
+		
 		return null;
 	}
 
-	public function getModules() {
+	public function getModules() 
+	{
 		if (!$this->ownmodules) {
 			$modules = array();
 			if ($this->get('security')->isSuperuser()) {
@@ -62,6 +68,7 @@ class Container
 			}
 			$this->ownmodules = $modules;
 		}
+		
 		return $this->ownmodules;
 	}
 	
@@ -76,7 +83,6 @@ class Container
 	}
 	
 	private function getAllTables() {
-		global $LIB_DIR;	
 		$ret = array();
 		$this->modules = array();
 		$query = "SELECT id, sort, name, title, 'content' AS ctype FROM config_modules
@@ -87,13 +93,15 @@ class Container
 		foreach ($modules as $module) {
 			$tables = array();
 			$this->modules[$module['name']] = $module;
-			if (file_exists($LIB_DIR.'/Fuga/CMSBundle/Model/'.ucfirst($module['name']).'.php')) {
+			try {
 				$className = 'Fuga\\CMSBundle\\Model\\'.ucfirst($module['name']);
 				$model = new $className();
 				foreach ($model->tables as $table) {
 					$table['is_system'] = true;
 					$ret[$table['component'].'_'.$table['name']] = new Table($table);
 				}
+			} catch (AutoloadException $e) {
+				
 			}
 		}
 		$tables = $this->get('connection')->getItems('tables', "SELECT tt.*,cm.name as component FROM table_tables tt LEFT JOIN config_modules cm ON tt.module_id=cm.id WHERE publish=1 ORDER BY tt.sort");
@@ -335,12 +343,12 @@ class Container
 	}
 
 	function callMethodInstance($methodData, $paramsData) {
-		global $PRJ_DIR, $LIB_DIR;
+		global $PRJ_DIR;
 		if ($methodData['module_name'] != 'page') {
-			if (file_exists($LIB_DIR.'/Fuga/PublicBundle/Controller/'.ucfirst($methodData['module_name']).'Controller.php')) {
+			try {
 				$className = '\\Fuga\\PublicBundle\\Controller\\'.ucfirst($methodData['module_name']).'Controller';
 				$controller = new $className();
-			} else{
+			} catch (AutoloadException $e){
 				$controller = new \Fuga\CMSBundle\Controller\PublicController($methodData['module_name']);
 			}
 

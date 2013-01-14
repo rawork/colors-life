@@ -87,10 +87,9 @@ class SecurityController extends Controller {
 	}
 	
 	public function logoutAction() {
-		global $PRJ_REF;
 		$this->get('security')->logout();
 		if (empty($_SERVER['HTTP_REFERER']) || preg_match('/^\/admin\/logout/', $_SERVER['HTTP_REFERER'])) {
-			$uri = $PRJ_REF.'/admin/';
+			$uri = '/admin/';
 		} else {
 			$uri = $_SERVER['HTTP_REFERER'];
 		}
@@ -98,7 +97,6 @@ class SecurityController extends Controller {
 	}
 	
 	public function passwordAction() {
-		global $PRJ_REF;
 		if ($this->get('util')->_getVar('key')) {
 			$user = $this->get('connection')->getItem('user', "SELECT id,login,email FROM user_user WHERE hashkey='".$this->get('util')->_getVar('key')."'");
 			if (!empty($user) && !empty($user['email'])) {
@@ -119,7 +117,7 @@ class SecurityController extends Controller {
 				);
 			}
 		}
-		header('location: '.$PRJ_REF.'/admin/');
+		header('location: /admin/');
 	}
 	
 }

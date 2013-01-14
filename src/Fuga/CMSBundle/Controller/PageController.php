@@ -6,6 +6,7 @@ use Fuga\CMSBundle\Model\TemplateManager;
 use Fuga\CMSBundle\Model\MetaManager;
 use Fuga\CMSBundle\Controller\PublicController;
 use Fuga\PublicBundle\Controller\AuthController;
+use Fuga\Component\Exception\AutoloadException;
 
 class PageController extends Controller {
 	
@@ -30,12 +31,11 @@ class PageController extends Controller {
 	}
 
 	function getUrl($a) {
-		global $PRJ_REF;
 		if (trim($a['url']) != '') {
-			return stristr($a['url'], 'http://') ? $a['url'] : $PRJ_REF.$a['url'];
+			return stristr($a['url'], 'http://') ? $a['url'] : $a['url'];
 		} else {	
 			$lang = $this->get('router')->getParam('lang') == 'ru' ? '' : $this->get('router')->getParam('lang').'/';
-			$alias = $a['name'] == '/' ? $PRJ_REF.$a['name'].$lang : $PRJ_REF.'/'.$lang.$a['name'].(!empty($a['module_id']) ? '/' : '.htm');
+			$alias = $a['name'] == '/' ? $a['name'].$lang : '/'.$lang.$a['name'].(!empty($a['module_id']) ? '/' : '.htm');
 			return $alias;
 		}
 	}
@@ -167,8 +167,6 @@ class PageController extends Controller {
 	}
 
 	public function handle() {
-		global $LIB_DIR;
-		
 		if (preg_match('/^\/notice\/[\d]{6}$/', $_SERVER['REQUEST_URI'])) {
 			echo $this->render('page.notice.tpl', array('order' => str_replace('/notice/', '', $_SERVER['REQUEST_URI'])));
 			exit;
@@ -194,11 +192,11 @@ class PageController extends Controller {
 		}
 		if (!empty($this->nodeEntity['module_id_name'])) {
 			$controllerName = $this->nodeEntity['module_id_name'];
-			if (file_exists($LIB_DIR.'/Fuga/PublicBundle/Controller/'.ucfirst($controllerName).'Controller.php')) {
+			try {
 				$className = '\\Fuga\\PublicBundle\\Controller\\'.ucfirst($controllerName).'Controller';
 				$this->controller = new $className($controllerName);
 				$this->isService = true;
-			} else {
+			} catch (AutoloadException $e) {
 				$this->controller = new PublicController($controllerName);
 				$this->isService = false;
 			}

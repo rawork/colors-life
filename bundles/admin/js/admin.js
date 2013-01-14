@@ -418,7 +418,7 @@ function emptyDateSearch(name){
 }
 
 function fileBrowser(type) {
-	var connector = prj_ref+'/bundles/admin/editor/fmanager/fmanager.php?mlang=russian';
+	var connector = '/bundles/admin/editor/fmanager/fmanager.php?mlang=russian';
 	var enableAutoTypeSelection = true;
 	var cType;
 	switch (type) {
@@ -439,7 +439,7 @@ function fileBrowser(type) {
 }
 
 function fileBrowserCallBack(field_name, url, type, win) {
-	var connector = prj_ref+'/bundles/admin/editor/fmanager/fmanager.php?mlang=russian';
+	var connector = '/bundles/admin/editor/fmanager/fmanager.php?mlang=russian';
 	var enableAutoTypeSelection = true;
 	var cType;
 	tinyfck_field = field_name;

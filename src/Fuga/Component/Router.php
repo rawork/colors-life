@@ -23,7 +23,6 @@ class Router {
 	}
 	
 	public function getPath($nativeUrl = null) {
-		global $PRJ_REF;
 		$url = $nativeUrl ?: $this->url;
 		if (!isset($this->paths[$nativeUrl])) {
 			//  Установка языка по части URL, например, /ru/about.htm или /catalog/ru/index.htm
@@ -50,7 +49,7 @@ class Router {
 				$this->setParam('query', $urlParts[1]);
 			}
 
-			$this->paths[$nativeUrl] = preg_replace('/^'.$PRJ_REF.'\//', '/', $urlParts[0]); 
+			$this->paths[$nativeUrl] = $urlParts[0]; 
 		}
 		
 		return $this->paths[$nativeUrl];

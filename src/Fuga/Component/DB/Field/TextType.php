@@ -16,7 +16,6 @@ class TextType extends Type {
 	}
 
 	public function getInput($value = '', $name = '', $search = false) {
-	global $PRJ_REF;
 		$ret = '';
 		if ($search){
 			$ret = '<input type="text" id="'.$name.'" name="'.$name.'" value="'.htmlspecialchars($value).'">';

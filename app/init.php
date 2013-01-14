@@ -16,6 +16,7 @@ use Fuga\Component\Log\Log;
 use Fuga\Component\Util;
 use Fuga\Component\Registry;
 use Fuga\Component\Router;
+use Fuga\Component\Exception\AutoloadException;
 use Fuga\Component\Templating\SmartyTemplating;
 //use Fuga\Component\Templating\TwigTemplating;
 use Fuga\CMSBundle\Security\SecurityHandler;
@@ -47,11 +48,10 @@ function exception_handler($exception)
 
 function autoloader($className)
 {
-	global $LIB_DIR, $PRJ_DIR;
 	if ($className == 'Smarty') {
-		require_once($PRJ_DIR.'/vendor/smarty/Smarty.class.php');
+		require_once(__DIR__.'/../vendor/smarty/Smarty.class.php');
 	} else {
-		$basePath = $LIB_DIR.'/';
+		$basePath = __DIR__.'/../src/';
 		$className = ltrim($className, '\\');
 		$fileName  = '';
 		$namespace = '';
@@ -65,7 +65,7 @@ function autoloader($className)
 			require_once $basePath.$fileName;
 		} else {
 			// LOG + nice error text
-			throw new \Exception('Не возможно загрузить класс "'.$fileName.'"');
+			throw new AutoloadException('Не возможно загрузить класс "'.$fileName.'"');
 		}
 	}	
 }
@@ -104,7 +104,6 @@ foreach ($vars as $var) {
 }
 
 $params['theme_ref'] = $THEME_REF;
-$params['prj_ref'] = $PRJ_REF;
 
 $container->get('templating')->assign($params);
 

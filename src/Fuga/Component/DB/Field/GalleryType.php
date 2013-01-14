@@ -11,13 +11,12 @@ class GalleryType extends FileType {
 	}
 
 	public function getStatic() {
-		global $PRJ_REF;
 		$ret = '';
 		$photos = $this->get('connection')->getItems("SELECT * FROM system_gallery WHERE tbl='' AND fld='' AND rc=''");
 		foreach ($photos as $ph) {
 			if ($ph['file']) {
 				$path_parts = pathinfo($ph['file']);
-				$ret .= ($ret ? '&nbsp;' : '').'<img alt="'.$ph['name'].'" src="'.$PRJ_REF.$path_parts['dirname'].'/default_'.$path_parts['basename'].'">';
+				$ret .= ($ret ? '&nbsp;' : '').'<img alt="'.$ph['name'].'" src="'.$path_parts['dirname'].'/default_'.$path_parts['basename'].'">';
 			}
 		}
 		return $ret;
@@ -126,8 +125,7 @@ class GalleryType extends FileType {
 	}
 
 	public function getInput($value = '', $name = '') {
-	global $PRJ_REF;	
-		return $this->getStatic().'<input class="butt" type="button" value="Изменить" onClick="open_window(\''.$PRJ_REF.'/admin/wnd_photo.php?table='.$this->params['l_table'].'&field='.$this->params['l_field'].'&id='.$this->dbId.'\')">';
+		return $this->getStatic().'<input class="butt" type="button" value="Изменить" onClick="open_window(\'/admin/wnd_photo.php?table='.$this->params['l_table'].'&field='.$this->params['l_field'].'&id='.$this->dbId.'\')">';
 	}
 
 }

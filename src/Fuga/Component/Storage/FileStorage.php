@@ -8,10 +8,10 @@ class FileStorage implements StorageInterface {
 	private $path;
 	
 	public function __construct() {
-		global $PRJ_DIR, $PRJ_REF, $UPLOAD_REF;
+		global $PRJ_DIR, $UPLOAD_REF;
 		$this->uploadpath = $UPLOAD_REF;
 		$this->realpath = $PRJ_DIR;
-		$this->path = $PRJ_REF;
+		$this->path = '';
 	}
 	
 	public function save($filename, $sourcePath) {

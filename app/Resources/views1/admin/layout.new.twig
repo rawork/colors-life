@@ -2,16 +2,15 @@
 <html>
   <head>
     <title>Управление сайтом - {{ prj_name }}.{{ prj_zone }}</title>
-    <link href="{{ prj_ref }}/bundles/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/bundles/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="{{ theme_ref }}/css/default.css" rel="stylesheet">
 	<link href="{{ theme_ref }}/css/colorpicker.css" type="text/css" rel="stylesheet">
 	<link href="{{ theme_ref }}/css/calendar-mos.css" rel="stylesheet">
-	<link href="{{ prj_ref }}/bundles/treeview/jquery.treeview.css" rel="stylesheet">
+	<link href="/bundles/treeview/jquery.treeview.css" rel="stylesheet">
 	<script type="text/javascript">
-	var prj_ref = '{{ prj_ref }}';
+
 	var theme_ref = '{{ theme_ref }}';
 	var state = '{{ state }}';
-
 	var calendars = {};
 	function addCalendar(name, time) {
 		calendars[name] = time;
@@ -86,14 +85,14 @@
 		<div class="modal-body" id="popupContent"></div>
 		<div class="modal-footer admin-modal-footer" id="popupButtons"></div>
 	</div>
-	<script src="{{ prj_ref }}/js/jquery.js"></script>
-    <script src="{{ prj_ref }}/bundles/bootstrap/js/bootstrap.js"></script>
-	<script src="{{ prj_ref }}/bundles/treeview/lib/jquery.cookie.js"></script>
-	<script src="{{ prj_ref }}/bundles/treeview/jquery.treeview.js"></script>
+	<script src="/js/jquery.js"></script>
+    <script src="/bundles/bootstrap/js/bootstrap.js"></script>
+	<script src="/bundles/treeview/lib/jquery.cookie.js"></script>
+	<script src="/bundles/treeview/jquery.treeview.js"></script>
 	<script src="{{ theme_ref }}/js/jquery.colorpicker.js"></script>
-	<script src="{{ prj_ref }}/bundles/multifile/jquery.MultiFile.js"></script>
-	<script src="{{ prj_ref }}/bundles/multifile/jquery.form.js"></script>
-	<script src="{{ prj_ref }}/bundles/multifile/jquery.blockUI.js"></script>
+	<script src="/bundles/multifile/jquery.MultiFile.js"></script>
+	<script src="/bundles/multifile/jquery.form.js"></script>
+	<script src="/bundles/multifile/jquery.blockUI.js"></script>
 	<script src="{{ theme_ref }}/js/admin.js"></script>
 	<script src="{{ theme_ref }}/editor/tiny_mce_gzip.js"></script> 
 	<script src="{{ theme_ref }}/editor/tmcegzip_init.js"></script> 

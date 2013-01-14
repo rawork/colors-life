@@ -32,10 +32,9 @@ class FileType extends Type {
 	}
 
 	public function getStatic() {
-	global $PRJ_REF;
 		$ret = '';
 		if ($this->dbValue)
-			$ret = '<a href="'.$PRJ_REF.$this->dbValue.'">'.$this->dbValue.'</a>&nbsp;('.$this->get('filestorage')->size($this->dbValue).')';
+			$ret = '<a href="'.$this->dbValue.'">'.$this->dbValue.'</a>&nbsp;('.$this->get('filestorage')->size($this->dbValue).')';
 		return $ret;
 	}
 

@@ -1,21 +1,17 @@
 <?php
 
-$PRJ_REF = '';
-$PRJ_DIR = $_SERVER['DOCUMENT_ROOT'].$PRJ_REF;
+$PRJ_DIR = $_SERVER['DOCUMENT_ROOT'];
 
-$LIB_REF = $PRJ_REF.'/src';
-$LIB_DIR = $PRJ_DIR.'/src';
-$RES_REF = $PRJ_REF.'/img/files';
+$RES_REF = '/img/files';
 $RES_DIR = $PRJ_DIR.'/img/files';
-$UPLOAD_REF = $PRJ_REF.'/upload';
+$UPLOAD_REF = '/upload';
 $UPLOAD_DIR = $PRJ_DIR.'/upload';
-$BACKUP_REF = $PRJ_REF.'/app/backup';
+$BACKUP_REF = '/app/backup';
 $BACKUP_DIR = $PRJ_DIR.'/app/backup';
 $CACHE_DIR = $PRJ_DIR.'/app/cache/';
 $CACHE_TTL = 24*60*14;
 $PCRE_RES_REF = str_replace('/', '\/', $RES_REF);
-$THEME_REF = $PRJ_REF.'/bundles/admin';
-$THEME_DIR = $PRJ_DIR.'/bundles/admin';
+$THEME_REF = '/bundles/admin';
 
 require_once('database.php');
 require_once('parameters.php');
