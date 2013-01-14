@@ -142,6 +142,5 @@
 	<div id="popup_content"></div>
 </div>
 {raMethod ref=/catalog/selectors.htm}			
-<script type="text/javascript" src="http://system.online-butterfly.ru/channel/js/main/oJLmWFQiVPrsYnJ/"></script>
 </body>
 </html>
