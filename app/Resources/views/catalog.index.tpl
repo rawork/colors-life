@@ -117,7 +117,7 @@
 {if $products} 
 {assign var=products_where value=" OR id IN(`$products`)"}	
 {/if}
-{raPaginator var=paginator table=catalog_product query="publish=1 AND (category_id=`$cat.id`  `$products_where`)" pref="`$ref``$methodName`.`$param0`.`$param1`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
+{raPaginator var=paginator table=catalog_product query="publish=1 AND (category_id=`$cat.id`  `$products_where`)" pref="index.`$param0`.`$param1`.htm?page=###&rtt=`$rtt`" per_page=$rtt page=$page tpl=public}
 {raItems var=items table=catalog_product query="(category_id=`$cat.id`  `$products_where`) AND publish=1" limit=$paginator->limit sort="is_exist DESC,`$param1`"}
 
 {if count($items)}

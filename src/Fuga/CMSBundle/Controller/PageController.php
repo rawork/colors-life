@@ -152,13 +152,11 @@ class PageController extends Controller {
 		);
 		
 		$this->get('templating')->assign($params);
-		$this->get('templating')->assign($this->get('container')->getVars());
 		
 		$templateManager = new TemplateManager();
-		$data = $this->render($templateManager->getByNode($this->node));
+		$data = $this->render($templateManager->getByNode($this->node), $this->get('container')->getVars());
 		if ($data) {
 //			$this->get('cache')->save($data, $GLOBALS['cur_page_id']);
-			header("HTTP/1.0 200 OK");
 			echo $data;
 		} else {
 			throw new \Exception('Template calculate error');
