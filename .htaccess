@@ -18,43 +18,43 @@ DirectoryIndex index.php
   php_value magic_quotes_runtime            0
   php_value register_globals                0
   php_value session.auto_start              0
-  php_value error_reporting					2047
-  php_value display_errors					1
-  php_value post_max_size					50M
-  php_value upload_max_filesize				50M
+  php_value error_reporting              2047
+  php_value display_errors                  1
+  php_value post_max_size                 50M
+  php_value upload_max_filesize           50M
 </IfModule>
 
-<IfModule mod_expires.c>
+#<IfModule mod_expires.c>
   # Enable expirations.
-  ExpiresActive On
+  #ExpiresActive On
 
   # Cache all files for 2 weeks after access (A).
-  ExpiresDefault A1209600
+  #ExpiresDefault A1209600
 
   #images
-  ExpiresByType image/gif A2678400
-  ExpiresByType image/jpeg A2678400
-  ExpiresByType image/png A2678400
+  #ExpiresByType image/gif A2678400
+  #ExpiresByType image/jpeg A2678400
+  #ExpiresByType image/png A2678400
 
-  <FilesMatch \.php$>
+  #<FilesMatch \.php$>
     # Do not allow PHP scripts to be cached unless they explicitly send cache
     # headers themselves. Otherwise all scripts would have to overwrite the
     # headers set by mod_expires if they want another caching behavior.
-    ExpiresActive Off
-  </FilesMatch>
-</IfModule>
+    #ExpiresActive Off
+  #</FilesMatch>
+#</IfModule>
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
-	
-	RewriteCond %{HTTP_HOST} ^www\.colors-life\.ru$ [NC]
+
+    RewriteCond %{HTTP_HOST} ^www\.colors-life\.ru$ [NC]
     RewriteRule ^(.*)$ http://colors-life.ru/$1 [L,R=301]
 
     <IfModule mod_vhost_alias.c>
         RewriteBase /
     </IfModule>
 
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
