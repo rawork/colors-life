@@ -16,7 +16,9 @@ class SecurityHandler {
 	
 	public function isSecuredArea() {
 		global $AUTH_LOCK_PROJECT;
-		return $AUTH_LOCK_PROJECT == 'Y' || (preg_match('/^\/admin\//', $_SERVER['REQUEST_URI']) && !preg_match('/^\/admin\/(logout|forgot|password)/', $_SERVER['REQUEST_URI']));
+		return $AUTH_LOCK_PROJECT == 'Y' || 
+			(preg_match('/^\/admin\//', $_SERVER['REQUEST_URI']) && !preg_match('/^\/admin\/(logout|forgot|password)/', $_SERVER['REQUEST_URI'])) ||
+			(preg_match('/^\/bundles\/admin\/editor\//', $_SERVER['REQUEST_URI']));
 	}
 	
 	public function getCurrentUser() {
