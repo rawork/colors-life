@@ -188,7 +188,7 @@ class Form {
 				$this->get('templating')->assign(array('fields', $fields));
 				$this->get('mailer')->send(
 					$this->dbform['title'].' на сайте '.$_SERVER['SERVER_NAME'],
-					$this->get('templating')->render('service/form.mail.tpl'),
+					$this->get('templating')->render('service/form.mail.tpl', compact('fields')),
 					$this->email
 				);	
 		}
