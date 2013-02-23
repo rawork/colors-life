@@ -2,10 +2,6 @@
 
 namespace Fuga\Component\DB;
 	
-function fillValue(&$value, $key) {
-	$value = "'".$value."'";
-}
-
 class Table {
 	public $name;
 	public $cname;
@@ -426,7 +422,7 @@ class Table {
 				$photo['created'] 	= date("Y-m-d H:i:s");
 				$photo['entity_id'] = $lastId;
 				$names = implode(',', array_keys($photo));
-				array_walk($photo, "fillValue");
+				array_walk($photo, "self::fillValue");
 				$values = implode(',', $photo);
 				$sql = "INSERT INTO system_files ($names) VALUES ($values)";
 				$this->get('connection')->execQuery($this->getDBTableName(), $sql);
@@ -647,6 +643,10 @@ class Table {
 		foreach ($this->fields as $k => $f) {
 			$this->fields[$k]['cls'] = $this->getDBTableName();
 		}
+	}
+	
+	public static function fillValue(&$value, $key) {
+		$value = "'".$value."'";
 	}
 	
 	public function get($name) {
