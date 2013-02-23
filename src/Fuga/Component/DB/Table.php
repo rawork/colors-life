@@ -2,7 +2,7 @@
 
 namespace Fuga\Component\DB;
 	
-function fillValue(&$value) {
+function fillValue(&$value, $key) {
 	$value = "'".$value."'";
 }
 
