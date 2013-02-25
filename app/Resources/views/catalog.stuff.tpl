@@ -16,7 +16,7 @@
 			<td class="product-content">
 				<div class="product-image-card pull-left">
 					{if $item.imagenew}
-						<a href="{$item.imagenew}" class="jqzoom" title="{$item.name}"><img src="{$item.middle_imagenew}" title="{$item.name}" style="border: 0px solid #666;"></a>
+						<a href="{$item.imagenew}" class="jqzoom" title="{$item.name}"><img src="{$item.middle_imagenew}" title="{$item.name}"></a>
 						<script type="text/javascript">
 							bindZoom();
 						</script>
