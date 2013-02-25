@@ -579,13 +579,15 @@ function bindInfoForm() {
 
 function bindZoom() {
 	var options = {
-		zoomWidth: 350,
-		zoomHeight: 350,
-		xOffset: 10,
-		yOffset: 0,
-		offset: 5,
-		preload:1,
-		position: "right" //and MORE OPTIONS
+		zoomType: 'standard',  
+		lens:true,  
+		preloadImages: true,  
+		alwaysOn:false,  
+		zoomWidth: 350,  
+		zoomHeight: 350,  
+		xOffset: 10,  
+		yOffset: 0,  
+		position:'right'
 	};
 
 	$(".jqzoom").jqzoom(options);
