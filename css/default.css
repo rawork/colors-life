@@ -665,3 +665,12 @@ a.delete:hover {
   border: 0;
   -ms-interpolation-mode: bicubic;
 }
+
+.zoomWrapperImage img {
+  max-width: none;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
