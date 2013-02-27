@@ -7,12 +7,13 @@
 <link rel="stylesheet" href="/css/default.css" type="text/css">
 <link rel="stylesheet" href="/css/cat-selectors.css" type="text/css">
 <link href="/bundles/admin/css/calendar-mos.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="/bundles/jqzoom/css/jquery.jqzoom.css" type="text/css">
 <link rel="stylesheet" href="/bundles/lightbox/css/jquery.lightbox-0.5.css" type="text/css">
 <link href=”/favicon.ico” rel=”icon” type=”image/x-icon” />
 <link href=”/favicon.ico” rel=”shortcut icon” type=”image/x-icon” />
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/dimmer.js"></script>
-<script type="text/javascript" src="/bundles/easyzoom/easyzoom.js" ></script>
+<script type="text/javascript" src="/bundles/jqzoom/js/jquery.jqzoom-core.js"></script>
 <script type="text/javascript" src="/bundles/lightbox/js/jquery.lightbox-0.5.js"></script>
 <script type="text/javascript" src="/js/public.functions.js"></script>
 <script type="text/javascript" src="/bundles/admin/js/calendar.js" ></script>

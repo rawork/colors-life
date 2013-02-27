@@ -30,9 +30,9 @@
 					<a rel="lightbox-tour" title="{$item.name}" href="{$foto.file}">{$smarty.foreach.fotos.index+1}</a>&nbsp;&nbsp;&nbsp;
 					{/foreach}
 					</div>
-<!--					<script type="text/javascript">
+					<script type="text/javascript">
 						$(".product-gallery a").lightBox();
-					</script>-->
+					</script>
 					{/if}
 				</div>
 				<div class="product-description pull-left">
