@@ -578,19 +578,20 @@ function bindInfoForm() {
 }
 
 function bindZoom() {
-	var options = {
-		zoomType: 'standard',  
-		lens:true,  
-		preloadImages: true,  
-		alwaysOn:false,  
-		zoomWidth: 350,  
-		zoomHeight: 350,  
-		xOffset: 10,  
-		yOffset: 0,  
-		position:'right'
-	};
-
-	$(".jqzoom").jqzoom(options);
+//	var options = {
+//		zoomType: 'standard',  
+//		lens:true,  
+//		preloadImages: true,  
+//		alwaysOn:false,  
+//		zoomWidth: 350,  
+//		zoomHeight: 350,  
+//		xOffset: 10,  
+//		yOffset: 0,  
+//		position:'right'
+//	};
+//
+//	$(".photo-zoom").jqzoom(options);
+	$('a.photo-zoom').easyZoom();
 }
 
 function initFB() {

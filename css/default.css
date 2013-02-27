@@ -641,3 +641,27 @@ a.delete:hover {
 .cart-total span{
 	font-size:18px;
 }
+
+#easy_zoom{
+	width:400px;
+	height:350px;	
+	border:1px solid #ccc;
+	background:#fff;
+	color:#333;
+	position:absolute;
+	top:360px;
+	left:540px;
+	overflow:hidden;
+	/* vertical and horizontal alignment used for preloader text */
+	line-height:400px;
+	text-align:center;
+}
+
+#easy_zoom img {
+  max-width: none;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}

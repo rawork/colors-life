@@ -16,7 +16,7 @@
 			<td class="product-content">
 				<div class="product-image-card pull-left">
 					{if $item.imagenew}
-						<a href="{$item.imagenew}" class="jqzoom" title="{$item.name}"><img src="{$item.middle_imagenew}" title="{$item.name}"></a>
+						<a href="{$item.imagenew}" class="photo-zoom" title="{$item.name}"><img src="{$item.middle_imagenew}" title="{$item.name}"></a>
 						<script type="text/javascript">
 							bindZoom();
 						</script>
@@ -30,9 +30,9 @@
 					<a rel="lightbox-tour" title="{$item.name}" href="{$foto.file}">{$smarty.foreach.fotos.index+1}</a>&nbsp;&nbsp;&nbsp;
 					{/foreach}
 					</div>
-					<script type="text/javascript">
+<!--					<script type="text/javascript">
 						$(".product-gallery a").lightBox();
-					</script>
+					</script>-->
 					{/if}
 				</div>
 				<div class="product-description pull-left">
