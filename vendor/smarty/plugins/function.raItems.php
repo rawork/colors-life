@@ -24,7 +24,7 @@ function smarty_function_raItems($params, &$smarty) {
 			$smarty->trigger_error('raItems: Не указан параметр: var');
 		} else {
 			if (!empty($params['nquery'])) {
-				$smarty->assign($params['var'], $GLOBALS['container']->getNativeItems($params['nquery']));
+				$smarty->assign($params['var'], $GLOBALS['container']->getItemsRaw($params['nquery']));
 			} else {
 				$class = $params['table'];
 				$condition = !empty($params['query']) ? $params['query'] : '';

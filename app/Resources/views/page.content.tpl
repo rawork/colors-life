@@ -60,13 +60,16 @@
 			<div class="head-logo"><a href="/"><img src="/img/logo.gif" width="128"></a></div>
 		</div>
 		<div class="span21">
-			<div class="head-mode"> <strong>Интернет-магазин экологически чистых товаров</strong><br>{raInclude var=rejim}</div>
+			<div class="head-mode"> 
+				<strong>Интернет-магазин экологически чистых товаров</strong><br>
+				{raMethod path=Fuga:Public:Common:block args='["name":"rejim"]'}
+			</div>
             <div class="head-phone">
-				{raInclude var=phone}
+				{raMethod path=Fuga:Public:Common:block args='["name":"phone"]'}
 			</div>
 			<div class="clearfix"></div>
 			<div class="head-search">
-				<form class="form-search" action="/search.htm" method="get">
+				<form class="form-search" action="{raURL node=search}" method="get">
 					<input type="text" name="text" autocomplete="off" placeholder="Поиск" class="input-xlarge search-query">
 					<button type="submit" class="btn">Поиск</button>
 				</form>
@@ -75,15 +78,15 @@
 		<div class="span12">
 			<div class="head-user">
 				{if $auth->user}
-				<b>{$auth->user.name} {$auth->user.lastname}</b> / <a href="/cabinet/">Личный кабинет</a> / <a href="/cabinet/logout.htm">Выйти</a>
+				<b>{$auth->user.name} {$auth->user.lastname}</b> / <a href="{raURL node=cabinet}">Личный кабинет</a> / <a href="{raURL node=cabinet method=logout}">Выйти</a>
 				{else}
-				<a href="/cabinet/">Вход в личный кабинет</a> / <a href="/cabinet/registration.htm">Регистрация</a>
+				<a href="{raURL node=cabinet}">Вход в личный кабинет</a> / <a href="{raURL node=cabinet method=registration}">Регистрация</a>
 				{/if}
 			</div>
 			<div class="head-cart">
 				<h5>Ваша корзина</h5>
                 <div id="cart_info"> 
-					{raMethod ref=/cart/widget.htm}
+					{raMethod path=Fuga:Public:Cart:widget}
 				</div>
 			</div>	  
 		</div>	
@@ -92,7 +95,6 @@
 		<div class="span40">
 			<div class="mainmenu">
 				<ul>
-				{raDir var=links query=/}
 				{foreach from=$links item=menuitem}
 				<li><a href="{$menuitem.ref}">{$menuitem.title}</a></li>
 				{/foreach}
@@ -103,15 +105,15 @@
 	<div class="row-fluid">
 		<div class="span10">
 			<div class="left-column">
-				{raMethod ref=/catalog/cats.htm}
+				{raMethod path=Fuga:Public:Catalog:cats}
 				{if $node.id == 98}
-				{raMethod ref=/article/cloud.htm}
+				{raMethod path=Fuga:Public:Article:cloud}
 				{/if}
 				<div class="links-block">
-					<div><a href="/feedback.htm">Задать вопрос</a></div>
-					<div><a href="/subscribe-process.htm">Подписка на рассылку</a></div>
+					<div><a href="{raURL node=feedback}">Задать вопрос</a></div>
+					<div><a href="{raURL node=subscribe-process}">Подписка на рассылку</a></div>
 				</div>
-				{raMethod ref=/catalog/brands.htm}
+				{raMethod path=Fuga:Public:Catalog:brands}
 				<br><br><br>
 				<div class="widgets">
 					{include file='counters.tpl'}
@@ -120,7 +122,7 @@
 		</div>
 		<div class="span30">
 			<div class="content-column">
-				{raPath visible=1}
+				{raMethod path=Fuga:Public:Common:breadcrumb}
 				<div class="inner-content">{eval var=$mainbody}</div>
 			</div>
 		</div>
@@ -136,6 +138,6 @@
 	<a class="close popup-btn" href="#" onClick="return closePopUp('popup')">&times;</a>
 	<div id="popup_content"></div>
 </div>
-{raMethod ref=/catalog/selectors.htm}			
+{raMethod path=Fuga:Public:Catalog:selectors}			
 </body>
 </html>

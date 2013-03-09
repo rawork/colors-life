@@ -1,29 +1,22 @@
 <?php
 
-use Fuga\Component\Templating\TwigTemplating;
 use Fuga\AdminBundle\AdminInterface;
-use Fuga\AdminBundle\Controller\AdminAjaxController;
-use Fuga\CMSBundle\Security\Captcha\KCaptcha;
-use Fuga\CMSBundle\Controller\PageController;
-use Fuga\PublicBundle\Controller\AjaxController;
+use Fuga\CommonBundle\Security\Captcha\KCaptcha;
+use Fuga\CommonBundle\Controller\PageController;
 
 if (preg_match('/^\/secureimage\//', $_SERVER['REQUEST_URI'])) {
-	include_once($_SERVER['DOCUMENT_ROOT'].'/src/Fuga/CMSBundle/Security/Captcha/KCaptcha.php');
+	include_once($_SERVER['DOCUMENT_ROOT'].'/src/Fuga/CommonBundle/Security/Captcha/KCaptcha.php');
 	session_start();
 	$captcha = new KCaptcha();
 	$_SESSION['captchaHash'] = md5($captcha->getKeyString().'FWK');
 	exit;
 } else {	
-	
-//	require_once('app_dev.php');
-//	exit;
-	
 	require_once('app/init.php');
 	
 	if (preg_match('/^\/ajax\//', $_SERVER['REQUEST_URI'])) {
 		try {
-			$controller = new AjaxController();
-			$obj = new \ReflectionClass('Fuga\PublicBundle\Controller\AjaxController');
+			$controller = $GLOBALS['container']->createController('Fuga:Public:Ajax');
+			$obj = new \ReflectionClass($GLOBALS['container']->getControllerClass('Fuga:Public:Ajax'));
 			$post = $_POST;
 			unset($post['method']);
 			echo $obj->getMethod($_POST['method'])->invokeArgs($controller, $post);
@@ -35,8 +28,8 @@ if (preg_match('/^\/secureimage\//', $_SERVER['REQUEST_URI'])) {
 		}	
 	} elseif (preg_match('/^\/adminajax\//', $_SERVER['REQUEST_URI'])) {
 		try {
-			$controller = new AdminAjaxController();
-			$obj = new \ReflectionClass('Fuga\AdminBundle\Controller\AdminAjaxController');
+			$controller = $GLOBALS['container']->createController('Fuga:Admin:AdminAjax');
+			$obj = new \ReflectionClass($GLOBALS['container']->getControllerClass('Fuga:Admin:AdminAjax'));
 			$post = $_POST;
 			unset($post['method']);
 			echo $obj->getMethod($_POST['method'])->invokeArgs($controller, $post);

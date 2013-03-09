@@ -2,7 +2,7 @@
 
 namespace Fuga\PublicBundle\Controller;
 
-use Fuga\CMSBundle\Controller\PublicController;
+use Fuga\CommonBundle\Controller\PublicController;
 
 if (!isset($_SESSION['deliveryAddress'])) {
 	$_SESSION['deliveryAddress'] = '';
@@ -54,7 +54,7 @@ class AuthController extends PublicController {
 	}
 
 	public function initializeUser() {
-		$this->user = $this->get('container')->getManager('user')->getCurrentUser();
+		$this->user = $this->get('container')->getManager('Fuga:Common:User')->getCurrentUser();
 		$this->currentUser = $this->user;
 		if (!$_SESSION['deliveryAddress']) {
 			$_SESSION['deliveryAddress'] = $this->getAddress();
@@ -93,20 +93,29 @@ class AuthController extends PublicController {
 		}
 	}
 
-	private function logoutAction() {
+	public function logoutAction() {
+		if (!$this->getUser()) {
+			header('location: '.$this->get('container')->href('cabinet'));
+			exit;
+		}
 		if ($this->get('container')->getTable('auth_users')->update("session_id='' WHERE login='".$this->user['login']."'")) {
 			unset($_SESSION['deliveryAddress']);
 			unset($_SESSION['deliveryPhone']);
 			unset($_SESSION['deliveryPhoneAdd']);
 			unset($_SESSION['deliveryPerson']);
 			header('location: /');
+			exit;
 		} else {
 			return $this->errors['db_error'];
 		}
 
 	}
 
-	private function infoAction() {
+	public function infoAction() {
+		if (!$this->getUser()) {
+			header('location: '.$this->get('container')->href('cabinet'));
+			exit;
+		}
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$error_message = $this->_processInfoForm();
 		}
@@ -117,8 +126,9 @@ class AuthController extends PublicController {
 		$cabinetMenu = $this->_getMenu();
 		$userInfo = $user;
 		$months = $this->months;
+		$this->get('container')->setVar('title', 'Личные данные');
 
-		return $this->render('service/auth/info.form.tpl', compact('error_message', 'cabinetMenu', 'userInfo', 'months'));
+		return $this->render('auth/info.form.tpl', compact('error_message', 'cabinetMenu', 'userInfo', 'months'));
 	}
 
 	private function _processInfoForm() {
@@ -156,19 +166,29 @@ class AuthController extends PublicController {
 			$errors[] = sprintf($this->errors['user_present'], $login);
 		} else {
 			if ($this->get('container')->getTable('auth_users')->update($updateQuery.", updated = NOW() WHERE email='".$user['email']."'")) {
-				header('location: /cabinet/');
+				header('location: '.$this->get('container')->href('cabinet'));
 			} else {
 				$errors[] = $this->errors['db_error'];
 			}
 		}
 		return implode('errors', $errors);
 	}
+	
+	public function indexAction() {
+		if ($this->getUser()) {
+			return $this->infoAction();
+		} else {
+			return $this->loginAction();
+		}
+	}
 
-	private function loginAction() {
+	public function loginAction() {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$error_message = $this->_processLoginForm();
 		}
-		return $this->render('service/auth/login.form.tpl', compact('error_message'));
+		$this->get('container')->setVar('title', 'Вход в личный кабинет');
+		
+		return $this->render('auth/login.form.tpl', compact('error_message'));
 	}
 
 	private function _processLoginForm() {
@@ -193,11 +213,13 @@ class AuthController extends PublicController {
 		return implode('<br>', $errors);
 	}
 
-	private function registrationAction() {
+	public function registrationAction() {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$error_message = $this->_processRegistrationForm();
 		}
-		return $this->render('service/auth/registration.form.tpl', compact('error_message'));
+		$this->get('container')->setVar('title', 'Регистрация');
+		
+		return $this->render('auth/registration.form.tpl', compact('error_message'));
 	}
 
 	private function _processRegistrationForm() {
@@ -228,17 +250,17 @@ class AuthController extends PublicController {
 					$t->insert('login,email', "'$login','$login'") &&
 					$t->update($updateQuery.", created = NOW(), updated = NOW() WHERE email='".$login."'")
 				) {
-					$letterText = $this->render('service/auth/registration.mail.tpl', compact('userName', 'userLName', 'login', 'password'));
+					$letterText = $this->render('auth/registration.mail.tpl', compact('userName', 'userLName', 'login', 'password'));
 					$this->get('mailer')->send(
 						'Регистрация в магазине Цвета жизни',
 						$letterText,
 						$login.','.$this->params['email']
 					);
 					if ($isSubscribe) {
-						$this->get('container')->getManager('maillist')->subscribe($login, $userName, $userLName);
+						$this->get('container')->getManager('Fuga:Common:Maillist')->subscribe($login, $userName, $userLName);
 					}		
 					if ($t->update("session_id='".session_id()."' WHERE login='$login' OR email='$login'")) {
-						header('location: /cabinet/');
+						header('location: '.$this->get('container')->href('cabinet'));
 					} else {
 						$errors[] = $this->errors['db_error'];
 					}
@@ -251,25 +273,37 @@ class AuthController extends PublicController {
 	}
 
 	private function _getMenu() {
-		return $this->render('service/auth/menu.tpl');
+		return $this->render('auth/menu.tpl');
 	}
 
-	private function ordersAction() {
+	public function ordersAction() {
+		if (!$this->getUser()) {
+			header('location: '.$this->get('container')->href('cabinet'));
+			exit;
+		}
 		$params = array(
 			'user' => $this->getUser(),
 			'cabinetMenu' => $this->_getMenu()
 		);
-		return $this->render('service/auth/orders.tpl', $params);
+		$this->get('container')->setVar('title', 'Заказы');
+		
+		return $this->render('auth/orders.tpl', $params);
 	}
 
-	private function passwordAction() {
+	public function passwordAction() {
+		if (!$this->getUser()) {
+			header('location: '.$this->get('container')->href('cabinet'));
+			exit;
+		}
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$messages = $this->_processPasswordForm();
 			$error_message = implode('<br>', $messages['errors']);
 			$info_message = implode('<br>', $messages['info']);
 		}
 		$cabinetMenu = $this->_getMenu();
-		return $this->render('service/auth/password.form.tpl', compact('error_message', 'info_message', 'cabinetMenu'));
+		$this->get('container')->setVar('title', 'Изменение пароля');
+		
+		return $this->render('auth/password.form.tpl', compact('error_message', 'info_message', 'cabinetMenu'));
 	}
 
 	private function _processPasswordForm() {
@@ -288,7 +322,7 @@ class AuthController extends PublicController {
 		if ($user['password'] == $oldPassword) {
 			$updateQuery = "password='$newPassword'";
 			if ($t->update($updateQuery.", updated = NOW() WHERE email='".$login."'")) {
-				$letterText = $this->render('service/auth/password.mail.tpl', compact('login', 'newPassword'));
+				$letterText = $this->render('auth/password.mail.tpl', compact('login', 'newPassword'));
 				$this->get('mailer')->send(
 					'Новый пароль в магазине Цвета жизни',
 					$letterText,
@@ -303,13 +337,15 @@ class AuthController extends PublicController {
 		return $messages;
 	}
 
-	private function forgetAction() {
+	public function forgetAction() {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$messages = $this->_processForgetForm();
 			$error_message = implode('<br>', $messages['errors']);
 			$info_message = implode('<br>', $messages['info']);
 		}
-		return $this->render('service/auth/forget.form.tpl', compact('error_message', 'info_message'));
+		$this->get('container')->setVar('title', 'Восстановление пароля');
+		
+		return $this->render('auth/forget.form.tpl', compact('error_message', 'info_message'));
 	}
 
 	private function _processForgetForm() {
@@ -326,7 +362,7 @@ class AuthController extends PublicController {
 				$newPassword = $this->get('util')->genKey(6);
 				$updateQuery = "password='$newPassword'";
 				if ($t->update($updateQuery.", updated = NOW() WHERE email='".$login."'")) {
-					$letterText = $this->render('service/auth/forget.mail.tpl', compact('login', 'newPassword'));
+					$letterText = $this->render('auth/forget.mail.tpl', compact('login', 'newPassword'));
 					$this->get('mailer')->send(
 						'Восстановление пароля в магазине Цвета жизни',
 						$letterText,
@@ -341,27 +377,4 @@ class AuthController extends PublicController {
 		return $messages;
 	}
 
-	public function getContent() {
-		if ($this->getUser()) {
-			switch ($this->get('router')->getParam('methodName')) {
-				case 'logout':
-					return $this->logoutAction();
-				case 'orders':
-					return $this->ordersAction();
-				case 'password':
-					return $this->passwordAction();
-				default:
-					return $this->infoAction();
-			}
-		} else {
-			switch ($this->get('router')->getParam('methodName')) {
-				case 'forget':
-					return $this->forgetAction();
-				case 'registration':
-					return $this->registrationAction();
-				default:
-					return $this->loginAction();
-			}
-		}
-	}
 }

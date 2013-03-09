@@ -1,6 +1,6 @@
 <?php
 	/* Path default settings */
-	$PATH_MAINPAGE_TITLE = array('ru' => 'На главную', 'en' => 'Mainpage');
+	$PATH_MAINPAGE_TITLE = array('ru' => 'Главная', 'en' => 'Mainpage');
 		
 	/* Template Versions settings */
 	define('__VERSION_QUANTITY', 10);

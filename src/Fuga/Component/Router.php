@@ -1,14 +1,18 @@
 <?php
 
 namespace Fuga\Component;
+
+use Fuga\Component\Exception\NotFoundHttpException;
 	
 class Router {
 	
+	private $container;
 	private $url;
 	private $params = array();
 	private $paths = array();
 	
-	public function __construct(){
+	public function __construct($container){
+		$this->container = $container;
 		$this->url = $_SERVER['REQUEST_URI'];
 	}
 	
@@ -16,8 +20,10 @@ class Router {
 	 * Установка языка сайта 
 	 */
 	public function setLanguage() {
-		if ($this->get('util')->_postVar('lang') && $this->get('util')->_sessionVar('lang') != $this->get('util')->_postVar('lang')) {
-			$_SESSION['lang'] = $this->get('util')->_postVar('lang');
+		$lang = $this->container->get('util')->_postVar('lang');
+		if ( $lang
+			&& $this->container->get('util')->_sessionVar('lang') != $lang) {
+			$_SESSION['lang'] = $lang;
 			header('location: '.$_SERVER['REQUEST_URI']);
 		}
 	}
@@ -27,10 +33,10 @@ class Router {
 		if (!isset($this->paths[$nativeUrl])) {
 			//  Установка языка по части URL, например, /ru/about.htm или /catalog/ru/index.htm
 			if ($this->isPublic($url)) {
-				$languages = $this->get('connection')->getItems('config_languages', 'SELECT * FROM config_languages');
+				$languages = $this->container->get('connection')->getItems('config_languages', 'SELECT * FROM config_languages');
 				$_SESSION['lang'] = 'ru';
 				foreach ($languages as $language) {
-					if (stristr($url, '/'.$language['name'].'/') || $this->get('util')->_getVar('lang') == $language['name']) {
+					if (stristr($url, '/'.$language['name'].'/') || $this->container->get('util')->_getVar('lang') == $language['name']) {
 						$_SESSION['lang'] = $language['name'];
 						$url = str_replace('/'.$language['name'].'/', '/', $url);
 						if (empty($url))
@@ -39,7 +45,7 @@ class Router {
 				}
 			}
 
-			$this->setParam('lang', $this->get('util')->_sessionVar('lang', false, 'ru'));
+			$this->setParam('lang', $this->container->get('util')->_sessionVar('lang', false, 'ru'));
 			$urlParts = explode('#', $url);
 			if (!empty($urlParts[1])) {
 				$this->setParam('ajaxmethod', $urlParts[1]);
@@ -68,34 +74,38 @@ class Router {
 	/**
 	 * Разбирает URL на части /Controller/Action/Params
 	 */
-	public function parseURL($url = '/') {
-		if (preg_match('/^\/[a-z0-9\-]+\/?[a-z0-9\-\.]*(\.htm)?$/', $url) || $url == '/') {
-			$urlParts = array(
-				'node' => '',
-				'methodName' => 'index',
+	public function getRoute($url = '/') {
+		if ('/' == $url) {
+			return array(
+				'node' => '/',
+				'action' => 'index',
 				'params' => array()
 			);
-			$pathParts = pathinfo($url);
-			$dirParts = explode('/', $pathParts['dirname']);
-			if ($pathParts['dirname'] == '/' && empty($pathParts['basename'])) {
-				$urlParts['node'] = '/';
-			} elseif ($pathParts['dirname'] == '/' && empty($pathParts['extension'])) {
-				$urlParts['node'] = $pathParts['filename'];
-			} elseif ($pathParts['dirname'] == '/' && $pathParts['extension'] == 'htm') {
-				$urlParts['node'] = $pathParts['filename'];
-			} elseif (count($dirParts) == 2) {
-				if ($pathParts['extension'] != 'htm') {
-					$urlParts['node'] = 'paraamnikudotaim'; // :)
-				} else {
-					$urlParts['node'] = $dirParts[1];
-					$method = explode('.', $pathParts['filename']);
-					$urlParts['methodName'] = array_shift($method);
-					$urlParts['params'] = $method;
-				}
-			}	
-			return $urlParts;
+		} elseif (substr($url, -1) == '/') {
+			$url = substr($url, 0, strlen($url)-1);
+			header("HTTP/1.1 301 Moved Permanently");
+			header("Location: ".$url);
+			exit();
+		} elseif (preg_match('/^(\/[a-z0-9\-]+)+$/', $url)) {
+			$path = explode('/', $url);
+			array_shift($path);
+			$node = array_shift($path);
+			$action = !$path || is_numeric($path[0]) ? 'index' :array_shift($path);
+			$params = $path;
+			return array(
+				'node' => $node,
+				'action' => $action,
+				'params' => $params
+			);
+		} elseif (preg_match('/^\/[a-z0-9\-]+\/?[a-z0-9\-\.]*(\.htm)?$/', $url)) {
+			$url = str_replace('.htm', '', $url);
+			$url = str_replace('/index.', '/', $url);
+			$url = str_replace('.', '/', $url);
+			header("HTTP/1.1 301 Moved Permanently");
+			header("Location: ".$url);
+			exit();
 		} else {
-			return false;
+			throw new NotFoundHttpException('Несуществующая страница');
 		}
 	}
 
@@ -103,13 +113,10 @@ class Router {
 		$url = $url ?: $this->url;
 		$url = $this->getPath($url);
 		if ($this->isPublic($url)) {
-			$urlParts = $this->parseURL($url);
-			if (!$urlParts) {
-				$this->setParam('error', '404');
-			}
-			$this->setParam('node', $urlParts['node']);
-			$this->setParam('methodName', $urlParts['methodName']);
-			$this->setParam('params', $urlParts['params']);
+			$route = $this->getRoute($url);
+			$this->setParam('node', $route['node']);
+			$this->setParam('action', $route['action']);
+			$this->setParam('params', $route['params']);
 			
 		} elseif ($this->isAdmin($url)) {
 			$urlParts = explode('/', $url);
@@ -155,14 +162,4 @@ class Router {
 		return $this->params[$name]; 
 	}
 	
-	public function get($name) {
-		global $container, $security;
-		if ($name == 'container') {
-			return $container;
-		} elseif ($name == 'security') {
-			return $security;
-		} else {
-			return $container->get($name);
-		}
-	}
 }

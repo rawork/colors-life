@@ -1,8 +1,0 @@
-{% if app.session.number %}
-<span>{{ app.session.number %}</span> товар{{ wordEnd }}<br>
-на сумму <span>{{ app.session.summa }}</span> руб.
-<div class="head-cart-link"><a href="/cart/">Оформить заказ</a></div>
-{% else %}
-Нет выбранных <br> товаров
-{% endif %}
-

@@ -68,7 +68,7 @@ function register(e) {
 
 function voteProcess(voteName, isProcess) {
 	formData = null;
-	if (isProcess == 1) {
+	if (isProcess === 1) {
 		formData = $('#frm'+voteName).serialize();
 	}
 	$.post("/ajax/", {method: 'voteProcess', voteName: voteName, formData: formData},
@@ -81,24 +81,18 @@ function addCartItem(productId) {
 	quantity = $('#amount_'+productId).attr('value');
 	price = $('#price_'+productId).html();
 	priceId = $('#product_price_'+productId+' option:selected').val();
-	if (parseInt(quantity) > 0) {
-		$.post("/ajax/", {method: 'addCartItem', productId: productId, quantity: quantity, price: price, priceId: priceId},
-		function(data){
-			if (data.cart_info) {
-				$('#cart_info').html(data.cart_info);
-			}
-			$('#popup_content').html(data.popup_content);
-			popUp('popup');
-		}, "json");
-	} else {
-		alert('Неправильный формат количества');
-	}
+	$.post('/cart/add', {productId: productId, quantity: quantity, price: price, priceId: priceId},
+	function(data){
+		$('#cart_info').html(data.widget);
+		$('#popup_content').html(data.popup_content);
+		popUp('popup');
+	}, "json");
 }
 
-function deleteCartItem(productGuid) {
-	$.post("/ajax/", {method: 'deleteCartItem', productGuid: productGuid},
+function deleteCartItem(productGUID) {
+	$.post("/cart/delete", {productGUID: productGUID},
 	function(data){
-		if (data.totalQuantity == 0) {
+		if (data.totalQuantity === 0) {
 			location.reload();
 		} else {
 			$('#cart_info').html(data.cart_info);
@@ -106,13 +100,13 @@ function deleteCartItem(productGuid) {
 			$('#totalSum').html(data.totalSum);
 			$('#discount').html(data.discount);
 			$('#totalSumDiscount').html(data.totalSumDiscount);
-			$('#stuff_'+productGuid).remove();
+			$('#stuff_'+productGUID).remove();
 		}
 	}, "json");
 }
 
 function showOrderDetail(orderId) {
-	$.post("/ajax/", {method: 'showOrderDetail', orderId: orderId},
+	$.post("/cart/orderdetail", {orderId: orderId},
 	function(data){
 		$('#popup_content').html(data.popup_content);
 		popUp('popup');
@@ -614,3 +608,4 @@ function initVKLike() {
 function initVKLikebox() {
 	VK.Widgets.Group("vk_groups", {mode: 0, width: "200", height: "290"}, 21028918);
 }
+

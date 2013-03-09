@@ -5,7 +5,7 @@ namespace Fuga\Component\DB;
 class Table {
 	public $name;
 	public $cname;
-	public $Id;
+	public $id;
 	public $cls;
 	public $title;
 	public $fields;

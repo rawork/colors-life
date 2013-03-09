@@ -103,7 +103,7 @@ class Paginator {
 	}
 
 	public function setTemplate($templateName) {
-		$this->template = 'service/paginator/'.$templateName.'.tpl';
+		$this->template = 'paginator/'.$templateName.'.tpl';
 	}
 	
 	public function get($name) {

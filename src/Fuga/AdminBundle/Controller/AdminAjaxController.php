@@ -2,7 +2,7 @@
 
 namespace Fuga\AdminBundle\Controller;
 
-use Fuga\CMSBundle\Controller\Controller;
+use Fuga\CommonBundle\Controller\Controller;
 use Fuga\AdminBundle\Controller\AdminController;
 use Fuga\AdminBundle\Admin\Admin;
 use Fuga\Component\Archive\GZipArchive;

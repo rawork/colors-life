@@ -52,13 +52,16 @@
 			<div class="head-logo"><a href="/"><img src="/img/logo.gif" width="128"></a></div>
 		</div>
 		<div class="span21">
-			<div class="head-mode"> <strong>Интернет-магазин экологически чистых товаров</strong><br>{raInclude var=rejim}</div>
+			<div class="head-mode"> 
+				<strong>Интернет-магазин экологически чистых товаров</strong><br>
+				{raMethod path=Fuga:Public:Common:block args='["name":"rejim"]'}
+			</div>
             <div class="head-phone">
-				{raInclude var=phone}
+				{raMethod path=Fuga:Public:Common:block args='["name":"phone"]'}
 			</div>
 			<div class="clearfix"></div>
 			<div class="head-search">
-				<form class="form-search" action="/search.htm" method="get">
+				<form class="form-search" action="{raURL node=search}" method="get">
 					<input type="text" name="text" autocomplete="off" placeholder="Поиск" class="input-xlarge search-query">
 					<button type="submit" class="btn">Поиск</button>
 				</form>
@@ -67,15 +70,15 @@
 		<div class="span12">
 			<div class="head-user">
 				{if $auth->user}
-				<b>{$auth->user.name} {$auth->user.lastname}</b> / <a href="/cabinet/">Личный кабинет</a> / <a href="/cabinet/logout.htm">Выйти</a>
+				<b>{$auth->user.name} {$auth->user.lastname}</b> / <a href="{raURL node=cabinet}">Личный кабинет</a> / <a href="{raURL node=cabinet method=logout}">Выйти</a>
 				{else}
-				<a href="/cabinet/">Вход в личный кабинет</a> / <a href="/cabinet/registration.htm">Регистрация</a>
+				<a href="{raURL node=cabinet}">Вход в личный кабинет</a> / <a href="{raURL node=cabinet method=registration}">Регистрация</a>
 				{/if}
 			</div>
 			<div class="head-cart">
 				<h5>Ваша корзина</h5>
                 <div id="cart_info"> 
-					{raMethod ref=/cart/widget.htm} 
+					{raMethod path=Fuga:Public:Cart:widget} 
 				</div>
 			</div>	  
 		</div>	
@@ -84,7 +87,6 @@
 		<div class="span40">
 			<div class="mainmenu">
 				<ul>
-				{raDir var=links query=/}
 				{foreach from=$links item=menuitem}
 				<li><a href="{$menuitem.ref}">{$menuitem.title}</a></li>
 				{/foreach}
@@ -95,12 +97,12 @@
 	<div class="row-fluid">
 		<div class="span10">
 			<div class="left-column">
-				{raMethod ref=/catalog/cats.htm}
+				{raMethod path=Fuga:Public:Catalog:cats}
 				<div class="links-block">
-					<div><a href="/feedback.htm">Задать вопрос</a></div>
-					<div><a href="/subscribe-process.htm">Подписка на рассылку</a></div>
+					<div><a href="{raURL node=feedback}">Задать вопрос</a></div>
+					<div><a href="{raURL node=subscribe-process}">Подписка на рассылку</a></div>
 				</div>
-				{raMethod ref=/catalog/brands.htm}
+				{raMethod path=Fuga:Public:Catalog:brands}
 				<br><br><br>
 				<div class="widgets">
 					<div id="fb-root"></div>
@@ -118,21 +120,21 @@
 		</div>
 		<div class="span30">
 			<div class="content-column">
-				{raMethod ref=/catalog/advert.htm}
+				{raMethod path=Fuga:Public:Catalog:advert}
 				<div class="index-content">{$mainbody}</div>
 				<div class="spec-link">
 					<a href="javascript:changeTab('offer_stuff')" id="offer_stuff_link" class="active">Спецпредложения</a> 
 					<a href="javascript:changeTab('new_stuff')" id="new_stuff_link">Новинки</a>
 				</div>
-				<div id="offer_stuff">{raMethod ref=/catalog/offer.htm}</div>
-				<div id="new_stuff" style="display:none">{raMethod ref=/catalog/new.htm}</div>
-				<div class="news">{raMethod ref=/news/lenta.htm}</div>
+				<div id="offer_stuff">{raMethod path=Fuga:Public:Catalog:offer}</div>
+				<div id="new_stuff" style="display:none">{raMethod path=Fuga:Public:Catalog:new}</div>
+				<div class="news">{raMethod path=Fuga:Public:News:lenta}</div>
 			</div>
 		</div>
 	</div>
 	<div class="row-fluid">
 		<div class="span40">
-			<div class="partners">{raMethod ref=/catalog/partners.htm}</div>
+			<div class="partners">{raMethod path=Fuga:Public:Catalog:partners}</div>
 			<div class="footer-content">Copyright &copy; 2010-2012 &laquo;Цвета жизни&raquo; - интернет-магазин экологически чистых товаров</div>
 		</div>
 	</div>
@@ -141,6 +143,6 @@
 	<a class="close popup-btn" href="#" onClick="return closePopUp('popup')">&times;</a>
 	<div id="popup_content"></div>
 </div>
-{raMethod ref=/catalog/selectors.htm}			
+{raMethod path=Fuga:Public:Catalog:selectors}			
 </body>
 </html>

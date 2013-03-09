@@ -18,10 +18,20 @@
  */
 
 function smarty_function_raMethod($params, &$smarty) {
-	if (!isset($params['ref'])) {
-		$smarty->trigger_error('raMethod: Не указан параметр: ref');
+	if (!isset($params['path'])) {
+		$smarty->trigger_error('raMethod: Не указан параметр: path');
 	} else {
-		return $GLOBALS['container']->callMethodByURL($params['ref'], false);
+		$args = array();
+		$params['args'] = str_replace("'", '"', $params['args']);
+		if (isset($params['args'])) {
+			$args = json_decode(strtr($params['args'], '[]', '{}'), true);
+			if (is_array($args)) {
+				$args = array_values($args);
+			} else {
+				$args = array();
+			}
+		}
+		return $GLOBALS['container']->callAction($params['path'], $args);
 	}
 }
 

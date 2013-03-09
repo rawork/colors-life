@@ -2,7 +2,7 @@
 
 namespace Fuga\AdminBundle\Controller;
 
-use Fuga\CMSBundle\Controller\Controller;
+use Fuga\CommonBundle\Controller\Controller;
 use Fuga\AdminBundle\Action\Action;
 
 class AdminController extends Controller {

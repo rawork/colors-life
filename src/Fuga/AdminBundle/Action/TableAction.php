@@ -26,7 +26,7 @@ class TableAction extends Action {
 				'W' => 'Чтение и запись',
 				'X' => 'Полный доступ'
 			),
-			'entity' => $this->get('container')->getClass($unit.'_'.$table)
+			'entity' => $this->get('container')->getTable($unit.'_'.$table)
 		);
 		return $this->render('admin/table.edit.tpl', $params);
 	}

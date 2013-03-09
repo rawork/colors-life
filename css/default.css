@@ -12,6 +12,11 @@ body {
   background-color: #ffffff;
 }
 
+h4 {
+	font-size: 20px;
+	font-weight: normal;
+}
+
 .head-logo {
 	padding: 15px 0;
 	text-align: center;
@@ -90,24 +95,30 @@ body {
 }
 
 .cat-menu {
-	border-bottom: 1px solid #c8c8c8;
-	padding-top: 2px;
+	border: 1px solid #ddd;
+	-webkit-border-radius: 6px;
+	   -moz-border-radius: 6px;
+	        border-radius: 6px;
 }
 
 .cat-link {
-	padding: 4px 0 3px 0;
-	border-top: 1px solid #c8c8c8;
+	padding: 5px 5px 5px 10px;
 	font-size: 14px;
-	line-height: 26px;
+	line-height: 30px;
+	border-bottom: 1px solid #ddd;
 }
 
-.cat-link div {
-	width: 32px;
-	min-width: 32px;
-}	
-	
+.cat-link:last-child {
+	border-bottom: 0;
+}
+
+.cat-link span {
+	width: 20px;
+	min-width: 20px;
+}
+
 .cat-link a {
-	margin-left: 0;
+	margin-left: 10px;
 }
 
 .links-block {
@@ -180,8 +191,7 @@ body {
 }
 
 .article-block {
-	border-bottom:1px dotted #000;	
-	padding:15px 0px;
+	padding: 5px 0px;
 }
 
 .article-title {
@@ -280,7 +290,7 @@ body {
 }
 
 .product-content {
-	border: 1px solid #ccc;
+	border: 1px solid #ddd;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
@@ -645,7 +655,7 @@ a.delete:hover {
 #easy_zoom{
 	width:400px;
 	height:350px;	
-	border:1px solid #ccc;
+	border:1px solid #ddd;
 	background:#fff;
 	color:#333;
 	position:absolute;

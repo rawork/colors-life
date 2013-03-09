@@ -2,7 +2,7 @@
 
 namespace Fuga\AdminBundle\Action;
 
-use Fuga\CMSBundle\Controller\Controller;
+use Fuga\CommonBundle\Controller\Controller;
 
 class Action extends Controller {
 	public $uai;

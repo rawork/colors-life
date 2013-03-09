@@ -2,7 +2,7 @@
 
 namespace Fuga\PublicBundle\Controller;
 
-use Fuga\CMSBundle\Controller\PublicController;
+use Fuga\CommonBundle\Controller\PublicController;
 
 // TODO Cache of search results
 
@@ -12,7 +12,7 @@ class SearchController extends PublicController {
 		parent::__construct('search');
 	}
 
-	function getContent() {
+	function indexAction() {
 		$searchText = $this->get('util')->_getVar('text');
 		
 		if ($searchText) {
@@ -49,12 +49,12 @@ class SearchController extends PublicController {
 					$results[$j-1]['num'] = $j;
 					$items[] = $results[$j-1];
 				}
-				$content .= $this->render('service/search/list.tpl', compact('ptext', 'items', 'searchText'));
+				$content .= $this->render('search/list.tpl', compact('ptext', 'items', 'searchText'));
 			} else {
-				$content .= $this->render('service/search/empty.tpl', compact('searchText'));
+				$content .= $this->render('search/empty.tpl', compact('searchText'));
 			}
 		}
-		$content = $this->render('service/search/form.tpl', compact('searchText')).$content;
+		$content = $this->render('search/form.tpl', compact('searchText')).$content;
 		return $content;
 	}
 }

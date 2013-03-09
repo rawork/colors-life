@@ -101,7 +101,7 @@ class IndexAction extends Action {
 				'order_by'	=> $this->dataTable->params['order_by']
 			)
 		);
-		$nodes = $this->dataTable->getNextArrays(false);
+		$nodes = $this->dataTable->getNextArrays();
 		$styleClass .= 't'.$parentId;
 		foreach ($nodes as $node) {
 			$this->elementsIds[] = $node['id'];
@@ -125,10 +125,10 @@ class IndexAction extends Action {
 					}
 					if ($num == 0) {
 						$tableHtml .= '</span>';
-						if ($this->dataTable->getDBTableName() == 'page_page') {
-							$module = $this->get('container')->getModuleById($node['module_id']);
+						if ($this->dataTable->getDBTableName() == 'page_page' && $node['module_id']) {
+							$module = $this->get('container')->getModule($node['module_id_name']);
 							if ( $module ) {
-								$tableHtml .= ' (модуль:'.$module['title'].')';
+								$tableHtml .= ' (модуль: '.$module['title'].')';
 							}
 						}
 					}

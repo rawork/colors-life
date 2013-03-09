@@ -4,14 +4,16 @@ namespace Fuga\Component\Search;
 
 class SearchEngine {
 	
-	private $modules;
+	private $container;
+	private $options;
 	private $pages;
 	
-	public function __construct() {
-		$this->modules = array(
+	public function __construct($container, $options = array()) {
+		$this->container = $container;
+		$this->options = array(
 			'catalog' => array(
 				'catalog_product' => array(
-					'fields' => array('name', 'articul', 'preview', 'description', 'discount_description', 'tags'),
+					'fields' => array('name', 'preview', 'description', 'tags'),
 					'link' => '/%s/stuff.%s.htm',
 					'where' => "publish=1",
 					'title' => 'name'
@@ -23,7 +25,7 @@ class SearchEngine {
 					'title' => 'title'
 				),
 				'catalog_producer' => array(
-					'fields' => array('name', 'description', 'country'),
+					'fields' => array('name'),
 					'link' => '/%s/brand.%s.htm',
 					'where' => "publish=1",
 					'title' => 'name'
@@ -55,8 +57,8 @@ class SearchEngine {
 		);	
 	}
 	
-	function getSearchResultRef($a, $methodName = '') {
-		return $this->get('container')->href(!empty($a['node_id']) ? $a['node_id_name'] : $this->name, $methodName, array($a['id']));
+	function getSearchResultRef($node, $action = 'index') {
+		return $this->container->href(!empty($node['node_id']) ? $node['node_id_name'] : $this->name, $action, array($node['id']));
 	}
 
 	private function getTableSearchResults($words, $tableName, $options) {
@@ -79,16 +81,16 @@ class SearchEngine {
 			}
 		}
 		$sql = "SELECT id,".$fields_text." FROM ".$tableName." WHERE (".$search_query.') '.$where.' ORDER BY id';
-		$items = $this->get('connection')->getItems('get_search_items', $sql);
+		$items = $this->container->get('connection')->getItems('get_search_items', $sql);
 		foreach ($items as $item) {
 			if ($tableName == 'page_page') {
-				$link = $this->get('page')->getUrl($item);
+				$link = $this->container->getManager('Fuga:Common:Page')->getUrl($item);
 			} else {
 				$link = vsprintf($options['link'], array($options['nodeName'], $item['id']));
 			}
 			$ret[] = array (
 				'link' => $link,
-				'title' => $this->get('util')->cut_text(strip_tags($item[$options['title']], 300))
+				'title' => $this->container->get('util')->cut_text(strip_tags($item[$options['title']], 300))
 			);
 		}
 		return $ret;
@@ -110,11 +112,11 @@ class SearchEngine {
 	function getResults($text) {
 		$text = $this->getMorphoForm($text);
 		$ret = array();
-		$pages = $this->get('container')->getItems('page_page', "publish=1 AND module_id<>0");
+		$pages = $this->container->getItems('page_page', "publish=1 AND module_id<>0");
 		if (is_array($pages)) {
 			foreach ($pages as $node) {
-				if (isset($this->modules[$node['module_id_name']])) {
-					$tables = $this->modules[$node['module_id_name']];
+				if (isset($this->options[$node['module_id_name']])) {
+					$tables = $this->options[$node['module_id_name']];
 					foreach ($tables as $tableName => $options) {
 						$options['nodeName'] = $node['name']; 
 						$results = $this->getTableSearchResults($text, $tableName, $options);
@@ -128,18 +130,6 @@ class SearchEngine {
 			}
 		} 
 		return $ret;
-	}
-	
-	public function get($name) 
-	{
-		global $container, $security;
-		if ($name == 'container') {
-			return $container;
-		} elseif ($name == 'security') {
-			return $security;
-		} else {
-			return $container->get($name);
-		}
 	}
 	
 }

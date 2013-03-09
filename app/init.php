@@ -15,13 +15,12 @@ use Fuga\Component\Cache;
 use Fuga\Component\Log\Log;
 use Fuga\Component\Util;
 use Fuga\Component\Registry;
-use Fuga\Component\Router;
 use Fuga\Component\Exception\AutoloadException;
 use Fuga\Component\Templating\SmartyTemplating;
 //use Fuga\Component\Templating\TwigTemplating;
-use Fuga\CMSBundle\Security\SecurityHandler;
-use Fuga\CMSBundle\Controller\SecurityController;
-use Fuga\CMSBundle\Controller\ExceptionController;
+use Fuga\CommonBundle\Security\SecurityHandler;
+use Fuga\CommonBundle\Controller\SecurityController;
+use Fuga\CommonBundle\Controller\ExceptionController;
 
 $se_mask = "/(Yandex|Googlebot|StackRambler|Yahoo Slurp|WebAlta|msnbot)/";
 if (preg_match($se_mask,$_SERVER['HTTP_USER_AGENT']) > 0) {
@@ -121,7 +120,6 @@ if (!$security->isAuthenticated() && $security->isSecuredArea()) {
 $container->register('security', $security);
 $container->initialize();
 
-// Включаем Роутер запросов к сайту 
-$container->register('router', new Router());
+// Включаем Роутер запросов
 $container->get('router')->setLanguage();
 $container->get('router')->setParams();

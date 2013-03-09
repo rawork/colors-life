@@ -18,7 +18,7 @@
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
-	min-height: 250px;
+	min-height: 280px;
 	background-position: 96% bottom;
 	background-repeat: no-repeat;
 	padding: 20px;
@@ -122,35 +122,35 @@
 }
 
 .triangle50 {
-	top:249px;
+	top:251px;
 }
 
 .triangle1 {
-	top:283px;
+	top:291px;
 }
 
 .triangle3 {
-	top:317px;
+	top:333px;
 }
 
 .triangle5 {
-	top:351px;
+	top:373px;
 }
 
 .triangle6 {
-	top:385px;	
+	top:415px;	
 }
 
 .triangle7 {
-	top:419px;	
+	top:456px;	
 }
 
 .triangle25 {
-	top:453px;	
+	top:497px;	
 }
 
 .triangle8 {
-	top:487px;	
+	top:537px;	
 }
 
 .width-640 {

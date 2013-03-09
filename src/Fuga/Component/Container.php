@@ -4,6 +4,7 @@ namespace Fuga\Component;
 
 use Fuga\Component\DB\Table;
 use Fuga\Component\Paginator;
+use Fuga\Component\Router;
 use Fuga\Component\Mailer\Mailer;
 use Fuga\Component\Scheduler\Scheduler;
 use Fuga\Component\Storage\FileStorage;
@@ -11,12 +12,15 @@ use Fuga\Component\Storage\ImageStorageDecorator;
 use Fuga\Component\Search\SearchEngine;
 use Fuga\Component\Cache\Cache;
 use Fuga\Component\Exception\AutoloadException;
+use Fuga\Component\Exception\NotFoundHttpException;
+use Fuga\CommonBundle\Controller\PublicController;
 
 class Container 
 {
 	private $tables;
 	private $modules;
 	private $ownmodules;
+	private $controllers = array();
 	private $templateVars = array();
 	private $services = array();
 	private $managers = array();
@@ -31,20 +35,13 @@ class Container
 		$this->tables = $this->getAllTables();
 	}
 
-	public function getModule($moduleName) 
+	public function getModule($name) 
 	{
-		return empty($this->modules[$moduleName]) ? array() : $this->modules[$moduleName];
-	}
-
-	public function getModuleById($moduleId) 
-	{
-		foreach ($this->modules as $module) {
-			if ($moduleId == $module['id']) {
-				return $module;
-			}
+		if (empty($this->modules[$name])) {
+			throw new \Exception('Модуль '.$name.' отсутствует'); 
 		}
 		
-		return null;
+		return  $this->modules[$name];
 	}
 
 	public function getModules() 
@@ -94,7 +91,7 @@ class Container
 			$tables = array();
 			$this->modules[$module['name']] = $module;
 			try {
-				$className = 'Fuga\\CMSBundle\\Model\\'.ucfirst($module['name']);
+				$className = 'Fuga\\CommonBundle\\Model\\'.ucfirst($module['name']);
 				$model = new $className();
 				foreach ($model->tables as $table) {
 					$table['is_system'] = true;
@@ -111,7 +108,7 @@ class Container
 		return $ret;
 	}
 
-	function getTable($name) {
+	public function getTable($name) {
 		if (isset($this->tables[$name])) {
 			return $this->tables[$name];
 		} else {
@@ -119,7 +116,7 @@ class Container
 		}
 	}
 
-	function getTables($moduleName) {
+	public function getTables($moduleName) {
 		$tables = array();
 		foreach ($this->tables as $table) {
 			if ($table->moduleName == $moduleName)
@@ -127,46 +124,38 @@ class Container
 		}
 		return $tables;
 	}
-
-	function getItem($class, $condition = 0, $sort = '', $select = '') {
-		$ret = array();
-		if (!isset($this->tables[$class])) {
-			throw new \Exception('Table not found: '.$class);
-		} else {
-			$ret = $this->tables[$class]->getItem($condition, $sort, $select);
-		}
-		return $ret;
-
-	}
-
-	function getPrev($class, $id, $linkName = 'parent_id') {
-		if ($a = $this->getItem($class, intval($id))) {
-			$ret = $this->getPrev($class, $a[$linkName], $linkName);
-			$ret[] = $a;
-		} else {
-			$ret = array();
+	
+	public function getPrev($table, $id, $linkName = 'parent_id') {
+		$ret = null;
+		if ($node = $this->getItem($table, intval($id))) {
+			$ret = $this->getPrev($table, $node[$linkName], $linkName);
+			$ret[] = $node;
 		}
 		return $ret;
 	}
 
-	function getItems($tableName, $query = '', $sort = '', $limit = false, $select = '', $detail = true) {
-		$ret = array();
-		if (!isset($this->tables[$tableName])) {
-			throw new \Exception('Table not found: '.$tableName);
+	public function getItem($table, $criteria = 0, $sort = null, $select = null) {
+		return $this->getTable($table)->getItem($criteria, $sort, $select);
+	}
+
+	public function getItems($table, $criteria = '', $sort = '', $limit = null, $select = '', $detailed = true) {
+		$ret = null;
+		if (!isset($this->tables[$table])) {
+			throw new \Exception('Table not found: '.$table);
 		} else {
-			$a = array('where' => $query, 'order_by' => $sort, 'limit' => $limit);
+			$options = array('where' => $criteria, 'order_by' => $sort, 'limit' => $limit);
 			if (trim($select) != '') 
-				$a['select'] = $select;
-			$this->tables[$tableName]->select($a);
-			$ret = $this->tables[$tableName]->getNextArrays($detail);
+				$options['select'] = $select;
+			$this->getTable($table)->select($options);
+			$ret = $this->getTable($table)->getNextArrays($detailed);
 		}
 		return $ret;
 	}
 
-	function getNativeItems($query) {
+	public function getItemsRaw($query) {
 		$ret = array();
-		if (!stristr($query, 'delete') && !stristr($query, 'truncate') && !stristr($query, 'update') && !stristr($query, 'insert') && !stristr($query, 'drop') && !stristr($query, 'alter')) {
-			$items = $this->get('connection')->getItems('nquery', $query);
+		if (!preg_match('/(delete|truncate|update|insert|drop|alter)+/i', $query)) {
+			$items = $this->get('connection')->getItems('raw', $query);
 			foreach ($items as $item) {
 				if (isset($item['id'])) {
 					$ret[$item['id']] = $item;
@@ -174,31 +163,23 @@ class Container
 					$ret[] = $item;
 				}
 			}
-			$this->get('connection')->freeResult('nquery');
 		}
 		return $ret;
 	}
 
-	function getNativeItem($query) {
-		$ret = array();
-		if (!stristr($query, 'delete') && !stristr($query, 'truncate') && !stristr($query, 'update') && !stristr($query, 'insert') && !stristr($query, 'drop') && !stristr($query, 'alter')) {
-			$ret = $this->get('connection')->getItem('nquery', $query);
-			$this->get('connection')->freeResult('nquery');
+	public function getItemRaw($query) {
+		$ret = null;
+		if (!preg_match('/(delete|truncate|update|insert|drop|alter)+/i', $query)) {
+			$ret = $this->get('connection')->getItem('raw', $query);
 		}
 		return $ret;
 	}
 
-	function getCount($class, $condition = '') {
-		$ret = array();
-		if (!isset($this->tables[$class])) {
-			throw new \Exception('Table not found: '.$class);
-		} else {
-			$ret = $this->tables[$class]->getCount($condition);
-		}
-		return $ret;
+	public function getCount($table, $criteria = '') {
+		return $this->getTable($table)->getCount($criteria);
 	}
 
-	function addItem($class, $fields, $values) {
+	public function addItem($class, $fields, $values) {
 		if (!isset($this->tables[$class])) {
 			throw new \Exception('Class not found: '.$class);
 		} else {
@@ -206,7 +187,7 @@ class Container
 		}
 	}
 
-	function addGlobalItem($class) {
+	public function addGlobalItem($class) {
 		if (!isset($this->tables[$class])) {
 			throw new \Exception('Class not found: '.$class);
 		} else {
@@ -214,7 +195,7 @@ class Container
 		}
 	}
 
-	function updateItem($class, $query = 0, $condition) {
+	public function updateItem($class, $query = 0, $condition) {
 		if (!isset($this->tables[$class])) {
 			throw new \Exception('Class not found: '.$class);
 		} else {
@@ -226,7 +207,7 @@ class Container
 		}
 	}
 
-	function deleteItem($class, $query) {
+	public function deleteItem($class, $query) {
 		if (!isset($this->tables[$class])) {
 			throw new \Exception('Class not found: '.$class);
 		} else {
@@ -239,7 +220,7 @@ class Container
 
 	}
 
-	function delRel($class, $items = array()) {
+	public function delRel($class, $items = array()) {
 		$ids0 = '';
 		foreach ($items as $a) {
 			if ($this->tables[$class]->params['is_system']) {
@@ -277,7 +258,7 @@ class Container
 		return $ids0;
 	}
 
-	function dublicateItem($class, $id = 0, $times = 1) {
+	public function dublicateItem($class, $id = 0, $times = 1) {
 		$entity = $this->getItem($class, $id);
 		if (count($entity)) {
 			for ($i = 1; $i <= $times; $i++)
@@ -288,118 +269,58 @@ class Container
 		}
 	}
 
-	function deleteClass($class, $simple = true) {
-		if (!$simple) {
-			$a = $this->getClass($class);
-			if (count($a) == 0){ 
-				throw new \Exception('Class not found: '.$class);
-			}
-			$this->get('connection')->execQuery($class.'deleteFields', 'DELETE FROM table_attributes WHERE table_id='.$a['id']);
-			$this->get('connection')->execQuery($class.'deleteTable', "DELETE FROM table_tables WHERE name='$class'");
+	public function deleteClass($table, $complex = false) {
+		if ($complex) {
+			$tableObj = $this->getTable($table);
+			$this->get('connection')->execQuery('delete_fields', 'DELETE FROM table_attributes WHERE table_id='.$tableObj->id);
+			$this->get('connection')->execQuery('delete_table', "DELETE FROM table_tables WHERE name='$table'");
 		}
-		return $this->tables[$class]->drop();
+		return $this->getTable($table)->drop();
 	}
 
-	function truncateClass($class) {
-		return $this->tables[$class]->truncate();
+	public function truncateClass($table) {
+		return $this->getTable($table)->truncate();
 	}
-
-
-	function getClass($class) {
-		$anames = explode('_',$class);
-		$tname = str_replace('_', '', stristr($class, '_'));
-		$component = $this->getModule($anames[0]);
-		$a = $this->getItem('table_tables', "name='".$tname."' AND module_id=".$component['id']);
-		if (sizeof($a) > 0)
-			return $a;
-		else 
-			throw new \Exception('Class not exists: '.$class);
+	
+	public function getControllerClass($path) {
+		list($vendor, $bundle, $name) = explode(':', $path);
+		return $vendor.'\\'.$bundle.'Bundle\\Controller\\'.ucfirst($name).'Controller';
 	}
-
-	function getMethodInstance($controllerName, $actionName) {
-		$query = "
-			SELECT
-				method.id,
-				method.title,
-				method.name,
-				method.module_id,
-				method.template_id,
-				method.processor,
-				method.template,
-				module.name AS module_name
-			FROM
-				config_methods method
-			LEFT JOIN 
-				config_modules module ON method.module_id=module.id
-			WHERE
-				module.name='$controllerName' AND method.name='$actionName'
-		";
-		$method = $this->get('connection')->getItem('component.method', $query);
-		if ( $method ) {
-			return $method;
-		} else {
-			throw new \Exception('Страница не доступна: '.$controllerName.'.'.$actionName);
+	
+	public function createController($path) {
+		if (!isset($this->controllers[$path])) {
+			$className = $this->getControllerClass($path);
+			$this->controllers[$path] = new $className();
 		}
+		return $this->controllers[$path];
 	}
 
-	function callMethodInstance($methodData, $paramsData) {
-		global $PRJ_DIR;
-		if ($methodData['module_name'] != 'page') {
-			try {
-				$className = '\\Fuga\\PublicBundle\\Controller\\'.ucfirst($methodData['module_name']).'Controller';
-				$controller = new $className();
-			} catch (AutoloadException $e){
-				$controller = new \Fuga\CMSBundle\Controller\PublicController($methodData['module_name']);
-			}
-
-			$this->get('templating')->assign(array(
-				'settings' => $controller->params,
-				'ref' => '/'.$this->get('router')->getParam('node').'/'
-			));
+	public function callAction($path, $params = array()) {
+		list($vendor, $bundle, $name, $action) = explode(':', $path);
+		$obj = new \ReflectionClass($this->getControllerClass($path));
+		$action .= 'Action'; 	
+		if (!$obj->hasMethod($action)) {
+			throw new NotFoundHttpException('Несуществующая ссылка '.$path);
 		}
-		if ($methodData['template'] && file_exists($PRJ_DIR.$methodData['template'])) {
-			if ($methodData['module_name'] == 'page' && $methodData['name'] == 'index' && !count($paramsData)) {
-				$paramsData[] = '/';
-			}
-			$params = array();
-			foreach ($paramsData as $key => $value) {
-				$params['param'.$key] = $value;
-			}
-			return $this->get('templating')->render($methodData['template'], $params);
-		} else {
-			throw new \Exception('Method template error: '.$methodData['module_id_name'].'.'.$methodData['name'].'. <a href="/">Перейти на главную</a>');
+		return $obj->getMethod($action)->invoke($this->createController($path), $params);	
+	}
+
+	public function href($node = '/', $action = 'index', $params = array()) {
+		if ($node == '/') {
+			return $node;
 		}
-	}
-
-	function callMethodByURL($url = '/') {
-		try {
-			$urlParts = $this->get('router')->parseURL($url);
-			return $this->callMethodInstance($this->getMethodInstance($urlParts['node'], $urlParts['methodName']), $urlParts['params']);
-		} catch (\Exception $e) {
-			echo $this->get('util')->showError($e->getMessage());
-		}	
-	}
-
-	function callMethod($controller, $methodName = 'index', $params = array()) {
-		return $this->callMethodInstance($this->getMethodInstance($controller, $methodName), $params);
-	}
-
-	/*
-	 * Формирует URL на основе параметров /$nodeName/$methodName.$param0.htm
-	 */
-	function href($node = '/', $methodName = 'index', $params = array()) {
-		$url	= $this->get('router')->getParam('lang') != 'ru' ? '/'.$this->get('router')->getParam('lang') : '';
-		$url .= '/'.$node.'/';
-		if ($params){
-			$url .= $methodName;
-			$url .= '.'.implode('.', $params);
-			$url .= '.htm';
-		} else {
-			if ($methodName != 'index') {
-				$url .= $methodName.'.htm';
-			}
+		$path = array('');
+		if ('ru' != $this->get('router')->getParam('lang')) {
+			$path[] = $this->get('router')->getParam('lang');
 		}
-		return $url;
+		$path[] = $node;
+		if ($action != 'index') {
+			$path[] = $action;
+		}
+		if (count($params)){
+			$path = array_merge($path, $params);
+		}
+		return implode('/', $path);
 	}
 
 	public function setVar($name, $value) {
@@ -434,6 +355,9 @@ class Container
 		if ($name == 'search' && !isset($this->services[$name])) {
 			$this->services[$name] = new SearchEngine();
 		}
+		if ($name == 'router' && !isset($this->services[$name])) {
+			$this->services[$name] = new Router($this);
+		}
 		if ($name == 'cache' && !isset($this->services[$name])) {
 			global $CACHE_DIR, $CACHE_TTL;
 			$options = array(
@@ -450,12 +374,18 @@ class Container
 		return $this->services[$name];
 	}
 	
-	public function getManager($name) {
-		if (!isset($this->managers[$name])) {
-			$className = '\\Fuga\\CMSBundle\\Model\\'.ucfirst($name).'Manager';
-			$this->managers[$name] = new $className();
+	public function getManager($path) {
+		
+		if (!isset($this->managers[$path])) {
+			list($vendor, $bundle, $name) = explode(':', $path);
+			$className = '\\'.$vendor.'\\'.$bundle.'Bundle\\Model\\'.ucfirst($name).'Manager';
+			$this->managers[$path] = new $className();
 		}
-		return $this->managers[$name];
+		return $this->managers[$path];
+	}
+	
+	public function isXmlHttpRequest() {
+		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'XMLHttpRequest' == $_SERVER['HTTP_X_REQUESTED_WITH'];
 	}
 
 }
