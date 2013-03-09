@@ -100,7 +100,7 @@ class SearchEngine {
 		$morfWords = array();
 		$words = explode(' ', $text);
 		foreach ($words as $word) {
-			$className = 'Fuga\\Component\\Search\\Stem'.ucfirst($this->get('router')->getParam('lang'));
+			$className = 'Fuga\\Component\\Search\\Stem'.ucfirst($this->container->get('router')->getParam('lang'));
 			$stem = new $className();
 			$word = $stem->russian($word);
 			if (strlen($word) > 2) 
