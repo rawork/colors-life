@@ -353,7 +353,7 @@ class Container
 			$this->services[$name] = new Scheduler();
 		}
 		if ($name == 'search' && !isset($this->services[$name])) {
-			$this->services[$name] = new SearchEngine();
+			$this->services[$name] = new SearchEngine($this);
 		}
 		if ($name == 'router' && !isset($this->services[$name])) {
 			$this->services[$name] = new Router($this);
