@@ -15,7 +15,7 @@ class CounttagAction extends Action {
 //		$this->fixNews();
 //		$this->fixTables(); 
 		
-		$this->fixCatalog();
+		$this->fixNested();
 		$this->calculateCatalog();
 		$this->buildSitemapXML();
 		$this->buildShopYML('shop.yml');
@@ -448,7 +448,7 @@ GROUP BY t1.id HAVING max_right <> SQRT(4 * rep + 1) + 1');
 		}
 	}
 	
-	private function fixCatalog() {
+	private function fixNested() {
 		$this->updateNestedSets('catalog_category');
 		$this->checkNestedSets('catalog_category');
 		$this->updateNestedSets('page_page');
