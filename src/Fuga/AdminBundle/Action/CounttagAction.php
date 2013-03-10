@@ -20,9 +20,6 @@ class CounttagAction extends Action {
 		$this->buildSitemapXML();
 		$this->buildShopYML('shop.yml');
 		
-		//$this->correctImages();
-		//$this->_clearImages();
-
 		$this->messageAction(false ? 'Ошибка расчета тегов' : 'Расчет тегов завершен');
 	}
 	
@@ -121,9 +118,9 @@ class CounttagAction extends Action {
 		}
 	}
 	
-	function getEntities($sTableName) {
-		$aEntities = $this->get('connection')->getItems('eee', "SELECT id FROM $sTableName WHERE publish=1");
-		return $aEntities;
+	function getEntities($table) {
+		$items = $this->get('connection')->getItems('eee', "SELECT id FROM $table WHERE publish=1");
+		return $items;
 	}
 
 	function getTreeEntities($sTableName, $iParentId = 0) {
@@ -144,78 +141,78 @@ class CounttagAction extends Action {
 		$fh = fopen($PRJ_DIR.'/sitemap.xml', 'w+');
 		fwrite($fh, '<?xml version="1.0" encoding="UTF-8"?>'."\n");
 		fwrite($fh, '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n");
-		$sDate		= date('Y-m-d');
-		$sChange	= 'daily'; //     always, hourly, daily, weekly, monthly, yearly, never
+		$date		= date('Y-m-d');
+		$period	= 'weekly'; //     always, hourly, daily, weekly, monthly, yearly, never
 
 		$link = <<<EOD
 <url>
 	<loc>http://www.colors-life.ru/</loc>
-	<lastmod>$sDate</lastmod>
-	<changefreq>$sChange</changefreq>
+	<lastmod>$date</lastmod>
+	<changefreq>$period</changefreq>
 	<priority>0.8</priority>
 </url>
 EOD;
 		fwrite($fh, $link."\n");
-		$aSections = $this->getTreeEntities('page_page', 0);
-		$sChange = 'weekly';
-		foreach ($aSections as $aSection) {
-			$sURL = $aSection['module_id'] ? $aSection['name'].'/' : $aSection['name'].'.htm';
+		$nodes = $this->getTreeEntities('page_page', 0);
+		$period = 'weekly';
+		foreach ($nodes as $node) {
+			$url = $this->get('container')->href($node['name']);
 			$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru/$sURL</loc>
-	<lastmod>$sDate</lastmod>
-	<changefreq>$sChange</changefreq>
+	<loc>http://www.colors-life.ru$url</loc>
+	<lastmod>$date</lastmod>
+	<changefreq>$period</changefreq>
 </url>
 EOD;
 			fwrite($fh, $link."\n");
 		}
 		$categories = $this->getTreeEntities('catalog_category', 0);
 		foreach ($categories as $category) {
-			$sURL = 'catalog/index.'.$category['id'].'.htm';
+			$url = $this->get('container')->href('catalog', 'index', array($category['id']));
 			$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru/$sURL</loc>
-	<lastmod>$sDate</lastmod>
-	<changefreq>$sChange</changefreq>
+	<loc>http://www.colors-life.ru$url</loc>
+	<lastmod>$date</lastmod>
+	<changefreq>$period</changefreq>
 </url>
 EOD;
 			fwrite($fh, $link."\n");
 		}
 
-		$aEntities = $this->getEntities('article_article');
-		foreach ($aEntities as $aEntity) {
-			$sURL = 'articles/read.'.$aEntity['id'].'.htm';
+		$items = $this->getEntities('article_article');
+		foreach ($items as $item) {
+			$url = $this->get('container')->href('articles', 'read', array($item['id']));
 			$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru/$sURL</loc>
-	<lastmod>$sDate</lastmod>
-	<changefreq>$sChange</changefreq>
+	<loc>http://www.colors-life.ru$url</loc>
+	<lastmod>$date</lastmod>
+	<changefreq>$period</changefreq>
 </url>
 EOD;
 			fwrite($fh, $link."\n");
 		}
 
-		$aEntities = $this->getEntities('catalog_product');
-		foreach ($aEntities as $aEntity) {
-			$sURL = 'catalog/stuff.'.$aEntity['id'].'.htm';
+		$items = $this->getEntities('catalog_product');
+		foreach ($items as $item) {
+			$url = $this->get('container')->href('catalog', 'stuff', array($item['id']));
 			$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru/$sURL</loc>
-	<lastmod>$sDate</lastmod>
-	<changefreq>$sChange</changefreq>
+	<loc>http://www.colors-life.ru$url</loc>
+	<lastmod>$date</lastmod>
+	<changefreq>$period</changefreq>
 </url>
 EOD;
 			fwrite($fh, $link."\n");
 		}
 
-		$aEntities = $this->getEntities('news_news');
-		foreach ($aEntities as $aEntity) {
-			$sURL = 'news/read.'.$aEntity['id'].'.htm';
+		$items = $this->getEntities('news_news');
+		foreach ($items as $item) {
+			$url = $this->get('container')->href('news', 'read', array($item['id']));
 			$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru/$sURL</loc>
-	<lastmod>$sDate</lastmod>
-	<changefreq>$sChange</changefreq>
+	<loc>http://www.colors-life.ru$url</loc>
+	<lastmod>$date</lastmod>
+	<changefreq>$period</changefreq>
 </url>
 EOD;
 			fwrite($fh, $link."\n");
@@ -228,99 +225,63 @@ EOD;
 	function buildShopYML($filename) {
 		global $PRJ_DIR;
 		$filepath = $PRJ_DIR."/yml/"; // Путь к файлу
-		$ymlcontent = ""; // контент yml файла
+		$content = ""; // контент yml файла
 		$f = fopen($filepath.$filename, "w") or die("Error opening file"); // открываем файл на запись
 
-		$aCategories = $this->getTreeEntities('catalog_category');
+		$categories = $this->getTreeEntities('catalog_category');
 		// блок создания контента
-		$ymlcontent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";   // файл формата XML 1.0
-		$ymlcontent .= "<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">\n";   //  тип файла - файл Yandex Маркета
-		$ymlcontent .= "<yml_catalog date=\"".date("Y-m-d H:i")."\">\n";   // дата создания файла
-		$ymlcontent .= "<shop>\n";    // начинаем описывать структуру. Основа структуры файла - элемент shop
-		$ymlcontent .= "<name>Цвета жизни</name>\n";  //  название магазина
-		$ymlcontent .= "<company>Цвета жизни</company>\n";  // title  - заголовок вашего магазина
-		$ymlcontent .= "<url>http://colors-life.ru/</url>\n"; // url адрес магазина
-		$ymlcontent .= "<currencies><currency id=\"RUR\" rate=\"1\"/></currencies>\n";   // список валют, в нашем случае только рубли
-		$ymlcontent .= "<categories>\n";  // описываем категории продукции, у каждой категории свой уникальный ID
-		foreach ($aCategories as $aCategory) {
-			$iId		= $aCategory['id'];
-			$iParentId	= $aCategory['parent_id'];
-			$sName		= htmlspecialchars(strip_tags($aCategory['title']));
-			$ymlcontent .= "<category id=\"$iId\" parentId=\"$iParentId\">$sName</category>\n";  // у нас всего одна категория
+		$content = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";   // файл формата XML 1.0
+		$content .= "<!DOCTYPE yml_catalog SYSTEM \"shops.dtd\">\n";   //  тип файла - файл Yandex Маркета
+		$content .= "<yml_catalog date=\"".date("Y-m-d H:i")."\">\n";   // дата создания файла
+		$content .= "<shop>\n";    // начинаем описывать структуру. Основа структуры файла - элемент shop
+		$content .= "<name>Цвета жизни</name>\n";  //  название магазина
+		$content .= "<company>Цвета жизни</company>\n";  // title  - заголовок вашего магазина
+		$content .= "<url>http://colors-life.ru/</url>\n"; // url адрес магазина
+		$content .= "<currencies><currency id=\"RUR\" rate=\"1\"/></currencies>\n";   // список валют, в нашем случае только рубли
+		$content .= "<categories>\n";  // описываем категории продукции, у каждой категории свой уникальный ID
+		foreach ($categories as $category) {
+			$id		= $category['id'];
+			$parentId	= $category['parent_id'];
+			$name		= htmlspecialchars(strip_tags($category['title']));
+			$content .= "<category id=\"$id\" parentId=\"$parentId\">$name</category>\n";  // у нас всего одна категория
 		}
-		$ymlcontent .= "</categories>\n";
-		$ymlcontent .= "<offers>\n";
+		$content .= "</categories>\n";
+		$content .= "<offers>\n";
 
-		$aStuff = $this->get('container')->getItems('catalog_product', "publish=1 AND price<>'0.00'"); // выбираем все товары
-		foreach ($aStuff as $aRow) // в цикле обрабатываем каждый товар
+		$products = $this->get('container')->getItems('catalog_product', "publish=1 AND price<>'0.00'"); // выбираем все товары
+		foreach ($products as $product) // в цикле обрабатываем каждый товар
 		{
-			$sName			= htmlspecialchars(strip_tags($aRow['name']));
-			$sProducer		= htmlspecialchars(strip_tags((isset($aRow['producer_id_name']) ? $aRow['producer_id_name'] : '')));
-			$sDescription	= str_replace('&laquo;', '&quot;', htmlspecialchars(strip_tags($aRow['description'])));
-			$sDescription	= str_replace('&raquo;', '&quot;', $sDescription);
-			$sAvailable		= $aRow['is_exist'] ? 'true' : 'false';
+			$name			= htmlspecialchars(strip_tags($product['name']));
+			$producer		= htmlspecialchars(strip_tags((isset($product['producer_id_name']) ? $product['producer_id_name'] : '')));
+			$description	= str_replace('&laquo;', '&quot;', htmlspecialchars(strip_tags($product['description'])));
+			$description	= str_replace('&raquo;', '&quot;', $description);
+			$url			= 'http://colors-life.ru'.$this->get('container')->href('catalog', 'stuff', array($product['id']));
+			
+			$is_exist		= $product['is_exist'] ? 'true' : 'false';
 
-			$ymlcontent .= "<offer id=\"".$aRow['id']."\" available=\"".$sAvailable."\">\n";  // id товара
-			$ymlcontent .= "<url>http://colors-life.ru/catalog/stuff.".$aRow['id'].".htm</url>\n";  // ссылка на страницу товара ( полностью )
-			$ymlcontent .= "<price>".$aRow['price']."</price>\n";  // стоимость продукта
-			$ymlcontent .= "<currencyId>RUR</currencyId>\n"; // валюта
-			$ymlcontent .= "<categoryId>".$aRow['category_id']."</categoryId>\n"; // ID категории
-			$ymlcontent .= "<picture>http://colors-life.ru".$aRow['image']."</picture>\n";  // ссылка на картинку ( полностью )
-			$ymlcontent .= "<delivery>true</delivery>\n";
-			//$ymlcontent .= "<local_delivery_cost>375</local_delivery_cost>\n";
-			$ymlcontent .= "<name>".$sName."</name>\n";  // название товара
-			$ymlcontent .= "<vendor>".$sProducer."</vendor>\n";
-			$ymlcontent .= "<vendorCode>".$aRow['articul']."</vendorCode>\n";
-			$ymlcontent .= "<description>$sDescription</description>\n"; // описание продукта
-			$ymlcontent .= "<country_of_origin>".(isset($aRow['producer_id_country']) ? $aRow['producer_id_country'] : '')."</country_of_origin>\n";
-			$ymlcontent .= "</offer>\n";
+			$content .= "<offer id=\"".$product['id']."\" available=\"".$is_exist."\">\n";  // id товара
+			$content .= "<url>$url</url>\n";  // ссылка на страницу товара ( полностью )
+			$content .= "<price>".$product['price']."</price>\n";  // стоимость продукта
+			$content .= "<currencyId>RUR</currencyId>\n"; // валюта
+			$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
+			$content .= "<picture>http://colors-life.ru".$product['image']."</picture>\n";  // ссылка на картинку ( полностью )
+			$content .= "<delivery>true</delivery>\n";
+			$content .= "<name>".$name."</name>\n";  // название товара
+			$content .= "<vendor>".$producer."</vendor>\n";
+			$content .= "<vendorCode>".$product['articul']."</vendorCode>\n";
+			$content .= "<description>$description</description>\n"; // описание продукта
+			$content .= "<country_of_origin>".(isset($product['producer_id_country']) ? $product['producer_id_country'] : '')."</country_of_origin>\n";
+			$content .= "</offer>\n";
 		}
-		$ymlcontent .= "</offers>\n";  // дописываем закрывающие тэги
-		$ymlcontent .= "</shop>\n";
-		$ymlcontent .= "</yml_catalog>";
+		$content .= "</offers>\n";  // дописываем закрывающие тэги
+		$content .= "</shop>\n";
+		$content .= "</yml_catalog>";
 
 
-		fputs($f, $ymlcontent);  // записываем наш контент в файл
+		fputs($f, $content);  // записываем наш контент в файл
 		fclose($f);
 	}
 
-	function correctImages() {
-		global $PRJ_DIR;
-		$items = $this->get('connection')->getItems('items', "SELECT id, image, small_image, big_image FROM catalog_product");
-		foreach ($items as $item) {
-			$basename = 'stuff_';
-			$sNewPath1 = '';
-			$sNewPath2 = '';
-			$sNewPath3 = '';
-			if ($item['image']) {
-				$path_parts = pathinfo($item['image']);
-				$sNewPath1 = $path_parts['dirname'].'/'.$basename.$item['id'].".".$path_parts['extension'];
-				rename($PRJ_DIR.$item['image'], $PRJ_DIR.$sNewPath1);
-			}
-			if ($item['small_image']) {
-				$path_parts = pathinfo($item['small_image']);
-				$sNewPath2 = $path_parts['dirname'].'/'.$basename.$item['id']."_small.".$path_parts['extension'];
-				rename($PRJ_DIR.$item['small_image'], $PRJ_DIR.$sNewPath2);
-			}
-			if ($item['big_image']) {
-				$path_parts = pathinfo($item['big_image']);
-				$sNewPath3 = $path_parts['dirname'].'/'.$basename.$item['id']."_big.".$path_parts['extension'];
-				rename($PRJ_DIR.$item['big_image'], $PRJ_DIR.$sNewPath3);
-			}
-			$this->get('connection')->execQuery('upd', "UPDATE catalog_product SET image='$sNewPath1', small_image='$sNewPath2', big_image='$sNewPath3' WHERE id=".$item['id']);
-		}
-	}
-
-	private function _clearImages() {
-		$items = $this->get('connection')->getItems('items', "SELECT id, image, small_image, big_image FROM catalog_product");
-		foreach ($items as $item) {
-			if ($item['big_image'] && $item['big_image'] != '/upload/stuff_'.$item['id'].'_big.jpg' ) {
-				$this->get('connection')->execQuery('upd', "UPDATE catalog_product SET big_image='' WHERE id=".$item['id']);
-			}
-
-		}
-	}
-	
 	private function fixImages() {
 		global $UPLOAD_REF, $PRJ_DIR;
 		$date = new \Datetime('2012-01-01');
@@ -493,15 +454,6 @@ GROUP BY t1.id HAVING max_right <> SQRT(4 * rep + 1) + 1');
 		$this->updateNestedSets('page_page');
 		$this->checkNestedSets('page_page');
 		$this->updateLinkTables();
-	}
-	
-	private function fixTables() {
-		$items = $this->get('connection')->getItems('items', "SHOW TABLES");
-		$items = array_values($items);
-		foreach ($items as $table) {
-			$tableName = array_values($table);
-			$this->get('connection')->execQuery('alter', 'ALTER TABLE `'.$tableName[0].'` DROP COLUMN classid, DROP COLUMN seniorid');
-		}
 	}
 	
 }
