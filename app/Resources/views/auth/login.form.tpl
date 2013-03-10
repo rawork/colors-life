@@ -1,4 +1,3 @@
-<h1>Вход в личный кабинет</h1>
 {if $error_message}<div class="alert alert-error">{$error_message}</div>{/if}
 <form class="form-horizontal" name="mainForm" method="post">
 <input type="hidden" name="fromPage" value="{$fromPage}">

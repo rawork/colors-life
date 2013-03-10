@@ -2,7 +2,6 @@
 <script>initFB()</script>
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?56"></script>
 <script type="text/javascript">initVK();</script>
-<h1>{$item.name}</h1>
 <table class="product-table-card" cellpadding="0" cellspacing="0" border="0">
 	<tr>
 		<td class="product-content">

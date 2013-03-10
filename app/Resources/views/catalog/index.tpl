@@ -39,7 +39,6 @@
 	{/foreach}
 	{raMethod path=Fuga:Public:Catalog:hit}           
 {else}
-	<h1>{$cat.title}</h1>
 	<div class="cat-description">{$cat.description}</div>		
 	{if $cat.parent_id == 0}			
 		<table class="subcats-block" width="640">

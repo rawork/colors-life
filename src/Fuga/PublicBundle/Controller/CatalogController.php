@@ -31,7 +31,6 @@ class CatalogController extends PublicController {
 		if (!$producer) {
 			throw $this->createNotFoundException('Несуществующая страница');
 		}
-		$this->get('container')->setVar('title', $producer['name']);
 		$paginator = $this->get('paginator');
 		$paginator->paginate(
 				$this->get('container')->getTable('catalog_product'),
@@ -47,18 +46,21 @@ class CatalogController extends PublicController {
 			null, 
 			$paginator->limit
 		);
+		$this->get('container')->setVar('title', $producer['name']);
+		$this->get('container')->setVar('h1', $producer['name']);
 		
 		return $this->render('catalog/brand.tpl', compact('producer', 'items', 'paginator'));
 	}
 	
 	public function brandsAction($params) {
-		$this->get('container')->setVar('title', 'Бренды');
 		$items = $this->get('container')->getItems(
 			'catalog_producer', 
 			'publish=1', 
 			null, 
 			100
 		);
+		$this->get('container')->setVar('title', 'Бренды');
+		$this->get('container')->setVar('h1', 'Бренды');
 		
 		return $this->render('catalog/brands.tpl', compact('items'));
 	}
@@ -129,7 +131,7 @@ class CatalogController extends PublicController {
 				throw $this->createNotFoundException('Несуществующая страница');
 			}
 			$this->get('container')->setVar('title', $cat['title']);
-			
+			$this->get('container')->setVar('h1', $cat['title']);
 			
 			$sort = isset($params[1]) ? $params[1] : 'sort';
 			if ($sort != 'sort' && $sort != 'price' && $sort != 'name') {
@@ -209,6 +211,7 @@ class CatalogController extends PublicController {
 			throw $this->createNotFoundException('Несуществующая страница');
 		}
 		$this->get('container')->setVar('title', $item['name']);
+		$this->get('container')->setVar('h1', $item['name']);
 		
 		return $this->render('catalog/promotion.tpl', compact('item'));
 	}
@@ -216,6 +219,7 @@ class CatalogController extends PublicController {
 	public function promotionsAction($params) {
 		$items =  $this->get('container')->getItems('catalog_commercial', 'publish=1');
 		$this->get('container')->setVar('title', 'Акции и скидки');
+		$this->get('container')->setVar('h1', 'Акции и скидки');
 		
 		return $this->render('catalog/promotions.tpl', compact('items'));
 	}
@@ -239,6 +243,7 @@ class CatalogController extends PublicController {
 			throw $this->createNotFoundException('Несуществующая страница');
 		}
 		$this->get('container')->setVar('title', $item['name']);
+		$this->get('container')->setVar('h1', $item['name']);
 		$cat0 = $this->get('container')->getItem('catalog_category', $item['category_id_root_id']);
 		$prices =  $this->get('container')->getItems(
 			'catalog_price', 

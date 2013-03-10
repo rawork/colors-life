@@ -127,6 +127,7 @@ class AuthController extends PublicController {
 		$userInfo = $user;
 		$months = $this->months;
 		$this->get('container')->setVar('title', 'Личные данные');
+		$this->get('container')->setVar('h1', 'Личные данные');
 
 		return $this->render('auth/info.form.tpl', compact('error_message', 'cabinetMenu', 'userInfo', 'months'));
 	}
@@ -187,6 +188,7 @@ class AuthController extends PublicController {
 			$error_message = $this->_processLoginForm();
 		}
 		$this->get('container')->setVar('title', 'Вход в личный кабинет');
+		$this->get('container')->setVar('h1', 'Вход в личный кабинет');
 		
 		return $this->render('auth/login.form.tpl', compact('error_message'));
 	}
@@ -218,6 +220,7 @@ class AuthController extends PublicController {
 			$error_message = $this->_processRegistrationForm();
 		}
 		$this->get('container')->setVar('title', 'Регистрация');
+		$this->get('container')->setVar('h1', 'Регистрация');
 		
 		return $this->render('auth/registration.form.tpl', compact('error_message'));
 	}
@@ -286,6 +289,7 @@ class AuthController extends PublicController {
 			'cabinetMenu' => $this->_getMenu()
 		);
 		$this->get('container')->setVar('title', 'Заказы');
+		$this->get('container')->setVar('h1', 'Заказы');
 		
 		return $this->render('auth/orders.tpl', $params);
 	}
@@ -302,6 +306,7 @@ class AuthController extends PublicController {
 		}
 		$cabinetMenu = $this->_getMenu();
 		$this->get('container')->setVar('title', 'Изменение пароля');
+		$this->get('container')->setVar('h1', 'Изменение пароля');
 		
 		return $this->render('auth/password.form.tpl', compact('error_message', 'info_message', 'cabinetMenu'));
 	}
@@ -344,6 +349,7 @@ class AuthController extends PublicController {
 			$info_message = implode('<br>', $messages['info']);
 		}
 		$this->get('container')->setVar('title', 'Восстановление пароля');
+		$this->get('container')->setVar('h1', 'Восстановление пароля');
 		
 		return $this->render('auth/forget.form.tpl', compact('error_message', 'info_message'));
 	}

@@ -1,4 +1,3 @@
-<h1>{$producer.name}</h1>
 <div>{$producer.description}</div>
 <table class="product-table" cellpadding="0" cellspacing="0" border="0">
 	{foreach from=$items item=item name=product}

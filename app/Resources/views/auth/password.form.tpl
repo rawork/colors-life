@@ -1,4 +1,3 @@
-<h1>Изменение пароля</h1>
 <form class="form-horizontal" name="registrationForm" method="post">
 {$cabinetMenu}
 <input type="hidden" name="fromPage" value="">

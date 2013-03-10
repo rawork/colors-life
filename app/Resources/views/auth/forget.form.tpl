@@ -1,4 +1,3 @@
-<h1>Восстановление пароля</h1>
 <p>Введите свой электронный адрес, указанный при регистрации, и нажмите кнопку &laquo;Выслать пароль&raquo;.</p>
 <form class="form-horizontal" name="mainForm" method="post">
 {if $error_message}<div class="alert alert-error">{$error_message}</div>{/if}

@@ -35,7 +35,8 @@ class ArticleController extends PublicController {
 					null,
 					$paginator->limit
 			);		
-			$local_h1 = '<h1>Статьи по теме &laquo;'.$tag['name'].'&raquo;</h1>';
+			$this->get('container')->setVar('title', 'Статьи по теме '.$tag['name']);
+			$this->get('container')->setVar('h1', 'Статьи по теме &laquo;'.$tag['name'].'&raquo;');
 		} else { 
 			$paginator->paginate(
 				$this->get('container')->getTable('article_article'),
@@ -52,7 +53,7 @@ class ArticleController extends PublicController {
 			);
 		}
 		
-		return $this->render('article/index.tpl', compact('items', 'paginator', 'local_h1'));
+		return $this->render('article/index.tpl', compact('items', 'paginator'));
 	}
 	
 	public function readAction($params) {
@@ -64,6 +65,7 @@ class ArticleController extends PublicController {
 			throw $this->createNotFoundException('Несуществующая страница');
 		}
 		$this->get('container')->setVar('title', $item['name']);
+		$this->get('container')->setVar('h1', $item['name']);
 		
 		return $this->render('article/read.tpl', compact('item'));
 	}

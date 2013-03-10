@@ -69,6 +69,6 @@
 <div class="pull-right"><input type="submit" class="btn btn-large btn-warning" value="Подтверждаю заказ" /></div>
 </form>
 {else}
-<h1>В вашей корзине нет товаров</h1>
+<h4>В вашей корзине нет товаров</h4>
 {raMethod path=Fuga:Public:Common:block args='["name":"delivery"]'} 
 {/if}

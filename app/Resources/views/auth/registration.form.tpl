@@ -1,4 +1,3 @@
-<h1>Регистрация</h1>
 {if $error_message}<div class="alert alert-error">{$error_message}</div>{/if}
 <form class="form-horizontal" name="registrationForm" method="post">
 <input type="hidden" name="fromPage" value="{$fromPage}" />

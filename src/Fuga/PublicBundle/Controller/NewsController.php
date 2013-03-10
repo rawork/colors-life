@@ -41,6 +41,7 @@ class NewsController extends PublicController {
 			throw $this->createNotFoundException('Несуществующая страница');
 		}
 		$this->get('container')->setVar('title', $news['name']);
+		$this->get('container')->setVar('h1', $news['name']);
 		
 		return $this->get('templating')->render('news/read.tpl', compact('news'));
 	}

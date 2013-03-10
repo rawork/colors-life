@@ -123,7 +123,10 @@
 		<div class="span30">
 			<div class="content-column">
 				{raMethod path=Fuga:Public:Common:breadcrumb}
-				<div class="inner-content">{eval var=$mainbody}</div>
+				<div class="inner-content">
+					<h1>{$h1}</h1>
+					{eval var=$mainbody}
+				</div>
 			</div>
 		</div>
 	</div>

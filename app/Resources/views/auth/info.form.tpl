@@ -1,4 +1,3 @@
-<h1>Личные данные</h1>
 {$cabinetMenu}
 {if $error_message}<div class="alert alert-error">{$error_message}</div>{/if}
 {if $userInfo.discount}

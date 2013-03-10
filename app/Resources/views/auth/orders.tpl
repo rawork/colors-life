@@ -1,4 +1,3 @@
-<h1>Заказы</h1>
 {$cabinetMenu}
 <form class="form-inline" name="frmOrderSearch" action="" method="post">
 c <input class="input-small" type="text" readonly="readonly" value="" name="datefrom" id="datefrom">

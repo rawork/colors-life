@@ -1,7 +1,6 @@
 <div id="subscribe_form">
 	{if $subscribe_message}<div class="subscribe-message">{$subscribe_message}</div>{/if}
 	<div class="subscribe-form">
-	  <h1>Подписаться на рассылку</h1>
 	  новостей компании &laquo;Цвета жизни&raquo;, чтобы в<br> числе первых узнавать о скидках,<br> акциях и новинках.
 	  <br><br>
 	  <form name="frmSubscribe" id="frmSubscribe" method="post" action="">

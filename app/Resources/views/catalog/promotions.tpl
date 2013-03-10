@@ -1,4 +1,3 @@
-<h1>Акции и скидки</h1>
 {foreach from=$items item=item}
 <div class="article-block"> 
 <div class="article-title"><a href="{raURL node=catalog method=promotion prms=$item.id}">{$item.name}</a></div>

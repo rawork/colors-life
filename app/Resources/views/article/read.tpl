@@ -1,4 +1,3 @@
-<h1>{$item.name}</h1>	
 <div id="fb-root"></div>
 <script>initFB()</script>
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?56"></script>

@@ -74,6 +74,8 @@ class CartController extends PublicController {
 			'user' => $this->get('auth')->getUser()
 		);
 		$this->get('container')->setVar('title', 'Уточнение заказа');
+		$this->get('container')->setVar('h1', 'Уточнение заказа');
+		
 		return $this->render('cart/list.tpl', $params);
 	}
 
@@ -154,7 +156,9 @@ class CartController extends PublicController {
 			unset($_SESSION['deliveryPhone']);
 			unset($_SESSION['deliveryPhoneAdd']);
 			unset($_SESSION['deliveryPerson']);
-			$this->get('container')->setVar('title', 'Подтверждение заказа');
+			$this->get('container')->setVar('title', 'Заказ отправлен');
+			$this->get('container')->setVar('h1', 'Заказ отправлен');
+			
 			return $this->render('cart/message.tpl');
 		}
 		$manager = $this->get('container')->getManager('Fuga:Common:Cart');
@@ -182,6 +186,8 @@ class CartController extends PublicController {
 			exit;
 		}
 		$this->get('container')->setVar('title', 'Авторизация');
+		$this->get('container')->setVar('h1', 'Авторизация');
+		
 		return $this->render('cart/authorize.tpl');
 	}
 
@@ -203,6 +209,8 @@ class CartController extends PublicController {
 		$payTypes = $this->get('connection')->getItems('get_pay', "SELECT id,name FROM cart_pay_type WHERE publish=1 ORDER BY sort");
 		$deliveryTypes = $this->get('connection')->getItems('get_delivery', "SELECT id,name,description FROM cart_delivery_type WHERE publish=1 ORDER BY sort");
 		$this->get('container')->setVar('title', 'Оплата и доставка');
+		$this->get('container')->setVar('h1', 'Оплата и доставка');
+		
 		return $this->render('cart/detail.tpl', compact('payTypes', 'deliveryTypes', 'user'));
 	}
 	
