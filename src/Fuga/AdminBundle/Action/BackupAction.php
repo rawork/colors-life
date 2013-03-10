@@ -36,7 +36,7 @@ class BackupAction extends Action {
 			unset($_SESSION['archiveReport']);
 			$text .= '<div class="well" id="archive_info">'.$archiveReport.'</div>';
 		}
-		$text .= '<a type="button" class="btn btn-success" onClick="makeArchive()">Создать архив</a><br><br>';
+		$text .= '<input type="button" class="btn btn-success" onClick="createArchive()" value="Создать архив" /><br><br>';
 		$text .= '<table class="table table-condensed">';
 		$text .= '<thead><tr>';
 		$text .= '<th width="55%">Имя</th>';
@@ -74,9 +74,16 @@ class BackupAction extends Action {
 		$text .= '</table>';
 		return $text;
 	}
+	
+	protected function getCacheManagment() {
+		$text = '';
+		$text .= '<br><br><input type="button" class="btn btn-danger" onClick="clearCache()" value="Очистить кэш" />';
+		$text .= '<br><br><div class="well closed" id="cache_info"></div>';
+		return $text;
+	}
 
 	public function getText() {
-		return $this->getMainBodyTable();
+		return $this->getMainBodyTable().$this->getCacheManagment();
 	}
 
 }

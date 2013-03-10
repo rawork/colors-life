@@ -324,15 +324,28 @@ function editField(fieldId) {
 	}, "json");
 }
 
-function makeArchive(formId) {
+function createArchive() {
 	showDiv('waiting', 0, -100);
-	$("#archive_info").css('display', 'none');
+	$("#archive_info").addClass('closed');
 	$("#archive_info").empty();
-	$.post("/adminajax/", {method: 'makeArchive'},
+	$.post("/adminajax/", {method: 'createArchive'},
 	function(data){
 		$("#archive_info").html(data.content);
+		$("#archive_info").removeClass('closed');
 		hideDiv('waiting');
 		window.location.reload();
+	}, "json");
+}
+
+function clearCache() {
+	showDiv('waiting', 0, -100);
+	$("#cache_info").addClass('closed');
+	$("#cache_info").empty();
+	$.post("/adminajax/", {method: 'clearCache'},
+	function(data){
+		$("#cache_info").html(data.content);
+		$("#cache_info").removeClass('closed');
+		hideDiv('waiting');
 	}, "json");
 }
 

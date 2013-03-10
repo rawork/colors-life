@@ -44,4 +44,18 @@ class SmartyTemplating implements TemplatingInterface {
 		return file_exists($this->realPath.$template);
 	}
 	
+	public function clearAll() {
+		global $PRJ_DIR;
+		$exclude = array('.', '..', '.gitkeep');
+		if ($handle = opendir($this->engine->compile_dir)) {
+			while (false !== ($file = readdir($handle))) {
+				if (!in_array($file, $exclude)) {
+					@unlink($this->engine->compile_dir.$file);
+				}
+			}
+			closedir($handle);
+		}
+		
+	}
+	
 }

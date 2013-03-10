@@ -276,7 +276,7 @@ class AdminAjaxController extends Controller {
 		}
 	}
 	
-	function makeArchive() {
+	public function createArchive() {
 		$my_time = time();
 		$my_key = $this->get('util')->genKey(8);
 		
@@ -317,6 +317,11 @@ class AdminAjaxController extends Controller {
 		@unlink($GLOBALS['BACKUP_DIR'].'/'.$filename_sql2);
 		$_SESSION['archiveReport'] = $text;
 		return json_encode(array('content' => $text));
+	}
+	
+	public function clearCache() {
+		$this->get('templating')->clearAll();
+		return json_encode(array('content' => 'Кэш очищен'));
 	}
 	
 	

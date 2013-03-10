@@ -95,7 +95,7 @@ class AdminController extends Controller {
 		if ($this->module->name == 'config' && $this->get('security')->isSuperuser()) {
 			$ret[] = array (
 				'ref' => $this->getBaseTableRef().'/backup',
-				'name' => 'Резервное копирование'
+				'name' => 'Обслуживание'
 			);
 		}
 		if ($this->module->name == 'article' && $this->get('security')->isSuperuser()) {
