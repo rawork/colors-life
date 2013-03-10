@@ -129,7 +129,7 @@ class AuthController extends PublicController {
 		$this->get('container')->setVar('title', 'Личные данные');
 		$this->get('container')->setVar('h1', 'Личные данные');
 
-		return $this->render('auth/info.form.tpl', compact('error_message', 'cabinetMenu', 'userInfo', 'months'));
+		return $this->render('auth/info.tpl', compact('error_message', 'cabinetMenu', 'userInfo', 'months'));
 	}
 
 	private function _processInfoForm() {
@@ -190,7 +190,7 @@ class AuthController extends PublicController {
 		$this->get('container')->setVar('title', 'Вход в личный кабинет');
 		$this->get('container')->setVar('h1', 'Вход в личный кабинет');
 		
-		return $this->render('auth/login.form.tpl', compact('error_message'));
+		return $this->render('auth/login.tpl', compact('error_message'));
 	}
 
 	private function _processLoginForm() {
@@ -222,7 +222,7 @@ class AuthController extends PublicController {
 		$this->get('container')->setVar('title', 'Регистрация');
 		$this->get('container')->setVar('h1', 'Регистрация');
 		
-		return $this->render('auth/registration.form.tpl', compact('error_message'));
+		return $this->render('auth/registration.tpl', compact('error_message'));
 	}
 
 	private function _processRegistrationForm() {
@@ -308,7 +308,7 @@ class AuthController extends PublicController {
 		$this->get('container')->setVar('title', 'Изменение пароля');
 		$this->get('container')->setVar('h1', 'Изменение пароля');
 		
-		return $this->render('auth/password.form.tpl', compact('error_message', 'info_message', 'cabinetMenu'));
+		return $this->render('auth/password.tpl', compact('error_message', 'info_message', 'cabinetMenu'));
 	}
 
 	private function _processPasswordForm() {
@@ -351,7 +351,7 @@ class AuthController extends PublicController {
 		$this->get('container')->setVar('title', 'Восстановление пароля');
 		$this->get('container')->setVar('h1', 'Восстановление пароля');
 		
-		return $this->render('auth/forget.form.tpl', compact('error_message', 'info_message'));
+		return $this->render('auth/forget.tpl', compact('error_message', 'info_message'));
 	}
 
 	private function _processForgetForm() {
