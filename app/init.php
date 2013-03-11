@@ -13,7 +13,6 @@ $loader->add('Fuga', __DIR__.'/../src/');
 $loader->add('Smarty', __DIR__.'/../vendor/smarty/');
 
 use Fuga\Component\Container;
-use Fuga\Component\Cache;
 use Fuga\Component\Registry;
 use Fuga\Component\Exception\AutoloadException;
 use Fuga\CommonBundle\Controller\SecurityController;
@@ -44,7 +43,6 @@ function exception_handler($exception)
 
 function autoloader($className)
 {
-	
 	$basePath = __DIR__.'/../src/';
 	$className = ltrim($className, '\\');
 	$fileName  = '';
@@ -84,9 +82,7 @@ foreach ($vars as $var) {
 	$params[strtolower($var['name'])] = $var['value'];
 	$$var['name'] = $var['value'];
 }
-
 $params['theme_ref'] = $THEME_REF;
-
 $container->get('templating')->assign($params);
 
 if (!$container->get('security')->isAuthenticated() && $container->get('security')->isSecuredArea()) {

@@ -64,7 +64,6 @@ class Container
 	}
 	
 	private function getAllTables() {
-		global $PRJ_DIR;
 		$ret = array();
 		$this->modules = array();
 		$query = "SELECT id, sort, name, title, 'content' AS ctype FROM config_modules
@@ -389,10 +388,7 @@ class Container
 			$className = $vendor.'\\'.$bundle.'Bundle\\Model\\'.ucfirst($name).'Manager';
 			$this->managers[$path] = new $className();
 		}
-		if (!isset($this->managers[$path])) {
-			throw new \Exception('Менеджер "'.$path.'" отсутствует');
-		}
-		
+
 		return $this->managers[$path];
 	}
 	
