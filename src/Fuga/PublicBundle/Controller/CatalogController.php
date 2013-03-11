@@ -223,8 +223,66 @@ class CatalogController extends PublicController {
 		return $this->render('catalog/promotions.tpl', compact('items'));
 	}
 	
-	public function searchAction($params) {
-		return $this->render('catalog/search.tpl');
+	public function searchAction() {
+		$text = $this->get('util')->_getVar('text');
+		if ($text) {
+			
+			$words = $this->get('search')->getMorphoForm($text);
+			$catIds = array();
+			$producerIds = array();
+			foreach ($words as $key => $word) {
+				$cats = $this->get('container')->getItemsRaw(
+					'SELECT id FROM catalog_category WHERE title LIKE "%'.$word.'%" AND publish=1'
+				);
+				foreach ($cats as $cat) {
+					$catIds[] = $cat['id'];
+				}
+				$producers = $this->get('container')->getItemsRaw(
+					'SELECT id FROM catalog_producer WHERE name LIKE "%'.$word.'%" AND publish=1'	
+				);
+				foreach ($producers as $producer) {
+					$producerIds[] = $producer['id'];
+				}
+				if (count($catIds) || count($producerIds)) {
+					unset($words[$key]);
+				}
+			}
+			
+			$catIds = array_unique($catIds);
+			$producerIds = array_unique($producerIds);
+			
+			$query = count($catIds) ? 'category_id IN('.implode(',', $catIds).')' : '';
+			if (count($producerIds)) {
+				$query .= ($query ? ' AND ' : '').'producer_id IN('.implode(',', $producerIds).')';
+			}
+			$query0 = $this->get('search')->createCriteria($words, array('name', 'description'));
+			$query = $query ? '('.$query.')'.($query0 ? 'AND '.$query0 : '').' AND publish=1' : ($query0 ? $query0 : '').' AND publish=1';
+			
+			$page = $this->get('util')->_getVar('page', true, 1);
+			$paginator = $this->get('paginator');
+			$paginator->paginate(
+				$this->get('container')->getTable('catalog_product'),
+				$this->get('container')->href($this->get('router')->getParam('node'), 'search').'?text='.$text.'&page=###',
+				$query,
+				6,
+				$page
+			);
+			$paginator->setTemplate('public');
+			
+			$products = $this->get('container')->getItems(
+					'catalog_product',
+					$query,
+					null,	
+					$paginator->limit	
+			);
+			$this->get('container')->setVar('title', 'Результаты поиска по запросу '.$text);
+			$this->get('container')->setVar('h1', 'Результаты поиска по запросу &laquo;'.$text.'&raquo;');
+		} else {
+			$this->get('container')->setVar('title', 'По запросу '.$text.' ничего не найдено');
+			$this->get('container')->setVar('h1', 'По запросу &laquo;'.$text.'&raquo; ничего не найдено');
+		}
+		
+		return $this->render('catalog/search.tpl', compact('products', 'text', 'paginator'));
 	}
 	
 	public function selectorsAction() {

@@ -60,30 +60,35 @@ class SearchEngine {
 	function getSearchResultRef($node, $action = 'index') {
 		return $this->container->href(!empty($node['node_id']) ? $node['node_id_name'] : $this->name, $action, array($node['id']));
 	}
+	
+	public function createCriteria($words, $fields) {
+		$query = '';
+		foreach ($fields as $field) {
+			if (count($words) > 1) {
+				$query0 = '';
+				foreach ($words as $word) {
+					$query0 .=  ($query0 ? ' AND ' : '').'('.$field." LIKE '%".$word."%')";
+				}
+				$query .=  ($query ? ' OR ' : '').($query0 ? '('.$query0.')' : '');
+			} elseif (count($words) > 0) {
+				$query .=  ($query ? ' OR ' : '').$field." LIKE '%".$words[0]."%'";
+			}
+		}
+		return $query ? '('.$query.')' : '';
+	}
 
-	private function getTableSearchResults($words, $tableName, $options) {
+	public function getTableSearchResults($words, $table, $options) {
 		$ret = array();
 		if (!$words) {
 			return $ret;
 		}
 		$fields_text = implode(',',$options['fields']);
 		$where = !empty($options['where']) ? ' AND '.$options['where'] : '';
-		$search_query = '';
-		foreach ($options['fields'] as $field) {
-			if (count($words) > 1) {
-				$search_query0 = '';
-				foreach ($words as $word) {
-					$search_query0 .=  ($search_query0 ? ' AND ' : '').'('.$field." LIKE '%".$word."%')";
-				}
-				$search_query .=  ($search_query ? ' OR ' : '').($search_query0 ? '('.$search_query0.')' : '');
-			} else {
-				$search_query .=  ($search_query ? ' OR ' : '').$field." LIKE '%".$words[0]."%'";
-			}
-		}
-		$sql = "SELECT id,".$fields_text." FROM ".$tableName." WHERE (".$search_query.') '.$where.' ORDER BY id';
+		$search_query = $this->createCriteria($words, $options['fields']);
+		$sql = "SELECT id,".$fields_text." FROM ".$table." WHERE ".$search_query.$where.' ORDER BY id';
 		$items = $this->container->get('connection')->getItems('get_search_items', $sql);
 		foreach ($items as $item) {
-			if ($tableName == 'page_page') {
+			if ($table == 'page_page') {
 				$link = $this->container->getManager('Fuga:Common:Page')->getUrl($item);
 			} else {
 				$link = vsprintf($options['link'], array($options['nodeName'], $item['id']));
@@ -96,7 +101,7 @@ class SearchEngine {
 		return $ret;
 	}
 
-	private function getMorphoForm($text) {
+	public function getMorphoForm($text) {
 		$morfWords = array();
 		$words = explode(' ', $text);
 		foreach ($words as $word) {

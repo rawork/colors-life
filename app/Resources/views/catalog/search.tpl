@@ -1,10 +1,11 @@
+{if $products}
 <table class="product-table" cellpadding="0" cellspacing="0" border="0">
-	{foreach from=$items item=item name=product}
+	{foreach from=$products item=item name=product}
 	{raItem var=cat0 table=catalog_category query=$item.category_id_root_id}
 	{raItems var=prices table=catalog_price query="product_id=`$item.id` AND publish=1" sort="sort,size_id"}
-	<tr>
+	{if $smarty.foreach.product.iteration == 1}<tr>{/if}
 		<td class="product-content">
-			<div class="product-image">
+			<div class="product-image pull-left">
 				<a href="{raURL node=catalog method=stuff prms=$item.id}">{if $item.small_imagenew}<img src="{$item.small_imagenew}">{else}<img src="/img/noimage_small.jpg">{/if}</a>
 			</div>
 			<div class="product-description">
@@ -35,7 +36,14 @@
 			</div>
 			<div class="clearfix"></div>
 		</td>
-	</tr>
+	{if $smarty.foreach.product.iteration % 2 == 0}</tr><tr>{/if}
 	{/foreach}
 </table>
-{if is_object($paginator)}{$paginator->render()}{/if}
+{$paginator->render()}
+{else}
+	<form class="form-search" action="{raURL node=catalog method=search}" method="get">
+		<input type="text" name="text" value="{$text}" autocomplete="off" placeholder="Поиск" class="input-xlarge search-query">
+		<input type="submit" class="btn" value="Поиск">
+	</form>
+	<h4>Ничего не найдено</h4>
+{/if}

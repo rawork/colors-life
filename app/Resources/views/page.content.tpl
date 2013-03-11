@@ -69,9 +69,9 @@
 			</div>
 			<div class="clearfix"></div>
 			<div class="head-search">
-				<form class="form-search" action="{raURL node=search}" method="get">
+				<form class="form-search" action="{raURL node=catalog method=search}" method="get">
 					<input type="text" name="text" autocomplete="off" placeholder="Поиск" class="input-xlarge search-query">
-					<button type="submit" class="btn">Поиск</button>
+					<input type="submit" class="btn" value="Поиск">
 				</form>
 			</div>
 		</div>
