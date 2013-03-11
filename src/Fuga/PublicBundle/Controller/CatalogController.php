@@ -76,19 +76,19 @@ class CatalogController extends PublicController {
 	public function hitAction($params) {
 		$hits = null;
 		if ('stuff' == $this->get('router')->getParam('action')) {
-			$item = $this->get('container')->getItem('catalog_product', $params[0]);
-			$ids = implode(',', array_keys($this->get('container')->getItemsRaw(
-					'SELECT p.id FROM catalog_category c 
-					JOIN catalog_product p ON c.id=p.category_id 
-					WHERE p.publish=1 AND p.is_hit=1 
-					AND c.root_id='.$item['category_id_root_id'].' AND p.id<>'.$item['id']
-			)));
-			$hits = $this->get('container')->getItems(
-				'catalog_product', 
-				'id IN ('.$ids.') AND publish=1 AND is_hit=1',
-				'RAND()',
-				$this->getParam('limit_hit')
-			);		
+//			$item = $this->get('container')->getItem('catalog_product', $params[0]);
+//			$ids = implode(',', array_keys($this->get('container')->getItemsRaw(
+//					'SELECT p.id FROM catalog_category c 
+//					JOIN catalog_product p ON c.id=p.category_id 
+//					WHERE p.publish=1 AND p.is_hit=1 
+//					AND c.root_id='.$item['category_id_root_id'].' AND p.id<>'.$item['id']
+//			)));
+//			$hits = $this->get('container')->getItems(
+//				'catalog_product', 
+//				'id IN ('.$ids.') AND publish=1 AND is_hit=1',
+//				'RAND()',
+//				$this->getParam('limit_hit')
+//			);		
 		} else {
 			if (isset($params[0])) {
 				
