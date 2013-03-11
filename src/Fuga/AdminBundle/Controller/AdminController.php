@@ -153,7 +153,7 @@ class AdminController extends Controller {
 		return $title;
 	}
 
-	public function getIndex() {
+	public function indexAction() {
 		$params = array(
 			'title' => $this->getTitle(),
 			'message' => $this->getMessage(),

@@ -10,8 +10,7 @@ class CatalogController extends PublicController {
 		parent::__construct('catalog');
 	}
 
-
-	public function advertAction($params) {
+	public function advertAction() {
 		$items = $this->get('container')->getItems(
 			'catalog_commercial', 
 			'publish=1', 
@@ -52,7 +51,7 @@ class CatalogController extends PublicController {
 		return $this->render('catalog/brand.tpl', compact('producer', 'items', 'paginator'));
 	}
 	
-	public function brandsAction($params) {
+	public function brandsAction() {
 		$items = $this->get('container')->getItems(
 			'catalog_producer', 
 			'publish=1', 
@@ -65,7 +64,7 @@ class CatalogController extends PublicController {
 		return $this->render('catalog/brands.tpl', compact('items'));
 	}
 	
-	public function catsAction($params) {
+	public function catsAction() {
 		$items =  $this->get('container')->getItems(
 			'catalog_category',
 			'publish=1 AND parent_id=0'
@@ -171,7 +170,7 @@ class CatalogController extends PublicController {
 		return $this->render('catalog/index.tpl', compact('cats', 'cat', 'per_column', 'products', 'paginator', 'rtt', 'sort'));
 	}
 	
-	public function newAction($params) {
+	public function newAction() {
 		$items =  $this->get('container')->getItems(
 			'catalog_product', 
 			'publish=1 AND is_new=1', 
@@ -182,7 +181,7 @@ class CatalogController extends PublicController {
 		return $this->render('catalog/new.tpl', compact('items'));
 	}
 	
-	public function offerAction($params) {
+	public function offerAction() {
 		$items =  $this->get('container')->getItems(
 			'catalog_product', 
 			'publish=1 AND is_discount=1', 
@@ -193,7 +192,7 @@ class CatalogController extends PublicController {
 		return $this->render('catalog/offer.tpl', compact('items'));
 	}
 	
-	public function partnersAction($params) {
+	public function partnersAction() {
 		$items =  $this->get('container')->getItems(
 			'catalog_partner', 
 			'publish=1' 
@@ -216,7 +215,7 @@ class CatalogController extends PublicController {
 		return $this->render('catalog/promotion.tpl', compact('item'));
 	}
 	
-	public function promotionsAction($params) {
+	public function promotionsAction() {
 		$items =  $this->get('container')->getItems('catalog_commercial', 'publish=1');
 		$this->get('container')->setVar('title', 'Акции и скидки');
 		$this->get('container')->setVar('h1', 'Акции и скидки');
@@ -228,7 +227,7 @@ class CatalogController extends PublicController {
 		return $this->render('catalog/search.tpl');
 	}
 	
-	public function selectorsAction($params) {
+	public function selectorsAction() {
 		$cats = $this->getManager('Fuga:Common:Category')->getCategoryTree();
 		
 		return $this->render('catalog/selectors.tpl', compact('cats'));

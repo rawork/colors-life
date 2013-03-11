@@ -8,17 +8,14 @@ mb_http_output('UTF-8');
 mb_internal_encoding("UTF-8");
 
 require_once 'config/config.php';
-//require_once 'vendor/autoload.php';
+$loader = require __DIR__.'/../vendor/autoload.php';
+$loader->add('Fuga', __DIR__.'/../src/');
+$loader->add('Smarty', __DIR__.'/../vendor/smarty/');
 
 use Fuga\Component\Container;
 use Fuga\Component\Cache;
-use Fuga\Component\Log\Log;
-use Fuga\Component\Util;
 use Fuga\Component\Registry;
 use Fuga\Component\Exception\AutoloadException;
-use Fuga\Component\Templating\SmartyTemplating;
-//use Fuga\Component\Templating\TwigTemplating;
-use Fuga\CommonBundle\Security\SecurityHandler;
 use Fuga\CommonBundle\Controller\SecurityController;
 use Fuga\CommonBundle\Controller\ExceptionController;
 
@@ -47,26 +44,23 @@ function exception_handler($exception)
 
 function autoloader($className)
 {
-	if ($className == 'Smarty') {
-		require_once(__DIR__.'/../vendor/smarty/Smarty.class.php');
+	
+	$basePath = __DIR__.'/../src/';
+	$className = ltrim($className, '\\');
+	$fileName  = '';
+	$namespace = '';
+	if ($lastNsPos = strripos($className, '\\')) {
+		$namespace = substr($className, 0, $lastNsPos);
+		$className = substr($className, $lastNsPos + 1);
+		$fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+	}
+	$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+	if (file_exists($basePath.$fileName)) {
+		require_once $basePath.$fileName;
 	} else {
-		$basePath = __DIR__.'/../src/';
-		$className = ltrim($className, '\\');
-		$fileName  = '';
-		$namespace = '';
-		if ($lastNsPos = strripos($className, '\\')) {
-			$namespace = substr($className, 0, $lastNsPos);
-			$className = substr($className, $lastNsPos + 1);
-			$fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-		}
-		$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-		if (file_exists($basePath.$fileName)) {
-			require_once $basePath.$fileName;
-		} else {
-			// LOG + nice error text
-			throw new AutoloadException('Не возможно загрузить класс "'.$fileName.'"');
-		}
-	}	
+		// LOG + nice error text
+		throw new AutoloadException('Не возможно загрузить класс "'.$fileName.'"');
+	}
 }
 
 set_exception_handler('exception_handler');
@@ -82,17 +76,6 @@ $GLOBALS['cur_page_id'] = preg_replace('/(\/|-|\.|:|\?|[|])/', '_', str_replace(
 //Registry::init('app/config/parameters.yml');
 
 $container = new Container();
-$container->register('log', new Log());
-$container->register('util', new Util());
-$container->register('templating', new SmartyTemplating());
-
-// Соединение с базой и выполнение запросов
-try {
-	$className = '\\Fuga\\Component\\DB\\Connector\\'.ucfirst($GLOBALS['DB_TYPE']).'Connector';
-	$container->register('connection', new $className($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS'], $GLOBALS['DB_BASE']));
-} catch (\Exception $e) {
-	throw new \Exception('DB connection type error (DB_TYPE). Possible value: mysql,mysqli. Check DB connection parameters');
-}
 
 // инициализация переменных
 $params = array();
@@ -106,8 +89,7 @@ $params['theme_ref'] = $THEME_REF;
 
 $container->get('templating')->assign($params);
 
-$security = new SecurityHandler();
-if (!$security->isAuthenticated() && $security->isSecuredArea()) {
+if (!$container->get('security')->isAuthenticated() && $container->get('security')->isSecuredArea()) {
 	$controller = new SecurityController();
 	echo $controller->loginAction();
 	exit;
@@ -117,7 +99,8 @@ if (!$security->isAuthenticated() && $security->isSecuredArea()) {
 	echo $controller->$methodName();
 	exit;
 }
-$container->register('security', $security);
+
+// TODO убрать это нахрен, не нужны все таблицы сразу 
 $container->initialize();
 
 // Включаем Роутер запросов

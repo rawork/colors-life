@@ -15,11 +15,9 @@ class ModelManager implements ModelManagerInterface {
 	}
 	
 	public function get($name) {
-		global $container, $security;
+		global $container;
 		if ($name == 'container') {
 			return $container;
-		} elseif ($name == 'security') {
-			return $security;
 		} else {
 			return $container->get($name);
 		}

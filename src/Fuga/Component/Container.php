@@ -2,18 +2,7 @@
 
 namespace Fuga\Component;
 
-use Fuga\Component\DB\Table;
-use Fuga\Component\Paginator;
-use Fuga\Component\Router;
-use Fuga\Component\Mailer\Mailer;
-use Fuga\Component\Scheduler\Scheduler;
-use Fuga\Component\Storage\FileStorage;
-use Fuga\Component\Storage\ImageStorageDecorator;
-use Fuga\Component\Search\SearchEngine;
-use Fuga\Component\Cache\Cache;
-use Fuga\Component\Exception\AutoloadException;
-use Fuga\Component\Exception\NotFoundHttpException;
-use Fuga\CommonBundle\Controller\PublicController;
+use Fuga\CommonBundle\Security\SecurityHandler;
 
 class Container 
 {
@@ -25,11 +14,6 @@ class Container
 	private $services = array();
 	private $managers = array();
 
-	function __construct() 
-	{
-		
-	}
-	
 	public function initialize() 
 	{
 		$this->tables = $this->getAllTables();
@@ -80,6 +64,7 @@ class Container
 	}
 	
 	private function getAllTables() {
+		global $PRJ_DIR;
 		$ret = array();
 		$this->modules = array();
 		$query = "SELECT id, sort, name, title, 'content' AS ctype FROM config_modules
@@ -95,15 +80,15 @@ class Container
 				$model = new $className();
 				foreach ($model->tables as $table) {
 					$table['is_system'] = true;
-					$ret[$table['component'].'_'.$table['name']] = new Table($table);
+					$ret[$table['component'].'_'.$table['name']] = new DB\Table($table);
 				}
-			} catch (AutoloadException $e) {
+			} catch (Exception\AutoloadException $e) {
 				
 			}
 		}
 		$tables = $this->get('connection')->getItems('tables', "SELECT tt.*,cm.name as component FROM table_tables tt LEFT JOIN config_modules cm ON tt.module_id=cm.id WHERE publish=1 ORDER BY tt.sort");
 		foreach ($tables as $table) {
-			$ret[$table['component'].'_'.$table['name']] = new Table($table);
+			$ret[$table['component'].'_'.$table['name']] = new DB\Table($table);
 		}
 		return $ret;
 	}
@@ -300,7 +285,7 @@ class Container
 		$obj = new \ReflectionClass($this->getControllerClass($path));
 		$action .= 'Action'; 	
 		if (!$obj->hasMethod($action)) {
-			throw new NotFoundHttpException('Несуществующая ссылка '.$path);
+			return $this->get('util')->showError('Несуществующая ссылка '.$path);
 		}
 		return $obj->getMethod($action)->invoke($this->createController($path), $params);	
 	}
@@ -337,50 +322,77 @@ class Container
 	}
 
 	public function get($name) {
-		if ($name == 'filestorage' && !isset($this->services[$name])) {
-			$this->services[$name] = new FileStorage();
+		if (!isset($this->services[$name])) {
+			switch ($name) {
+				case 'log':
+					$this->services[$name] = new Log\Log();
+					break;
+				case 'util':
+					$this->services[$name] = new Util();
+					break;
+				case 'templating':
+					$this->services[$name] = new Templating\SmartyTemplating();
+					break;
+				case 'connection':
+					try {
+						$className = 'Fuga\\Component\\DB\\Connector\\'.ucfirst($GLOBALS['DB_TYPE']).'Connector';
+						$this->services[$name] = new $className($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS'], $GLOBALS['DB_BASE']);
+					} catch (\Exception $e) {
+						throw new \Exception('DB connection type error (DB_TYPE). Possible value: mysql,mysqli. Check DB connection parameters');
+					}
+					break;
+				case 'filestorage':
+					$this->services[$name] = new Storage\FileStorage();
+					break;
+				case 'imagestorage':
+					$this->services[$name] = new Storage\ImageStorageDecorator($this->get('filestorage'));
+					break;
+				case 'paginator':
+					$this->services[$name] = new Paginator();
+					break;
+				case 'mailer':
+					$this->services[$name] = new Mailer\Mailer();
+					break;
+				case 'scheduler':
+					$this->services[$name] = new Scheduler\Scheduler();
+					break;
+				case 'search':
+					$this->services[$name] = new Search\SearchEngine($this);
+					break;
+				case 'router':
+					$this->services[$name] = new Router($this);
+					break;
+				case 'security':
+					$this->services[$name] = new SecurityHandler($this);
+					break;
+				case 'cache':
+					global $CACHE_DIR, $CACHE_TTL;
+					$options = array(
+						'cacheDir' => $CACHE_DIR,
+						'lifeTime' => $CACHE_TTL,
+						'pearErrorMode' => CACHE_ERROR_DIE
+					);
+					$this->services[$name] = new Cache\Cache($options);
+					break;
+			}	
 		}
-		if ($name == 'imagestorage' && !isset($this->services[$name])) {
-			$this->services[$name] = new ImageStorageDecorator($this->get('filestorage'));
-		}
-		if ($name == 'paginator' && !isset($this->services[$name])) {
-			$this->services[$name] = new Paginator();
-		}
-		if ($name == 'mailer' && !isset($this->services[$name])) {
-			$this->services[$name] = new Mailer();
-		}
-		if ($name == 'scheduler' && !isset($this->services[$name])) {
-			$this->services[$name] = new Scheduler();
-		}
-		if ($name == 'search' && !isset($this->services[$name])) {
-			$this->services[$name] = new SearchEngine($this);
-		}
-		if ($name == 'router' && !isset($this->services[$name])) {
-			$this->services[$name] = new Router($this);
-		}
-		if ($name == 'cache' && !isset($this->services[$name])) {
-			global $CACHE_DIR, $CACHE_TTL;
-			$options = array(
-			    'cacheDir' => $CACHE_DIR,
-			    'lifeTime' => $CACHE_TTL,
-			    'pearErrorMode' => CACHE_ERROR_DIE
-			);
-			$this->services[$name] = new Cache($options);
-		}
-		
 		if (!isset($this->services[$name])) {
 			throw new \Exception('Cлужба "'.$name.'" отсутствует');
 		}
+		
 		return $this->services[$name];
 	}
 	
 	public function getManager($path) {
-		
 		if (!isset($this->managers[$path])) {
 			list($vendor, $bundle, $name) = explode(':', $path);
-			$className = '\\'.$vendor.'\\'.$bundle.'Bundle\\Model\\'.ucfirst($name).'Manager';
+			$className = $vendor.'\\'.$bundle.'Bundle\\Model\\'.ucfirst($name).'Manager';
 			$this->managers[$path] = new $className();
 		}
+		if (!isset($this->managers[$path])) {
+			throw new \Exception('Менеджер "'.$path.'" отсутствует');
+		}
+		
 		return $this->managers[$path];
 	}
 	

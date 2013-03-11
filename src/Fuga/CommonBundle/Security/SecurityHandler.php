@@ -3,11 +3,15 @@
 namespace Fuga\CommonBundle\Security;
 	
 class SecurityHandler {
-	public $user;
-	public $operation;
+	private $user;
+	private $container;
+
+	public function __construct($container) {
+		$this->container = $container;
+	}
 	
 	public function isAuthenticated() {
-		$this->user = $this->get('util')->_sessionVar('ukey');
+		$this->user = $this->container->get('util')->_sessionVar('ukey');
 		if (empty($this->user)) {
 			$this->checkUser();
 		}
@@ -22,7 +26,7 @@ class SecurityHandler {
 	}
 	
 	public function getCurrentUser() {
-		$user = $this->get('connection')->getItem('user',
+		$user = $this->container->get('connection')->getItem('user',
 			"SELECT uu.*, ug.rules FROM user_user uu LEFT JOIN user_group ug ON uu.group_id=ug.id WHERE uu.login='".$this->get('util')->_sessionVar('user')."'");
 		unset($user['password']);
 		return $user;
@@ -33,7 +37,7 @@ class SecurityHandler {
 			if ($_COOKIE['userkey'] == md5(_DEV_PASS.substr(_DEV_USER, 0, 3).$_SERVER['REMOTE_ADDR'])) {
 				$user = array('login' => _DEV_USER);
 			} else {
-				$user = $this->get('connection')->getItem('user',
+				$user = $this->container->get('connection')->getItem('user',
 					"SELECT login FROM user_user
 					WHERE MD5(CONCAT(password, SUBSTRING(login, 1, 3),'".$_SERVER['REMOTE_ADDR']."')) = '".$_COOKIE['userkey']."'"
 				);
@@ -58,7 +62,7 @@ class SecurityHandler {
 		if ($inputUser == _DEV_USER && $inputPass == _DEV_PASS) {
 			$user = array('login' => $inputUser);
 		} else {
-			$user = $this->get('connection')->getItem('user', "SELECT login FROM user_user WHERE login='$inputUser' AND password='".$inputPass."' AND is_active=1");
+			$user = $this->container->get('connection')->getItem('user', "SELECT login FROM user_user WHERE login='$inputUser' AND password='".$inputPass."' AND is_active=1");
 		}
 		if ($user){
 			$_SESSION['user'] = $user['login'];
@@ -97,8 +101,4 @@ class SecurityHandler {
 		return isset($_SERVER['HTTP_REFERER']) && strstr($_SERVER['HTTP_REFERER'], $_SERVER['SERVER_NAME']);
 	}
 	
-	public function get($name) {
-		global $container;
-		return $container->get($name);
-	}
 }

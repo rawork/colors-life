@@ -26,6 +26,7 @@ app/backup/*
 
 # Vendors
 composer.lock
+vendor/bin/*
 vendor/twig/*
 vendor/composer/*
 vendor/doctrine/*
