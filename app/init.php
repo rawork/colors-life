@@ -1,7 +1,7 @@
 <?php
 
-$LIB_VERSION = '5.0.1';
-$LIB_DATE = '2012.09.10';
+$LIB_VERSION = '5.1.0';
+$LIB_DATE = '2013.03.11';
 
 mb_http_input('UTF-8'); 
 mb_http_output('UTF-8'); 
@@ -43,22 +43,26 @@ function exception_handler($exception)
 
 function autoloader($className)
 {
-	$basePath = __DIR__.'/../src/';
-	$className = ltrim($className, '\\');
-	$fileName  = '';
-	$namespace = '';
-	if ($lastNsPos = strripos($className, '\\')) {
-		$namespace = substr($className, 0, $lastNsPos);
-		$className = substr($className, $lastNsPos + 1);
-		$fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-	}
-	$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-	if (file_exists($basePath.$fileName)) {
-		require_once $basePath.$fileName;
+	if ($className == 'Smarty') {
+		require_once(__DIR__.'/../vendor/smarty/Smarty.class.php');
 	} else {
-		// LOG + nice error text
-		throw new AutoloadException('Не возможно загрузить класс "'.$fileName.'"');
-	}
+		$basePath = __DIR__.'/../src/';
+		$className = ltrim($className, '\\');
+		$fileName  = '';
+		$namespace = '';
+		if ($lastNsPos = strripos($className, '\\')) {
+			$namespace = substr($className, 0, $lastNsPos);
+			$className = substr($className, $lastNsPos + 1);
+			$fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+		}
+		$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+		if (file_exists($basePath.$fileName)) {
+			require_once $basePath.$fileName;
+		} else {
+			// LOG + nice error text
+			throw new AutoloadException('Не возможно загрузить класс "'.$fileName.'"');
+		}
+	}	
 }
 
 set_exception_handler('exception_handler');
