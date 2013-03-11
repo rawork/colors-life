@@ -16,6 +16,8 @@ class SmartyTemplating implements TemplatingInterface {
 		$this->engine->template_dir = $PRJ_DIR.$this->basePath;
 		$this->engine->compile_dir = $PRJ_DIR.$this->baseCachePath;
 		$this->engine->compile_check = false;
+//		$this->engine->caching = 1;
+//		$this->engine->cache_lifetime = 604800;
 		$this->engine->debugging = false;
 	}
 	
@@ -44,16 +46,15 @@ class SmartyTemplating implements TemplatingInterface {
 		return file_exists($this->realPath.$template);
 	}
 	
-	public function clearAll() {
-		global $PRJ_DIR;
-		$exclude = array('.', '..', '.gitkeep');
-		if ($handle = opendir($this->engine->compile_dir)) {
-			while (false !== ($file = readdir($handle))) {
-				if (!in_array($file, $exclude)) {
-					@unlink($this->engine->compile_dir.$file);
-				}
-			}
-			closedir($handle);
+	public function clearTpl() {
+		$this->engine->clear_compiled_tpl();
+	}
+	
+	public function clearCache($template = '') {
+		if ($template) {
+			$this->engine->clear_cache($template);
+		} else {
+			$this->engine->clear_all_cache();
 		}
 		
 	}

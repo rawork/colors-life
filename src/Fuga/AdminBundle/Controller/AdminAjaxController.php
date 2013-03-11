@@ -320,7 +320,8 @@ class AdminAjaxController extends Controller {
 	}
 	
 	public function clearCache() {
-		$this->get('templating')->clearAll();
+		$this->get('templating')->clearTpl();
+//		$this->get('templating')->clearCache();
 		return json_encode(array('content' => 'Кэш очищен'));
 	}
 	

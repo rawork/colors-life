@@ -72,6 +72,7 @@ class BackupAction extends Action {
 			}
 		}
 		$text .= '</table>';
+		$text .= '<a href="'.$this->fullRef.'/restore">Скачать скрипт восстановления системы</a>';
 		return $text;
 	}
 	

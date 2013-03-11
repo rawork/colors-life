@@ -165,7 +165,7 @@ class EditAction extends Action {
 </div>
 <input type="button" id="updatelistbtn" class="btn" onclick="updateFileList(\''.$this->dataTable->getDBTableName().'\','.$a['id'].');return false" value="Обновить список" />
 <br><br><fieldset><legend>Добавить файл</legend>
-<form id="uploadForm" action="/doajaxfileupload.php" method="post" enctype="multipart/form-data">
+<form id="uploadForm" action="/fileupload" method="post" enctype="multipart/form-data">
 <input name="table_name" value="'.$this->dataTable->getDBTableName().'" type="hidden">
 <input name="entity_id" value="'.$a['id'].'" type="hidden">
 <input name="MAX_FILE_SIZE" value="1000000" type="hidden">

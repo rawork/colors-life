@@ -41,7 +41,7 @@ class MaillistManager extends ModelManager {
 			$letterText = "Уважаемый пользователь!\n\n
 Вы подписались на рассылку на сайте http://".$_SERVER['SERVER_NAME']."\n
 Для подтверждения, пожалуйста, проследуйте по ссылке:\n
-http://".$_SERVER['SERVER_NAME']."/subscribe/?key=".$key;
+http://".$_SERVER['SERVER_NAME']."/subscribe?key=".$key;
 			$this->get('mailer')->send(
 				'Оповещение о подписке на рассылку на сайте '.$_SERVER['SERVER_NAME'],
 				nl2br($letterText),
