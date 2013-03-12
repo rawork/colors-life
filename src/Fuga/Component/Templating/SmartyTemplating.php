@@ -15,7 +15,7 @@ class SmartyTemplating implements TemplatingInterface {
 		$this->realPath = $PRJ_DIR.$this->basePath;
 		$this->engine->template_dir = $PRJ_DIR.$this->basePath;
 		$this->engine->compile_dir = $PRJ_DIR.$this->baseCachePath;
-		$this->engine->compile_check = false;
+		$this->engine->compile_check = true;
 //		$this->engine->caching = 1;
 //		$this->engine->cache_lifetime = 604800;
 		$this->engine->debugging = false;

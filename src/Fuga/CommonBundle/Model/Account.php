@@ -2,7 +2,7 @@
 
 namespace Fuga\CommonBundle\Model;
 
-class Auth {
+class Account {
 	
 	public $tables;
 
@@ -10,9 +10,9 @@ class Auth {
 
 		$this->tables = array();
 		$this->tables[] = array(
-			'name'		=> 'users',
-			'component' => 'auth',
-			'title'		=> 'Пользователи сайта',
+			'name'		=> 'user',
+			'component' => 'account',
+			'title'		=> 'Покупатели',
 			'order_by'	=> 'created DESC, login',
 			'show_created' => true,
 			'fieldset' => array (

@@ -108,7 +108,7 @@ class User {
 				'name' => 'user_id',
 				'title' => 'Пользователь',
 				'type' => 'select',
-				'l_table' => 'auth_users',
+				'l_table' => 'account_user',
 				'l_field' => 'name,lastname'
 			),
 			'town' => array (

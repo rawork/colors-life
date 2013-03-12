@@ -34,7 +34,7 @@ class Container
 			$modules = array();
 			if ($this->get('security')->isSuperuser()) {
 				$modules = $this->modules;
-			} elseif ($user = $this->get('security')->getCurrentUser()) {
+			} elseif ($user = $this->get('security')->getUser($this->get('util')->_sessionVar('user'))) {
 				$modules = $this->get('connection')->getItems('config_modules', ' SELECT id, sort, name, title, \'content\' AS ctype FROM config_modules WHERE id IN ('.$user['rules'].') ORDER BY sort, title');
 				if ($user['is_admin']) {
 					$query = "SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules
@@ -335,10 +335,25 @@ class Container
 				case 'connection':
 					try {
 						$className = 'Fuga\\Component\\DB\\Connector\\'.ucfirst($GLOBALS['DB_TYPE']).'Connector';
-						$this->services[$name] = new $className($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS'], $GLOBALS['DB_BASE']);
+						$this->services[$name] = new $className(
+								$GLOBALS['DB_HOST'], 
+								$GLOBALS['DB_USER'], 
+								$GLOBALS['DB_PASS'], 
+								$GLOBALS['DB_BASE']);
 					} catch (\Exception $e) {
 						throw new \Exception('DB connection type error (DB_TYPE). Possible value: mysql,mysqli. Check DB connection parameters');
 					}
+					break;
+				case 'connection1':
+					$config = new \Doctrine\DBAL\Configuration();
+					$connectionParams = array(
+						'dbname'	=> $GLOBALS['DB_BASE'],
+						'user'		=> $GLOBALS['DB_USER'],
+						'password'	=> $GLOBALS['DB_PASS'],
+						'host'		=> $GLOBALS['DB_HOST'],
+						'driver'	=> 'pdo_mysql',
+					);
+					$this->services[$name] = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
 					break;
 				case 'filestorage':
 					$this->services[$name] = new Storage\FileStorage();

@@ -110,7 +110,7 @@ class CartManager extends ModelManager {
 	{
 		$totalPrice = $this->getTotalPrice();
 		$discount = 0;
-		$user = $this->get('auth')->getUser();
+		$user = $this->get('container')->createController('Fuga:Common:Account')->getCurrentUser();
 		if ($user) {
 			$discount = $user['discount'];
 		}
@@ -154,6 +154,14 @@ class CartManager extends ModelManager {
 		$gifts = $this->get('container')->getItems('catalog_gift', "product_id IN (".implode(',', $itemIds).")");
 		$gifts2 = $this->get('container')->getItems('cart_gift', "publish=1 AND sum_min < ".$totalPrice." AND sum_max > ".$totalPrice);
 		return array_merge($gifts, $gifts2);
+	}
+	
+	public function getDelivery($id = null) {
+		$this->get('connection')->getItem('delivery', 'SELECT id,name FROM cart_delivery_type WHERE id='.$this->get('util')->_sessionVar('deliveryType'));
+	}
+	
+	public function getPay($id = null) {
+		$this->get('connection')->getItem('pay', 'SELECT id,name FROM cart_pay_type WHERE id='.$this->get('util')->_sessionVar('payType'));
 	}
 	
 }

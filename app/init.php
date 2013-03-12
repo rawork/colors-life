@@ -81,7 +81,10 @@ $container = new Container();
 
 // инициализация переменных
 $params = array();
-$vars = $container->get('connection')->getItems('GLOBAL_VARS', 'SELECT name, value FROM config_variables');
+$sql = 'SELECT name, value FROM config_variables';
+$stmt = $container->get('connection1')->prepare($sql);
+$stmt->execute();
+$vars = $stmt->fetchAll();
 foreach ($vars as $var) {
 	$params[strtolower($var['name'])] = $var['value'];
 	$$var['name'] = $var['value'];

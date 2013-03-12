@@ -11,7 +11,6 @@
 	{if $message}
 	<div class="login-message">
 		<div class="alert alert-{$message.type}">
-			<h4>{if $message.type == 'error'}Ошибка{else}Информация{/if}</h4>
 			{$message.text}
 		</div>
 	</div>{/if}

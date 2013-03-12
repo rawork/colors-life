@@ -6,17 +6,17 @@ class SecurityController extends Controller {
 	
 	public function loginAction() {
 		$message = null;
-		$inputUser = $this->get('connection')->escapeStr($this->get('util')->_postVar('_user'));
-		$inputPass = $this->get('connection')->escapeStr($this->get('util')->_postVar('_password'));
-		$inputRemember = $this->get('connection')->escapeStr($this->get('util')->_postVar('_remember_me'));
+		$login = $this->get('util')->_postVar('_user');
+		$password = $this->get('util')->_postVar('_password');
+		$is_remember = $this->get('util')->_postVar('_remember_me');
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if (!$inputUser || !$inputPass){
+			if (!$login || !$password){
 				$message = array(
 					'type' => 'error',
 					'text' => 'Неверный Логин или Пароль'
 				);
 			} elseif ($this->get('security')->isServer()) {
-				if (!$this->get('security')->login($inputUser, $inputPass, $inputRemember)) {
+				if (!$this->get('security')->login($login, $password, $is_remember)) {
 					$message = array (
 						'type' => 'error',
 						'text' => 'Неверный Логин или Пароль'
@@ -41,20 +41,21 @@ class SecurityController extends Controller {
 	}
 	
 	public function forgotAction() {
-		global $ADMIN_EMAIL;
 		$message = null;
-		$user = null;
-		$inputUser  = $this->get('connection')->escapeStr($this->get('util')->_postVar('_user'));
-		$inputEmail = $this->get('connection')->escapeStr($this->get('util')->_postVar('_email'));
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if ($inputUser) {
-				$user = $this->get('connection')->getItem('user', "SELECT * FROM user_user WHERE login='".$inputUser."'");
-			} 
-			if ($inputEmail && !$user) {
-				$user = $this->get('connection')->getItem('user', "SELECT * FROM user_user WHERE email='".$inputEmail."'");
-			}
+			$login  = $this->get('util')->_postVar('_user');
+			$sql = "SELECT id,login,email FROM user_user WHERE login= :login OR email = :login ";
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->bindValue("login", $login);
+			$stmt->execute();
+			$user = $stmt->fetch();
 			if ($user) {
 				$key = $this->get('util')->genKey(32);
+				$this->get('connection1')->update(
+						'user_user', 
+						array('hashkey' => $key), 
+						array('id' => $user['id'])
+				);
 				$letterText = 'Информационное сообщение сайта '.$_SERVER['SERVER_NAME']."\n";
 				$letterText .= '------------------------------------------'."\n";
 				$letterText .= 'Вы запросили ваши регистрационные данные.'."\n\n";
@@ -69,7 +70,7 @@ class SecurityController extends Controller {
 					nl2br($letterText),
 					$user['email']
 				);
-				$this->get('connection')->execQuery('user', "UPDATE user_user SET hashkey='".$key."' WHERE id=".$user['id']);
+				
 				$message = array(
 					'type' => 'success',
 					'text' => 'Новые параметры авторизации отправлены Вам на <b>Электронную почту</b>!'
@@ -77,10 +78,11 @@ class SecurityController extends Controller {
 			} else {
 				$message = array(
 					'type' => 'error',
-					'text' => '<b>Логин</b> или <b>Email</b> не найдены.'
+					'text' => 'Пользователь не найден'
 				);
 			}
-		}	
+		}
+		
 		return $this->render('admin/layout.forgot.tpl', array('message' => $message));
 	}
 	
@@ -91,22 +93,32 @@ class SecurityController extends Controller {
 		} else {
 			$uri = $_SERVER['HTTP_REFERER'];
 		}
-		header('Location: '.$uri);
+		header('location: '.$uri);
+		exit;
 	}
 	
 	public function passwordAction() {
-		if ($this->get('util')->_getVar('key')) {
-			$user = $this->get('connection')->getItem('user', "SELECT id,login,email FROM user_user WHERE hashkey='".$this->get('util')->_getVar('key')."'");
-			if (!empty($user) && !empty($user['email'])) {
-				$newPassword = $this->get('util')->genKey();
-				$this->get('connection')->execQuery('user', "UPDATE user_user SET password=MD5('".$newPassword."'), hashkey='' WHERE hashkey='".$this->get('util')->_getVar('key')."'");
+		$key = $this->get('util')->_getVar('key');
+		if ($key) {
+			$sql = "SELECT id,login,email FROM user_user WHERE hashkey= :key ";
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->bindValue("key", $key);
+			$stmt->execute();
+			$user = $stmt->fetch();
+			if ($user && !empty($user['email'])) {
+				$password = $this->get('util')->genKey();
+				$this->get('connection1')->update(
+						'user_user', 
+						array('hashkey' => '', 'password' => md5($password)), 
+						array('id' => $user['id'])
+				);
 				$letterText = 'Информационное сообщение сайта '.$_SERVER['SERVER_NAME']."\n";
 				$letterText .= '------------------------------------------'."\n";
 				$letterText .= 'Вы запросили ваши регистрационные данные.'."\n";
 				$letterText .= 'Ваша регистрационная информация:'."\n";
 				$letterText .= 'ID пользователя: '.$user['id']."\n";
 				$letterText .= 'Логин: '.$user['login']."\n";
-				$letterText .= 'Пароль: '.$newPassword."\n\n";
+				$letterText .= 'Пароль: '.$password."\n\n";
 				$letterText .= 'Сообщение сгенерировано автоматически.'."\n";
 				$this->get('mailer')->send(
 					'Новые регистрационные данные. Сайт '.$_SERVER['SERVER_NAME'],

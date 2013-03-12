@@ -56,7 +56,7 @@
 		<td width="50%"></td>
 		<td width="50%" align="right">
 		<input type="submit" class="btn btn-large" value="Сохранить изменения" />
-		<input type="button" class="btn btn-warning btn-large" onclick="window.location = '{if $user.id}{raURL node=cart method=detail}{else}{raURL node=cart method=authorize}{/if}'" value="Продолжить" />
+		<input type="button" class="btn btn-warning btn-large" onclick="window.location = '{if $user.id}{raURL node=cart method=detail}{else}{raURL node=cart method=account}{/if}'" value="Продолжить" />
 		</td>
 	</tr>
 </table>

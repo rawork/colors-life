@@ -19,15 +19,21 @@ class SecurityHandler {
 	}
 	
 	public function isSecuredArea() {
-		global $AUTH_LOCK_PROJECT;
-		return $AUTH_LOCK_PROJECT == 'Y' || 
+		global $PROJECT_LOCKED;
+		return $PROJECT_LOCKED == 'Y' || 
 			(preg_match('/^\/admin\//', $_SERVER['REQUEST_URI']) && !preg_match('/^\/admin\/(logout|forgot|password)/', $_SERVER['REQUEST_URI'])) ||
 			(preg_match('/^\/bundles\/admin\/editor\//', $_SERVER['REQUEST_URI']));
 	}
 	
-	public function getCurrentUser() {
-		$user = $this->container->get('connection')->getItem('user',
-			"SELECT uu.*, ug.rules FROM user_user uu LEFT JOIN user_group ug ON uu.group_id=ug.id WHERE uu.login='".$this->get('util')->_sessionVar('user')."'");
+	public function getUser($login) {
+		$sql = "
+			SELECT u.*, g.rules FROM user_user u 
+			LEFT JOIN user_group g ON u.group_id=g.id 
+			WHERE u.login = :login OR u.email = :login LIMIT 1";
+		$stmt = $this->container->get('connection1')->prepare($sql);
+		$stmt->bindValue("login", $login);
+		$stmt->execute();
+		$user = $stmt->fetch();
 		unset($user['password']);
 		return $user;
 	}
@@ -37,12 +43,14 @@ class SecurityHandler {
 			if ($_COOKIE['userkey'] == md5(_DEV_PASS.substr(_DEV_USER, 0, 3).$_SERVER['REMOTE_ADDR'])) {
 				$user = array('login' => _DEV_USER);
 			} else {
-				$user = $this->container->get('connection')->getItem('user',
-					"SELECT login FROM user_user
-					WHERE MD5(CONCAT(password, SUBSTRING(login, 1, 3),'".$_SERVER['REMOTE_ADDR']."')) = '".$_COOKIE['userkey']."'"
-				);
+				$sql = "SELECT login FROM user_user WHERE MD5(CONCAT(password, SUBSTRING(login, 1, 3), :addr )) = :key LIMIT 1";
+				$stmt = $this->container->get('connection1')->prepare($sql);
+				$stmt->bindValue("addr", $_SERVER['REMOTE_ADDR']);
+				$stmt->bindValue("key", $_COOKIE['userkey'].'sff');
+				$stmt->execute();
+				$user = $stmt->fetch();
 			}
-			if (count($user)) {
+			if ($user) {
 				$_SESSION['user'] = $user['login'];
 				$this->user = $_SESSION['ukey'] = $_COOKIE['userkey'];
 				setcookie('userkey', $_COOKIE['userkey'], time()+3600*24*1000);	
@@ -57,18 +65,23 @@ class SecurityHandler {
 		session_destroy();
 	}
 
-	public function login($inputUser, $inputPass, $isRemember = false ) {
-		$inputPass = md5($inputPass);
-		if ($inputUser == _DEV_USER && $inputPass == _DEV_PASS) {
-			$user = array('login' => $inputUser);
+	public function login($login, $password, $isRemember = false ) {
+		$password = md5($password);
+		if ($login == _DEV_USER && $password == _DEV_PASS) {
+			$user = array('login' => $login);
 		} else {
-			$user = $this->container->get('connection')->getItem('user', "SELECT login FROM user_user WHERE login='$inputUser' AND password='".$inputPass."' AND is_active=1");
+			$sql = "SELECT login FROM user_user WHERE login= :login AND password= :password AND is_active=1 LIMIT 1";
+			$stmt = $this->container->get('connection1')->prepare($sql);
+			$stmt->bindValue("login", $_SERVER['REMOTE_ADDR']);
+			$stmt->bindValue("password", $_COOKIE['userkey'].'sff');
+			$stmt->execute();
+			$user = $stmt->fetch();
 		}
 		if ($user){
 			$_SESSION['user'] = $user['login'];
-			$_SESSION['ukey'] = $this->userHash($inputUser, $inputPass);
+			$_SESSION['ukey'] = $this->userHash($login, $password);
 			if ($isRemember) {
-				setcookie('userkey', $this->userHash($inputUser, $inputPass), time()+3600*24*1000);
+				setcookie('userkey', $this->userHash($login, $password), time()+3600*24*1000);
 			}
 			header('Location: '.$_SERVER['HTTP_REFERER']);
 		} else {

@@ -77,11 +77,7 @@
 		</div>
 		<div class="span12">
 			<div class="head-user">
-				{if $auth->user}
-				<b>{$auth->user.name} {$auth->user.lastname}</b> / <a href="{raURL node=cabinet}">Личный кабинет</a> / <a href="{raURL node=cabinet method=logout}">Выйти</a>
-				{else}
-				<a href="{raURL node=cabinet}">Вход в личный кабинет</a> / <a href="{raURL node=cabinet method=registration}">Регистрация</a>
-				{/if}
+				{raMethod path=Fuga:Public:Account:widget}
 			</div>
 			<div class="head-cart">
 				<h5>Ваша корзина</h5>
@@ -106,13 +102,14 @@
 		<div class="span10">
 			<div class="left-column">
 				{raMethod path=Fuga:Public:Catalog:cats}
-				{if $node.id == 98}
+				{if $node.name == 'articles'}
 				{raMethod path=Fuga:Public:Article:cloud}
 				{/if}
 				<div class="links-block">
 					<div><a href="{raURL node=feedback}">Задать вопрос</a></div>
 					<div><a href="{raURL node=subscribe-process}">Подписка на рассылку</a></div>
 				</div>
+				<h4>Бренды</h4>
 				{raMethod path=Fuga:Public:Catalog:brands}
 				<br><br><br>
 				<div class="widgets">

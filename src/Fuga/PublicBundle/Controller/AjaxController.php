@@ -11,7 +11,7 @@ class AjaxController extends Controller {
 		if ($formData) {
 			parse_str($formData, $elements);
 		}
-		return json_encode(array('content' => $this->get('container')->getManager('Fuga:Common:Vote')->getResult($voteName, $elements)));
+		return json_encode(array('content' => $this->getManager('Fuga:Common:Vote')->getResult($voteName, $elements)));
 	}                                                                       
                                                                                 
 	public function showSubscribeResult($formData) {
@@ -23,9 +23,9 @@ class AjaxController extends Controller {
 			);
 		} else {
 			if ($subscribe_type == 2) {
-				$message = $this->get('container')->getManager('Fuga:Common:Maillist')->unsubscribe($email);
+				$message = $this->getManager('Fuga:Common:Maillist')->unsubscribe($email);
 			} elseif ($subscribe_type == 1) {
-				$message = $this->get('container')->getManager('Fuga:Common:Maillist')->subscribe($email, $name, $lastname);
+				$message = $this->getManager('Fuga:Common:Maillist')->subscribe($email, $name, $lastname);
 			}
 		}
 		return json_encode(array('content' => $this->render('subscribe/result.tpl', $message)));

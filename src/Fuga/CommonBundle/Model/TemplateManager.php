@@ -6,16 +6,27 @@ class TemplateManager extends ModelManager {
 	
 	protected $entityTable = 'template_template';
 
-	public function getByNode($nodeName) {
-		$where = "(tr.type='0' AND tr.cond='')";
-		$where .= " OR (tr.type='T' AND ((tr.datefrom > 0 AND tr.datefrom <= NOW()) OR tr.datefrom = 0) AND (tr.datetill >= NOW() OR tr.datetill = 0))";
-		//$where .= " OR (tr.type='U' AND LOCATE(tr.cond,'".$this->get('connection')->escapeStr($_SERVER['REQUEST_URI'])."')>0)";
-		$where .= " OR (tr.type='F' AND tr.cond='".$nodeName."')";
-		$query = "SELECT tt.template FROM template_template tt JOIN template_rule tr ON tt.id=tr.template_id WHERE tr.locale='".$this->get('router')->getParam('lang')."' AND (".$where.") ORDER BY sort DESC";
-		if ($template = $this->get('connection')->getItem('template', $query)){
+	public function getByNode($name) {
+		$sql = "
+			SELECT t.template 
+			FROM template_template t 
+			JOIN template_rule r ON t.id = r.template_id 
+			WHERE r.locale= :locale AND (
+				(r.type='0' AND r.cond='')
+				OR (r.type = 'T' AND ((r.datefrom < NOW() AND r.datetill > NOW()) OR (r.datefrom = 0 AND r.datetill = 0))) 
+				OR (r.type = 'U' AND LOCATE(r.cond, :url ) > 0)	
+				OR (r.type = 'F' AND r.cond = :name )
+			) ORDER BY sort DESC LIMIT 1";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->bindValue("locale", $this->get('router')->getParam('lang'));
+		$stmt->bindValue("url", $_SERVER['REQUEST_URI']);
+		$stmt->bindValue("name", $name);
+		$stmt->execute();
+		$template = $stmt->fetch();
+		if ($template){
 			return $template['template'];
 		} else {
-			throw new \Exception('Отсутствует активный шаблон для запрашиваемой страницы');
+			throw new \Exception('Отсутствует шаблон для запрашиваемой страницы');
 		}
 	}
 }

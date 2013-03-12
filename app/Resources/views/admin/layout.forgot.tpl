@@ -11,7 +11,6 @@
 	{if $message}
 	<div class="login-message">
 		<div class="alert alert-{$message.type}">
-			<h4>{if $message.type == 'error'}Ошибка{else}Информация{/if}</h4>
 			{$message.text}
 		</div>
 	</div>{/if}
@@ -23,15 +22,9 @@
 		<div class="login-form">
 		<form class="form-horizontal" method="post">
 		<div class="control-group">
-			<label class="control-label" for="inputLogin">Логин</label>
+			<label class="control-label" for="inputLogin">Логин или эл. почта</label>
 			<div class="controls">
-			<input type="text" id="inputLogin" name="_user"><br>или
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="inputEmail">Электронная почта</label>
-			<div class="controls">
-			<input type="text" id="inputEmail" name="_email">
+			<input type="text" id="inputLogin" name="_user">
 			</div>
 		</div>
 		<div class="control-group">

@@ -1,6 +1,6 @@
 <h4>
 <a href="{raURL node=cart}">Уточнение заказа</a> &rarr;
-{if !$user.id}<a href="{raURL node=cart method=authorize}">Авторизация</a> &rarr;{/if}
+{if !$user.id}<a href="{raURL node=cart method=account}">Авторизация</a> &rarr;{/if}
 Параметры заказа &rarr;
 <span>Подтверждение заказа</span>
 </h4>

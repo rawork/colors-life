@@ -1,5 +1,4 @@
 {if count($items)}
-<h4>Бренды</h4>
 <div class="tag-cloud">
 	<ul>
 	{foreach from=$items item=item}

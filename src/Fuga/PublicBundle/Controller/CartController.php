@@ -34,10 +34,10 @@ class CartController extends PublicController {
 	}
 	
 	public function deleteAction() {
-		$manager = $this->get('container')->getManager('Fuga:Common:Cart');
+		$manager = $this->getManager('Fuga:Common:Cart');
 		$GUID = $this->get('util')->_postVar('productGUID');
 		$result = array();
-		$this->get('container')->getManager('Fuga:Common:Cart')->delete($GUID);
+		$this->getManager('Fuga:Common:Cart')->delete($GUID);
 		$result['cart_info'] = $this->widgetAction();
 		$result['totalQuantity'] = $manager->getTotalQuantity();
 		$result['totalSum'] = $manager->getTotalPriceRus().' руб.';
@@ -50,14 +50,14 @@ class CartController extends PublicController {
 	public function orderdetailAction() {
 		$orderId = $this->get('util')->_postVar('orderId');
 		$result = array(
-			'popup_content' => '<div class="cart-add">'.$this->get('container')->getManager('Fuga:Common:Cart')->getOrderDetail($orderId).'</div>'
+			'popup_content' => '<div class="cart-add">'.$this->getManager('Fuga:Common:Cart')->getOrderDetail($orderId).'</div>'
 		);
 		
 		return json_encode($result);
 	}
 	
 	function indexAction() {
-		$manager = $this->get('container')->getManager('Fuga:Common:Cart');
+		$manager = $this->getManager('Fuga:Common:Cart');
 		if ($this->get('util')->_postVar('recalculate')) {
 			$manager->update();
 			header('location: '.$this->get('container')->href('cart'));
@@ -71,7 +71,7 @@ class CartController extends PublicController {
 			'totalPrice' => $manager->getTotalPrice(),
 			'totalPriceRus' => $manager->getTotalPriceRus(),
 			'totalPriceDiscount' => $manager->getTotalPriceDiscount(),
-			'user' => $this->get('auth')->getUser()
+			'user' => $this->getManager('Fuga:Common:Account')->getCurrentUser()
 		);
 		$this->get('container')->setVar('title', 'Уточнение заказа');
 		$this->get('container')->setVar('h1', 'Уточнение заказа');
@@ -84,10 +84,10 @@ class CartController extends PublicController {
 	}
 
 	private function _addOrder() {
-		$manager = $this->get('container')->getManager('Fuga:Common:Cart');
-		$user = $this->get('auth')->getUser();
-		$payType		= $this->get('connection')->getItem('pay', 'SELECT id,name FROM cart_pay_type WHERE id='.$this->get('util')->_sessionVar('payType'));
-		$deliveryType	= $this->get('connection')->getItem('delivery', 'SELECT id,name FROM cart_delivery_type WHERE id='.$this->get('util')->_sessionVar('deliveryType'));
+		$manager = $this->getManager('Fuga:Common:Cart');
+		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
+		$payType		= 
+		$deliveryType	= 
 		
 		$orderText = $manager->getOrderText();
 		$this->get('container')->addItem('cart_order',
@@ -97,7 +97,7 @@ class CartController extends PublicController {
 				"','".$manager->getTotalPriceDiscount().
 				"','".$manager->getDiscount().
 				"','Новый','".$this->get('util')->_sessionVar('deliveryPerson').
-				"','".$this->get('auth')->getLogin().
+				"','".$this->getManager('Fuga:Common:Account')->getLogin().
 				"','".$this->get('util')->_sessionVar('deliveryPhone').
 				"','".$this->get('util')->_sessionVar('deliveryPhoneAdd').
 				"','".$payType['name'].
@@ -161,7 +161,7 @@ class CartController extends PublicController {
 			
 			return $this->render('cart/message.tpl');
 		}
-		$manager = $this->get('container')->getManager('Fuga:Common:Cart');
+		$manager = $this->getManager('Fuga:Common:Cart');
 		$params = array(
 			'wordEnd' => $manager->getTermination($this->get('util')->_sessionVar('number', true, 0)),
 			'items' => $_SESSION['cart'],
@@ -170,7 +170,7 @@ class CartController extends PublicController {
 			'totalPrice' => $manager->getTotalPrice(),
 			'totalPriceRus' => $manager->getTotalPriceRus(),
 			'totalPriceDiscount' => $manager->getTotalPriceDiscount(),
-			'user' => $this->get('auth')->getUser(),
+			'user' => $this->getManager('Fuga:Common:Account')->getCurrentUser(),
 			'payType' => $this->get('connection')->getItem('pay', 'SELECT name FROM cart_pay_type WHERE id='.$this->get('util')->_sessionVar('payType')),
 			'deliveryType' => $this->get('connection')->getItem('delivery', 'SELECT name FROM cart_delivery_type WHERE id='.$this->get('util')->_sessionVar('deliveryType'))
 		);
@@ -179,8 +179,8 @@ class CartController extends PublicController {
 		return $this->render('cart/confirm.tpl', $params);
 	}
 
-	public function authorizeAction() {
-		$user = $this->get('auth')->getUser();
+	public function accountAction() {
+		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
 		if ($user) {
 			header('location: '.$this->get('container')->href('cart', 'detail'));
 			exit;
@@ -188,7 +188,7 @@ class CartController extends PublicController {
 		$this->get('container')->setVar('title', 'Авторизация');
 		$this->get('container')->setVar('h1', 'Авторизация');
 		
-		return $this->render('cart/authorize.tpl');
+		return $this->render('cart/account.tpl');
 	}
 
 	public function detailAction() {
@@ -202,7 +202,7 @@ class CartController extends PublicController {
 			$_SESSION['deliveryPhoneAdd'] = $this->get('util')->_postVar('deliveryPhoneAdd');
 			header('location: '.$this->get('container')->href('cart', 'confirm'));
 		}
-		$user = $this->get('auth')->getUser();
+		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
 		if (empty($_SESSION['deliveryEmail'])) {
 			$_SESSION['deliveryEmail'] = $user ? $user['email'] : '';
 		}
@@ -215,7 +215,7 @@ class CartController extends PublicController {
 	}
 	
 	public function widgetAction() {
-		$wordEnd = $this->get('container')->getManager('Fuga:Common:Cart')
+		$wordEnd = $this->getManager('Fuga:Common:Cart')
 				->getTermination($this->get('util')->_sessionVar('number', true, 0));
 		return $this->render('cart/widget.tpl', compact('wordEnd'));
 	}

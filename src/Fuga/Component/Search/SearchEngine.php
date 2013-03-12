@@ -57,10 +57,6 @@ class SearchEngine {
 		);	
 	}
 	
-	function getSearchResultRef($node, $action = 'index') {
-		return $this->container->href(!empty($node['node_id']) ? $node['node_id_name'] : $this->name, $action, array($node['id']));
-	}
-	
 	public function createCriteria($words, $fields) {
 		$query = '';
 		foreach ($fields as $field) {

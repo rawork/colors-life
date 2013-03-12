@@ -24,4 +24,13 @@ class CategoryManager extends ModelManager {
 		return $cats;
 	}
 	
+	public function getPathNodes($id = 0){
+		$nodes = $this->get('container')->getTable('catalog_category')->getPrev($id);
+		foreach ($nodes as &$node) {
+			$node['ref'] = $this->get('container')->href($this->get('router')->getParam('node'), 'index', array($node['id']));
+		}
+		
+		return $nodes;
+	}
+	
 }

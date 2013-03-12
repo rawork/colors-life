@@ -1,7 +1,7 @@
 {if count($items)}
 <h4>
 <a href="{raURL node=cart}">Уточнение заказа</a> &rarr;
-{if !$user.id}<a href="{raURL node=cart method=authorize}">Авторизация</a> &rarr; {/if}
+{if !$user.id}<a href="{raURL node=cart method=account}">Авторизация</a> &rarr; {/if}
 <a href="{raURL node=cart method=detail}">Параметры заказа</a> &rarr;
 Подтверждение заказа
 </h4>

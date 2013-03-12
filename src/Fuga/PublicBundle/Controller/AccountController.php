@@ -11,11 +11,9 @@ if (!isset($_SESSION['deliveryAddress'])) {
 	$_SESSION['deliveryPerson'] = '';
 }
 	
-class AuthController extends PublicController {
+class AccountController extends PublicController {
 
 	public $user;
-
-	private $currentUser;
 
 	private $months = array (
 		'01' => 'января',
@@ -49,13 +47,7 @@ class AuthController extends PublicController {
 	);
 
 	function __construct() {
-		parent::__construct('auth');
-		$this->initializeUser();
-	}
-
-	public function initializeUser() {
-		$this->user = $this->get('container')->getManager('Fuga:Common:User')->getCurrentUser();
-		$this->currentUser = $this->user;
+		parent::__construct('account');
 		if (!$_SESSION['deliveryAddress']) {
 			$_SESSION['deliveryAddress'] = $this->getAddress();
 			$_SESSION['deliveryPhone'] = $this->getPhone();
@@ -63,42 +55,14 @@ class AuthController extends PublicController {
 		}
 	}
 
-	public function getUser() {
-		//unset($this->currentUser['password']);
-		return $this->currentUser;
-	}
-
-	public function getPersonName() {
-		if ($this->currentUser) {
-			return $this->currentUser['name'].($this->currentUser['lastname'] ? ' '.$this->currentUser['lastname'] : '');
-		}
-		return null;
-	}
-
-	public function getPhone() {
-		if ($this->currentUser) {
-			return $this->currentUser['phone'];
-		}
-	}
-
-	public function getAddress() {
-		if ($this->currentUser) {
-			return $this->currentUser['address'];
-		}
-	}
-
-	public function getLogin() {
-		if ($this->currentUser) {
-			return $this->currentUser['email'];
-		}
-	}
-
 	public function logoutAction() {
-		if (!$this->getUser()) {
+		if (!$this->getManager('Fuga:Common:Account')->getCurrentUser()) {
 			header('location: '.$this->get('container')->href('cabinet'));
 			exit;
 		}
-		if ($this->get('container')->getTable('auth_users')->update("session_id='' WHERE login='".$this->user['login']."'")) {
+		if ($this->get('container')->getTable('account_user')->update(
+				"session_id='' WHERE login='".$this->getManager('Fuga:Common:Account')->getLogin()."'"
+		)) {
 			unset($_SESSION['deliveryAddress']);
 			unset($_SESSION['deliveryPhone']);
 			unset($_SESSION['deliveryPhoneAdd']);
@@ -112,7 +76,7 @@ class AuthController extends PublicController {
 	}
 
 	public function infoAction() {
-		if (!$this->getUser()) {
+		if (!$this->getManager('Fuga:Common:Account')->getCurrentUser()) {
 			header('location: '.$this->get('container')->href('cabinet'));
 			exit;
 		}
@@ -120,7 +84,7 @@ class AuthController extends PublicController {
 			$error_message = $this->_processInfoForm();
 		}
 
-		$user = $this->getUser();
+		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
 		$user['birthday'] = explode('.', $user['birthday']);
 
 		$cabinetMenu = $this->_getMenu();
@@ -129,13 +93,13 @@ class AuthController extends PublicController {
 		$this->get('container')->setVar('title', 'Личные данные');
 		$this->get('container')->setVar('h1', 'Личные данные');
 
-		return $this->render('auth/info.tpl', compact('error_message', 'cabinetMenu', 'userInfo', 'months'));
+		return $this->render('account/info.tpl', compact('error_message', 'cabinetMenu', 'userInfo', 'months'));
 	}
 
 	private function _processInfoForm() {
 		$errors = array();
 
-		$user = $this->getUser();
+		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
 
 		$login = $this->get('util')->_postVar('userEmail');
 		$userName = $this->get('util')->_postVar('userFName');
@@ -161,12 +125,12 @@ class AuthController extends PublicController {
 
 		if (
 			($login != $user['email']) &&
-			$this->get('container')->getTable('auth_users')->selectWhere("login='".$login."' OR email='".$login."'") &&
-			$this->get('container')->getTable('auth_users')->getNumRows()
+			$this->get('container')->getTable('account_user')->selectWhere("login='".$login."' OR email='".$login."'") &&
+			$this->get('container')->getTable('account_user')->getNumRows()
 		) {
 			$errors[] = sprintf($this->errors['user_present'], $login);
 		} else {
-			if ($this->get('container')->getTable('auth_users')->update($updateQuery.", updated = NOW() WHERE email='".$user['email']."'")) {
+			if ($this->get('container')->getTable('account_user')->update($updateQuery.", updated = NOW() WHERE email='".$user['email']."'")) {
 				header('location: '.$this->get('container')->href('cabinet'));
 			} else {
 				$errors[] = $this->errors['db_error'];
@@ -176,7 +140,7 @@ class AuthController extends PublicController {
 	}
 	
 	public function indexAction() {
-		if ($this->getUser()) {
+		if ($this->getManager('Fuga:Common:Account')->getCurrentUser()) {
 			return $this->infoAction();
 		} else {
 			return $this->loginAction();
@@ -190,7 +154,7 @@ class AuthController extends PublicController {
 		$this->get('container')->setVar('title', 'Вход в личный кабинет');
 		$this->get('container')->setVar('h1', 'Вход в личный кабинет');
 		
-		return $this->render('auth/login.tpl', compact('error_message'));
+		return $this->render('account/login.tpl', compact('error_message'));
 	}
 
 	private function _processLoginForm() {
@@ -198,8 +162,8 @@ class AuthController extends PublicController {
 		$fromPage = $this->get('util')->_postVar('fromPage');
 		$login = $this->get('util')->_postVar('login');
 		$password = $this->get('util')->_postVar('password');
-		$t = $this->get('container')->getTable('auth_users');
-		if ($user = $this->get('container')->getItem('auth_users', "email='$login' OR login='$login'")) {
+		$t = $this->get('container')->getTable('account_user');
+		if ($user = $this->get('container')->getItem('account_user', "email='$login' OR login='$login'")) {
 			if ($user['password'] == $password) {
 				if ($t->update("session_id='".session_id()."', logindate=NOW() WHERE login='$login' OR email='$login'")) {
 					header('location: '.($fromPage ? $fromPage : '/'));
@@ -222,7 +186,7 @@ class AuthController extends PublicController {
 		$this->get('container')->setVar('title', 'Регистрация');
 		$this->get('container')->setVar('h1', 'Регистрация');
 		
-		return $this->render('auth/registration.tpl', compact('error_message'));
+		return $this->render('account/registration.tpl', compact('error_message'));
 	}
 
 	private function _processRegistrationForm() {
@@ -235,7 +199,7 @@ class AuthController extends PublicController {
 		$userLName = $this->get('util')->_postVar('newUserLName');
 		$phone = $this->get('util')->_postVar('newUserPhone');
 		$isSubscribe = $this->get('util')->_postVar('newUserSubscribe');
-		$t = $this->get('container')->getTable('auth_users');
+		$t = $this->get('container')->getTable('account_user');
 		if($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)){
 			$errors[] = $this->errors['securecode'];
 		} else {
@@ -253,14 +217,14 @@ class AuthController extends PublicController {
 					$t->insert('login,email', "'$login','$login'") &&
 					$t->update($updateQuery.", created = NOW(), updated = NOW() WHERE email='".$login."'")
 				) {
-					$letterText = $this->render('auth/registration.mail.tpl', compact('userName', 'userLName', 'login', 'password'));
+					$letterText = $this->render('account/registration.mail.tpl', compact('userName', 'userLName', 'login', 'password'));
 					$this->get('mailer')->send(
 						'Регистрация в магазине Цвета жизни',
 						$letterText,
 						$login.','.$this->params['email']
 					);
 					if ($isSubscribe) {
-						$this->get('container')->getManager('Fuga:Common:Maillist')->subscribe($login, $userName, $userLName);
+						$this->getManager('Fuga:Common:Maillist')->subscribe($login, $userName, $userLName);
 					}		
 					if ($t->update("session_id='".session_id()."' WHERE login='$login' OR email='$login'")) {
 						header('location: '.$this->get('container')->href('cabinet'));
@@ -276,26 +240,26 @@ class AuthController extends PublicController {
 	}
 
 	private function _getMenu() {
-		return $this->render('auth/menu.tpl');
+		return $this->render('account/menu.tpl');
 	}
 
 	public function ordersAction() {
-		if (!$this->getUser()) {
+		if (!$this->getManager('Fuga:Common:Account')->getCurrentUser()) {
 			header('location: '.$this->get('container')->href('cabinet'));
 			exit;
 		}
 		$params = array(
-			'user' => $this->getUser(),
+			'user' => $this->getManager('Fuga:Common:Account')->getCurrentUser(),
 			'cabinetMenu' => $this->_getMenu()
 		);
 		$this->get('container')->setVar('title', 'Заказы');
 		$this->get('container')->setVar('h1', 'Заказы');
 		
-		return $this->render('auth/orders.tpl', $params);
+		return $this->render('account/orders.tpl', $params);
 	}
 
 	public function passwordAction() {
-		if (!$this->getUser()) {
+		if (!$this->getManager('Fuga:Common:Account')->getCurrentUser()) {
 			header('location: '.$this->get('container')->href('cabinet'));
 			exit;
 		}
@@ -308,7 +272,7 @@ class AuthController extends PublicController {
 		$this->get('container')->setVar('title', 'Изменение пароля');
 		$this->get('container')->setVar('h1', 'Изменение пароля');
 		
-		return $this->render('auth/password.tpl', compact('error_message', 'info_message', 'cabinetMenu'));
+		return $this->render('account/password.tpl', compact('error_message', 'info_message', 'cabinetMenu'));
 	}
 
 	private function _processPasswordForm() {
@@ -317,9 +281,9 @@ class AuthController extends PublicController {
 			'errors' => array()
 		);
 
-		$t = $this->get('container')->getTable('auth_users');
+		$t = $this->get('container')->getTable('account_user');
 
-		$user = $this->getUser();
+		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
 		$login = $user['email'];
 		$oldPassword = $this->get('util')->_postVar('passwd');
 		$newPassword = $this->get('util')->_postVar('newpasswd');
@@ -327,7 +291,7 @@ class AuthController extends PublicController {
 		if ($user['password'] == $oldPassword) {
 			$updateQuery = "password='$newPassword'";
 			if ($t->update($updateQuery.", updated = NOW() WHERE email='".$login."'")) {
-				$letterText = $this->render('auth/password.mail.tpl', compact('login', 'newPassword'));
+				$letterText = $this->render('account/password.mail.tpl', compact('login', 'newPassword'));
 				$this->get('mailer')->send(
 					'Новый пароль в магазине Цвета жизни',
 					$letterText,
@@ -351,7 +315,7 @@ class AuthController extends PublicController {
 		$this->get('container')->setVar('title', 'Восстановление пароля');
 		$this->get('container')->setVar('h1', 'Восстановление пароля');
 		
-		return $this->render('auth/forget.tpl', compact('error_message', 'info_message'));
+		return $this->render('account/forget.tpl', compact('error_message', 'info_message'));
 	}
 
 	private function _processForgetForm() {
@@ -359,16 +323,16 @@ class AuthController extends PublicController {
 			'info' => array(),
 			'errors' => array()
 		);
-		$t = $this->get('container')->getTable('auth_users');
+		$t = $this->get('container')->getTable('account_user');
 		if ($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)) {
 			$messages['errors'][] = $this->errors['incorrect_securecode'];
 		} else {
 			$login = $this->get('util')->_postVar('login');
-			if ($user = $this->get('container')->getItem('auth_users', "email='$login'")) {
+			if ($user = $this->get('container')->getItem('account_user', "email='$login'")) {
 				$newPassword = $this->get('util')->genKey(6);
 				$updateQuery = "password='$newPassword'";
 				if ($t->update($updateQuery.", updated = NOW() WHERE email='".$login."'")) {
-					$letterText = $this->render('auth/forget.mail.tpl', compact('login', 'newPassword'));
+					$letterText = $this->render('account/forget.mail.tpl', compact('login', 'newPassword'));
 					$this->get('mailer')->send(
 						'Восстановление пароля в магазине Цвета жизни',
 						$letterText,
@@ -381,6 +345,11 @@ class AuthController extends PublicController {
 			}
 		}
 		return $messages;
+	}
+	
+	public function widgetAction() {
+		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
+		return $this->render('account/widget.tpl', compact('user'));     
 	}
 
 }

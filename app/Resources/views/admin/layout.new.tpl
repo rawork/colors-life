@@ -24,7 +24,7 @@
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
-				<a class="brand" style="margin-left: 20px;" href="http://{$prj_name}.{$prj_zone}" target="_blank">{$prj_name}.{$prj_zone}</a>
+				<a class="brand" style="margin-left: 20px;" href="/" target="_blank">{$prj_name}.{$prj_zone}</a>
 				<ul class="nav">
 				<li class="divider-vertical"></li>
 				{foreach from=$states key=stateName item=stateTitle}  
