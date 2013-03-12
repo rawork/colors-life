@@ -156,7 +156,7 @@ class CartManager extends ModelManager {
 		return array_merge($gifts, $gifts2);
 	}
 	
-	public function getDelivery($id = null) {
+	public function getDelivery() {
 		$sql = 'SELECT id,name FROM cart_delivery_type WHERE id= :id ';
 		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->bindValue('id', $this->get('util')->_sessionVar('deliveryType'));
@@ -164,7 +164,7 @@ class CartManager extends ModelManager {
 		return $stmt->fetch();
 	}
 	
-	public function getPay($id = null) {
+	public function getPay() {
 		$sql = 'SELECT id,name FROM cart_pay_type WHERE id= :id ';
 		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->bindValue('id', $this->get('util')->_sessionVar('payType'));

@@ -85,8 +85,8 @@ class CartController extends PublicController {
 	private function _addOrder() {
 		$manager = $this->getManager('Fuga:Common:Cart');
 		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
-		$payType		= 
-		$deliveryType	= 
+		$payType		= $manager->getPay();
+		$deliveryType	= $manager->getDelivery();
 		
 		$orderText = $manager->getOrderText();
 		$this->get('connection1')->insert('cart_order',array(
@@ -130,17 +130,17 @@ class CartController extends PublicController {
 			'orderNumber' => $orderNumber,
 			'user' => $user
 		);
-		$orderText = $this->render('cart/order.mail.tpl', $params);
+		$letterText = $this->render('cart/order.mail.tpl', $params);
 		$this->get('mailer')->send(
 			'Заказ №'.$orderNumber.' от '.date('d.m.Y H:i'),
-			"Заказ №$orderNumber от ".date('d.m.Y H:i')."<br>".$orderText,
+			"Заказ № $orderNumber от ".date('d.m.Y H:i')."<br>".$letterText,
 			$this->getOrderEmail()
 		);		
 		$buyerEmail = $this->get('util')->_sessionVar('deliveryEmail');
 		if ($buyerEmail) {
 			$this->get('mailer')->send(
 				'Цвета жизни - заказ №'.$orderNumber.' принят к обработке',
-				$orderText,
+				$letterText,
 				$buyerEmail
 			);
 		}
