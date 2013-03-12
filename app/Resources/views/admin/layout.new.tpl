@@ -33,11 +33,11 @@
 				{/foreach}
 				<li><a href="javascript:fileBrowser('file');" class="context-button">Файловый менеджер</a></li>
 				<li class="divider-vertical"></li>
-				<li><a href="#">{foreach from=$languages item=language}
-					{if $language.name == $currentLanguage}
-						<span class="label label-info">{$language.name}</span>
+				<li><a href="#">{foreach from=$locales item=locale}
+					{if $locale.name == $currentLocale}
+						<span class="label label-info">{$locale.name}</span>
 					{else}
-						<span class="label pointer-view" onclick="setLanguage('{$language.name}')">{$language.name}</span>
+						<span class="label pointer-view" onclick="setLocale('{$locale.name}')">{$locale.name}</span>
 					{/if}
 					{/foreach}</a>
 				</li>
@@ -51,7 +51,7 @@
 	<div class="row-fluid">
 		<div class="span9 vertical-padding">
 			<div class="well" id="componentMenu">{include file='admin/mainmenu.tpl'}</div>
-			<form name="frmLang" method="post"><input type="hidden" name="lang" value="ru"></form>
+			<form name="frmLocale" method="post"><input type="hidden" name="locale" value="ru"></form>
 		</div>
 		<div class="span31 vertical-padding left-padding">
 			{if $module eq ''}

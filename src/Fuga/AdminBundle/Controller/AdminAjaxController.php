@@ -66,7 +66,7 @@ class AdminAjaxController extends Controller {
 </tr></thead>';
 		$where = '';
 		if (!empty($field['l_lang'])) {
-			$where .= "locale='".$this->get('router')->getParam('lang')."'";
+			$where .= "locale='".$this->get('router')->getParam('locale')."'";
 		}
 		$paginator = $this->get('paginator');
 		$paginator->paginate($this->get('container')->getTable($field['l_table']), 'javascript:showPage(\'selectlist\',\''.$tableName.'\', \''.$fieldName.'\', '.$entityId.', ###)', $where, 8, 1, 6);
@@ -101,7 +101,7 @@ class AdminAjaxController extends Controller {
 </tr></thead>';
 		$where = '';
 		if (!empty($field['l_lang'])) {
-			$where = "locale='".$this->get('router')->getParam('lang')."'";
+			$where = "locale='".$this->get('router')->getParam('locale')."'";
 		}
 		$paginator = $this->get('paginator');
 		$paginator->paginate($this->get('container')->getTable($field['l_table']), 'javascript:showPage(\''.$divId.'\',\''.$tableName.'\', \''.$fieldName.'\', '.$entityId.', ###)', $where, 8, $page, 6);
@@ -135,7 +135,7 @@ class AdminAjaxController extends Controller {
 <ul id="navigation">
 <li><a href="javascript:void(0)" rel="0" class="popup-item">Не выбрано</a></li>';
 		if (!empty($field['l_lang'])) {
-			$lang_where = "locale='".$this->get('router')->getParam('lang')."'";
+			$lang_where = "locale='".$this->get('router')->getParam('locale')."'";
 		} else {
 			$lang_where = '';
 		}
@@ -209,7 +209,7 @@ class AdminAjaxController extends Controller {
 	
     function getPopupList($field, $values) {
 		$content = '';
-		$lang_where = !empty($field['l_lang']) ? "locale='".$this->get('util')->_sessionVar('lang', false, 'ru')."'" : '';
+		$lang_where = !empty($field['l_lang']) ? "locale='".$this->get('router')->getParam('locale')."'" : '';
 		if (!empty($field['query'])) {
 			$lang_where .= ($lang_where ? ' AND ' : '').'('.$field['query'].')';
 		}

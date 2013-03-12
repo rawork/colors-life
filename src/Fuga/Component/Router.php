@@ -19,11 +19,11 @@ class Router {
 	/**
 	 * Установка языка сайта 
 	 */
-	public function setLanguage() {
-		$lang = $this->container->get('util')->_postVar('lang');
-		if ( $lang
-			&& $this->container->get('util')->_sessionVar('lang') != $lang) {
-			$_SESSION['lang'] = $lang;
+	public function setLocale() {
+		$locale = $this->container->get('util')->_postVar('locale');
+		if ( $locale
+			&& $this->container->get('util')->_sessionVar('locale', false, 'ru') != $locale) {
+			$_SESSION['locale'] = $locale;
 			header('location: '.$_SERVER['REQUEST_URI']);
 		}
 	}
@@ -33,19 +33,22 @@ class Router {
 		if (!isset($this->paths[$nativeUrl])) {
 			//  Установка языка по части URL, например, /ru/about.htm или /catalog/ru/index.htm
 			if ($this->isPublic($url)) {
-				$languages = $this->container->get('connection')->getItems('config_languages', 'SELECT * FROM config_languages');
-				$_SESSION['lang'] = 'ru';
-				foreach ($languages as $language) {
-					if (stristr($url, '/'.$language['name'].'/') || $this->container->get('util')->_getVar('lang') == $language['name']) {
-						$_SESSION['lang'] = $language['name'];
-						$url = str_replace('/'.$language['name'].'/', '/', $url);
-						if (empty($url))
-							$url = '/';
+				$sql = 'SELECT name FROM config_locale';
+				$stmt = $this->container->get('connection1')->prepare($sql);
+				$stmt->execute();
+				$locales = $stmt->fetchAll();
+				$_SESSION['locale'] = 'ru';
+				foreach ($locales as $locale) {
+					if (stristr($url, DIRECTORY_SEPARATOR.$locale['name'].DIRECTORY_SEPARATOR) || $this->container->get('util')->_getVar('locale') == $locale['name']) {
+						$_SESSION['locale'] = $locale['name'];
+						$url = str_replace(DIRECTORY_SEPARATOR.$locale['name'].DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $url);
+						if (!$url)
+							$url = DIRECTORY_SEPARATOR;
 					}
 				}
 			}
 
-			$this->setParam('lang', $this->container->get('util')->_sessionVar('lang', false, 'ru'));
+			$this->setParam('locale', $this->container->get('util')->_sessionVar('locale', false, 'ru'));
 			$urlParts = explode('#', $url);
 			if (!empty($urlParts[1])) {
 				$this->setParam('ajaxmethod', $urlParts[1]);

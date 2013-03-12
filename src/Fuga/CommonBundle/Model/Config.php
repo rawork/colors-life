@@ -109,9 +109,9 @@ class Config {
 		));
 
 		$this->tables[] = array(
-			'name' => 'languages',
+			'name' => 'locale',
 			'component' => 'config',
-			'title' => 'Языки',
+			'title' => 'Языковые версии',
 			'order_by' => 'id',
 			'fieldset' => array (
 			'name' => array (

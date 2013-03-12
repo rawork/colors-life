@@ -13,7 +13,6 @@ if (!isset($_SESSION['cart'])) {
 class CartController extends PublicController {
 
 	private $baseNumber = 100000;
-	public $lang;
 
 	public function __construct() {
 		parent::__construct('cart');
@@ -90,22 +89,24 @@ class CartController extends PublicController {
 		$deliveryType	= 
 		
 		$orderText = $manager->getOrderText();
-		$this->get('container')->addItem('cart_order',
-				"user_id, counter, summa, discount, status, fio, email, phone, phone2, pay_type, delivery_type, address, additions, order_txt, created",
-				($user ? $user['id'] : 0).
-				",'".$_SESSION['number'].
-				"','".$manager->getTotalPriceDiscount().
-				"','".$manager->getDiscount().
-				"','Новый','".$this->get('util')->_sessionVar('deliveryPerson').
-				"','".$this->getManager('Fuga:Common:Account')->getLogin().
-				"','".$this->get('util')->_sessionVar('deliveryPhone').
-				"','".$this->get('util')->_sessionVar('deliveryPhoneAdd').
-				"','".$payType['name'].
-				"','".$deliveryType['name'].
-				"','".$this->get('util')->_sessionVar('deliveryAddress').
-				"','".$this->get('util')->_postVar('deliveryComment').
-				"',"."'".$orderText."',NOW()");
-		$lastId = $this->get('connection')->getInsertID();
+		$this->get('connection1')->insert('cart_order',array(
+			'user_id' => ($user ? $user['id'] : 0), 
+			'counter' => $_SESSION['number'], 
+			'summa'   => $manager->getTotalPriceDiscount(),
+			'discount'=> $manager->getDiscount(),
+			'status'  => 'Новый',
+			'fio'     => $this->get('util')->_sessionVar('deliveryPerson'),
+			'email'   => $this->getManager('Fuga:Common:Account')->getLogin(),
+			'phone'   => $this->get('util')->_sessionVar('deliveryPhone'),
+			'phone2'  => $this->get('util')->_sessionVar('deliveryPhoneAdd'),
+			'pay_type'=> $payType['name'],
+			'delivery_type' => $deliveryType['name'],
+			'address' => $this->get('util')->_sessionVar('deliveryAddress'),
+			'additions' => $this->get('util')->_postVar('deliveryComment'),
+			'order_txt' => $orderText,
+			'created' => date('Y-m-d H:i:s')
+		));
+		$lastId = $this->get('connection1')->lastInsertId();
 
 		$orderNumber = $this->baseNumber + $lastId;
 		$cart = $this->get('util')->_sessionVar('cart');
@@ -171,8 +172,8 @@ class CartController extends PublicController {
 			'totalPriceRus' => $manager->getTotalPriceRus(),
 			'totalPriceDiscount' => $manager->getTotalPriceDiscount(),
 			'user' => $this->getManager('Fuga:Common:Account')->getCurrentUser(),
-			'payType' => $this->get('connection')->getItem('pay', 'SELECT name FROM cart_pay_type WHERE id='.$this->get('util')->_sessionVar('payType')),
-			'deliveryType' => $this->get('connection')->getItem('delivery', 'SELECT name FROM cart_delivery_type WHERE id='.$this->get('util')->_sessionVar('deliveryType'))
+			'payType' => $manager->getPay(),
+			'deliveryType' => $manager->getDelivery()
 		);
 		$this->get('container')->setVar('title', 'Подтверждение заказа');
 		
@@ -206,8 +207,9 @@ class CartController extends PublicController {
 		if (empty($_SESSION['deliveryEmail'])) {
 			$_SESSION['deliveryEmail'] = $user ? $user['email'] : '';
 		}
-		$payTypes = $this->get('connection')->getItems('get_pay', "SELECT id,name FROM cart_pay_type WHERE publish=1 ORDER BY sort");
-		$deliveryTypes = $this->get('connection')->getItems('get_delivery', "SELECT id,name,description FROM cart_delivery_type WHERE publish=1 ORDER BY sort");
+		$manager = $this->getManager('Fuga:Common:Cart');
+		$payTypes = $manager->getPays();
+		$deliveryTypes = $manager->getDeliveries();
 		$this->get('container')->setVar('title', 'Оплата и доставка');
 		$this->get('container')->setVar('h1', 'Оплата и доставка');
 		

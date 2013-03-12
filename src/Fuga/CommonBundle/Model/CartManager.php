@@ -110,7 +110,7 @@ class CartManager extends ModelManager {
 	{
 		$totalPrice = $this->getTotalPrice();
 		$discount = 0;
-		$user = $this->get('container')->createController('Fuga:Common:Account')->getCurrentUser();
+		$user = $this->get('container')->getManager('Fuga:Common:Account')->getCurrentUser();
 		if ($user) {
 			$discount = $user['discount'];
 		}
@@ -157,11 +157,33 @@ class CartManager extends ModelManager {
 	}
 	
 	public function getDelivery($id = null) {
-		$this->get('connection')->getItem('delivery', 'SELECT id,name FROM cart_delivery_type WHERE id='.$this->get('util')->_sessionVar('deliveryType'));
+		$sql = 'SELECT id,name FROM cart_delivery_type WHERE id= :id ';
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->bindValue('id', $this->get('util')->_sessionVar('deliveryType'));
+		$stmt->execute();
+		return $stmt->fetch();
 	}
 	
 	public function getPay($id = null) {
-		$this->get('connection')->getItem('pay', 'SELECT id,name FROM cart_pay_type WHERE id='.$this->get('util')->_sessionVar('payType'));
+		$sql = 'SELECT id,name FROM cart_pay_type WHERE id= :id ';
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->bindValue('id', $this->get('util')->_sessionVar('payType'));
+		$stmt->execute();
+		return $stmt->fetch();
+	}
+	
+	public function getDeliveries() {
+		$sql = "SELECT id,name,description FROM cart_delivery_type WHERE publish=1 ORDER BY sort";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+	
+	public function getPays() {
+		$sql = "SELECT id,name FROM cart_pay_type WHERE publish=1 ORDER BY sort";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
 	}
 	
 }

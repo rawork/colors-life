@@ -4,13 +4,16 @@ namespace Fuga\CommonBundle\Controller;
 
 class PublicController extends Controller {
 	
-	public $params;
+	public $params = array();
 	
 	function __construct($name) {
-		$settings = $this->get('connection')->getItems('unit.settings', "SELECT * FROM config_settings WHERE module='$name'");
-		$this->params = array();
-		foreach ($settings as $setting) {
-			$this->params[$setting['name']] = $setting['type'] == 'int' ? intval($setting['value']) : $setting['value'];
+		$sql = "SELECT * FROM config_settings WHERE module= :name ";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->bindValue("name", $name);
+		$stmt->execute();
+		$params = $stmt->fetchAll();
+		foreach ($params as $param) {
+			$this->params[$param['name']] = $param['type'] == 'int' ? intval($param['value']) : $param['value'];
 		}
 	}
 	

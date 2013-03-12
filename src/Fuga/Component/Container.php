@@ -294,8 +294,8 @@ class Container
 			return $node;
 		}
 		$path = array('');
-		if ('ru' != $this->get('router')->getParam('lang')) {
-			$path[] = $this->get('router')->getParam('lang');
+		if ('ru' != $this->get('router')->getParam('locale')) {
+			$path[] = $this->get('router')->getParam('locale');
 		}
 		$path[] = $node;
 		if ($action != 'index') {
@@ -352,6 +352,7 @@ class Container
 						'password'	=> $GLOBALS['DB_PASS'],
 						'host'		=> $GLOBALS['DB_HOST'],
 						'driver'	=> 'pdo_mysql',
+						'charset'	=> 'utf8'
 					);
 					$this->services[$name] = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
 					break;
@@ -362,7 +363,7 @@ class Container
 					$this->services[$name] = new Storage\ImageStorageDecorator($this->get('filestorage'));
 					break;
 				case 'paginator':
-					$this->services[$name] = new Paginator();
+					$this->services[$name] = new Paginator($this);
 					break;
 				case 'mailer':
 					$this->services[$name] = new Mailer\Mailer();

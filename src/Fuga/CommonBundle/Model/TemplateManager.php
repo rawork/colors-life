@@ -18,7 +18,7 @@ class TemplateManager extends ModelManager {
 				OR (r.type = 'F' AND r.cond = :name )
 			) ORDER BY sort DESC LIMIT 1";
 		$stmt = $this->get('connection1')->prepare($sql);
-		$stmt->bindValue("locale", $this->get('router')->getParam('lang'));
+		$stmt->bindValue("locale", $this->get('router')->getParam('locale'));
 		$stmt->bindValue("url", $_SERVER['REQUEST_URI']);
 		$stmt->bindValue("name", $name);
 		$stmt->execute();

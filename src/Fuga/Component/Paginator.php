@@ -5,8 +5,9 @@ namespace Fuga\Component;
 class Paginator {
 
 	public $limit			= '';
-
-	private $template; //template
+	
+	private $container;
+	private $template; 
 
 	private $baseUrl		= './'; //ref
 	private $quantity		= 0; //pages_cnt
@@ -17,6 +18,10 @@ class Paginator {
 	private $table			= null;
 
 	private $content;
+	
+	public function __construct($container) {
+		$this->container = $container;
+	}
 	
 	public function paginate($table, $baseUrl, $where = '', $rowPerPage = 25, $currentPage = 1, $maxDisplayPages = 10, $templateName = 'default') {
 		$this->content = null;
@@ -29,15 +34,17 @@ class Paginator {
 		if ($rowPerPage) {
 			$this->currentPage = (int)$this->currentPage;
 			$tableName = $this->table->getDBTableName();
-			$query = "
+			$sql = "
 				SELECT
 					COUNT(id) as quantity
 				FROM
 					$tableName
 				". ($where ? 'WHERE '.$where : '');
-			$aItemCount = $this->get('connection')->getItem('get_count_entities', $query);
-			if ($aItemCount) {
-				$this->entityQuantity = $aItemCount['quantity'];
+			$stmt = $this->container->get('connection1')->prepare($sql);
+			$stmt->execute();
+			$count = $stmt->fetch();
+			if ($count) {
+				$this->entityQuantity = $count['quantity'];
 				$this->quantity = ceil($this->entityQuantity / $this->rowPerPage);
 				if ($this->quantity > 0) {
 					if ($this->currentPage > $this->quantity) {
@@ -84,7 +91,7 @@ class Paginator {
 				$totalItems = $this->entityQuantity;
 				$currentItems = $this->min_rec.' - '.$this->max_rec;
 				$page = $this->currentPage;
-				$this->content = $this->get('templating')->render(
+				$this->content = $this->container->get('templating')->render(
 					$this->template, 
 					compact('prev_link', 'begin_link', 'next_link', 'end_link', 'totalItems', 'currentItems', 'page', 'pages')
 				);
@@ -95,25 +102,15 @@ class Paginator {
 		return $this->content;
 	}
 
-	public function getLink($page, $urlTemplate = '') {
-		if(!$urlTemplate) {
-			$urlTemplate = $this->baseUrl;
+	public function getLink($page, $url = '') {
+		if(!$url) {
+			$url = $this->baseUrl;
 		}
-		return str_replace('###', $page, $urlTemplate);
+		return str_replace('###', $page, $url);
 	}
 
-	public function setTemplate($templateName) {
-		$this->template = 'paginator/'.$templateName.'.tpl';
+	public function setTemplate($name) {
+		$this->template = 'paginator/'.$name.'.tpl';
 	}
 	
-	public function get($name) {
-		global $container, $security;
-		if ($name == 'container') {
-			return $container;
-		} elseif ($name == 'security') {
-			return $security;
-		} else {
-			return $container->get($name);
-		}
-	}
 }

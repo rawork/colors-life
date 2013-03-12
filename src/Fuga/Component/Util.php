@@ -61,8 +61,8 @@ class Util {
 
 	public function fdate($d, $format) {
 		$dstr = date($format, mktime(substr($d,11,2),substr($d,14,2),substr($d,17,2),substr($d,5,2),substr($d,8,2),substr($d,0,4)));
-		$lang = $this->_sessionVar('lang', false, 'ru');
-		if ($lang != 'en') {
+		$locale = $this->_sessionVar('locale', false, 'ru');
+		if ($locale != 'en') {
 			$smonth = array(
 				'ru' => array('Jan' => 'января', 'Feb' => 'февраля', 'Mar' => 'марта', 'Apr' => 'апреля', 'May' => 'мая', 'Jun' => 'июня', 
 				'Jul' => 'июля', 'Aug' => 'августа', 'Sep' => 'сентября', 'Oct' => 'октября', 'Nov'  => 'ноября', 'Dec' => 'декабря'),
@@ -87,7 +87,7 @@ class Util {
 				'fr' => array(),
 				'it' => array()
 			);
-			$dstr = strtr($dstr, array_merge($smonth[$lang],$month[$lang],$sweekday[$lang],$weekday[$lang]));
+			$dstr = strtr($dstr, array_merge($smonth[$locale],$month[$locale],$sweekday[$locale],$weekday[$locale]));
 		} 
 		return $dstr;
 	}

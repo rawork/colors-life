@@ -5,12 +5,15 @@ namespace Fuga\AdminBundle\Admin;
 class Admin {
 	
 	public $name;
-	public $params;
+	public $params = array();
 
 	function __construct($name) {
 		$this->name = $name;
-		$params = $this->get('connection')->getItems('unit.settings', "SELECT * FROM config_settings WHERE module='$name'");
-		$this->params = array();
+		$sql = "SELECT * FROM config_settings WHERE module= :name ";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->bindValue("name", $name);
+		$stmt->execute();
+		$params = $stmt->fetchAll();
 		foreach ($params as $param) {
 			$this->params[$param['name']] = ($param['type'] == 'int' ? intval($param['value']) : $param['value']);
 		}

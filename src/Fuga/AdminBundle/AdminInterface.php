@@ -113,10 +113,14 @@ class AdminInterface extends Controller {
 		} elseif ($this->get('router')->hasParam('action') && $this->get('router')->getParam('action') == 'restore') {
 			$this->restoreAction();
 		} else {
+			$sql = 'SELECT name FROM config_locale';
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->execute();
+			$locales = $stmt->fetchAll();
 			$params = array(
 				'user' => $this->get('util')->_sessionVar('user'),
-				'languages' => $this->get('connection')->getItems('config_languages', 'SELECT * FROM config_languages'),
-				'currentLanguage' => $this->get('util')->_sessionVar('lang', false, 'ru'),
+				'locales' => $locales,
+				'currentLocale' => $this->get('router')->getParam('locale'),
 				'module' => $this->currentModuleName,
 				'modules' => $this->modules,
 				'states' => $this->states,

@@ -3,9 +3,9 @@ var imgFolderSetting = new Image();
 imgFolder.src = theme_ref + '/img/icons/icon_folder.gif';
 imgFolderSetting.src = theme_ref + '/img/icons/icon_folder_settings.gif';
 
-function setLanguage(language) {
-	$('#language').attr('value', language);
-	$('$formLang').submit();
+function setLocale(locale) {
+	$('#locale').attr('value', locale);
+	$('#formLocale').submit();
 }
 
 function preSubmit(frm, utype) {

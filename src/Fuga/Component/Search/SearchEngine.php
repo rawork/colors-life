@@ -82,7 +82,9 @@ class SearchEngine {
 		$where = !empty($options['where']) ? ' AND '.$options['where'] : '';
 		$search_query = $this->createCriteria($words, $options['fields']);
 		$sql = "SELECT id,".$fields_text." FROM ".$table." WHERE ".$search_query.$where.' ORDER BY id';
-		$items = $this->container->get('connection')->getItems('get_search_items', $sql);
+		$stmt = $this->container->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
 		foreach ($items as $item) {
 			if ($table == 'page_page') {
 				$link = $this->container->getManager('Fuga:Common:Page')->getUrl($item);
@@ -101,7 +103,7 @@ class SearchEngine {
 		$morfWords = array();
 		$words = explode(' ', $text);
 		foreach ($words as $word) {
-			$className = 'Fuga\\Component\\Search\\Stem'.ucfirst($this->container->get('router')->getParam('lang'));
+			$className = 'Fuga\\Component\\Search\\Stem'.ucfirst($this->container->get('router')->getParam('locale'));
 			$stem = new $className();
 			$word = $stem->russian($word);
 			if (strlen($word) > 2) 

@@ -74,8 +74,10 @@ class FormBuilder {
 						$item['select_filter'] = str_replace("`", "'",$item['select_filter']);
 					}
 
-					$sQuery = 'SELECT * FROM '.$item['select_table'].(!empty($item['select_filter']) ? ' WHERE '.$item['select_filter'] : '').' ORDER BY '.$item['select_order'];
-					$items = $this->get('connection')->getItems('frm_select_items', $sQuery);
+					$sql = 'SELECT * FROM '.$item['select_table'].(!empty($item['select_filter']) ? ' WHERE '.$item['select_filter'] : '').' ORDER BY '.$item['select_order'];
+					$stmt = $this->get('connection1')->prepare($sql);
+					$stmt->execute();
+					$items = $stmt->fetchAll();
 					$item['select_values'] = array();
 					foreach ($items as $item) {
 						$citem = array('name' => $item[$item['select_name']], 'value' => $item[$item['select_value']]);

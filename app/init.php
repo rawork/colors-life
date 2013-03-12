@@ -107,5 +107,5 @@ if (!$container->get('security')->isAuthenticated() && $container->get('security
 $container->initialize();
 
 // Включаем Роутер запросов
-$container->get('router')->setLanguage();
+$container->get('router')->setLocale();
 $container->get('router')->setParams();

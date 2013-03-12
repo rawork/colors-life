@@ -33,6 +33,8 @@ class PageController extends Controller {
 					$this->get('router')->getParam('params')
 				);
 			} catch (\Exception $e) {
+				$this->get('log')->write($e->getMessage());
+				$this->get('log')->write($e->getTraceAsString());
 				throw $this->createNotFoundException('Неcуществующая страница');
 			}
 		}
