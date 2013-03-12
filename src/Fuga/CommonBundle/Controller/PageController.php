@@ -129,7 +129,7 @@ class PageController extends Controller {
 			'mainbody' => $this->staticAction().$this->getContent(),
 			'meta'     => $this->getManager('Fuga:Common:Meta')->getMeta(),
 			'links'    => $this->getManager('Fuga:Common:Page')->getNodes('/'),
-			'action'   => $this->get('router')->getParam('action')
+			'action'   => $this->get('router')->getParam('action'),
 		);
 		$this->get('templating')->assign($params);
 		$content = $this->render(

@@ -167,7 +167,7 @@ class CatalogController extends PublicController {
 			);
 		}
 		
-		return $this->render('catalog/index.tpl', compact('cats', 'cat', 'per_column', 'products', 'paginator', 'rtt', 'sort'));
+		return $this->render('catalog/index.tpl', compact('cats', 'cat', 'per_column', 'products', 'paginator', 'rtt', 'sort', 'params'));
 	}
 	
 	public function newAction() {

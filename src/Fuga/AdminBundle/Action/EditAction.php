@@ -49,27 +49,6 @@ class EditAction extends Action {
 					$ret .= !empty($v['readonly']) ? $ft->getStatic() : $ft->getInput();
 					$ret .= '</td></tr>';
 				}
-				/* Реализация дополнительных параметров */
-				/*if ($this->t->getDBTableName() == 'catalog_product' && $a['category_id'] != 0) {
-
-					$features = $this->get('connection')->getItems('get_filters', 'SELECT id,name FROM catalog_features where id IN ('.$a['category_id_filters'].') order by name');
-					foreach ($features as $feature) {
-						$feature_variants = $this->get('connection')->getItems('get_feature_variants', "SELECT id,name FROM catalog_features_variants WHERE filter_id=".$feature['id']);
-						$feature_value_item = $this->get('connection')->getItem('get_feature_value', 'SELECT * from catalog_features_values where product_id='.$a['id'].' AND feature_id='.$feature['id']); 
-						$ret .= '<tr><td width="150" align=left>'.$feature['name'].'</td><td>';
-						$ret .= '<select name="filter_'.$feature['id'].'">';
-						$ret .= '<option value="0">Выберите...</option>';
-						foreach ($feature_variants as $feature_variant) {
-							$sel = '';
-							if ($feature_value_item['feature_value_id'] == $feature_variant['id']) {
-								$sel = ' selected';
-							}
-							$ret .= '<option value="'.$feature_variant['id'].'"'.$sel.'>'.$feature_variant['name'].'</option>';
-						}
-						$ret .= '</select>';
-						$ret .= '</td></tr>'."\n";
-					}
-				}*/
 				$ret .= '</table>
 <input type="button" class="btn btn-success" onClick="preSubmit(\'frmInsert\', 0)" value="Сохранить">
 <input type="button" class="btn" onClick="preSubmit(\'frmInsert\', 1)" value="Применить">
@@ -81,10 +60,19 @@ class EditAction extends Action {
 
 	function getPricesForm() {
 		$entity = $this->item;
-		$sizes = $this->get('connection')->getItems('get_sizes', "SELECT id,name FROM catalog_size ORDER BY name");
-		$colors = $this->get('connection')->getItems('get_colors', "SELECT id,name FROM catalog_color ORDER BY name");
-		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.sort, p.publish FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id=".$entity['id']." ORDER BY p.sort, p.price";
-		$prices = $this->get('connection')->getItems('sizelist', $sql);
+		$sql = "SELECT id,name FROM catalog_size ORDER BY name";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$sizes = $stmt->fetchAll();
+		$sql = "SELECT id,name FROM catalog_color ORDER BY name";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$colors = $stmt->fetchAll();
+		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.sort, p.publish FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id= :id ORDER BY p.sort, p.price";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->bindValue("id", $entity['id']);
+		$stmt->execute();
+		$prices = $stmt->fetchAll();
 		$content = '';
 		$content .= '<form method="post" name="frmUpdatePrice" id="frmUpdatePrice" action="">
 <input type="hidden" name="product_id" value="'.$entity['id'].'" />
@@ -142,7 +130,7 @@ class EditAction extends Action {
 
 	function getFilesForm() {
 		$content = '';
-		$a = $this->item;
+		$entity = $this->item;
 		if (!empty($this->dataTable->params['multifile'])) {
 			$content .= '<div id="filelist">
 <table class="table table-condensed">
@@ -152,8 +140,12 @@ class EditAction extends Action {
 <th><i class="icon-align-justify"></i></th>
 </tr></thead>';
 
-			$sql = "SELECT * FROM system_files WHERE table_name='".$this->dataTable->getDBTableName()."' AND entity_id=".$a['id']." ORDER BY created";
-			$files = $this->get('connection')->getItems('filelist', $sql);
+			$sql = "SELECT * FROM system_files WHERE table_name= :table AND entity_id= :id ORDER BY created";
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->bindValue("table", $this->dataTable->getDBTableName());
+			$stmt->bindValue("id", $entity['id']);
+			$stmt->execute();
+			$files = $stmt->fetchAll();
 			foreach ($files as $fileitem) {
 				$content .= '<tr id="file_'.$fileitem['id'].'">
 <td><a href="'.$fileitem['file'].'">'.$fileitem['name'].'</a></td>
@@ -163,11 +155,11 @@ class EditAction extends Action {
 			}
 			$content .= '</table>
 </div>
-<input type="button" id="updatelistbtn" class="btn" onclick="updateFileList(\''.$this->dataTable->getDBTableName().'\','.$a['id'].');return false" value="Обновить список" />
+<input type="button" id="updatelistbtn" class="btn" onclick="updateFileList(\''.$this->dataTable->getDBTableName().'\','.$entity['id'].');return false" value="Обновить список" />
 <br><br><fieldset><legend>Добавить файл</legend>
 <form id="uploadForm" action="/fileupload" method="post" enctype="multipart/form-data">
 <input name="table_name" value="'.$this->dataTable->getDBTableName().'" type="hidden">
-<input name="entity_id" value="'.$a['id'].'" type="hidden">
+<input name="entity_id" value="'.$entity['id'].'" type="hidden">
 <input name="MAX_FILE_SIZE" value="1000000" type="hidden">
 <input name="fileToUpload[]" id="fileToUpload" class="multi" type="file">
 <br><input class="btn btn-success" value="Загрузить" type="submit">

@@ -300,20 +300,20 @@ function toggleBlock(it) {
 	$("#"+it).css('display', $("#"+it).css('display') == 'none' ? 'block' : 'none');
 }
 
-function setCatalogRTT(el, cur_rtt, cur_page) {
-	var url2 = window.location.href;
-	//alert(url2);
-	if (url2.indexOf('rtt=') != -1) {
-		url2 = url2.replace('rtt='+cur_rtt, 'rtt='+el.options[el.selectedIndex].value);
-		url2 = url2.replace('page='+cur_page+'&', '');
-	} else if (url2.indexOf('?') != -1) {
-		url2 = url2 + '&rtt='+el.options[el.selectedIndex].value;
-	} else {
-		url2 = url2 + '?rtt='+el.options[el.selectedIndex].value;
+function setCatalogRTT(element, rtt) {
+	if (rtt == element.options[element.selectedIndex].value) {
+		return false;
 	}
-	//alert(el.options[el.selectedIndex].value);
-	//alert(url2);
-	window.location = url2;
+	var url = window.location.href;
+	arr = url.split('?');
+	if (arr.length > 1) {
+		arr[1] = 'rtt='+element.options[element.selectedIndex].value;
+		window.location = arr.join('?');
+	} else {
+		url = url + '?rtt='+element.options[element.selectedIndex].value;
+		window.location = url;
+	}
+	return true;
 }
 
 function setCatalogRPP(el, ref) {

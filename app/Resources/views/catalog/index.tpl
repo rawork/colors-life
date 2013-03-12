@@ -92,19 +92,19 @@
 		<tr>
 			<td width="40%">Сортировать по: 
 				{if $sort != 'price' && $sort != 'name'} 
-				<a href="{raURL node=catalog method=index prms="`$param0`.price"}">цене</a> 
-				<a href="{raURL node=catalog method=index prms="`$param0`.name"}">названию</a> 
+				<a href="{raURL node=catalog method=index prms="`$params[0]`.price"}">цене</a> 
+				<a href="{raURL node=catalog method=index prms="`$params[0]`.name"}">названию</a> 
 				{elseif $sort == 'price'} 
 				<strong>цене</strong> 
-				<a href="{raURL node=catalog method=index prms="`$param0`.name"}">названию</a> 
+				<a href="{raURL node=catalog method=index prms="`$params[0]`.name"}">названию</a> 
 				{else} 
-				<a href="{raURL node=catalog method=index prms="`$param0`.price"}">цене</a> 
+				<a href="{raURL node=catalog method=index prms="`$params[0]`.price"}">цене</a> 
 				<strong>названию</strong> 
 				{/if} 
 			</td>
 			<td width="60%" align="right">
 				по 
-				<select style="height: 26px;" class="span7" name="cpage" onChange="setCatalogRTT(this, {$rtt}, {$page})">
+				<select style="height: 26px;" class="span7" name="cpage" onChange="setCatalogRTT(this, {$rtt})">
 					<option value="6"{if $rtt == 6} selected{/if}>6</option>
 					<option value="12"{if $rtt > 6 && $rtt <= 12} selected{/if}>12</option>
 					<option value="24"{if $rtt > 12 && $rtt <= 24} selected{/if}>24</option>

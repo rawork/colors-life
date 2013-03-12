@@ -10,11 +10,6 @@ class CounttagAction extends Action {
 
 	function getText() {
 		
-//		$this->fixImages();
-//		$this->fixFiles();
-//		$this->fixNews();
-//		$this->fixTables(); 
-		
 		$this->fixNested();
 		$this->calculateCatalog();
 		$this->buildSitemapXML();
@@ -24,10 +19,13 @@ class CounttagAction extends Action {
 	}
 	
 	function calculateCatalog() {
-		$this->get('connection')->execQuery('truncate_tags', "TRUNCATE TABLE article_tag");
-		$this->get('connection')->execQuery('truncate_tags', "TRUNCATE TABLE article_tags_articles");
-		$this->get('connection')->execQuery('truncate_tags', "TRUNCATE TABLE article_products_articles");
-		$articles = $this->get('connection')->getItems('get_art', "SELECT id,tag FROM article_article WHERE publish=1");
+		$this->get('connection1')->query("TRUNCATE TABLE article_tag");
+		$this->get('connection1')->query("TRUNCATE TABLE article_tags_articles");
+		$this->get('connection1')->query("TRUNCATE TABLE article_products_articles");
+		$sql = "SELECT id,tag FROM article_article WHERE publish=1";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$articles = $stmt->fetchAll();
 		$tags_full = array();
 		foreach ($articles as $article) {
 
@@ -44,33 +42,52 @@ class CounttagAction extends Action {
 			}
 		}
 		foreach ($tags_full as $tag => $tag_info) {
-			$this->get('connection')->execQuery('add_tag', "INSERT INTO article_tag(name, quantity) VALUES('$tag', ".$tag_info['q'].")");
-			$last_id = $this->get('connection')->getInsertID();
-			foreach ($tag_info['articles'] as $article_id) {
-				$this->get('connection')->execQuery('add_tag_links', "INSERT INTO article_tags_articles(tag_id, article_id) VALUES($last_id, $article_id)");
+			$this->get('connection1')->insert('article_tag', array(
+				'name' => $tag, 
+				'quantity' =>  $tag_info['q']
+			));
+			$lastId = $this->get('connection1')->lastInsertId();
+			foreach ($tag_info['articles'] as $articleId) {
+				$this->get('connection1')->insert('article_tags_articles', array(
+					'tag_id' => $lastId, 
+					'article_id' => $articleId
+				));
 			}
 		}
-		$tag_max_min = $this->get('connection')->getItems('get_tags', "SELECT max(quantity) as max, min(quantity) as min FROM article_tag");
+		$sql = "SELECT max(quantity) as max, min(quantity) as min FROM article_tag";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$tag_max_min = $stmt->fetchAll();
 		$min = intval($tag_max_min[0]['min']);
 		$max = intval($tag_max_min[0]['max']);
 
 		$minsize = 1;
 		$maxsize = 10;
-		$tags = $this->get('connection')->getItems('get_tags', "SELECT id, name, quantity FROM article_tag");
+		$sql = "SELECT id,name,quantity FROM article_tag";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$tags = $stmt->fetchAll();
 		foreach ($tags as $tag) {
-
 			if ($min == $max) {
 				$num = ($maxsize - $minsize)/2 + $minsize;
-				$fontSize = round($num);
+				$weight = round($num);
 			} else {
 				$num = ($tag['quantity'] - $min)/($max - $min)*($maxsize - $minsize) + $minsize;
-				$fontSize = round($num);
+				$weight = round($num);
 			}
-			$this->get('connection')->execQuery('update_tag_info', "UPDATE article_tag SET weight='".$fontSize."' WHERE id=".$tag['id']);
+			$this->get('connection1')->update('article_tag', 
+				array('weight' => $weight),
+				array('id' => $tag['id'])
+			);
 		}
-
-
-		$brands = $this->get('connection')->getItems('get_brands', "SELECT cp.id, cp.name, count(cs.id) as quantity FROM catalog_producer cp JOIN catalog_product cs ON cp.id=cs.producer_id WHERE cs.publish=1 GROUP BY cp.id");
+		
+		$sql = "SELECT p.id, p.name, count(pr.id) as quantity 
+			FROM catalog_producer p 
+			JOIN catalog_product pr ON p.id=pr.producer_id 
+			WHERE pr.publish=1 GROUP BY p.id";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$brands = $stmt->fetchAll();
 		$min = $brands[0]['quantity'];
 		$max = $brands[0]['quantity'];
 		foreach ($brands as $brand) {
@@ -80,59 +97,102 @@ class CounttagAction extends Action {
 			if ($brand['quantity'] < $min) {
 				$min = $brand['quantity'];
 			}
-			$this->get('connection')->execQuery('update_tag_info', "UPDATE catalog_producer SET quantity='".$brand['quantity']."' WHERE id=".$brand['id']);
+			$this->get('connection1')->update('catalog_producer',
+				array('quantity' => $brand['quantity']),
+				array('id' => $brand['id'])
+			);
 		}
-
-		$brands = $this->get('connection')->getItems('get_brands', "SELECT id, name, quantity FROM catalog_producer");
+		
+		$sql = "SELECT id, name, quantity FROM catalog_producer";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$brands = $stmt->fetchAll();
 		foreach ($brands as $brand) {
-
 			if ($min == $max) {
 				$num = ($maxsize - $minsize)/2 + $minsize;
-				$fontSize = round($num);
+				$weight = round($num);
 			} else {
 				$num = ($brand['quantity'] - $min)/($max - $min)*($maxsize - $minsize) + $minsize;
-				$fontSize = round($num);
+				$weight = round($num);
 			}
-			$this->get('connection')->execQuery('update_tag_info', "UPDATE catalog_producer SET weight='".$fontSize."' WHERE id=".$brand['id']);
+			$this->get('connection1')->update('catalog_producer',
+				array('weight' => $weight),
+				array('id' => $brand['id'])
+			);
 		}
-		//die();
 
 		foreach ($tags as $tag) {
-			$items = $this->get('connection')->getItems('get_products', "SELECT id,name FROM catalog_product WHERE tag LIKE '%".$tag['name']."%'");
+			$sql = "SELECT id,name FROM catalog_product WHERE tag LIKE '%".$tag['name']."%'";
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->execute();
+			$items = $stmt->fetchAll();
 			if (count($items)) {
-				$articles = $this->get('connection')->getItems('get_articles', "SELECT article_id FROM article_tags_articles WHERE tag_id=".$tag['id']);
+				$sql = "SELECT article_id FROM article_tags_articles WHERE tag_id= :id ";
+				$stmt = $this->get('connection1')->prepare($sql);
+				$stmt->bindValue('id', $tag['id']);
+				$stmt->execute();
+				$articles = $stmt->fetchAll();
 				foreach ($items as $item) {
 					foreach ($articles as $article) {
-						$this->get('connection')->execQuery('add_products_links', "INSERT INTO article_products_articles(product_id, article_id) VALUES(".$item['id'].", ".$article['article_id'].")");
+						try {
+							$this->get('connection1')->insert('article_products_articles', array(
+								'product_id' => $item['id'],
+								'article_id' => $article['article_id']
+							));
+						} catch (\Exception $e){
+							
+						}
 					}
 				}
 			}
 		}
-
-		$categories = $this->get('connection')->getItems('get_cats', "SELECT id,parent_id,title FROM catalog_category WHERE parent_id=0");
+		
+		$sql = "SELECT id,parent_id,title FROM catalog_category WHERE parent_id=0";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$categories = $stmt->fetchAll();
 		foreach ($categories as $category) {
-			$categories2 = $this->get('connection')->getItems('get_cats', "SELECT id,parent_id,title FROM catalog_category WHERE parent_id=".$category['id']);
+			$sql = "SELECT id,parent_id,title FROM catalog_category WHERE parent_id= :id ";
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->bindValue('id', $category['id']);
+			$stmt->execute();
+			$categories2 = $stmt->fetchAll();
 			foreach ($categories2 as $category2) {
-				$this->get('connection')->execQuery('add_products_links', "UPDATE catalog_category SET root_id=".$category['id']." WHERE id=".$category['id']." OR id=".$category2['id']." OR parent_id=".$category2['id']);
+				$this->get('connection1')->update('catalog_category',
+					array('root_id' => $category['id']),
+					array('id' => $category['id'])
+				);
+				$this->get('connection1')->update('catalog_category',
+					array('root_id' => $category['id']),
+					array('id' => $category2['id'])
+				);
+				$this->get('connection1')->update('catalog_category',
+					array('root_id' => $category['id']),
+					array('parent_id' => $category2['id'])
+				);
 			}
 		}
 	}
 	
 	function getEntities($table) {
-		$items = $this->get('connection')->getItems('eee', "SELECT id FROM $table WHERE publish=1");
-		return $items;
+		$sql = "SELECT id FROM $table WHERE publish=1";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
 	}
 
-	function getTreeEntities($sTableName, $iParentId = 0) {
-		$aEntities = array();
-		$aTempEntities = $this->get('connection')->getItems('eee', "SELECT * FROM $sTableName WHERE publish=1 AND parent_id = $iParentId");
-		foreach ($aTempEntities as $aTempEntity) {
-			$aSubEntities = $this->getTreeEntities($sTableName, $aTempEntity['id']);
-			$aEntities[] = $aTempEntity;
-			$aEntities = array_merge($aEntities, $aSubEntities);
+	function getTreeEntities($table, $id = 0) {
+		$entities = array();
+		$sql = "SELECT * FROM $table WHERE publish=1 AND parent_id = $id";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
+		foreach ($items as $item) {
+			$children = $this->getTreeEntities($table, $item['id']);
+			$entities[] = $item;
+			$entities = array_merge($entities, $children);
 		}
-		//$aEntities = array_merge($aEntities, $aTempEntities);
-		return $aEntities;
+		return $entities;
 	}
 
 	function buildSitemapXML() {
@@ -248,7 +308,7 @@ EOD;
 		$content .= "</categories>\n";
 		$content .= "<offers>\n";
 
-		$products = $this->get('container')->getItems('catalog_product', "publish=1 AND price<>'0.00'"); // выбираем все товары
+		$products = $this->get('container')->getItems('catalog_product', "publish=1 AND price<>0"); // выбираем все товары
 		foreach ($products as $product) // в цикле обрабатываем каждый товар
 		{
 			$name			= htmlspecialchars(strip_tags($product['name']));
@@ -281,121 +341,25 @@ EOD;
 		fputs($f, $content);  // записываем наш контент в файл
 		fclose($f);
 	}
-
-	private function fixImages() {
-		global $UPLOAD_REF, $PRJ_DIR;
-		$date = new \Datetime('2012-01-01');
-		$step = 50;
-		$i = 50;
-		$items = $this->get('connection')->getItems('items', "SELECT id, image, small_image, big_image FROM catalog_product");
-		foreach ($items as $item) {
-			if ($i >= $step) {
-				$date->add(new \DateInterval('P1D'));
-				$path = $UPLOAD_REF.$date->format('/Y/m/d/');
-				@mkdir($PRJ_DIR.$path, 0755, true);
-				$i = 0;
-			}
-			if ($item['small_image']) {
-				$pathParts = pathinfo($item['small_image']);
-				$smallImage = $path. $pathParts['basename'];
-				@rename($PRJ_DIR.$item['small_image'], $PRJ_DIR.$smallImage);
-			} else {
-				$smallImage = $item['small_image'];
-			}
-			if ($item['image']) {
-				$pathParts = pathinfo($item['image']);
-				$image = $path. $pathParts['basename'];
-				@rename($PRJ_DIR.$item['image'], $PRJ_DIR.$image);
-			} else {
-				$image = $item['image'];
-			}
-			if ($item['big_image']) {
-				$pathParts = pathinfo($item['big_image']);
-				$bigImage = $path. $pathParts['basename'];
-				@rename($PRJ_DIR.$item['big_image'], $PRJ_DIR.$bigImage);
-			} else {
-				$bigImage = $item['big_image'];
-			}
-			if ($smallImage == $item['small_image']) {
-				continue;
-			}
-			
-			$this->get('connection')->execQuery('upd', "UPDATE catalog_product SET small_image='".$smallImage."',image='".$image."',big_image='".$bigImage."' WHERE id=".$item['id']);
-			$i++;
-		}
-	}
 	
-	private function fixNews() {
-		global $UPLOAD_REF, $PRJ_DIR;
-		$date = new \Datetime('2012-05-01');
-		$step = 50;
-		$i = 50;
-		$items = $this->get('connection')->getItems('items', "SELECT id, image FROM news_news");
-		foreach ($items as $item) {
-			if ($i >= $step) {
-				$date->add(new \DateInterval('P1D'));
-				$path = $UPLOAD_REF.$date->format('/Y/m/d/');
-				@mkdir($PRJ_DIR.$path, 0755, true);
-				$i = 0;
-			}
-			if ($item['image']) {
-				$pathParts = pathinfo($item['image']);
-				$image = $path. $pathParts['basename'];
-				@rename($PRJ_DIR.$item['image'], $PRJ_DIR.$image);
-			} else {
-				$image = $item['image'];
-			}
-			
-			if ($image == $item['image']) {
-				continue;
-			}
-			
-			$this->get('connection')->execQuery('upd', "UPDATE news_news SET image='".$image."' WHERE id=".$item['id']);
-			$i++;
-		}
-	}
-	
-	private function fixFiles() {
-		global $UPLOAD_REF, $PRJ_DIR;
-		$date = new \Datetime('2012-04-01');
-		$step = 50;
-		$i = 50;
-		$items = $this->get('connection')->getItems('items', "SELECT id, file FROM system_files");
-		foreach ($items as $item) {
-			if ($i >= $step) {
-				$date->add(new \DateInterval('P1D'));
-				$path = $UPLOAD_REF.$date->format('/Y/m/d/');
-				@mkdir($PRJ_DIR.$path, 0755, true);
-				$i = 0;
-			}
-			if ($item['file']) {
-				$pathParts = pathinfo($item['file']);
-				$newPath = $path. $pathParts['basename'];
-				@rename($PRJ_DIR.$item['file'], $PRJ_DIR.$newPath);
-			} else {
-				$newPath = $item['file'];
-			}
-			
-			if ($newPath == $item['file']) {
-				continue;
-			}
-			
-			$this->get('connection')->execQuery('upd', "UPDATE system_files SET file='".$newPath."' WHERE id=".$item['id']);
-			$i++;
-		}
-	}
-	
-	private function updateNestedSets($tableName = 'catalog_category' ,$parentId = 0, $level = 1, $leftKey = 1) {
-		$items = $this->get('connection')->getItems('items', 'SELECT id,title FROM '.$tableName.' WHERE parent_id='.$parentId.' ORDER BY sort');
-		if (count($items)) {
+	private function updateNestedSets($table = 'catalog_category' ,$parentId = 0, $level = 1, $leftKey = 1) {
+		$sql = "SELECT id,title,name FROM $table WHERE parent_id= :id ORDER BY sort";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->bindValue('id', $parentId);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
+		if ($items) {
 			foreach ($items as $item) {
-				$right_key = $this->updateNestedSets($tableName, $item['id'], $level+1, $leftKey+1);
-				$name = 'catalog_category' == $tableName ? ',name=\''.strtolower($this->get('util')->translitStr(trim($item['title']))).'\'' : '';
-				$this->get('connection')->execQuery('upd', 
-					'UPDATE '.$tableName.' SET left_key='.$leftKey.
-					',right_key='.$right_key.',level='.$level.
-					$name
-					.' WHERE id='.$item['id']
+				$right_key = $this->updateNestedSets($table, $item['id'], $level+1, $leftKey+1);
+				$name = 'catalog_category' == $table ? strtolower($this->get('util')->translitStr(trim($item['title']))) : $item['name'];
+				$this->get('connection1')->update($table,
+					array(
+						'left_key' => $leftKey, 
+						'right_key' => $right_key, 
+						'level' => $level,
+						'name' => $name
+					),	
+					array('id' => $item['id'])
 				);
 				$leftKey = $right_key+1;
 			}
@@ -407,44 +371,64 @@ EOD;
 	}
 	
 	private function checkNestedSets($tableName = 'catalog_category') {
-		$items = $this->get('connection')->getItems('items', 'SELECT id FROM '.$tableName.' WHERE left_key >= right_key');
+		$sql = 'SELECT id FROM '.$tableName.' WHERE left_key >= right_key';
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
 		if (count($items)) {
-			$this->get('log')->write($tableName.': ошибка nestedsets 1');
+			$this->get('log')->write($tableName.': ошибка 1: left_key >= right_key');
 		}
-		$item = $this->get('connection')->getItem('items', 'SELECT COUNT(id) as quantity, MIN(left_key) as min_key, MAX(right_key) as max_key FROM '.$tableName);
+		$sql = 'SELECT COUNT(id) as quantity, MIN(left_key) as min_key, MAX(right_key) as max_key FROM '.$tableName;
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$item = $stmt->fetch();
 		if (1 != $item['min_key']) {
-			$this->get('log')->write($tableName.': ошибка nestedsets 2');
+			$this->get('log')->write($tableName.': ошибка 2: min <> 1');
 		}
 		if ($item['quantity']*2 != $item['max_key']) {
-			$this->get('log')->write($tableName.': ошибка nestedsets 3');
+			$this->get('log')->write($tableName.': ошибка 3: max <> quantity*2');
 		}
-		$items = $this->get('connection')->getItems('items', 'SELECT id, MOD((right_key - left_key) / 2) AS ostatok FROM '.$tableName.' WHERE ostatok = 0');
+		$sql = 'SELECT id,right_key,left_key FROM '.$tableName.' HAVING MOD((right_key - left_key), 2) = 0';
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
 		if (count($items)) {
-			$this->get('log')->write($tableName.': ошибка nestedsets 4');
+			$this->get('log')->write($tableName.': ошибка 4: MOD((right_key - left_key) / 2) <> 0');
 		}
-		$items = $this->get('connection')->getItems('items', 'SELECT id, MOD((left_key – level + 2) / 2) AS ostatok FROM '.$tableName.' WHERE ostatok = 1');
+		$sql = 'SELECT id,level,left_key FROM '.$tableName.' HAVING MOD((left_key - level + 2), 2) = 1';
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
 		if (count($items)) {
-			$this->get('log')->write($tableName.': ошибка nestedsets 5');
+			$this->get('log')->write($tableName.': ошибка 5: MOD((left_key – level + 2) / 2) = 1');
 		}
-		$items = $this->get('connection')->getItems('items', 
-			'SELECT t1.id, COUNT(t1.id) AS rep, MAX(t3.right_key) AS max_right 
-FROM '.$tableName.' AS t1, '.$tableName.' AS t2, '.$tableName.' AS t3 
-WHERE t1.left_key <> t2.left_key AND t1.left_key <> t2.right_key AND t1.right_key <> t2.left_key AND t1.right_key <> t2.right_key 
-GROUP BY t1.id HAVING max_right <> SQRT(4 * rep + 1) + 1');
+		$sql = 'SELECT t1.id, COUNT(t1.id) AS rep, MAX(t3.right_key) AS max_right 
+			FROM '.$tableName.' AS t1, '.$tableName.' AS t2, '.$tableName.' AS t3 
+			WHERE t1.left_key <> t2.left_key AND t1.left_key <> t2.right_key AND 
+			t1.right_key <> t2.left_key AND t1.right_key <> t2.right_key 
+			GROUP BY t1.id HAVING max_right <> SQRT(4 * rep + 1) + 1';
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
 		if (count($items)) {
-			$this->get('log')->write($tableName.': ошибка nestedsets 6');
+			$this->get('log')->write($tableName.': ошибка 6:');
 		}
 	}
 	
 	private function updateLinkTables() {
-		$items = $this->get('connection')->getItems('items', 
-				'SELECT category_id, producer_id FROM `catalog_product` 
+		$sql = 'SELECT category_id, producer_id FROM catalog_product 
 				WHERE producer_id <> 0 AND category_id <> 0 
 				GROUP BY category_id, producer_id 
-				ORDER BY `catalog_product`.`producer_id` ASC');
-		$this->get('connection')->execQuery('truncate', "TRUNCATE TABLE catalog_categories_producers");
+				ORDER BY producer_id';
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
+		$this->get('connection1')->query("TRUNCATE TABLE catalog_categories_producers");
 		foreach ($items as $item) {
-			$this->get('connection')->execQuery('add', 'INSERT INTO catalog_categories_producers VALUES('.$item['category_id'].','.$item['producer_id'].')');
+			$this->get('connection1')->insert('catalog_categories_producers',array(
+				'category_id' => $item['category_id'],
+				'producer_id' => $item['producer_id']
+			));
 		}
 	}
 	
@@ -453,7 +437,7 @@ GROUP BY t1.id HAVING max_right <> SQRT(4 * rep + 1) + 1');
 		$this->checkNestedSets('catalog_category');
 		$this->updateNestedSets('page_page');
 		$this->checkNestedSets('page_page');
-		$this->updateLinkTables();
+		//$this->updateLinkTables();
 	}
 	
 }
