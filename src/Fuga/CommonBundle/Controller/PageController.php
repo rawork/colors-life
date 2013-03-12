@@ -128,10 +128,11 @@ class PageController extends Controller {
 			'action'   => $this->get('router')->getParam('action')
 		);
 		$this->get('templating')->assign($params);
-		echo $this->render(
+		$content = $this->render(
 				$this->getManager('Fuga:Common:Template')->getByNode($node['name']), 
 				$this->get('container')->getVars()
 		);
+		echo $content;
 	}
 
 	public function handle() {
