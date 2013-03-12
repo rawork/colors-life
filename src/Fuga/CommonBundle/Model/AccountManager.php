@@ -9,7 +9,7 @@ class AccountManager extends ModelManager {
 	
 	public function getCurrentUser() {
 		if (!$this->currentUser) {
-			$user = $this->get('container')->getItem($entityTable, "session_id='".session_id()."'");
+			$user = $this->get('container')->getItem($this->entityTable, "session_id='".session_id()."'");
 			$this->currentUser = $user ?: null;
 		}
 		return $this->currentUser;

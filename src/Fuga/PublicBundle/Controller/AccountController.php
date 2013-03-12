@@ -49,9 +49,9 @@ class AccountController extends PublicController {
 	function __construct() {
 		parent::__construct('account');
 		if (!$_SESSION['deliveryAddress']) {
-			$_SESSION['deliveryAddress'] = $this->getAddress();
-			$_SESSION['deliveryPhone'] = $this->getPhone();
-			$_SESSION['deliveryPerson'] = $this->getPersonName();
+			$_SESSION['deliveryAddress'] = $this->getManager('Fuga:Common:Account')->getAddress();
+			$_SESSION['deliveryPhone'] = $this->getManager('Fuga:Common:Account')->getPhone();
+			$_SESSION['deliveryPerson'] = $this->getManager('Fuga:Common:Account')->getPersonName();
 		}
 	}
 
