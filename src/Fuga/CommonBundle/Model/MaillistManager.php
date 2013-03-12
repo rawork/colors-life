@@ -28,9 +28,17 @@ class MaillistManager extends ModelManager {
 		}
 	}
 	
+	public function getSubscriber($email) {
+		$sql = "SELECT * FROM ".$this->subscriberTable." WHERE email = :email LIMIT 1";
+		$stmt = $this->container->get('connection1')->prepare($sql);
+		$stmt->bindValue("email", $email);
+		$stmt->execute();
+		return $stmt->fetch();
+	}
+	
 	public function subscribe($email, $name, $lastname) {
 		$email = trim($email);
-		$subscriber = $this->get('container')->getItem($this->subscriberTable, "email='".$this->get('connection')->escapeStr($email)."'");
+		$subscriber = $this->getSubscriber($email);
 		$key = md5($this->get('util')->genKey(20));
 		if ($subscriber) {
 			$message = array(
@@ -68,13 +76,13 @@ http://".$_SERVER['SERVER_NAME']."/subscribe?key=".$key;
 	
 	public function unsubscribe($email) {
 		$email = trim($email);
-		$subscriber = $this->get('container')->getItem($this->subscriberTable, "email='".addslashes($email)."'");
+		$subscriber = $this->getSubscriber($email);
 		if (!$subscriber) {
 			$message = array(
 				'message' => 'Адреса '.htmlspecialchars($email).' нет в списке рассылки',
 				'success' => false
 			);	
-		} elseif ($this->get('connection')->execQuery('delete_user_maillist', "DELETE FROM ".$this->subscriberTable." WHERE email='".addslashes($email)."'")) {
+		} elseif ($this->get('connection1')->delete($this->subscriberTable, array('email' => $email))) {
 			$message = array(
 				'message' => 'Адрес '.htmlspecialchars($email).' удален из списка рассылки',
 				'success' => true

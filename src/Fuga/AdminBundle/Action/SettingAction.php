@@ -9,13 +9,19 @@ namespace Fuga\AdminBundle\Action;
         function getText() {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				$state = false;
-				$params = $this->get('connection')->getItems('get_settings', "SELECT * FROM config_settings WHERE module='".$this->uai->module->name."'");
+				$params = $this->getManager('Fuga:Common:Param')->findAll($this->uai->module->name);
 				foreach ($params as $param) {
 					if ($this->get('util')->_postVar('param_'.$param['name']) && $value = $this->validParam($this->get('util')->_postVar('param_'.$param['name']), $param)) {
-						$this->get('connection')->execQuery('set_settings', "UPDATE config_settings SET value='".$value."' WHERE name='".$param['name']."' AND module='".$param['module']."'");
+						$this->get('connection1')->update('config_param',
+							array('value' => $value), 
+							array('name' => $param['name'], 'module' => $param['module'])
+						);
 						$state = true;
 					} elseif ($param['type'] == 'bol') {
-						$this->get('connection')->execQuery('set_settings', "UPDATE config_settings SET value='0' WHERE name='".$param['name']."' AND module='".$param['module']."'");
+						$this->get('connection1')->update('config_param', 
+							array('value' => '0'),
+							array('name' => $param['name'], 'module' => $param['module'])
+						);		
 						$state = true;
 					} 
 				}
@@ -28,8 +34,8 @@ namespace Fuga\AdminBundle\Action;
 			$ret .= '<thead><tr>';
 			$ret .= '<th nowrap><b>Настройки модуля</b></th>';
 			$ret .= '<th></th></tr></thead>';
-			$params = $this->get('connection')->getItems('get_settings', "SELECT * FROM config_settings WHERE module='".$this->uai->module->name."'");
-
+			
+			$params = $this->getManager('Fuga:Common:Param')->findAll($this->uai->module->name);
 			foreach ($params as $param) {
 				$ret .= '<tr><td align=left width="250"><strong>'.$param["title"].'</strong><br>{'.$param["name"].'}</td><td>';
 				if ($param['type'] == 'bol') {

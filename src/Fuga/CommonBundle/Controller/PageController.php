@@ -86,28 +86,30 @@ class PageController extends Controller {
 				$error = 'Файлы не загружены..';
 			} else {
 				$msg = " " . $_FILES[$fileElementName]['name'][$i] . "<br/>";
-				$fileref  = $this->get('util')->getNextFileName($upload_ref.$_FILES[$fileElementName]['name'][$i]);
-				move_uploaded_file($_FILES[$fileElementName]['tmp_name'][$i], $GLOBALS['PRJ_DIR'].$fileref);
-				$filepath = $_FILES[$fileElementName]['name'][$i];
+				$file  = $this->get('util')->getNextFileName($upload_ref.$_FILES[$fileElementName]['name'][$i]);
+				move_uploaded_file($_FILES[$fileElementName]['tmp_name'][$i], $GLOBALS['PRJ_DIR'].$file);
+				$name = $_FILES[$fileElementName]['name'][$i];
 				$filesize = @filesize($upload_path.$_FILES[$fileElementName]['name'][$i]);
-				$filetype = $_FILES[$fileElementName]['type'][$i];
-				$tableName = $this->get('util')->_postVar('table_name');
-				$entityId = $this->get('util')->_postVar('entity_id', true, 0);
-				$filewidth = 0;
-				$fileheight = 0;
-				if ($fileInfo = @GetImageSize($GLOBALS['PRJ_DIR'].$fileref)) {
-					$filewidth = $fileInfo[0];
-					$fileheight = $fileInfo[1];
+				$mimetype = $_FILES[$fileElementName]['type'][$i];
+				$width = 0;
+				$height = 0;
+				if ($fileInfo = @GetImageSize($GLOBALS['PRJ_DIR'].$file)) {
+					$width = $fileInfo[0];
+					$height = $fileInfo[1];
 				}
-				$sql = "INSERT INTO system_files(name,mimetype,file,width,height,filesize,table_name,entity_id,created) "
-					." VALUES('$filepath','$filetype','$fileref',$filewidth,$fileheight,'$filesize','$tableName','$entityId',NOW())";
-				$this->get('connection')->execQuery('addfile', $sql);
+				$this->get('connection1')->insert('system_files', array(
+					'name' => $name,
+					'mimetype' => $mimetype,
+					'file' => $file,
+					'width' => $width,
+					'height' => $height,
+					'filesize' => $filesize, 
+					'table_name' => $this->get('util')->_postVar('table_name'),
+					'entity_id' => $this->get('util')->_postVar('entity_id', true, 0),
+					'created' => date('Y-m-d H:i:s')
+				));
 			}
-			if ($error) {
-				echo $error."<br/>";
-			} else {
-				echo "Добавлен файл: ".$msg;	
-			}
+			return $error ? $error."<br/>" : "Добавлен файл: ".$msg;
 		}
 	}
 
@@ -144,7 +146,7 @@ class PageController extends Controller {
 		}
 		
 		if (preg_match('/^\/fileupload/', $_SERVER['REQUEST_URI'])) {
-			$this->fileuploadAction();
+			echo $this->fileuploadAction();
 			exit;
 		}
 		

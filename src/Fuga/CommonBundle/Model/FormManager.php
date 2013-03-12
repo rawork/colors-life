@@ -9,10 +9,10 @@ class FormManager extends ModelManager {
 	private $params;
 	
 	public function __construct() {
-		$settings = $this->get('connection')->getItems('unit.settings', "SELECT * FROM config_settings WHERE module='form'");
+		$params = $this->getManager('Fuga:Common:Param')->findAll('form');
 		$this->params = array();
-		foreach ($settings as $setting) {
-			$this->params[$setting['name']] = $setting['type'] == 'int' ? intval($setting['value']) : $setting['value'];
+		foreach ($params as $param) {
+			$this->params[$param['name']] = $param['type'] == 'int' ? intval($param['value']) : $param['value'];
 		}
 	}
 	
