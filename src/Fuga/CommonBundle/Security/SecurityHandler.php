@@ -72,8 +72,8 @@ class SecurityHandler {
 		} else {
 			$sql = "SELECT login FROM user_user WHERE login= :login AND password= :password AND is_active=1 LIMIT 1";
 			$stmt = $this->container->get('connection1')->prepare($sql);
-			$stmt->bindValue("login", $_SERVER['REMOTE_ADDR']);
-			$stmt->bindValue("password", $_COOKIE['userkey'].'sff');
+			$stmt->bindValue("login", $login);
+			$stmt->bindValue("password", $password);
 			$stmt->execute();
 			$user = $stmt->fetch();
 		}
