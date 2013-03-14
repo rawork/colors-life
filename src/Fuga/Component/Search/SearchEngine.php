@@ -66,8 +66,9 @@ class SearchEngine {
 					$query0 .=  ($query0 ? ' AND ' : '').'('.$field." LIKE '%".$word."%')";
 				}
 				$query .=  ($query ? ' OR ' : '').($query0 ? '('.$query0.')' : '');
-			} elseif (count($words) > 0) {
-				$query .=  ($query ? ' OR ' : '').$field." LIKE '%".$words[0]."%'";
+			} elseif (count($words)) {
+				$word = array_shift($words);
+				$query .=  ($query ? ' OR ' : '').$field." LIKE '%".$word."%'";
 			}
 		}
 		return $query ? '('.$query.')' : '';
