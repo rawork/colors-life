@@ -255,10 +255,14 @@ class CatalogController extends PublicController {
 			
 			$query = count($catIds) ? 'category_id IN('.implode(',', $catIds).')' : '';
 			if (count($producerIds)) {
-				$query .= ($query ? ' AND ' : '').'producer_id IN('.implode(',', $producerIds).')';
+				$query .= ($query ? ' OR ' : '').'producer_id IN('.implode(',', $producerIds).')';
 			}
-			$query0 = $this->get('search')->createCriteria($words, array('name', 'description'));
-			$query = $query ? '('.$query.')'.($query0 ? 'AND '.$query0 : '').' AND publish=1' : ($query0 ? $query0 : '').' AND publish=1';
+			$query = $query ? '('.$query.')' : '';
+			if (count($words)) {
+				$query0 = $this->get('search')->createCriteria($words, array('name', 'description'));
+				$query = $query ? $query.($query0 ? ' AND '.$query0 : '') : $query0;
+			}
+			$query .= ' AND publish=1'; 
 			
 			$page = $this->get('util')->_getVar('page', true, 1);
 			$paginator = $this->get('paginator');
