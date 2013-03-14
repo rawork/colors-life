@@ -8,6 +8,6 @@ class AlterAction extends Action {
 	}
 
 	function getText() {
-		$this->messageAction($this->dataTable->alter() ? 'Структура таблицы синхронизирована' : 'Ошибка синхронизации структуры таблицы');
+		$this->messageAction($this->dataTable->alter() ? 'Структура таблицы обновлена' : 'Ошибка обновления структуры таблицы');
 	}
 }

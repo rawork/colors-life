@@ -39,18 +39,20 @@ class VoteManager extends ModelManager {
 			$cache = 0;
 			$vote = $this->get('container')->getItem($this->entityTable, 'name="'.$voteName.'"');
 			if ($vote['lmt'] == 1) {
-				$cache = $this->get('container')->getCount($this->cacheTable, "sessionid='".session_id()."' AND time>".(time()-$vote['step']));
+				$cache = $this->get('container')->count($this->cacheTable, "sessionid='".session_id()."' AND time>".(time()-$vote['step']));
 			} elseif ($vote['lmt'] == 2) {
-				$cache = $this->get('container')->getCount($this->cacheTable, "(sessionid='".session_id()."' OR ip='".$_SERVER['REMOTE_ADDR']."') AND time>".(time()-$vote['step']));
+				$cache = $this->get('container')->count($this->cacheTable, "(sessionid='".session_id()."' OR ip='".$_SERVER['REMOTE_ADDR']."') AND time>".(time()-$vote['step']));
 			}
 			if (!$cache) {
 				$this->get('container')->addItem(
-					$this->cacheTable, 
-					'ip,sessionid,question_id,time', 
-					"'".$_SERVER['REMOTE_ADDR']."','".session_id()."',".$vote['id'].",".time()
-				);
-				$this->get('container')->updateItem($this->entityTable, $vote['id'], ' quantity=quantity+1 ');
-				$this->get('container')->updateItem($this->answerTable, $answerId, ' quantity=quantity+1 ');
+					$this->cacheTable, array(
+						'ip' => $_SERVER['REMOTE_ADDR'],
+						'sessionid' => session_id(),
+						'question_id' => $vote['id'],
+						'time' => time()
+				));
+				$this->get('connection1')->query('UPDATE '.$this->entityTable.' SET quantity=quantity+1 WHERE id='.$vote['id']);
+				$this->get('connection1')->query('UPDATE '.$this->answerTable.' SET quantity=quantity+1 WHERE id=',$answerId);
 			} else {
 				$error = 'Количество голосований ограничено';
 			}

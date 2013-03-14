@@ -12,7 +12,10 @@ class GalleryType extends FileType {
 
 	public function getStatic() {
 		$ret = '';
-		$photos = $this->get('connection')->getItems("SELECT * FROM system_gallery WHERE tbl='' AND fld='' AND rc=''");
+		$sql = "SELECT * FROM system_gallery WHERE tbl='' AND fld='' AND rc=''";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$photos = $stmt->fetchAll();
 		foreach ($photos as $ph) {
 			if ($ph['file']) {
 				$path_parts = pathinfo($ph['file']);

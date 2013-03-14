@@ -38,11 +38,11 @@ class AccountController extends PublicController {
 	private $errors = array(
 		'no_user' => 'С указанным эл. адресом нет зарегистрированных пользователей',
 		'db_error' => 'Ошибка обработки запроса. Обратитесь к администратору сайта.',
-		'incorrect_password' => 'Неправильный пароль! Для изменения пароля необходимо ввести текущий пароль!',
+		'incorrect_password' => 'Неправильный текущий пароль! Для изменения пароля необходимо ввести текущий пароль!',
 		'incorrect_securecode' => 'Вы неправильно ввели цифры указанные на картинке',
-		'user_present' => 'Пользователь с логином <b>%s</b> уже есть в базе!',
-		'wrong_password' => 'Ошибка пароля!',
-		'notreg' => 'Пользователь <b>%s</b> не зарегистрирован!',
+		'user_present' => 'Логин <b>%s</b> уже занят',
+		'wrong_password' => 'Неправильный логин или пароль',
+		'notreg' => 'Пользователь <b>%s</b> не зарегистрирован',
 		'securecode' => 'Вы неправильно ввели цифры указанные на картинке'
 	);
 
@@ -60,8 +60,9 @@ class AccountController extends PublicController {
 			header('location: '.$this->get('container')->href('cabinet'));
 			exit;
 		}
-		if ($this->get('container')->getTable('account_user')->update(
-				"session_id='' WHERE login='".$this->getManager('Fuga:Common:Account')->getLogin()."'"
+		if ($this->get('connection1')->update('account_user',
+				array('session_id' => ''),
+				array('login' => $this->getManager('Fuga:Common:Account')->getLogin())
 		)) {
 			unset($_SESSION['deliveryAddress']);
 			unset($_SESSION['deliveryPhone']);
@@ -98,12 +99,10 @@ class AccountController extends PublicController {
 
 	private function _processInfoForm() {
 		$errors = array();
-
 		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
-
 		$login = $this->get('util')->_postVar('userEmail');
-		$userName = $this->get('util')->_postVar('userFName');
-		$userLName = $this->get('util')->_postVar('userLName');
+		$name = $this->get('util')->_postVar('userFName');
+		$lastname = $this->get('util')->_postVar('userLName');
 		$phone = $this->get('util')->_postVar('userPhone');
 		$address = $this->get('util')->_postVar('userAddress');
 		$gender = $this->get('util')->_postVar('userGender');
@@ -114,29 +113,33 @@ class AccountController extends PublicController {
 		if ($day && $month && $year) {
 			$birthday = $day .'.'. $month .'.'. $year;
 		}
-		$updateQuery = "login='$login'";
-		$updateQuery .= ",email='$login'";
-		$updateQuery .= ",name='$userName'";
-		$updateQuery .= ",lastname='$userLName'";
-		$updateQuery .= ",phone='$phone'";
-		$updateQuery .= ",address='$address'";
-		$updateQuery .= ",gender='$gender'";
-		$updateQuery .= ",birthday='$birthday'";
-
 		if (
-			($login != $user['email']) &&
-			$this->get('container')->getTable('account_user')->selectWhere("login='".$login."' OR email='".$login."'") &&
-			$this->get('container')->getTable('account_user')->getNumRows()
+			$login != $user['email'] &&
+			$user = $this->get('container')->getItem('account_user', "login='".$login."' OR email='".$login."'")
 		) {
 			$errors[] = sprintf($this->errors['user_present'], $login);
 		} else {
-			if ($this->get('container')->getTable('account_user')->update($updateQuery.", updated = NOW() WHERE email='".$user['email']."'")) {
+			$values = array(
+				"login"		=> $login,
+				"email"		=> $login,
+				"name"		=> $name,
+				"lastname"	=> $lastname,
+				"phone"		=> $phone,
+				"address"	=> $address,
+				"gender"	=> $gender,
+				"birthday"	=> $birthday,
+				"updated"	=> date('Y-m-d H:i:s')
+			);
+			if ($this->get('connection1')->update('account_user', 
+					$values,
+					array('id' => $user['id'])
+				)) {
 				header('location: '.$this->get('container')->href('cabinet'));
 			} else {
 				$errors[] = $this->errors['db_error'];
 			}
 		}
-		return implode('errors', $errors);
+		return implode('<br>', $errors);
 	}
 	
 	public function indexAction() {
@@ -162,11 +165,17 @@ class AccountController extends PublicController {
 		$fromPage = $this->get('util')->_postVar('fromPage');
 		$login = $this->get('util')->_postVar('login');
 		$password = $this->get('util')->_postVar('password');
-		$t = $this->get('container')->getTable('account_user');
-		if ($user = $this->get('container')->getItem('account_user', "email='$login' OR login='$login'")) {
+		$user = $this->get('container')->getItem('account_user', "email='$login' OR login='$login'");
+		if ($user) {
 			if ($user['password'] == $password) {
-				if ($t->update("session_id='".session_id()."', logindate=NOW() WHERE login='$login' OR email='$login'")) {
+				$sql = 'UPDATE account_user SET session_id= :id, logindate = :date WHERE login= :login OR email= :login ';
+				$stmt = $this->get('connection1')->prepare($sql);
+				$stmt->bindValue('id', session_id());
+				$stmt->bindValue('date', date('Y-m-d H:i:s'));
+				$stmt->bindValue('login', $login);
+				if ($stmt->execute()) {
 					header('location: '.($fromPage ? $fromPage : '/'));
+					exit;
 				} else {
 					$errors[] = $this->errors['db_error'];
 				}
@@ -203,19 +212,19 @@ class AccountController extends PublicController {
 		if($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)){
 			$errors[] = $this->errors['securecode'];
 		} else {
-			if (
-				$t->selectWhere("login='".$login."' OR email='".$login."'") &&
-				$t->getNumRows()
-			) {
+			if ($user = $t->getItem("login='".$login."' OR email='".$login."'")) {
 				$errors[] = sprintf($this->errors['user_present'], $login);
 			} else {
-				$updateQuery = "password='$password'";
-				$updateQuery .= ",name='$userName'";
-				$updateQuery .= ",lastname='$userLName'";
-				$updateQuery .= ",phone='$phone'";
+				$values = array(
+					"password"	=> $password,
+					"name"		=> $userName,
+					"lastname"	=> $userLName,
+					"phone"		=> $phone,
+					"created"	=> date('Y-m-d H:i:s')
+				);
 				if (
-					$t->insert('login,email', "'$login','$login'") &&
-					$t->update($updateQuery.", created = NOW(), updated = NOW() WHERE email='".$login."'")
+					$t->insert(array('login' => $login, 'email' => $login)) &&
+					$t->update($values, array("email" => $login))
 				) {
 					$letterText = $this->render('account/registration.mail.tpl', compact('userName', 'userLName', 'login', 'password'));
 					$this->get('mailer')->send(
@@ -226,7 +235,7 @@ class AccountController extends PublicController {
 					if ($isSubscribe) {
 						$this->getManager('Fuga:Common:Maillist')->subscribe($login, $userName, $userLName);
 					}		
-					if ($t->update("session_id='".session_id()."' WHERE login='$login' OR email='$login'")) {
+					if ($t->update(array("session_id" => session_id()), array('email' => $login))) {
 						header('location: '.$this->get('container')->href('cabinet'));
 					} else {
 						$errors[] = $this->errors['db_error'];
@@ -248,12 +257,39 @@ class AccountController extends PublicController {
 			header('location: '.$this->get('container')->href('cabinet'));
 			exit;
 		}
+		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
+		$items = $this->get('container')->getItems('cart_order', "user_id=".$user['id']);
+		foreach ($items as &$item) {
+			$products = explode("\n", $item['order_txt']);
+			$item['products'] = array();
+			foreach ($products as $product) {
+				if (!$product) {
+					continue;
+				}
+				$product = explode("\t", $product);
+				$id = 0;
+				$name = '';
+				if (preg_match('/^\[([0-9]+)\]/', $product[0], $matches)) {
+					$id = $matches[1];
+					$name = preg_replace('/^\[([0-9]+)\]/', '', $product[0]);
+				}
+				$item['products'][] = array(
+					'id'		=> $id,
+					'name'		=> $name,
+					'quantity'	=> $product[3],
+					'price'		=> $product[2]
+				);
+			}
+		}
+		unset($item);
 		$params = array(
-			'user' => $this->getManager('Fuga:Common:Account')->getCurrentUser(),
-			'cabinetMenu' => $this->_getMenu()
+			'cabinetMenu' => $this->_getMenu(),
+			'user' => $user,
+			'items' => $items
 		);
 		$this->get('container')->setVar('title', 'Заказы');
 		$this->get('container')->setVar('h1', 'Заказы');
+		
 		
 		return $this->render('account/orders.tpl', $params);
 	}
@@ -289,8 +325,7 @@ class AccountController extends PublicController {
 		$newPassword = $this->get('util')->_postVar('newpasswd');
 
 		if ($user['password'] == $oldPassword) {
-			$updateQuery = "password='$newPassword'";
-			if ($t->update($updateQuery.", updated = NOW() WHERE email='".$login."'")) {
+			if ($t->update(array("password" => $newPassword, "updated" => date('Y-m-d H:i:s')), array('email' => $login))) {
 				$letterText = $this->render('account/password.mail.tpl', compact('login', 'newPassword'));
 				$this->get('mailer')->send(
 					'Новый пароль в магазине Цвета жизни',

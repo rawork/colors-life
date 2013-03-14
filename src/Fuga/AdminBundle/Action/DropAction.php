@@ -7,6 +7,6 @@ class DropAction extends Action {
 		parent::__construct($adminController);
 	}
 	function getText() {
-		$this->messageAction($this->get('container')->deleteClass($this->dataTable->getDBTableName()) ? 'Таблица удалена' : 'Ошибка удаления таблицы');
+		$this->messageAction($this->get('container')->deleteClass($this->dataTable->dbName()) ? 'Таблица удалена' : 'Ошибка удаления таблицы');
 	}
 }

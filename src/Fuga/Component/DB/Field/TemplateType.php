@@ -29,14 +29,18 @@ class TemplateType extends Type {
 			$backup_ret = str_replace($this->getPath(), $this->getBackupPath(), $ret);
 			@copy($PRJ_DIR.$ret, $PRJ_DIR.$backup_ret.$date_stamp.'.bak');
 			@unlink($PRJ_DIR.$ret);
-			$values = "'".$this->params['cls']."','".$this->getName()."',".$this->dbId.",NOW(),'".$backup_ret.$date_stamp.'.bak'."'";
+			$values = "'".$this->params['table']."','".$this->getName()."',".$this->dbId.",NOW(),'".$backup_ret.$date_stamp.'.bak'."'";
 			$ret = '';
 		} elseif ($ret && $this->get('util')->_postVar($name.'_version', true, 0)) {
 			$backup_ret = str_replace($this->getPath(), $this->getBackupPath(), $ret);
 			@copy($PRJ_DIR.$ret, $PRJ_DIR.$backup_ret.$date_stamp.'.bak');
 			@unlink($PRJ_DIR.$ret);
-			$values = "'".$this->params['cls']."','".$this->getName()."',".$this->dbId.",NOW(),'".$backup_ret.$date_stamp.'.bak'."'";
-			$ver = $this->get('connection')->getItem('template_version', "SELECT * FROM template_version WHERE id=".$this->get('util')->_postVar($name.'_version', true, 0));
+			$values = "'".$this->params['table']."','".$this->getName()."',".$this->dbId.",NOW(),'".$backup_ret.$date_stamp.'.bak'."'";
+			$sql = "SELECT * FROM template_version WHERE id= :id ";
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->bindValue('id', $this->get('util')->_postVar($name.'_version', true, 0));
+			$stmt->execute();
+			$ver = $stmt->fetch();
 			@copy($PRJ_DIR.$ver['file'], $PRJ_DIR.$ret);
 		} elseif ($ret) {
 			$f = fopen($PRJ_DIR.$ret.'_new', 'w');
@@ -45,7 +49,7 @@ class TemplateType extends Type {
 			if (md5_file($PRJ_DIR.$ret.'_new') != md5_file($PRJ_DIR.$ret)) {
 				$backup_ret = str_replace($this->getPath(), $this->getBackupPath(), $ret);
 				@copy($PRJ_DIR.$ret, $PRJ_DIR.$backup_ret.$date_stamp.'.bak');
-				$values = "'".$this->params['cls']."','".$this->getName()."',".$this->dbId.",NOW(),'".$backup_ret.$date_stamp.'.bak'."'";
+				$values = "'".$this->params['table']."','".$this->getName()."',".$this->dbId.",NOW(),'".$backup_ret.$date_stamp.'.bak'."'";
 				@copy($PRJ_DIR.$ret.'_new', $PRJ_DIR.$ret);
 			}
 			@unlink($PRJ_DIR.$ret.'_new');
@@ -66,7 +70,7 @@ class TemplateType extends Type {
 				$backup_ret = str_replace($this->getPath(), $this->getBackupPath(), $ret);
 				@copy($PRJ_DIR.$ret, $PRJ_DIR.$backup_ret.$date_stamp.'.bak');
 				@unlink($PRJ_DIR.$ret);
-				$values = "'".$this->params['cls']."','".$this->getName()."',".$this->dbId.",NOW(),'".$backup_ret.$date_stamp.'.bak'."'";
+				$values = "'".$this->params['table']."','".$this->getName()."',".$this->dbId.",NOW(),'".$backup_ret.$date_stamp.'.bak'."'";
 			}
 			$dest = $this->get('util')->getNextFileName($this->getPath().$_FILES[$name]['name']);
 			move_uploaded_file($_FILES[$name]['tmp_name'], $PRJ_DIR.$dest);
@@ -74,10 +78,23 @@ class TemplateType extends Type {
 			$ret = $dest;
 		}
 		if ($values) {
-			$vers = $this->get('connection')->getItems('select_version', "SELECT * FROM template_version WHERE cls='".$this->params['cls']."' AND fld='".$this->getName()."' AND rc=".$this->dbId.' ORDRER BY id');
-			if (sizeof($vers) >= __VERSION_QUANTITY)
-				$this->get('connection')->execQuery('template_version', 'DELETE FROM template_version WHERE id='.$vers[0]['id']);
-			$db_ret = $this->get('connection')->execQuery('add_version', 'INSERT INTO template_version(cls,fld,rc,created,file) VALUES('.$values.')');
+			$sql = "SELECT * FROM template_version WHERE cls= :table AND fld= :fld AND rc= :id ORDRER BY id";
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->bindValue('table', $this->params['table']);
+			$stmt->bindValue('fld', $this->getName());
+			$stmt->bindValue('id', $this->dbId);
+			$stmt->execute();
+			$vers = $stmt->fetchAll();
+			if (sizeof($vers) >= __VERSION_QUANTITY) {
+				$this->get('connection1')->delete('template_version', array('id' => $vers[0]['id']));
+			}	
+			$this->get('connection1')->insert("template_version", array(
+				'cls' => $this->params['table'],
+				'fld' => $this->getName(),
+				'rc' => $this->dbId,
+				'created' => date('Y-d-m H:i:s'),
+				'file' => $backup_ret.$date_stamp
+			));
 		}
 		return $ret;
 	}
@@ -100,7 +117,14 @@ class TemplateType extends Type {
 		$randomId = rand(0, getrandmax());
 		if ($content = $this->getStatic()) {
 			$content = '<span id="'.$name.'_delete">Текущая версия: '.$content.'<label for="del'.$randomId.'"><input name="'.$name.'_delete" type="checkbox" id="del'.$randomId.'"> удалить</label></span>';
-			$versions = $this->get('connection')->getItems('template_version', "SELECT * FROM template_version WHERE cls='".$this->params['cls']."' AND fld='".$name."' AND rc=".$this->dbId);
+			
+			$sql = "SELECT * FROM template_version WHERE cls= :table AND fld= :fld AND rc= :id ";
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->bindValue('table', $this->params['table']);
+			$stmt->bindValue('fld', $name);
+			$stmt->bindValue('id', $this->dbId);
+			$stmt->execute();
+			$versions = $stmt->fetchAll();
 			if (count($versions)) {
 				$content .= '<span>Предудущие версии:</span><br> <select onChange="templateState(this, \''.$name.'\')" id="'.$name.'_version" name="'.$name.'_version"><option value="0">Не выбрано</option>'."\n";
 				foreach ($versions as $version) {

@@ -13,14 +13,12 @@ class Container
 	private $templateVars = array();
 	private $services = array();
 	private $managers = array();
-
-	public function initialize() 
-	{
+	
+	public function initialize() {
 		$this->tables = $this->getAllTables();
 	}
 
-	public function getModule($name) 
-	{
+	public function getModule($name) {
 		if (empty($this->modules[$name])) {
 			throw new \Exception('Модуль '.$name.' отсутствует'); 
 		}
@@ -31,23 +29,27 @@ class Container
 	public function getModules() 
 	{
 		if (!$this->ownmodules) {
-			$modules = array();
 			if ($this->get('security')->isSuperuser()) {
-				$modules = $this->modules;
+				$this->ownmodules = $this->modules;
 			} elseif ($user = $this->get('security')->getUser($this->get('util')->_sessionVar('user'))) {
-				$modules = $this->get('connection')->getItems('config_modules', ' SELECT id, sort, name, title, \'content\' AS ctype FROM config_modules WHERE id IN ('.$user['rules'].') ORDER BY sort, title');
+				$sql = 'SELECT id, sort, name, title, \'content\' AS ctype 
+					FROM config_modules WHERE id IN ('.$user['rules'].') ORDER BY sort, title';
+				$stmt = $this->get('connection1')->prepare($sql);
+				$stmt->execute();
+				$modules = $stmt->fetchAll();
 				if ($user['is_admin']) {
-					$query = "SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules
+					$sql = "SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules
 						UNION SELECT id, sort, name, title, 'service' AS ctype FROM system_services
 						ORDER BY sort, title";
 				} else {
-					$query = "SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules WHERE name IN ('config', 'meta')
+					$sql = "SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules WHERE name IN ('config')
 						UNION SELECT id, sort, name, title, 'service' AS ctype FROM system_services
 						ORDER BY sort, title";
 				}
-				$modules = array_merge($modules , $this->get('connection')->getItems('modules', $query));
+				$stmt = $this->get('connection1')->prepare($sql);
+				$stmt->execute();
+				$this->ownmodules = array_merge($this->ownmodules, $stmt->fetchAll());
 			}
-			$this->ownmodules = $modules;
 		}
 		
 		return $this->ownmodules;
@@ -66,11 +68,13 @@ class Container
 	private function getAllTables() {
 		$ret = array();
 		$this->modules = array();
-		$query = "SELECT id, sort, name, title, 'content' AS ctype FROM config_modules
-		UNION SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules
-		UNION SELECT id, sort, name, title, 'service' AS ctype FROM system_services
-		ORDER BY sort, title";
-		$modules = $this->get('connection')->getItems('modules', $query);
+		$sql = "SELECT id, sort, name, title, 'content' AS ctype FROM config_modules
+			UNION SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules
+			UNION SELECT id, sort, name, title, 'service' AS ctype FROM system_services
+			ORDER BY sort, title";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$modules = $stmt->fetchAll();
 		foreach ($modules as $module) {
 			$tables = array();
 			$this->modules[$module['name']] = $module;
@@ -85,7 +89,13 @@ class Container
 				
 			}
 		}
-		$tables = $this->get('connection')->getItems('tables', "SELECT tt.*,cm.name as component FROM table_tables tt LEFT JOIN config_modules cm ON tt.module_id=cm.id WHERE publish=1 ORDER BY tt.sort");
+		$sql = "SELECT t.*,m.name as component 
+				FROM table_tables t 
+				JOIN config_modules m ON t.module_id=m.id 
+				WHERE t.publish=1 ORDER BY t.sort";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$tables = $stmt->fetchAll();
 		foreach ($tables as $table) {
 			$ret[$table['component'].'_'.$table['name']] = new DB\Table($table);
 		}
@@ -111,7 +121,7 @@ class Container
 	
 	public function getPrev($table, $id, $linkName = 'parent_id') {
 		$ret = null;
-		if ($node = $this->getItem($table, intval($id))) {
+		if ($node = $this->getItem($table, $id)) {
 			$ret = $this->getPrev($table, $node[$linkName], $linkName);
 			$ret[] = $node;
 		}
@@ -122,24 +132,18 @@ class Container
 		return $this->getTable($table)->getItem($criteria, $sort, $select);
 	}
 
-	public function getItems($table, $criteria = '', $sort = '', $limit = null, $select = '', $detailed = true) {
-		$ret = null;
-		if (!isset($this->tables[$table])) {
-			throw new \Exception('Table not found: '.$table);
-		} else {
-			$options = array('where' => $criteria, 'order_by' => $sort, 'limit' => $limit);
-			if (trim($select) != '') 
-				$options['select'] = $select;
-			$this->getTable($table)->select($options);
-			$ret = $this->getTable($table)->getNextArrays($detailed);
-		}
-		return $ret;
+	public function getItems($table, $criteria = null, $sort = null, $limit = null, $select = null, $detailed = true) {
+		$options = array('where' => $criteria, 'order_by' => $sort, 'limit' => $limit, 'select' => $select);
+		$this->getTable($table)->select($options);
+		return $this->getTable($table)->getNextArrays($detailed);
 	}
 
-	public function getItemsRaw($query) {
+	public function getItemsRaw($sql) {
 		$ret = array();
-		if (!preg_match('/(delete|truncate|update|insert|drop|alter)+/i', $query)) {
-			$items = $this->get('connection')->getItems('raw', $query);
+		if (!preg_match('/(delete|truncate|update|insert|drop|alter)+/i', $sql)) {
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->execute();
+			$items = $stmt->fetchAll();
 			foreach ($items as $item) {
 				if (isset($item['id'])) {
 					$ret[$item['id']] = $item;
@@ -151,77 +155,63 @@ class Container
 		return $ret;
 	}
 
-	public function getItemRaw($query) {
+	public function getItemRaw($sql) {
 		$ret = null;
-		if (!preg_match('/(delete|truncate|update|insert|drop|alter)+/i', $query)) {
-			$ret = $this->get('connection')->getItem('raw', $query);
+		if (!preg_match('/(delete|truncate|update|insert|drop|alter)+/i', $sql)) {
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->execute();
+			$ret = $stmt->fetch();
 		}
 		return $ret;
 	}
 
-	public function getCount($table, $criteria = '') {
-		return $this->getTable($table)->getCount($criteria);
+	public function count($table, $criteria = '') {
+		return $this->getTable($table)->count($criteria);
 	}
 
-	public function addItem($class, $fields, $values) {
-		if (!isset($this->tables[$class])) {
-			throw new \Exception('Class not found: '.$class);
+	public function addItem($class, $values) {
+		return $this->getTable($class)->insert($values);
+		
+	}
+
+	public function addItemGlobal($class) {
+		return $this->getTable($class)->insertGlobals();
+	}
+
+	public function updateItem($table, $values, $criteria) {
+		if (is_numeric($criteria)) {
+			return $this->getTable($table)->update($values, $criteria);
 		} else {
-			return $this->tables[$class]->insert($fields, $values);
+			return $this->getTable($table)->update($values, $criteria);
 		}
 	}
 
-	public function addGlobalItem($class) {
-		if (!isset($this->tables[$class])) {
-			throw new \Exception('Class not found: '.$class);
+	public function deleteItem($table, $query) {
+		if ($ids = $this->delRel($table, $this->getItems($table, !empty($query) ? $query : '1<>1'))) {
+			return $this->getTable($table)->delete('id IN ('.$ids.')');
 		} else {
-			return $this->tables[$class]->insertGlobals();
-		}
+			return false;
+		}	
 	}
 
-	public function updateItem($class, $query = 0, $condition) {
-		if (!isset($this->tables[$class])) {
-			throw new \Exception('Class not found: '.$class);
-		} else {
-			if (is_numeric($query)) {
-				return $this->tables[$class]->update($condition.' WHERE id='.$query);
-			} else {
-				return $this->tables[$class]->update($condition.' WHERE '.$query);
-			}
-		}
-	}
-
-	public function deleteItem($class, $query) {
-		if (!isset($this->tables[$class])) {
-			throw new \Exception('Class not found: '.$class);
-		} else {
-			$query .= $class == 'user_user' || $class == 'user_group' ? ' AND id<>1' : '';
-			if ($ids = $this->delRel($class, $this->getItems($class, !empty($query) ? $query : '1<>1'))) 
-				return $this->tables[$class]->delete('id IN ('.$ids.')');
-			else
-				return false;
-		}
-
-	}
-
-	public function delRel($class, $items = array()) {
+	public function delRel($table, $items = array()) {
 		$ids0 = '';
 		foreach ($items as $a) {
-			if ($this->tables[$class]->params['is_system']) {
+			if ($this->tables[$table]->params['is_system']) {
 				foreach ($this->tables as $t) {
-					if ($t->cname != 'user' && $t->cname != 'template' && $t->cname != 'page') {
+					if ($t->moduleName != 'user' && $t->moduleName != 'template' && $t->moduleName != 'page') {
 						foreach ($t->fields as $f) {
 							$ft = $t->createFieldType($f);
-							if (stristr($ft->params['type'], 'select') && $ft->params['l_table'] == $class) {
-								$this->deleteItem($t->getDBTableName(), $ft->getName().'='.$a['id']);
+							if (stristr($ft->params['type'], 'select') && $ft->params['l_table'] == $table) {
+								$this->deleteItem($t->dbName(), $ft->getName().'='.$a['id']);
 							}
 							$ft->free();
 						}
 					}
 				}
 			}
-			foreach ($this->tables[$class]->fields as $f) {
-				$ft = $this->tables[$class]->createFieldType($f, $a);
+			foreach ($this->tables[$table]->fields as $f) {
+				$ft = $this->tables[$table]->createFieldType($f, $a);
 				if ($ft->params['type'] == 'image' || $ft->params['type'] == 'file' || $ft->params['type'] == 'template') {
 					@unlink($GLOBALS['PRJ_DIR'].$a[$ft->getName()]);
 					if (isset($ft->params['sizes'])) {
@@ -242,28 +232,35 @@ class Container
 		return $ids0;
 	}
 
-	public function dublicateItem($class, $id = 0, $times = 1) {
-		$entity = $this->getItem($class, $id);
-		if (count($entity)) {
+	public function duplicateItem($table, $id = 0, $times = 1) {
+		$entity = $this->getItem($table, $id);
+		if ($entity) {
 			for ($i = 1; $i <= $times; $i++)
-				$this->tables[$class]->insertArray($entity);
-			return $this->getItem($class, $this->get('connection')->getInsertID());
+				$this->getTable($table)->insertArray($entity);
+			return $this->getItem($table, $this->get('connection1')->lastInsertId());
 		} else {
-			return array();
+			return null;
 		}
 	}
 
-	public function deleteClass($table, $complex = false) {
+	public function dropTable($table, $complex = false) {
 		if ($complex) {
-			$tableObj = $this->getTable($table);
-			$this->get('connection')->execQuery('delete_fields', 'DELETE FROM table_attributes WHERE table_id='.$tableObj->id);
-			$this->get('connection')->execQuery('delete_table', "DELETE FROM table_tables WHERE name='$table'");
+			$this->get('connection1')->delete('table_attributes', array('table_id' => $this->getTable($table)->id));
+			$this->get('connection1')->delete('table_tables', array('name' => $table));
 		}
-		return $this->getTable($table)->drop();
+		return $this->get('connection1')->query('DROP TABLE '.$table);
 	}
 
-	public function truncateClass($table) {
-		return $this->getTable($table)->truncate();
+	public function truncateTable($table) {
+		return $this->get('connection1')->query('DROP TRUNCATE '.$table);
+	}
+	
+	public function backupDB($filename) {
+		$cwd = getcwd();
+		chdir(dirname($filename));
+		system('mysqldump -u '.$GLOBALS['DB_USER']. ' -p'.$GLOBALS['DB_PASS'].' -h '.$GLOBALS['DB_HOST'].' '.$GLOBALS['DB_BASE'].' > '.basename($filename));
+		chdir($cwd);
+		return true;
 	}
 	
 	public function getControllerClass($path) {

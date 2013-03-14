@@ -4,26 +4,28 @@ namespace Fuga\Component\DB;
 	
 class Table {
 	public $name;
-	public $cname;
 	public $id;
-	public $cls;
 	public $title;
 	public $fields;
 	public $params;
 
 	public $moduleName;
 	public $tableName;
-	private $tableNameFull;
+	private $dbname;
+	private $stmt;
+	private $realTypes = array (
+			'html' => 'text', 'checkbox' => 'boolean', 'currency' => 'decimal', 'select' => 'integer',
+			'select_tree' => 'integer', 'select_list' => 'string', 'date' => 'date', 'datetime' => 'datetime',
+			'text' => 'text', 'password' => 'string', 'enum' => 'string', 'image' => 'string',
+			'string' => 'string', 'file' => 'string', 'number' => 'integer', 'template' => 'string'
+	);
 
-	function __construct($table) {
+	public function __construct($table) {
 		$this->name = $table['name'];
-		$this->cname = $table['component'];
 		$this->title = $table['title'];
-		$this->cls = $this->cname.'_'.$this->name;
-
 		$this->tableName		= $table['name'];
 		$this->moduleName		= $table['component'];
-		$this->setDBTableName($this->moduleName, $this->tableName);
+		$this->dbname			= $this->moduleName.'_'.$this->tableName;
 
 		$this->id = isset($table['id']) ? $table['id'] : 0;
 		$this->fields = array();
@@ -44,12 +46,16 @@ class Table {
 		$this->params = $table;
 		$this->setTableFields();
 	}
+	
+	public function dbName() {
+		return $this->dbname;
+	}
+	
+	public function realType($type) {
+		return $this->realTypes[$type];
+	}
 
-	/**
-	 * Set fields propeties
-	 * @throws Exception 
-	 */
-	function readConfig() {
+	private function readConfig() {
 		if (!empty($this->params['fieldset']) && is_array($this->params['fieldset'])) {
 			$this->fields = $this->params['fieldset'];
 		} else {
@@ -57,36 +63,35 @@ class Table {
 		}
 	}
 
-	/**
-	 * Read Table config from DB
-	 * @throws Exception 
-	 */
-	function readDBConfig() {
-		$fields = $this->get('connection')->getItems('table_fields', "SELECT * FROM table_attributes WHERE publish=1 AND table_id=".$this->id." ORDER by sort");
-		if (count($fields) > 0) {
-			foreach ($fields as $f) {
-				$f['group_update'] = $f['group_update'] == 1;
-				$f['readonly'] = $f['readonly'] == 1;
-				$f['search'] = $f['search'] == 1;
-				if (!empty($f['params'])) {
-					$aparams = explode(';', trim($f['params']));
-					foreach ($aparams as $ap) {
-						if (!empty($ap) && stristr($ap, ':')) {
-							$vals = explode(':', $ap);
-							$f[$vals[0]] = str_replace("`", "'", $vals[1]);
+	private function readDBConfig() {
+		$sql = "SELECT * FROM table_attributes WHERE publish=1 AND table_id= :id ORDER by sort";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->bindValue('id', $this->id);
+		$stmt->execute();
+		$fields = $stmt->fetchAll();
+		if ($fields) {
+			foreach ($fields as $field) {
+				$field['group_update'] = $field['group_update'] == 1;
+				$field['readonly'] = $field['readonly'] == 1;
+				$field['search'] = $field['search'] == 1;
+				if (!empty($field['params'])) {
+					$params = explode(';', trim($field['params']));
+					foreach ($params as $param) {
+						if (!empty($param) && stristr($param, ':')) {
+							$values = explode(':', $param);
+							$field[$values[0]] = str_replace("`", "'", $values[1]);
 						}
 					}
 				}
-				$this->fields[$f['name']] = $f;
+				$this->fields[$field['name']] = $field;
 			}
-
 		} else {
-			throw new \Exception('No fields in table: '.$this->getDBTableName());
+			throw new \Exception('В таблице '.$this->dbName().' не настроены поля');
 		}
 	}
 	
-	function createFieldType(&$fieldParams, $entity = null) {
-		switch ($fieldParams['type']) {
+	public function createFieldType($field, $entity = null) {
+		switch ($field['type']) {
 			case 'select_tree':
 				$fieldName = 'SelectTree';
 				break;
@@ -94,304 +99,269 @@ class Table {
 				$fieldName = 'SelectList';
 				break;
 			default:	
-				$fieldName = ucfirst($fieldParams['type']);
+				$fieldName = ucfirst($field['type']);
 				break;
 		}
 		$className = '\\Fuga\\Component\\DB\\Field\\'.$fieldName.'Type';
-		return new $className($fieldParams, $entity);
+		return new $className($field, $entity);
 	}
 
-	/*** standart SQL operations */
-	function getSQLFieldsList() {
-		$ret = '';
-		foreach ($this->fields as $aField) {
-			$ret .= ($ret ? ',' : '').$aField['name'];
+	public function getFieldList() {
+		$ret = array('id');
+		foreach ($this->fields as $field) {
+			$ret[] = $field['name'];
 		}
 		return $ret;
 	}
 
-	function insertGlobals() {
-		$query = '';
+	public function insertGlobals() {
 		$extraIds = array();
-		foreach ($this->fields as $fieldParams) {
-			if ($fieldParams['type'] == 'listbox') {
+		$values = array();
+		foreach ($this->fields as $field) {
+			if ($field['type'] == 'listbox') {
 				continue;
 			}	
-			$ft = $this->createFieldType($fieldParams);
-			if ($fieldParams['name'] == 'created') {
-				$query .= ($query ? ', ' : ' ').'NOW()';
-			} elseif (stristr($fieldParams['type'], 'date')) {
-				$query .= ($query ? ', ' : '').$ft->getSQLValue();
-			} elseif ($fieldParams['name'] == 'locale') {
-				$query .= ($query ? ", '" : "'").$this->get('util')->_sessionVar('locale', false, 'ru')."'";
+			$fieldType = $this->createFieldType($field);
+			if ($field['name'] == 'created') {
+				$values[$fieldType->getName()] = date('Y-m-d H:i:s');
+			} elseif ($field['name'] == 'locale') {
+				$values[$fieldType->getName()] = $this->get('router')->getParam('locale');
 			} else {
-				$query .= ($query ? ", '" : "'").$ft->getSQLValue()."'";
+				$values[$fieldType->getName()] = $fieldType->getSQLValue();
 			}
-			if (($fieldParams['type'] == 'select' 
-				|| $fieldParams['type'] == 'select_tree')
-				&& !empty($fieldParams['link_type']) 
-				&& $fieldParams['link_type'] == 'many'
+			if (($field['type'] == 'select' 
+				|| $field['type'] == 'select_tree')
+				&& !empty($field['link_type']) 
+				&& $field['link_type'] == 'many'
 				) {
-				$extraIds = explode(',', $this->get('util')->_postVar($fieldParams['name'].'_extra'));
-				$linkTable = $fieldParams['link_table'];
-				$linkInversed = $fieldParams['link_inversed'];
-				$linkMapped = $fieldParams['link_mapped'];
+				$extraIds = explode(',', $this->get('util')->_postVar($field['name'].'_extra'));
+				$linkTable = $field['link_table'];
+				$linkInversed = $field['link_inversed'];
+				$linkMapped = $field['link_mapped'];
 			}
 		}
-		if ($ret = $this->insert($this->getSQLFieldsList(), $query)) {
-			$lastId = $this->get('connection')->getInsertID();
-			if (count($extraIds) > 0) {
-
-				foreach ($extraIds as $extraId) {
-					$this->get('connection')->execQuery('ins', 
-						'INSERT INTO '.$linkTable.'('.$linkInversed.','.$linkMapped.') VALUES('.$lastId.','.$extraId.')'
-					);
-				}
+		if (!$this->insert($values)) {
+			$lastId = $this->get('connection1')->lastInsertId();
+			foreach ($extraIds as $extraId) {
+				$this->get('connection1')->insert(
+					$linkTable,
+					array($linkInversed => $lastId, $linkMapped => $extraId)
+				);
 			}
+			
 			return $lastId;
 		} else {
 			return false;
 		}
-		
 	}
-	function updateGlobals() {
+	
+	public function updateGlobals() {
 		$entityId = $this->get('util')->_postVar('id', true);
 		$entity = $this->getItem($entityId);
-		$categoryId = 0;
-		$sql = '';
-		foreach ($this->fields as $fieldParams) {
-			if ($fieldParams['type'] == 'listbox') {
+		$values = array();
+		foreach ($this->fields as $field) {
+			if ($field['type'] == 'listbox') {
 				continue;
 			}
-			$ft = $this->createFieldType($fieldParams, $entity);
-			if ($fieldParams['name'] == 'category_id')
-				$categoryId = $ft->getValue();
-			if ($this->getDBTableName() == 'user_user' && $fieldParams['name'] == 'login' && $entityId == 1) {
-				$sql .= ($sql ? ', ' : '').$ft->getName()."='admin'";
-			} elseif ($fieldParams['name'] == 'updated') {
-				$sql .= ($sql ? ', ' : '').$ft->getName().'= NOW()';
-			} elseif (empty($fieldParams['readonly'])) {
-				if (stristr($fieldParams['type'], 'date') || $fieldParams['type'] == 'select' || $fieldParams['type'] == 'select_tree' || $fieldParams['type'] == 'number' || $fieldParams['type'] == 'currency')
-					$sql .= ($sql ? ', ' : '').$ft->getName().'='.$ft->getSQLValue(); 
-				else
-					$sql .= ($sql ? ', ' : '').$ft->getName()."='".$ft->getSQLValue()."'";
+			$fieldType = $this->createFieldType($field, $entity);
+			if ($this->dbName() == 'user_user' && $field['name'] == 'login' && $entityId == 1) {
+				$values[$fieldType->getName()] = 'admin';
+			} elseif ($field['name'] == 'updated') {
+				$values[$fieldType->getName()] = date('Y-m-d H:i:s');
+			} elseif (empty($field['readonly'])) {
+				$values[$fieldType->getName()] = $fieldType->getSQLValue();
 			}
-			if (($fieldParams['type'] == 'select' 
-				|| $fieldParams['type'] == 'select_tree')
-				&& !empty($fieldParams['link_type']) 
-				&& $fieldParams['link_type'] == 'many'
+			if (($field['type'] == 'select'	|| $field['type'] == 'select_tree')
+				&& isset($field['link_type']) && $field['link_type'] == 'many'
 				) {
-				$extraIds = explode(',', $this->get('util')->_postVar($fieldParams['name'].'_extra'));
-				$linkTable = $fieldParams['link_table'];
-				$linkInversed = $fieldParams['link_inversed'];
-				$linkMapped = $fieldParams['link_mapped'];
-				$this->get('connection')->execQuery('ins', 
-					'DELETE FROM '.$linkTable.' WHERE '.$linkInversed.'='.$entityId
-				);
-				if (count($extraIds) > 0) {
-					
-					foreach ($extraIds as $extraId) {
-						$this->get('connection')->execQuery('ins', 
-							'INSERT INTO '.$linkTable.'('.$linkInversed.','.$linkMapped.') VALUES('.$entityId.','.$extraId.')'
-						);
-					}
+				$extraIds = explode(',', $this->get('util')->_postVar($field['name'].'_extra'));
+				$linkTable = $field['link_table'];
+				$linkInversed = $field['link_inversed'];
+				$linkMapped = $field['link_mapped'];
+				$this->get('connection1')->delete($linkTable, array($linkInversed => $entityId));
+				foreach ($extraIds as $extraId) {
+					$this->get('connection1')->insert($linkTable, 
+							array($linkInversed => $entityId, $linkMapped => $extraId)
+					);
 				}
 			}
 		}
-		// Обновление значений дополнительных свойств
-		if ($this->getDBTableName() == 'catalog_product1') {
-			$category = $this->get('connection')->getItem('get_cat', 'SELECT id,title,name,filters from catalog_category where id='.$categoryId);
-			if ($category) {
-				$features = $this->get('connection')->getItems('get_features', 'SELECT * from catalog_features where id IN('.$category['filters'].')');
-				foreach($features as $featureData) {
-					$featureId = $featureData['id'];
-					$filterValue = $this->get('util')->_postVar('filter_'.$featureId, true);
-					$feature_value = $this->get('connection')->getItem('get_value', 'SELECT id, feature_value_id FROM catalog_features_values WHERE feature_id='.$featureId.' AND product_id='.$entityId);
-					if ($feature_value){
-						$values = "feature_value_id=".$filterValue;
-						$this->get('connection')->execQuery('upd_value', "UPDATE catalog_features_values set ".$values." where id=".$feature_value['id']);
-					} else { 
-						$values = $filterValue.','.$featureId.','.$entityId;
-						$this->get('connection')->execQuery('add_value', "INSERT INTO catalog_features_values (feature_value_id,feature_id,product_id) VALUES (".$values.")");
-					}
-				}
-			}
-		}
-		$where = '';
-		if (($this->getDBTableName() == 'user_user' || $this->getDBTableName() == 'user_group') && !$this->get('security')->isSuperuser())
-			$where = ' AND id<>1';
 
-		return $this->update($sql.' WHERE id='.$entityId.$where);
+		return $this->update($values, array('id' => $entityId));
 	}
 
 	function group_update() {
-		$entities = $this->getArraysWhere('id IN('.$this->get('util')->_postVar('ids').')');
-		$query = '';
+		$this->select(array('where' => 'id IN('.$this->get('util')->_postVar('ids').')')); 
+		$entities = $this->getNextArrays();
 		foreach ($entities as $entity) {
-			$values = '';
+			$values = array();
 			$entityId = $entity['id'];
-			foreach ($this->fields as $fieldParams) {
-				if ($fieldParams['type'] != 'listbox') {
-					$fieldType = $this->createFieldType($fieldParams, $entity);
-					if ($fieldParams['type'] == 'checkbox' && !isset($_POST[$fieldType->getName().$entity['id']])) {
-						$values .= ($values ? ',' : '').$fieldType->getName()."=0";	
-					} elseif (isset($_POST[$fieldType->getName().$entity['id']]) || isset($_FILES[$fieldType->getName().$entity['id']]))
-						if (stristr($fieldParams['type'], 'date') || $fieldParams['type'] == 'select' || $fieldParams['type'] == 'select_tree' || $fieldParams['type'] == 'number' || $fieldParams['type'] == 'currency')
-							$values .= ($values ? ', ' : '').$fieldType->getName().'='.$fieldType->getGroupSQLValue(); 
-						else
-							$values .= ($values ? ', ' : '').$fieldType->getName()."='".$fieldType->getGroupSQLValue()."'";
+			foreach ($this->fields as $field) {
+				if ($field['type'] != 'listbox') {
+					$fieldType = $this->createFieldType($field, $entity);
+					if ($field['type'] == 'checkbox') {
+						$values[$fieldType->getName()] = $this->get('util')->_postVar($fieldType->getName().$entity['id']);	
+					}
+					if ($this->get('util')->_postVar($fieldType->getName().$entity['id']) 
+						|| isset($_FILES[$fieldType->getName().$entity['id']])) {
+						$values[$fieldType->getName()] = $fieldType->getGroupSQLValue(); 
+					}	
 				}
-				if (($fieldParams['type'] == 'select' 
-					|| $fieldParams['type'] == 'select_tree')
-					&& !empty($fieldParams['link_type']) 
-					&& $fieldParams['link_type'] == 'many'
+				if (($field['type'] == 'select' || $field['type'] == 'select_tree')
+					&& isset($field['link_type']) && $field['link_type'] == 'many'
 					) {
-					$extraIds = explode(',', $this->get('util')->_postVar($fieldParams['name'].$entityId.'_extra'));
-					$linkTable = $fieldParams['link_table'];
-					$linkInversed = $fieldParams['link_inversed'];
-					$linkMapped = $fieldParams['link_mapped'];
-					$this->get('connection')->execQuery('ins', 
-						'DELETE FROM '.$linkTable.' WHERE '.$linkInversed.'='.$entityId
-					);
-					if (count($extraIds) > 0) {
-						foreach ($extraIds as $extraId) {
-							$this->get('connection')->execQuery('ins', 
-								'INSERT INTO '.$linkTable.'('.$linkInversed.','.$linkMapped.') VALUES('.$entityId.','.$extraId.')'
-							);
-						}
+					$extraIds = explode(',', $this->get('util')->_postVar($field['name'].$entityId.'_extra'));
+					$linkTable = $field['link_table'];
+					$linkInversed = $field['link_inversed'];
+					$linkMapped = $field['link_mapped'];
+					$this->get('connection1')->delete($linkTable, array($linkInversed => $entityId));
+					foreach ($extraIds as $extraId) {
+						$this->get('connection1')->insert($linkTable, array(
+							$linkInversed => $entityId,
+							$linkMapped => $extraId
+						));
 					}
 				}
 			}
-			if ($values)
-				$query .= 'UPDATE '.$this->getDBTableName().' SET '.$values.' WHERE id='.$entity['id'].';#|#|#';
+			if ($values) {
+				$this->update($values, array('id' => $entity['id']));
+			}	
 		}
-		return $this->get('connection')->execQuery($this->getDBTableName().'_update', $query);
+		return true;
+	}
+	
+	public function getSchema() {
+		$schema = new \Doctrine\DBAL\Schema\Schema();
+		$table = $schema->createTable($this->dbName());
+		$column = $table->addColumn('id', 'integer', array('unsigned' => true));
+		$column->setAutoincrement(true);
+		foreach ($this->fields as $field) {
+			$table->addColumn($field['name'], $this->realType($field['type']));
+		}
+		$table->setPrimaryKey(array('id'));
+		return $schema;
 	}
 
-	/* special operations */
-	function create() {
-		$query = 'CREATE TABLE '.$this->getDBTableName();
-		$query .= '( id int(11) NOT NULL auto_increment, ';
-		foreach ($this->fields as $aField) {
-			$oFieldType = $this->createFieldType($aField);
-			if ($oFieldType->getSQL()) {
-				$query .= $oFieldType->getSQL().', ';
+	public function create() {
+		try {
+			$queries = $this->getSchema()->toSql($this->get('connection1')->getDatabasePlatform());
+			foreach ($queries as $sql) {
+				$this->get('connection1')->query($sql);
 			}
-		}
-		$query .= ' PRIMARY KEY(id)) TYPE = InnoDB';
-		return $this->get('connection')->execQuery($this->getDBTableName(), $query);
-	}
-	function drop() {
-		return $this->get('connection')->execQuery($this->getDBTableName().'_droptable', 'DROP TABLE '.$this->getDBTableName());
-	}
-	function truncate() {
-		return $this->get('connection')->execQuery($this->getDBTableName().'truncateclass', 'TRUNCATE TABLE '.$this->getDBTableName());
-	}
-	function alter() {
-	global $DB_TYPE;
-		$ret = true;
-		$sql = '';
-		$fields = $this->get('connection')->getFieldsList($this->getDBTableName());
-		if (!is_array($fields))
+			return true;
+		} catch (\Exception $e) {
 			return false;
-		foreach ($this->fields as $f) {
-			if ($f['type'] != 'listbox' && $f['type'] != 'gallery') {
-				$ft = $this->createFieldType($f);
-				if (!isset($fields[$f['name']]))
-					$sql .= 'ALTER TABLE '.$this->getDBTableName().' ADD COLUMN '.$ft->getSQL().';#|#|#';
-				if (isset($fields[$f['name']]) && $fields[$f['name']]['Type'] != $this->get('connection')->getFieldRealType($f['type']))
-					$sql .= 'ALTER TABLE '.$this->getDBTableName().' CHANGE '.$f['name'].' '.$ft->getSQL().';#|#|#';
-			// Доработать изменение типа str to int
-			// Доработать изменение имени по сравнении старого имени
-			}
-		}
-		foreach ($fields as $k => $f) {
-			if ($k == 'id' || $f['Type'] == 'listbox' || $f['Type'] == 'gallery')
-				continue;
-			if (!isset($this->fields[$k]))
-				$sql .= 'ALTER TABLE '.$this->getDBTableName().' DROP COLUMN '.$f['Field'].';#|#|#';
-		}
-		if ($this->params['is_search']) {
-			$indexes = $this->get('connection')->getItems('get_indexes', 'SHOW INDEX FROM '.$this->getDBTableName());
-			$fulltext_exists = false;
-			foreach ($indexes as $ind) {
-				if ($ind['Key_name'] == 'search' && $ind['Index_type'] == 'FULLTEXT') {
-					$fulltext_exists = true;
-					break;
-				}
-			}
-			$search_fields = '';
-			foreach ($this->fields as $f) {
-				if (($f['type'] == 'html' || $f['type'] == 'text' || $f['type'] == 'string') && $f['name'] != 'locale' && $f['name'] != 'sort') {
-					$search_fields .= ($search_fields ? ',' : '').$f['name'];
-				}
-			}
-			if ($search_fields) {
-//					if ($fulltext_exists)
-//						$sql .= 'ALTER TABLE '.$this->getDBTableName().' DROP INDEX search;#|#|#';
-//					$sql .= 'ALTER TABLE '.$this->getDBTableName().' ADD FULLTEXT INDEX search ('.$search_fields.');#|#|#';
-			} elseif ($fulltext_exists) {
-				$sql .= 'ALTER TABLE '.$this->getDBTableName().' DROP INDEX search;#|#|#';
-			}
-		}
-		if ($sql) {
-			return $this->get('connection')->execQuery('alter_table_'.$this->getDBTableName(), $sql);
-		}
-		return $ret;
+		}	
 	}
+	
+	public function alter() {
+		try {
+			$sm = $this->get('connection1')->getSchemaManager();
+			$fromSchema = $sm->createSchema();
+			$toSchema = clone $fromSchema;
+			$table = $toSchema->getTable($this->dbName());
+			foreach ($this->fields as $field) {
+				if (in_array($field['type'], array('listbox', 'gallery'))) {
+					continue;
+				}
+				try {
+					$column = $table->getColumn($field['name']);
+					if ($column->getType()->getName() != $this->realType($field['type'])) {
+						$table->changeColumn(
+							$field['name'], 
+							array('Type' => \Doctrine\DBAL\Types\Type::getType($this->realType($field['type']))
+						));
+					}
+				} catch (\Exception $e) {
+					$table->addColumn($field['name'], $this->realType($field['type']));
+				}
+			}
+			$columns = $table->getColumns();
+			foreach ($columns as $column) {
+				if ('id' == $column->getName()) {
+					continue;
+				}	
+				if (!isset($this->fields[$column->getName()]))
+					$table->dropColumn($column->getName());
+			}
 
-	/*** More */
+			// TODO Написать создание уникальных индексов по описанию
+			// TODO Написать создание индексов по описанию
+
+			if ($this->params['is_search']) {
+				// TODO Заново написать создание индексов для поиска
+			}
+			
+			$queries = $fromSchema->getMigrateToSql($toSchema, $this->get('connection1')->getDatabasePlatform());
+			foreach ($queries as $sql) {
+				$this->get('connection1')->query($sql);
+			}
+			return true;
+		} catch (\Exception $e) {
+			return false;
+		}	
+		
+	}
+	
+	private function drop() {
+		return $this->get('connection1')->query('DROP TABLE '.$this->dbName());
+	}
+	
+	private function truncate() {
+		return $this->get('connection1')->query('TRUNCATE TABLE '.$this->dbName());
+	}
+	
 	function getSearchSQL() {
-		$ret = '';
+		$filters = array();
 		if (!empty($_REQUEST['search_filter_id'])) {
-			$ret .= ' id = '.intval($_REQUEST['search_filter_id']);
+			$filters[] = 'id='.intval($_REQUEST['search_filter_id']);
 		}
-		foreach ($this->fields as $f) {
-			if ($f['type'] != 'listbox') {
-				$fieldType = $this->createFieldType($f);
+		foreach ($this->fields as $field) {
+			if ($field['type'] != 'listbox') {
+				$fieldType = $this->createFieldType($field);
 				if ($filter = $fieldType->getSearchSQL()) {
-					$ret .= $ret ? ' AND '.$filter : $filter;
+					$filters[] = $filter;
 				}
 			}
 		}
-		return $ret;
+		return implode(' AND ', $filters);
 	}
 
-	function getSearchURL() {
-		$ret = '';
+	public function getSearchURL() {
+		$filters = array();
 		if (!empty($_REQUEST['search_filter_id'])) {
-			$ret .= 'search_filter_id='.intval($_REQUEST['search_filter_id']);
+			$filters[] = 'search_filter_id='.intval($_REQUEST['search_filter_id']);
 		}
-		foreach ($this->fields as $f) {
-			if ($f['type'] != 'listbox') {
-				$ft = $this->createFieldType($f);
-				if ($filter = $ft->getSearchURL()) {
-					$ret .= $ret ? '&'.$filter : $filter;
+		foreach ($this->fields as $field) {
+			if ($field['type'] != 'listbox') {
+				$fieldType = $this->createFieldType($field);
+				if ($filter = $fieldType->getSearchURL()) {
+					$filters[] = $filter;
 				}
 			}
 		}
-		return $ret;
+		return implode('&', $filters);
 	}
-	/*** easy SQL */
-	function insert($names, $values) {
-		return $this->get('connection')->execQuery($this->getDBTableName(), 'INSERT INTO '.$this->getDBTableName().'('.$names.') VALUES('.$values.')');
+	
+	public function insert($values) {
+		return $this->get('connection1')->insert($this->dbName(), $values);
 	}
+	
 	function insertArray($entity) {
-		$names = $values = '';
+		$values = array();
 		foreach ($entity as $key => $v) {
-			foreach ($this->fields as $fieldData) {
-				if ($key && $fieldData['name'] == $key) {
-					$names = ($names ? $names.', ' : '').$fieldData['name'];
-					if ($entity[$fieldData['name']] && ($fieldData['type'] == 'image' || $fieldData['type'] == 'file' || $fieldData['type'] == 'template')) {
-						$ft = $this->createFieldType($fieldData);
+			foreach ($this->fields as $field) {
+				if ($key && $field['name'] == $key) {
+					$fieldType = $this->createFieldType($field);
+					if ($entity[$field['name']] && ($field['type'] == 'image' || $field['type'] == 'file' || $field['type'] == 'template')) {
 						$dest = $this->get('util')->getNextFileName($v);
-						@copy($GLOBALS['PRJ_DIR'].$v,$GLOBALS['PRJ_DIR'].$dest);
-						$values = ($values ? $values.', ' : '')."'".$dest."'";
+						@copy($GLOBALS['PRJ_DIR'].$v, $GLOBALS['PRJ_DIR'].$dest);
+						$values[$fieldType->getName()] = $dest;
 
-						if ($fieldData['type'] == 'image' && isset($ft->params['sizes'])) {
+						if ($field['type'] == 'image' && isset($fieldType->params['sizes'])) {
 							$pathParts0 = pathinfo($v);
 							$pathParts = pathinfo($dest);
-							$sizes = explode(',', $ft->params['sizes']);
+							$sizes = explode(',', $fieldType->params['sizes']);
 							foreach ($sizes as $sizeData) {
 								$sizeParams = explode('|', $sizeData);
 								if (count($sizeParams) == 2) {
@@ -402,17 +372,21 @@ class Table {
 							}
 						}
 					} else {
-						$values = ($values ? $values.', ' : '')."'".$v."'";	
+						$values[$fieldType->getName()] = $v;
 					}
 					break;
 				}
 			}
 		}
-		$ret = $this->insert($names, $values);
-		$lastId = $this->get('connection')->getInsertID();
+		$ret = $this->insert($values);
+		$lastId = $this->get('connection1')->lastInsertId();
 		if ($this->params['multifile']) {
-			$sql = "SELECT * FROM system_files WHERE entity_id={$entity['id']} AND table_name='".$this->getDBTableName()."'";
-			$photos = $this->get('connection')->getItems('get_system_files', $sql);
+			$sql = "SELECT * FROM system_files WHERE entity_id= :id AND table_name= :table";
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->bindValue('id', $entity['id']);
+			$stmt->bindValue('table', $this->dbName());
+			$stmt->execute();
+			$photos = $stmt->fetchAll();
 			foreach ($photos as $photo) {
 				$filepath = $photo['file'];
 				$dest = $this->get('util')->getNextFileName($filepath);
@@ -421,172 +395,139 @@ class Table {
 				$photo['file'] 		= $dest;
 				$photo['created'] 	= date("Y-m-d H:i:s");
 				$photo['entity_id'] = $lastId;
-				$names = implode(',', array_keys($photo));
-				array_walk($photo, "self::fillValue");
-				$values = implode(',', $photo);
-				$sql = "INSERT INTO system_files ($names) VALUES ($values)";
-				$this->get('connection')->execQuery($this->getDBTableName(), $sql);
+				$this->get('connection1')->insert('system_files', $photo);
 			}
 		}
-		//exit;
 		return $ret;
 	}
 
-	function update($sUpdate) {
-		$sDBTableName = $this->getDBTableName();
-		$sQuery = "
-			UPDATE
-				$sDBTableName
-			SET
-				$sUpdate
-		";
-		//die($sQuery);
-		return $this->get('connection')->execQuery($sDBTableName, $sQuery);
+	public function update($values, $criteria) {
+		return $this->get('connection1')->update($this->dbName(), $values, $criteria);
 	}
-	function delete($sQuery) {
-		return $this->get('connection')->execQuery($this->getDBTableName().'_deleterecords', 'DELETE FROM '.$this->getDBTableName().' WHERE '.$sQuery);
+	
+	public function delete($criteria) {
+		return $this->get('connection1')->query('DELETE FROM '.$this->dbName().' WHERE '.$criteria);
 	}
-	function select($a = null) {
-		if ($this->params['is_lang']) {
-			$a['where'] = empty($a['where']) ? "locale='".$this->get('util')->_sessionVar('locale', false, 'ru')."'" : $a['where']." AND locale='".$this->get('util')->_sessionVar('locale', false, 'ru')."'";
-		}
-		return $this->get('connection')->execQuery($this->getDBTableName(),
-			'SELECT '.(!empty($a['select']) ? $a['select'] : '*').' FROM '.
-			(!empty($a['from']) ? $a['from'] : $this->getDBTableName()).
-			(!empty($a['where']) ? ' WHERE '.$a['where'] : '').
-			(!empty($a['order_by']) ? ' ORDER BY '.$a['order_by'] : (!empty($this->params['order_by']) ? ' ORDER BY '.$this->params['order_by'] : ' ORDER BY id')).
-			(!empty($a['limit']) ? ' LIMIT '.$a['limit'] : '')
-		);
+	
+	public function select($options = array()) {
+		try {
+			if ($this->params['is_lang']) {
+				$locale = $this->get('router')->getParam('locale');
+				$options['where'] = empty($options['where']) ? 
+						"locale='".$locale."'" 
+						: 
+						$options['where']." AND locale='".$locale."'";
+			}
+			if (empty($options['select'])) {
+				$options['select'] = implode(',', $this->getFieldList());
+			}
+			if (empty($options['from'])) {
+				$options['from'] = $this->dbName();
+			}
+			if (empty($options['where'])) {
+				$options['where'] = '1=1';
+			}
+			if (empty($options['order_by'])) {
+				$options['order_by'] = $this->params['order_by'] ?: 'id';
+			}
+			if (empty($options['limit'])) {
+				$options['limit'] = '100000';
+			}
+			$sql = 'SELECT '.$options['select'].
+				' FROM '.$options['from'].
+				' WHERE '.$options['where'].
+				' ORDER BY '.$options['order_by'].
+				' LIMIT '.$options['limit'];
+			$this->stmt = $this->get('connection1')->prepare($sql);
+			$this->stmt->execute();
+			
+			return true;	
+		} catch (\Exception $e) {
+			
+			return false;
+		}	
 	}
-	function selectWhere($where, $sort = '', $select = '') {
-		return $this->select(array('where' => $where, 'select' => $select, 'order_by' => $sort));
-	}
-	function getNextArray($bDetailed = true) {
-		$ret = $this->get('connection')->getNextArray($this->getDBTableName());
-		if ($bDetailed) {
-		foreach ($this->fields as $f) {
-			$ft = $this->createFieldType($f);
-			if (stristr($ft->params['type'], 'select')) {
-				if (!empty($ret[$ft->getName()])) {
-					$this->get('connection')->execQuery($this->getDBTableName().'_next', 'SELECT * FROM '.$ft->params['l_table'].' WHERE id='.$ret[$ft->getName()]);
-					if ($a = $this->get('connection')->getNextArray($this->getDBTableName().'_next')) {
-						foreach ($a as $k => $v) {
-							$ret[$ft->getName().'_'.$k] = $v;
+	
+	public function getNextArray($detailed = true) {
+		$ret = $this->stmt->fetch();
+		if ($detailed) {
+			foreach ($this->fields as $field) {
+				$fieldType = $this->createFieldType($field);
+				if (stristr($fieldType->params['type'], 'select')) {
+					if (!empty($ret[$fieldType->getName()])) {
+						$sql = 'SELECT * FROM '.$fieldType->params['l_table'].' WHERE id='.$ret[$fieldType->getName()];
+						$stmt = $this->get('connection1')->prepare($sql);
+						$stmt->execute();
+						$item = $stmt->fetch();
+						if ($item) {
+							foreach ($item as $k => $v) {
+								$ret[$fieldType->getName().'_'.$k] = $v;
+							}
 						}
 					}
-				}
-			} else if ($ft->params['type'] == 'image') {
-				if (!empty($ret[$ft->getName()])) {
-					global $PRJ_DIR;
-					if (is_array($i = @GetImageSize($PRJ_DIR.$ret[$ft->getName()]))) {
-						$ret[$ft->getName().'_width'] = $i[0];
-						$ret[$ft->getName().'_height'] = $i[1];
-					}
-					if (isset($ft->params['sizes'])) {
-						$pathParts = pathinfo($ret[$ft->getName()]);
-						$sizes = explode(',', $ft->params['sizes']);
-						foreach ($sizes as $sizeData) {
-							$sizeParams = explode('|', $sizeData);
-							if (count($sizeParams) == 2 && is_array($i = @GetImageSize($PRJ_DIR.$pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension']))) {
-								$ret[$sizeParams[0].'_'.$ft->getName()] = $pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension'];
-								$ret[$sizeParams[0].'_'.$ft->getName().'_width'] = $i[0];
-								$ret[$sizeParams[0].'_'.$ft->getName().'_height'] = $i[1];
+				} else if ($fieldType->params['type'] == 'image') {
+					if (!empty($ret[$fieldType->getName()])) {
+						global $PRJ_DIR;
+						if (is_array($i = @GetImageSize($PRJ_DIR.$ret[$fieldType->getName()]))) {
+							$ret[$fieldType->getName().'_width'] = $i[0];
+							$ret[$fieldType->getName().'_height'] = $i[1];
+						}
+						if (isset($fieldType->params['sizes'])) {
+							$pathParts = pathinfo($ret[$fieldType->getName()]);
+							$sizes = explode(',', $fieldType->params['sizes']);
+							foreach ($sizes as $sizeData) {
+								$sizeParams = explode('|', $sizeData);
+								if (count($sizeParams) == 2 && is_array($i = @GetImageSize($PRJ_DIR.$pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension']))) {
+									$ret[$sizeParams[0].'_'.$fieldType->getName()] = $pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension'];
+									$ret[$sizeParams[0].'_'.$fieldType->getName().'_width'] = $i[0];
+									$ret[$sizeParams[0].'_'.$fieldType->getName().'_height'] = $i[1];
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-		}
 		return $ret;
-	}
-	function getNextArrays($bDetailed = true) {
-		$ret = array();
-		if ($this->getNumRows())
-			while ($a = $this->getNextArray($bDetailed))
-				if (isset($a['id'])) {
-					$ret[$a['id']] = $a;
-				} else {
-					$ret[] = $a;
-				}
-		return $ret;
-	}
-	function getArraysWhere($where = '', $limit = false, $sort = '', $detail = true) {
-		$this->select(array('where' => $where, 'limit' => $limit, 'order_by' => $sort)); 
-		return $this->getNextArrays($detail);
-	}
-	function getItem($where = 0, $sort = '', $select = '', $detail = true) {
-		$where = is_numeric($where) ? 'id='.$where : $where;
-		$this->select(array('where' => $where, 'select' => $select, 'order_by' => $sort));
-		return $this->getNextArray($detail);    
-	}
-	function getValue($id, $name) {
-		$a = $this->getItem(intval($id));
-		return is_array($a) ? $a[$name] : false;
-	}
-
-	/*** more */
-	function getFieldByProperty($propertyName, $propertyValue, $counter = 0) {
-		foreach ($this->fields as $k => $f) {
-			if (!empty($f[$propertyName]) && $f[$propertyName] == $propertyValue) {
-				if (!$counter) {
-					return $f;
-				} else {
-					$counter--;
-				}
-			}
-		}
-		return false;
 	}
 	
-	function getFieldByName($name) {
-		return isset($this->fields[$name]) ? $this->fields[$name] : false;
-	}
-
-	/*** tree methods */
-	function getPrev($id, $linkName = 'parent_id') {
-		if ($a = $this->getItem(intval($id))) {
-			$ret = $this->getPrev($a[$linkName], $linkName);
-			$ret[] = $a;
-		} else {
-			$ret = array();
-		}
-		return $ret;
-	}
-
-	function getSub($id, $linkName = 'parent_id') {
-		$id = intval($id);
-		$ret = $id;
-		if (sizeof($a = $this->getArraysWhere($linkName.'='.$id)) > 0) {
-			foreach ($a as $v) {
-				$ret .= ','.$this->getSub($v['id'], $linkName);
+	public function getNextArrays($detailed = true) {
+		$items = array();
+		while ($item = $this->getNextArray($detailed)) {
+			if (isset($item['id'])) {
+				$items[$item['id']] = $item;
+			} else {
+				$items[] = $item;
 			}
+		}	
+		
+		return $items;
+	}
+	
+	public function getItem($criteria, $sort = '', $select = '', $detailed = true) {
+		$criteria = is_numeric($criteria) ? 'id='.$criteria : $criteria;
+		$this->select(array('where' => $criteria, 'select' => $select, 'order_by' => $sort));
+		return $this->getNextArray($detailed);    
+	}
+	
+	public function getPrev($id, $parent = 'parent_id') {
+		$ret = array();
+		$node = $this->getItem($id);
+		if ($node) {
+			$ret = $this->getPrev($node[$parent], $parent);
+			$ret[] = $node;
 		}
+		
 		return $ret;
 	}
 
-	function getSubAsArray($id, $linkName = 'parent_id') {
-		return preg_split(',', $this->getSub($id, $linkName));
-	}
-
-	function getCount($where = '') {
-		$a = array('select' => 'COUNT(id) as c');
-		if ($where) {
-			$a['where'] = $where;
-		}
-		return $this->select($a) && ($a = $this->getNextArray()) ? $a['c'] : 0;
-	}
-
-	public function getNumRows() {
-		return $this->get('connection')->getNumRows($this->getDBTableName());
-	}
-
-	public function setDBTableName($sModuleName, $sTableName) {
-		$this->tableNameFull = $sModuleName.'_'.$sTableName;
-	}
-
-	public function getDBTableName() {
-		return $this->tableNameFull;
+	function count($criteria = '') {
+		$sql = 'SELECT COUNT(id) as с FROM '.$this->dbName().' WHERE '.$criteria;
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		$item = $stmt->fetch();
+		
+		return $item ? (int)$item['c'] : 0;
 	}
 
 	private function setTableFields () {
@@ -640,8 +581,8 @@ class Table {
 			'type'  => 'datetime',
 			'readonly' => true
 		);
-		foreach ($this->fields as $k => $f) {
-			$this->fields[$k]['cls'] = $this->getDBTableName();
+		foreach ($this->fields as &$field) {
+			$field['table'] = $this->dbName();
 		}
 	}
 	

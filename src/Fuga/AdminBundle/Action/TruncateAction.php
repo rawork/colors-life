@@ -7,6 +7,6 @@ class TruncateAction extends Action {
 		parent::__construct($adminController);
 	}
 	function getText() {
-		$this->messageAction($this->get('container')->truncateClass($this->dataTable->getDBTableName()) ? 'Все записи таблицы удалены' : 'Ошибка удаления записей таблицы');
+		$this->messageAction($this->get('container')->truncateTable($this->dataTable->dbName()) ? 'Все записи таблицы удалены' : 'Ошибка удаления записей таблицы');
 	}
 }

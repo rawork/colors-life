@@ -142,7 +142,7 @@ class EditAction extends Action {
 
 			$sql = "SELECT * FROM system_files WHERE table_name= :table AND entity_id= :id ORDER BY created";
 			$stmt = $this->get('connection1')->prepare($sql);
-			$stmt->bindValue("table", $this->dataTable->getDBTableName());
+			$stmt->bindValue("table", $this->dataTable->dbName());
 			$stmt->bindValue("id", $entity['id']);
 			$stmt->execute();
 			$files = $stmt->fetchAll();
@@ -155,10 +155,10 @@ class EditAction extends Action {
 			}
 			$content .= '</table>
 </div>
-<input type="button" id="updatelistbtn" class="btn" onclick="updateFileList(\''.$this->dataTable->getDBTableName().'\','.$entity['id'].');return false" value="Обновить список" />
+<input type="button" id="updatelistbtn" class="btn" onclick="updateFileList(\''.$this->dataTable->dbName().'\','.$entity['id'].');return false" value="Обновить список" />
 <br><br><fieldset><legend>Добавить файл</legend>
 <form id="uploadForm" action="/fileupload" method="post" enctype="multipart/form-data">
-<input name="table_name" value="'.$this->dataTable->getDBTableName().'" type="hidden">
+<input name="table_name" value="'.$this->dataTable->dbName().'" type="hidden">
 <input name="entity_id" value="'.$entity['id'].'" type="hidden">
 <input name="MAX_FILE_SIZE" value="1000000" type="hidden">
 <input name="fileToUpload[]" id="fileToUpload" class="multi" type="file">

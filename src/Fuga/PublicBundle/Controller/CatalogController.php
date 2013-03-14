@@ -96,13 +96,15 @@ class CatalogController extends PublicController {
 					'SELECT p.id FROM catalog_category c 
 					JOIN catalog_product p ON c.id=p.category_id 
 					WHERE p.publish=1 AND p.is_hit=1 AND c.root_id='.$params[0]
-				)));		
-				$hits = $this->get('container')->getItems(
-					'catalog_product', 
-					'id IN ('.$ids.') AND publish=1 AND is_hit=1',
-					'RAND()',
-					$this->getParam('limit_hit')
-				);
+				)));
+				if ($ids) {
+					$hits = $this->get('container')->getItems(
+						'catalog_product', 
+						'id IN ('.$ids.') AND publish=1 AND is_hit=1',
+						'RAND()',
+						$this->getParam('limit_hit')
+					);
+				}
 			} else {
 				$hits = $this->get('container')->getItems(
 					'catalog_product', 
@@ -243,7 +245,7 @@ class CatalogController extends PublicController {
 				foreach ($producers as $producer) {
 					$producerIds[] = $producer['id'];
 				}
-				if (count($catIds) || count($producerIds)) {
+				if (count($producers)) {
 					unset($words[$key]);
 				}
 			}
@@ -307,8 +309,12 @@ class CatalogController extends PublicController {
 			'product_id='.$item['id'].' AND publish=1', 
 			'sort,size_id'
 		);
-		$fotos =  $this->get('container')->getItemsRaw("SELECT * FROM system_files WHERE table_name='catalog_product' AND entity_id=".$item['id']." ORDER BY created");
-		$articles = $this->get('container')->getItemsRaw("SELECT a.id, a.name FROM article_products_articles st_ar JOIN article_article a ON ar.id=st_ar.article_id WHERE st_ar.product_id=".$item['id']." GROUP BY st_ar.article_id");
+		$fotos =  $this->get('container')->getItemsRaw("SELECT * FROM system_files 
+			WHERE table_name='catalog_product' AND entity_id=".$item['id']." ORDER BY created");
+		$articles = $this->get('container')->getItemsRaw("SELECT a.id, a.name 
+			FROM article_products_articles pa JOIN article_article a ON a.id=pa.article_id 
+			WHERE pa.product_id=".$item['id']." 
+			GROUP BY pa.article_id");
 		
 		return $this->render('catalog/stuff.tpl', compact('item', 'cat0', 'prices', 'fotos', 'articles'));
 	}

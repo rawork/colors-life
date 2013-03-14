@@ -39,11 +39,9 @@ abstract class AbstractConnector {
 	abstract function execQuery($name, $query);
 	abstract function getNextArray($name);
 	abstract function getNumRows($name);
-	abstract function getInsertID();
+	abstract function lastInsertId();
 	abstract function getFieldsList($table);
-	abstract function getTablesList();
 	abstract function escapeStr($str);
-	abstract function backupDB($filename);
 
 	public function freeResults() {
 		foreach ($this->result as $name => $v){

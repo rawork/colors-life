@@ -1,8 +1,7 @@
 {$cabinetMenu}
 {if $error_message}<div class="alert alert-error">{$error_message}</div>{/if}
 {if $userInfo.discount}
-	<div class="alert-success1">Персональная скидка: <strong>{$userInfo.discount}%</strong></div>
-	<div>&nbsp;</div>
+	<div class="alert-success1 pull-right">Персональная скидка: <strong>{$userInfo.discount}%</strong></div>
 {/if}
 <form class="form-horizontal" name="mainForm" method="post">
 <input type="hidden" name="fromPage" value="">

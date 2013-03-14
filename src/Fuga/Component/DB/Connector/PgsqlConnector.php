@@ -69,7 +69,7 @@ class PgsqlConnector extends AbstractConnector{
 		return 0;
 	}
 
-	public function getInsertID() {
+	public function lastInsertId() {
 		return pg_last_oid($this->result[$name]);
 	}
 
@@ -79,20 +79,9 @@ class PgsqlConnector extends AbstractConnector{
 		return $a;
 	}
 
-	public function getTablesList() {
-		$a = array();
-		// not implemented
-		return $a;
-	}
-
 	function escapeStr($str) {
-		// not implemented
-		return $str;
+		throw new \Exception('PGSQL escapeStr not implemented');
 	}
 
-	function backupDB($filename) {
-		// not implemented
-		return true;
-	}
 
 }

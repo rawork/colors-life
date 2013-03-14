@@ -40,12 +40,20 @@ class MaillistManager extends ModelManager {
 		$email = trim($email);
 		$subscriber = $this->getSubscriber($email);
 		$key = md5($this->get('util')->genKey(20));
+		$values = array(
+			'lastname' => $lastname,
+			'name' => $name,
+			'email' => $email,
+			'date' => date('Y-m-d H:i:s'),
+			'is_active' => 0,
+			'hashkey' => $key
+		);
 		if ($subscriber) {
 			$message = array(
 				'message' => 'Адрес '.htmlspecialchars($email).' уже есть в списке рассылки',
 				'success' => false
 			);	
-		} elseif ($this->get('container')->addItem($this->subscriberTable, 'lastname,name,email,date,is_active,hashkey', "'".addslashes($lastname)."','".addslashes($name)."','".addslashes($email)."', NOW(), '', '".$key."'")) {
+		} elseif ($this->get('container')->addItem($this->subscriberTable, $values)) {
 			$letterText = "Уважаемый пользователь!\n\n
 Вы подписались на рассылку на сайте http://".$_SERVER['SERVER_NAME']."\n
 Для подтверждения, пожалуйста, проследуйте по ссылке:\n
@@ -100,7 +108,10 @@ http://".$_SERVER['SERVER_NAME']."/subscribe?key=".$key;
 		$key = addslashes(trim($key));
 		$subscriber = $this->get('container')->getItem($this->subscriberTable, "hashkey='".$key."'");
 		if ($subscriber) {
-			$this->get('container')->updateItem($this->subscriberTable, $subscriber['id'], "is_active=1,hashkey=''");
+			$this->get('container')->updateItem($this->subscriberTable, 
+					array('is_active' => 1, 'hashkey' => ''), 
+					$subscriber['id']
+			);
 			$message = 'Адрес '.htmlspecialchars($subscriber['email']).' активирован';
 		} else {
 			$message = 'Ошибка активации адреса подписки';

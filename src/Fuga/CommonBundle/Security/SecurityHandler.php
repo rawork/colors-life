@@ -28,7 +28,7 @@ class SecurityHandler {
 	public function getUser($login) {
 		$sql = "
 			SELECT u.*, g.rules FROM user_user u 
-			LEFT JOIN user_group g ON u.group_id=g.id 
+			JOIN user_group g ON u.group_id=g.id 
 			WHERE u.login = :login OR u.email = :login LIMIT 1";
 		$stmt = $this->container->get('connection1')->prepare($sql);
 		$stmt->bindValue("login", $login);

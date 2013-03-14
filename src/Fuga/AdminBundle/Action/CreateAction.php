@@ -7,6 +7,6 @@ class CreateAction extends Action {
 		parent::__construct($adminController);
 	}
 	function getText() {
-		$this->messageAction($this->dataTable->create() ? 'Таблица создана' : 'Ошибка создания таблицы');
+		$this->messageAction($this->dataTable->create() ? 'Таблица создана' : 'Таблица уже существует');
 	}
 }

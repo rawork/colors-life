@@ -73,7 +73,7 @@ class SearchEngine {
 		return $query ? '('.$query.')' : '';
 	}
 
-	public function getTableSearchResults($words, $table, $options) {
+	public function getSearchResults($words, $table, $options) {
 		$ret = array();
 		if (!$words) {
 			return $ret;
@@ -122,12 +122,12 @@ class SearchEngine {
 					$tables = $this->options[$node['module_id_name']];
 					foreach ($tables as $tableName => $options) {
 						$options['nodeName'] = $node['name']; 
-						$results = $this->getTableSearchResults($text, $tableName, $options);
+						$results = $this->getSearchResults($text, $tableName, $options);
 						$ret = array_merge($ret, $results);
 					}
 				}
 			}
-			$results = $this->getTableSearchResults($text, 'page_page', $this->pages);
+			$results = $this->getSearchResults($text, 'page_page', $this->pages);
 			foreach ($results as $a) {
 				$ret[] = $a;
 			}

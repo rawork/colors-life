@@ -36,12 +36,16 @@ class SelectListType extends Type {
 		$value = $value ?: $this->dbValue;
 		$content = '';
 		$fields = explode(',', $this->params['l_field']);
-		$items = $this->get('connection')->getItems('select_list_static',
-			'SELECT id,'.$this->params['l_field'].
-			' FROM '.$this->params['l_table'].
-			' WHERE id IN('.$value.')'.
-			($this->params['l_sort'] ? ' ORDER BY '.$this->params['l_sort'] : '')
-		);
+		$items = null;
+		if ($value) {
+			$sql = 'SELECT id,'.$this->params['l_field'].
+				' FROM '.$this->params['l_table'].
+				' WHERE id IN('.$value.')'.
+				($this->params['l_sort'] ? ' ORDER BY '.$this->params['l_sort'] : '');
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->execute();
+			$items = $stmt->fetchAll();
+		}
 		if ($items) {
 			foreach ($items as $k => $item) {
 				$content .= '';

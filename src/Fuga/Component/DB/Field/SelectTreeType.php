@@ -13,7 +13,10 @@ class SelectTreeType extends LookUpType {
 	public function getStatic($value = null) {
 		$value = $value ?: $this->dbValue;
 		if ($value) {
-			$entity = $this->get('connection')->getItem('select_tree_item','SELECT id,'.$this->params['l_field'].' FROM '.$this->params['l_table'].' WHERE id='.intval($value));
+			$sql = 'SELECT id,'.$this->params['l_field'].' FROM '.$this->params['l_table'].' WHERE id='.intval($value);
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->execute();
+			$entity = $stmt->fetch();
 			if (!empty($this->params['l_field']) && count($entity)) {
 				$ret = '';
 				$fields = explode(',', $this->params['l_field']);
@@ -46,13 +49,14 @@ class SelectTreeType extends LookUpType {
 		$extra = array();
 		$extraElements = array();
 		if ($this->params['link_type'] == 'many' && $this->dbId) {
-			$entities = $this->get('connection')->getItems('select_tree_item',
-				'SELECT 
-t1.id as id,t1.'.$this->params['l_field'].' as '.$this->params['l_field'].'
-FROM '.$this->params['link_table'].' t0 
-JOIN '.$this->params['l_table'].' t1 ON t0.'.$this->params['link_mapped'].'=t1.id
-WHERE t0.'.$this->params['link_inversed'].'='.$this->dbId
-			);
+			$sql = 'SELECT 
+				t1.id as id,t1.'.$this->params['l_field'].' as '.$this->params['l_field'].'
+				FROM '.$this->params['link_table'].' t0 
+				JOIN '.$this->params['l_table'].' t1 ON t0.'.$this->params['link_mapped'].'=t1.id
+				WHERE t0.'.$this->params['link_inversed'].'='.$this->dbId;
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->execute();
+			$entities = $stmt->fetchAll();
 			foreach ($entities as $entity) {
 				$extraElements[] = '<div>'.$this->getStatic($entity['id']).' <input type="radio" name="'.$input_id.'_default" value="'.$entity['id'].'" onclick="defaultSelect(this, \''.$input_id.'\')">  По умолчанию <a href="javascript:void(0)" onclick="deleteSelect(this, \''.$input_id.'\')"><i class="icon-remove"></i></a></div>';
 				$extra[] = $entity['id'];

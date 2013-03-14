@@ -283,35 +283,42 @@ class AdminAjaxController extends Controller {
 		$filename = date('YmdHi',$my_time).'_'.$my_key.'.tar.gz';
 		$filename_sql = date('YmdHi',$my_time).'_'.$my_key.'.sql';
 		$filename_sql2 = date('YmdHi',$my_time).'_'.$my_key.'_after_connect.sql';
-		$f = fopen($GLOBALS['BACKUP_DIR'].'/'.$filename_sql2, "a");
+		$f = fopen($GLOBALS['BACKUP_DIR'].DIRECTORY_SEPARATOR.$filename_sql2, "a");
 		fwrite($f, "/*!41000 SET NAMES 'utf8' */;");
 		fclose($f);
 		set_time_limit(0);
-		$this->get('connection')->backupDB($GLOBALS['BACKUP_DIR'].'/'.$filename_sql);
-		$archive = new GZipArchive($GLOBALS['BACKUP_DIR'].'/'.$filename);
-		$archive->set_options(array('basedir' => $GLOBALS['PRJ_DIR'].'/', 'overwrite' => 1, 'level' => 5));
-		$archive->addFiles(array('*.*'));
-		$archive->excludeFiles(array('*.tar.gz'));
-		$cfiles = 0;
-		$sfiles = 0;
-		
-		foreach ($archive->files as $key => $current) {
-			if (stristr($current['name'], '.tar.gz')) {
-				unset($archive->files[$key]);
-			} else {
-				$sfiles += $current['stat'][7];
-				$cfiles++;
-			}
+		$this->get('container')->backupDB($GLOBALS['BACKUP_DIR'].DIRECTORY_SEPARATOR.$filename_sql);
+		$cwd = getcwd();
+		chdir($GLOBALS['PRJ_DIR'].'/');
+		system('tar -czf '.$GLOBALS['BACKUP_DIR'].'/'.$filename.' --exclude=*.lock --exclude=autoload.php --exclude=*.tar.gz --exclude=./vendor/bin --exclude=./vendor/composer --exclude=./vendor/doctrine --exclude=./vendor/symfony --exclude=./vendor/twig --exclude=./.git --exclude=*.tpl.php ./');
+		chdir($cwd);
+		if (file_exists($GLOBALS['BACKUP_DIR'].'/'.$filename)) {
+			chmod($GLOBALS['BACKUP_DIR'].'/'.$filename, 0664);
 		}
-		
-		$archive->createArchive();
+//		$archive = new GZipArchive($GLOBALS['BACKUP_DIR'].DIRECTORY_SEPARATOR.$filename);
+//		$archive->set_options(array('basedir' => $GLOBALS['PRJ_DIR'].DIRECTORY_SEPARATOR, 'overwrite' => 1, 'level' => 5));
+//		$archive->addFiles(array('*.*'));
+//		$archive->excludeFiles(array('*.tar.gz'));
+//		$cfiles = 0;
+//		$sfiles = 0;
+//		
+//		foreach ($archive->files as $key => $current) {
+//			if (stristr($current['name'], '.tar.gz')) {
+//				unset($archive->files[$key]);
+//			} else {
+//				$sfiles += $current['stat'][7];
+//				$cfiles++;
+//			}
+//		}
+//		
+//		$archive->createArchive();
 		
 		$text = '';
 		$text .= '<strong>Архив создан</strong><br>';
-		$text .= 'Количество файлов: '.$cfiles;
-		$text .= '<br>';
-		$text .= 'Размер неупакованых файлов: '.$this->get('util')->getSize($sfiles, 2);
-		$text .= '<br>';
+//		$text .= 'Количество файлов: '.$cfiles;
+//		$text .= '<br>';
+//		$text .= 'Размер неупакованых файлов: '.$this->get('util')->getSize($sfiles, 2);
+//		$text .= '<br>';
 		$text .= 'Размер архива: '.$this->get('filestorage')->size($GLOBALS['BACKUP_REF'].'/'.$filename);
 		@unlink($GLOBALS['BACKUP_DIR'].'/'.$filename_sql);
 		@unlink($GLOBALS['BACKUP_DIR'].'/'.$filename_sql2);
@@ -327,21 +334,27 @@ class AdminAjaxController extends Controller {
 	
 	
 	function delFile($id) {
-		$sql = "SELECT file FROM system_files WHERE id=$id";
-		$file = $this->get('connection')->getItem('delfile', $sql);
+		$sql = "SELECT file FROM system_files WHERE id= :id ";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$smtm->bindValue('id', $id);
+		$stmt->execute();
+		$file = $stmt->fetch();
 		if ($file) {
 			$this->get('filestorage')->remove($file['file']);
-			$sql = "DELETE FROM system_files WHERE id=".$id;
-			$this->get('connection')->execQuery('delfile', $sql);
+			$this->get('connection1')->delete('system_files', array('id' => $id));
 			return json_encode(array('status' => 'ok'));
 		} else {
 			return json_encode(array('alertText' => 'Ошибка удаления файла'));
 		}
 	}
 	
-	function updateFileList($tableName, $entityId) {
-		$sql = "SELECT * FROM system_files WHERE table_name='".$tableName."' AND entity_id=".$entityId;
-		$my_files = $this->get('connection')->getItems('filelist', $sql);
+	function updateFileList($table, $id) {
+		$sql = "SELECT * FROM system_files WHERE table_name= :table AND entity_id= :id ";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$smtm->bindValue('table', $table);
+		$smtm->bindValue('id', $id);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
 		$ret = '';
 		$ret .= '<table class="table table-condensed">';
 		$ret .= '<thead><tr>';
@@ -349,11 +362,11 @@ class AdminAjaxController extends Controller {
 		$ret .= '<th width="10%">Размер</th>';
 		$ret .= '<th><i class="icon-align-justify"></i></th>';
 		$ret .= '</tr></thead>';
-		foreach ($my_files as $fileitem) {
-			$ret .= '<tr id="file_'.$fileitem['id'].'">';
-			$ret .= '<td><a href="'.$fileitem['file'].'">'.$fileitem['name'].'</a></td>';
-			$ret .= '<td>'.$fileitem['filesize'].' байт</td>';
-			$ret .= '<td><a href="#" class="btn btn-small btn-danger" onClick="delFile(\''.$fileitem['id'].'\',\''.$fileitem['name'].'\',\''.$tableName.'\',\''.$entityId.'\'); return false"><i class="icon-trash icon-white"></i></a></td>'."\n";
+		foreach ($items as $item) {
+			$ret .= '<tr id="file_'.$item['id'].'">';
+			$ret .= '<td><a href="'.$item['file'].'">'.$item['name'].'</a></td>';
+			$ret .= '<td>'.$item['filesize'].' байт</td>';
+			$ret .= '<td><a href="#" class="btn btn-small btn-danger" onClick="delFile(\''.$item['id'].'\',\''.$item['name'].'\',\''.$table.'\',\''.$id.'\'); return false"><i class="icon-trash icon-white"></i></a></td>'."\n";
 			$ret .= '</tr>';	
 		}
 		$ret .= '</table>';
@@ -371,16 +384,22 @@ class AdminAjaxController extends Controller {
 		$ret .= '<th><i class="icon-align-justify"></i></th>';
     	$ret .= '</tr></thead>';
 				
-		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.sort, p.publish FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id=".$productId." ORDER BY p.price";
-		$prices = $this->get('connection')->getItems('sizelist', $sql);
-		foreach ($prices as $priceitem) {
-			$ret .= '<tr id="price_'.$priceitem['id'].'">';
-			$ret .= '<td>'.$priceitem['size_id_name'].'</td>';
-			$ret .= '<td>'.$priceitem['color_id_name'].'</td>';
-			$ret .= '<td><input type="text" class="input-mini right" name="price_'.$priceitem['id'].'" value="'.$priceitem['price'].'" /></td>';
-			$ret .= '<td><input type="text" class="input-mini" name="sort_'.$priceitem['id'].'" value="'.$priceitem['sort'].'" /></td>';
-			$ret .= '<td><input type="checkbox" name="publish_'.$priceitem['id'].'" value="on"'.($priceitem['publish'] ? ' checked' : '').'></td>';
-			$ret .= '<td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$priceitem['id'].')"><i class="icon-trash icon-white"></i></a></td>'."\n";
+		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.sort, p.publish 
+			FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id 
+			JOIN catalog_color c ON p.color_id=c.id 
+			WHERE p.product_id= :id ORDER BY p.price";		
+		$stmt = $this->get('connection1')->prepare($sql);
+		$smtm->bindValue('id', $productId);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
+		foreach ($items as $item) {
+			$ret .= '<tr id="price_'.$item['id'].'">';
+			$ret .= '<td>'.$item['size_id_name'].'</td>';
+			$ret .= '<td>'.$item['color_id_name'].'</td>';
+			$ret .= '<td><input type="text" class="input-mini right" name="price_'.$item['id'].'" value="'.$item['price'].'" /></td>';
+			$ret .= '<td><input type="text" class="input-mini" name="sort_'.$item['id'].'" value="'.$item['sort'].'" /></td>';
+			$ret .= '<td><input type="checkbox" name="publish_'.$item['id'].'" value="on"'.($item['publish'] ? ' checked' : '').'></td>';
+			$ret .= '<td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$item['id'].')"><i class="icon-trash icon-white"></i></a></td>'."\n";
 			$ret .= '</tr>';	
 		}
 		$ret .= '</table>';
@@ -389,24 +408,33 @@ class AdminAjaxController extends Controller {
 	
 	function addPrice($formdata) {
 		parse_str($formdata);
-		$sql = "INSERT INTO catalog_price(product_id,size_id,color_id,price,sort,publish,created) VALUES(".$product_id.",".$size_id.",".$color_id.",'".$price."','".$sort."','".(isset($publish) ? 1 : 0)."',NOW())";
-		$this->get('connection')->execQuery('addprice', $sql);
+		$this->get('connection1')->insert('catalog_price', array(
+			'product_id' => $product_id,
+			'size_id' => $size_id,
+			'color_id' => $color_id,
+			'price' => $price,
+			'sort' => $sort,
+			'publish' => isset($publish) ? 1 : 0,
+			'created' => date('Y-m-d H:i:s')
+		));
 		$text = $this->getPriceList($product_id);
 		
 		return json_encode(array('content' => $text));
 	}
 	
 	function delPrice($priceId) {
-		$sql = "DELETE FROM catalog_price WHERE id=".$priceId;
-		$this->get('connection')->execQuery('delprice', $sql);
+		$this->get('connection1')->delete('catalog_price', array('id' => $priceId));
 		
 		return json_encode(array('status' => 'ok'));
 	}
 	
 	function updatePrices($formdata){
 		parse_str($formdata);
-		$sql = "SELECT p.id, p.product_id FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id=".$product_id." ORDER BY p.price";
-		$items = $this->get('connection')->getItems('sizelist', $sql);
+		$sql = "SELECT p.id, p.product_id FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id= :id ORDER BY p.price";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$smtm->bindValue('id', $product_id);
+		$stmt->execute();
+		$items = $stmt->fetchAll();
 		foreach ($items as $item) {
 			$priceName = 'price_'.$item['id'];
 			$sortName = 'sort_'.$item['id'];
@@ -414,8 +442,10 @@ class AdminAjaxController extends Controller {
 			$price = isset($$priceName) ? $$priceName : 0;
 			$sort = isset($$sortName) ? $$sortName : 0;
 			$publish = isset($$publishName) ? 1 : 0;
-			$sql = "UPDATE catalog_price SET price='$price', sort='$sort', publish='$publish' WHERE id=".$item['id'];
-			$this->get('connection')->execQuery('updateprice', $sql);
+			$this->get('connection1')->update('catalog_price', 
+				array('price' => $price, 'sort' => $sort, 'publish' => $publish),
+				array('id' => $item['id'])
+			);
 		}
 		$text = $this->getPriceList($product_id);
 		

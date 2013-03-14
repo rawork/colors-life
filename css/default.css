@@ -151,6 +151,12 @@ h4 {
 	color: #53a045;
 }
 
+.content-column h6 span {
+	font-size: 14px;
+	color: #666;
+	font-weight: normal;
+}
+
 .index-content {
 	padding: 10px 0 0 0;
 }

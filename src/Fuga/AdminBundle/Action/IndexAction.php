@@ -11,7 +11,7 @@ class IndexAction extends Action {
 
 	function __construct(&$adminController) {
 		parent::__construct($adminController);
-		$this->rowPerPage = $this->get('util')->_sessionVar($this->dataTable->getDBTableName().'_rpp', true, $this->rowPerPage);
+		$this->rowPerPage = $this->get('util')->_sessionVar($this->dataTable->dbName().'_rpp', true, $this->rowPerPage);
 		$this->paginator = $this->get('paginator');
 	}	
 
@@ -85,7 +85,7 @@ class IndexAction extends Action {
 			'rowPerPage' => $this->rowPerPage,
 			'ids' => join(',', $this->elementsIds),
 			'isView' => !empty($this->dataTable->params['is_view']),
-			'tableName' => $this->dataTable->getDBTableName(),
+			'tableName' => $this->dataTable->dbName(),
 			'showGroupSubmit' => $this->showGroupSubmit
 		);
 		return $this->render('admin/action/action.index.tpl', $params);
@@ -125,7 +125,7 @@ class IndexAction extends Action {
 					}
 					if ($num == 0) {
 						$tableHtml .= '</span>';
-						if ($this->dataTable->getDBTableName() == 'page_page' && $node['module_id']) {
+						if ($this->dataTable->dbName() == 'page_page' && $node['module_id']) {
 							$module = $this->get('container')->getModule($node['module_id_name']);
 							if ( $module ) {
 								$tableHtml .= ' (модуль: '.$module['title'].')';

@@ -189,7 +189,8 @@ function getComponentList(currentState, moduleName) {
 	$.post("/adminajax/", {method: 'getComponentList', currentState: currentState, moduleName: moduleName},
 	function(data){
 		if (data.alertText) {
-			alert(data.alertText);
+			window.location.reload();
+//			alert(data.alertText);
 		} else {
 			$('#componentMenu').html(data.content);
 		}
@@ -204,7 +205,8 @@ function getTableList(currentState, moduleName) {
 		$.post("/adminajax/", {method: 'getTableList', currentState: currentState, moduleName: moduleName},
 		function(data){
 			if (data.alertText) {
-				alert(data.alertText);
+				window.location.reload();
+//				alert(data.alertText);
 			} else {
 				obj.html(data.content);
 				obj.css('display', 'block');
@@ -354,7 +356,8 @@ function delFile(fileId) {
 	$.post("/adminajax/", {method: 'delFile', fileId: fileId},
 	function(data){
 		if (data.alertText) {
-			alert(data.alertText);
+			window.location.reload();
+//			alert(data.alertText);
 		}
 	}, "json");
 }

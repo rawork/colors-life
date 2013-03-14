@@ -45,7 +45,7 @@ class FormManager extends ModelManager {
 					$message[0] = 'accept';
 					$message[1] = $this->params['text_inserted'];
 					if ($tableName)
-						$this->get('container')->addGlobalItem($tableName);
+						$this->get('container')->addItemGlobal($tableName);
 				}
 			}
 			unset($_SESSION['captcha_keystring']);

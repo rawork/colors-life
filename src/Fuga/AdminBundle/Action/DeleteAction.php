@@ -8,6 +8,6 @@ class DeleteAction extends Action {
 	}
 	function getText() {
 		$q = 'id='.$this->get('router')->getParam('id');
-		$this->messageAction($this->get('container')->deleteItem($this->dataTable->getDBTableName(), $q) ? 'Удалено' : 'Ошибка удаления');
+		$this->messageAction($this->get('container')->deleteItem($this->dataTable->dbName(), $q) ? 'Удалено' : 'Ошибка удаления');
 	}
 }

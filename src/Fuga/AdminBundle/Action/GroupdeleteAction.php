@@ -9,6 +9,6 @@ class GroupdeleteAction extends Action {
 
 	function getText() {
 		$query = 'id IN('.$this->get('util')->_postVar('ids').') ';
-		$this->messageAction($this->get('container')->deleteItem($this->dataTable->getDBTableName(), $query) ? 'Удалено' : 'Ошибка группового удаления');
+		$this->messageAction($this->get('container')->deleteItem($this->dataTable->dbName(), $query) ? 'Удалено' : 'Ошибка группового удаления');
 	}
 }

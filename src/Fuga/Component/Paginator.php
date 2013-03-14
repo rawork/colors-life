@@ -9,12 +9,12 @@ class Paginator {
 	private $container;
 	private $template; 
 
-	private $baseUrl		= './'; //ref
-	private $quantity		= 0; //pages_cnt
-	private $currentPage	= 0; //page
-	private $entityQuantity	= 0; //count
+	private $baseUrl		= './'; 
+	private $quantity		= 0; 
+	private $currentPage	= 0; 
+	private $entityQuantity	= 0; 
 	private $rowPerPage		= 25;
-	private $maxDisplayPages= 15; //max_display
+	private $maxDisplayPages= 15; 
 	private $table			= null;
 
 	private $content;
@@ -33,16 +33,20 @@ class Paginator {
 		$this->setTemplate($templateName);
 		if ($rowPerPage) {
 			$this->currentPage = (int)$this->currentPage;
-			$tableName = $this->table->getDBTableName();
-			$sql = "
-				SELECT
-					COUNT(id) as quantity
-				FROM
-					$tableName
-				". ($where ? 'WHERE '.$where : '');
-			$stmt = $this->container->get('connection1')->prepare($sql);
-			$stmt->execute();
-			$count = $stmt->fetch();
+			$tableName = $this->table->dbName();
+			try {
+				$sql = "
+					SELECT
+						COUNT(id) as quantity
+					FROM
+						$tableName
+					". ($where ? 'WHERE '.$where : '');
+				$stmt = $this->container->get('connection1')->prepare($sql);
+				$stmt->execute();
+				$count = $stmt->fetch();
+			} catch (\Exception $e) {
+				$count = 0;
+			}
 			if ($count) {
 				$this->entityQuantity = $count['quantity'];
 				$this->quantity = ceil($this->entityQuantity / $this->rowPerPage);
@@ -91,9 +95,10 @@ class Paginator {
 				$totalItems = $this->entityQuantity;
 				$currentItems = $this->min_rec.' - '.$this->max_rec;
 				$page = $this->currentPage;
+				$max_page = $this->quantity;
 				$this->content = $this->container->get('templating')->render(
 					$this->template, 
-					compact('prev_link', 'begin_link', 'next_link', 'end_link', 'totalItems', 'currentItems', 'page', 'pages')
+					compact('prev_link', 'begin_link', 'next_link', 'end_link', 'totalItems', 'currentItems', 'page', 'pages', 'max_page')
 				);
 			} else {
 				$this->content = '&nbsp;';

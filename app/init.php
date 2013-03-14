@@ -35,7 +35,7 @@ function exception_handler($exception)
 		$controller = new ExceptionController();
 		echo $controller->indexAction($exception->getStatusCode(), $exception->getMessage());
 	} else {
-		// TODO Ругаться красиво, саму ошибку в лог пишем
+		echo nl2br($exception->getTraceAsString());
 		$controller = new ExceptionController();
 		echo $controller->indexAction(500, $exception->getMessage());
 	}
@@ -59,7 +59,7 @@ function autoloader($className)
 		if (file_exists($basePath.$fileName)) {
 			require_once $basePath.$fileName;
 		} else {
-			// LOG + nice error text
+			// TODO LOG + nice error text
 			throw new AutoloadException('Не возможно загрузить класс "'.$fileName.'"');
 		}
 	}	

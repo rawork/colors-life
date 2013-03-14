@@ -24,17 +24,17 @@ class Action extends Controller {
 			if ($filterType = $this->get('util')->_postVar('filter_type')) {
 				switch ($filterType) {
 					case 'cansel':
-						unset($_SESSION[$this->dataTable->getDBTableName()]);
+						unset($_SESSION[$this->dataTable->dbName()]);
 						break;
 					default:
 						
 						$this->search_url = $this->dataTable->getSearchURL();
 						parse_str($this->search_url, $this->tableParams);
-						$_SESSION[$this->dataTable->getDBTableName()] = json_encode($this->tableParams);
+						$_SESSION[$this->dataTable->dbName()] = json_encode($this->tableParams);
 				}
 				header('location: '.$this->baseRef);
 			} else {
-				$tableParams = $this->get('util')->_sessionVar($this->dataTable->getDBTableName());
+				$tableParams = $this->get('util')->_sessionVar($this->dataTable->dbName());
 				$this->tableParams = json_decode(stripslashes($tableParams), true);
 			}
 			if (is_array($this->tableParams)) {

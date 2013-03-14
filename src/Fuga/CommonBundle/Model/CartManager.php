@@ -76,9 +76,9 @@ class CartManager extends ModelManager {
 	}
 	
 	public function getOrderDetail($orderId) {
-		$order = $this->get('container')->getTable('cart_order')->getItem($orderId);
+		$order = $this->get('container')->getItem('cart_order', $orderId);
+		
 		return nl2br($order['order_txt']);
-
 	}
 	
 	public function getOrderText() {
