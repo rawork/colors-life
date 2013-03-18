@@ -5,6 +5,7 @@ namespace Fuga\CommonBundle\Model;
 class ModelManager implements ModelManagerInterface {
 	
 	protected $entityTable;
+	protected $connection;
 	
 	public function findAll() {
 		return $this->findBy();

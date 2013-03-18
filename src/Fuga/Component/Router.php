@@ -10,15 +10,13 @@ class Router {
 	private $url;
 	private $params = array();
 	private $paths = array();
+	private $locales = array(array('name' => 'ru'));
 	
 	public function __construct($container){
 		$this->container = $container;
 		$this->url = $_SERVER['REQUEST_URI'];
 	}
 	
-	/**
-	 * Установка языка сайта 
-	 */
 	public function setLocale() {
 		$locale = $this->container->get('util')->_postVar('locale');
 		if ( $locale
@@ -28,18 +26,19 @@ class Router {
 		}
 	}
 	
+	public function getLocales() {
+		return $this->locales;
+	}
+	
 	public function getPath($nativeUrl = null) {
 		$url = $nativeUrl ?: $this->url;
 		if (!isset($this->paths[$nativeUrl])) {
-			//  Установка языка по части URL, например, /ru/about.htm или /catalog/ru/index.htm
+			$_SESSION['locale'] = 'ru';
 			if ($this->isPublic($url)) {
-				$sql = 'SELECT name FROM config_locale';
-				$stmt = $this->container->get('connection1')->prepare($sql);
-				$stmt->execute();
-				$locales = $stmt->fetchAll();
-				$_SESSION['locale'] = 'ru';
-				foreach ($locales as $locale) {
-					if (stristr($url, DIRECTORY_SEPARATOR.$locale['name'].DIRECTORY_SEPARATOR) || $this->container->get('util')->_getVar('locale') == $locale['name']) {
+				foreach ($this->getLocales() as $locale) {
+					if (stristr($url, DIRECTORY_SEPARATOR.$locale['name'].DIRECTORY_SEPARATOR) 
+						|| $this->container->get('util')->_getVar('locale') == $locale['name']) 
+				    {
 						$_SESSION['locale'] = $locale['name'];
 						$url = str_replace(DIRECTORY_SEPARATOR.$locale['name'].DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $url);
 						if (!$url)
@@ -57,7 +56,6 @@ class Router {
 			if (!empty($urlParts[1])) {
 				$this->setParam('query', $urlParts[1]);
 			}
-
 			$this->paths[$nativeUrl] = $urlParts[0]; 
 		}
 		

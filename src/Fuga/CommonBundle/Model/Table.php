@@ -49,7 +49,7 @@ class Table {
 				),
 				'is_view'	=> array (
 					'name'	=> 'is_view',
-					'title' => 'Вид',
+					'title' => 'Дерево',
 					'type'	=> 'checkbox'
 				),
 				'is_lang'	=> array (

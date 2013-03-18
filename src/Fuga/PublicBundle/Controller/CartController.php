@@ -89,7 +89,7 @@ class CartController extends PublicController {
 		$deliveryType	= $manager->getDelivery();
 		
 		$orderText = $manager->getOrderText();
-		$this->get('connection1')->insert('cart_order',array(
+		$lastId = $this->get('container')->addItem('cart_order',array(
 			'user_id' => ($user ? $user['id'] : 0), 
 			'counter' => $_SESSION['number'], 
 			'summa'   => $manager->getTotalPriceDiscount(),
@@ -106,7 +106,6 @@ class CartController extends PublicController {
 			'order_txt' => $orderText,
 			'created' => date('Y-m-d H:i:s')
 		));
-		$lastId = $this->get('connection1')->lastInsertId();
 
 		$orderNumber = $this->baseNumber + $lastId;
 		$cart = $this->get('util')->_sessionVar('cart');

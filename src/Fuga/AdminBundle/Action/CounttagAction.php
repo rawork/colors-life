@@ -42,11 +42,10 @@ class CounttagAction extends Action {
 			}
 		}
 		foreach ($tags_full as $tag => $tag_info) {
-			$this->get('connection1')->insert('article_tag', array(
+			$lastId = $this->get('container')->addItem('article_tag', array(
 				'name' => $tag, 
 				'quantity' =>  $tag_info['q']
 			));
-			$lastId = $this->get('connection1')->lastInsertId();
 			foreach ($tag_info['articles'] as $articleId) {
 				$this->get('connection1')->insert('article_tags_articles', array(
 					'tag_id' => $lastId, 
@@ -324,7 +323,7 @@ EOD;
 			$content .= "<price>".$product['price']."</price>\n";  // стоимость продукта
 			$content .= "<currencyId>RUR</currencyId>\n"; // валюта
 			$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
-			$content .= "<picture>http://colors-life.ru".$product['image']."</picture>\n";  // ссылка на картинку ( полностью )
+			$content .= "<picture>http://colors-life.ru".$product['middle_imagenew']."</picture>\n";  // ссылка на картинку ( полностью )
 			$content .= "<delivery>true</delivery>\n";
 			$content .= "<name>".$name."</name>\n";  // название товара
 			$content .= "<vendor>".$producer."</vendor>\n";

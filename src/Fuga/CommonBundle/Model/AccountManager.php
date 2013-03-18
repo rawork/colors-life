@@ -30,7 +30,7 @@ class AccountManager extends ModelManager {
 	public function getAddress() {
 		$user = $this->getCurrentUser();
 		
-		return $user ? $user['phone'] : null;
+		return $user ? $user['address'] : null;
 	}
 
 	public function getLogin() {

@@ -140,8 +140,7 @@ class Table {
 				$linkMapped = $field['link_mapped'];
 			}
 		}
-		if (!$this->insert($values)) {
-			$lastId = $this->get('connection1')->lastInsertId();
+		if ($lastId = $this->insert($values)) {
 			foreach ($extraIds as $extraId) {
 				$this->get('connection1')->insert(
 					$linkTable,
@@ -344,7 +343,11 @@ class Table {
 	}
 	
 	public function insert($values) {
-		return $this->get('connection1')->insert($this->dbName(), $values);
+		if ($this->get('connection1')->insert($this->dbName(), $values)) {
+			return $this->get('connection1')->lastInsertId();
+		} else {
+			return false;
+		}
 	}
 	
 	function insertArray($entity) {
@@ -378,8 +381,7 @@ class Table {
 				}
 			}
 		}
-		$ret = $this->insert($values);
-		$lastId = $this->get('connection1')->lastInsertId();
+		$lastId = $this->insert($values);
 		if ($this->params['multifile']) {
 			$sql = "SELECT * FROM system_files WHERE entity_id= :id AND table_name= :table";
 			$stmt = $this->get('connection1')->prepare($sql);
@@ -455,7 +457,7 @@ class Table {
 				$fieldType = $this->createFieldType($field);
 				if (stristr($fieldType->params['type'], 'select')) {
 					if (!empty($ret[$fieldType->getName()])) {
-						$sql = 'SELECT * FROM '.$fieldType->params['l_table'].' WHERE id='.$ret[$fieldType->getName()];
+						$sql = 'SELECT * FROM '.$fieldType->params['l_table'].' WHERE id IN('.$ret[$fieldType->getName()].')';
 						$stmt = $this->get('connection1')->prepare($sql);
 						$stmt->execute();
 						$item = $stmt->fetch();
@@ -512,7 +514,7 @@ class Table {
 	
 	public function getPrev($id, $parent = 'parent_id') {
 		$ret = array();
-		$node = $this->getItem($id);
+		$node = $this->getItem($id, '', '', false);
 		if ($node) {
 			$ret = $this->getPrev($node[$parent], $parent);
 			$ret[] = $node;

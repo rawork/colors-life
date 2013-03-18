@@ -109,12 +109,12 @@ class IndexAction extends Action {
 			$tableHtml .= '<td width="1%"><input type="checkbox" class="list-checker" value="'.$node['id'].'"></td><td width="1%">'.$node['id'].'</td>';
 			$num = 0;
 
-			$childrenNodes = $this->getTree($node['id'], $prefixWidth + 15, $styleClass);
+			$childrenNodes = $this->getTree($node['id'], $prefixWidth + 20, $styleClass);
 			foreach ($this->dataTable->fields as $field) {
 				if (!empty($field['width'])) {
 					$tableHtml .= '<td width="'.$field['width'].'">';
 					if ($num == 0) {
-						$tableHtml .= '<span><img src="'.$THEME_REF.'/img/0.gif" width="'.$prefixWidth.'" height="1"> -> ';
+						$tableHtml .= '<span><img src="'.$THEME_REF.'/img/0.gif" width="'.$prefixWidth.'" height="1"> &rarr; ';
 					}
 					$ft = $this->dataTable->createFieldType($field, $node);
 					if (!empty($field['group_update']) && empty($field['readonly'])) {
@@ -124,13 +124,13 @@ class IndexAction extends Action {
 						$tableHtml .= $ft->getStatic();
 					}
 					if ($num == 0) {
-						$tableHtml .= '</span>';
 						if ($this->dataTable->dbName() == 'page_page' && $node['module_id']) {
 							$module = $this->get('container')->getModule($node['module_id_name']);
 							if ( $module ) {
-								$tableHtml .= ' (модуль: '.$module['title'].')';
+								$tableHtml .= ' (тип: '.$module['title'].')';
 							}
 						}
+						$tableHtml .= '</span>';
 					}
 					$tableHtml .= '</td>';
 				}
@@ -139,6 +139,7 @@ class IndexAction extends Action {
 			$tableHtml .= $this->_getUpdateDelete($node['id']).'</tr>';
 			$tableHtml .= $childrenNodes;
 		}
+		
 		return $tableHtml;
 	}
 

@@ -45,42 +45,6 @@ class Config {
 		));
 
 		$this->tables[] = array(
-			'name' => 'methods',
-			'component' => 'config',
-			'title' => 'Методы',
-			'order_by' => 'module_id,name',
-			'is_hidden' => true,
-			'fieldset' => array (
-			'title' => array (
-				'name' => 'title',
-				'title' => 'Название',
-				'type' => 'string',
-				'width' => '45%'
-			),
-			'name' => array (
-				'name' => 'name',
-				'title' => 'Сист. имя',
-				'type' => 'string',
-				'width' => '25%',
-				'search' => true
-			),
-			'module_id' => array (
-				'name' => 'module_id',
-				'title' => 'Компонент',
-				'type' => 'select',
-				'l_table' => 'config_modules',
-				'l_field' => 'title',
-				'search' => true,
-				'width' => '25%'
-			),	
-			'template' => array (
-				'name' => 'template',
-				'title' => 'Шаблон',
-				'type' => 'template'
-			)
-		));
-
-		$this->tables[] = array(
 			'name' => 'variables',
 			'component' => 'config',
 			'title' => 'Переменные',
@@ -108,19 +72,5 @@ class Config {
 			)
 		));
 
-		$this->tables[] = array(
-			'name' => 'locale',
-			'component' => 'config',
-			'title' => 'Языковые версии',
-			'order_by' => 'id',
-			'fieldset' => array (
-			'name' => array (
-				'name' => 'name',
-				'title' => 'Название',
-				'type' => 'string',
-				'width' => '95%',
-				'search' => true
-			)
-		));
 	}
 }

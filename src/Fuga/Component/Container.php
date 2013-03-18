@@ -7,12 +7,60 @@ use Fuga\CommonBundle\Security\SecurityHandler;
 class Container 
 {
 	private $tables;
-	private $modules;
-	private $ownmodules;
+	private $modules = array();
+	private $ownmodules = array();
 	private $controllers = array();
 	private $templateVars = array();
 	private $services = array();
 	private $managers = array();
+	private $tempmodules = array();
+	
+	public function __construct() {
+		$this->tempmodules = array(
+			'user' => array(
+				'name'  => 'user',
+				'title' => 'Пользователи',
+				'ctype' => 'system',
+				'entitites' => array()
+			),
+			'template' => array(
+				'name'  => 'template',
+				'title' => 'Шаблоны',
+				'ctype' => 'system',
+				'entitites' => array()
+			),
+			'config' => array(
+				'name'	=> 'config',
+				'title' => 'Настройки',
+				'ctype' => 'system',
+				'entitites' => array()
+			),
+			'table' => array(
+				'name'	=> 'table',
+				'title' => 'Таблицы',
+				'ctype' => 'system',
+				'entitites' => array()
+			),
+			'maillist' => array(
+				'name'  => 'maillist',
+				'title' => 'Подписка',
+				'ctype' => 'service',
+				'entitites' => array()
+			),
+			'form' => array(
+				'name'  => 'form',
+				'title' => 'Формы',
+				'ctype' => 'service',
+				'entitites' => array()
+			),
+			'vote' => array(
+				'name'  => 'vote',
+				'title' => 'Голосование',
+				'ctype' => 'service',
+				'entitites' => array()
+			),
+		);
+	}
 	
 	public function initialize() {
 		$this->tables = $this->getAllTables();
@@ -26,26 +74,17 @@ class Container
 		return  $this->modules[$name];
 	}
 
-	public function getModules() 
-	{
+	public function getModules() {
 		if (!$this->ownmodules) {
 			if ($this->get('security')->isSuperuser()) {
 				$this->ownmodules = $this->modules;
 			} elseif ($user = $this->get('security')->getUser($this->get('util')->_sessionVar('user'))) {
+				$this->ownmodules = $this->tempmodules;
+				if (!$user['is_admin']) {
+					unset($this->ownmodules['user'], $this->ownmodules['template'], $this->ownmodules['table']);
+				}
 				$sql = 'SELECT id, sort, name, title, \'content\' AS ctype 
 					FROM config_modules WHERE id IN ('.$user['rules'].') ORDER BY sort, title';
-				$stmt = $this->get('connection1')->prepare($sql);
-				$stmt->execute();
-				$modules = $stmt->fetchAll();
-				if ($user['is_admin']) {
-					$sql = "SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules
-						UNION SELECT id, sort, name, title, 'service' AS ctype FROM system_services
-						ORDER BY sort, title";
-				} else {
-					$sql = "SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules WHERE name IN ('config')
-						UNION SELECT id, sort, name, title, 'service' AS ctype FROM system_services
-						ORDER BY sort, title";
-				}
 				$stmt = $this->get('connection1')->prepare($sql);
 				$stmt->execute();
 				$this->ownmodules = array_merge($this->ownmodules, $stmt->fetchAll());
@@ -62,22 +101,25 @@ class Container
 				$modules[$module['name']] = $module;
 			}
 		}
+		
 		return $modules;
 	}
 	
 	private function getAllTables() {
 		$ret = array();
-		$this->modules = array();
-		$sql = "SELECT id, sort, name, title, 'content' AS ctype FROM config_modules
-			UNION SELECT id, sort, name, title, 'settings' AS ctype FROM system_modules
-			UNION SELECT id, sort, name, title, 'service' AS ctype FROM system_services
-			ORDER BY sort, title";
+		$this->modules = $this->tempmodules;
+		$sql = "SELECT id, sort, name, title, 'content' AS ctype FROM config_modules ORDER BY sort, title";
 		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->execute();
-		$modules = $stmt->fetchAll();
-		foreach ($modules as $module) {
-			$tables = array();
-			$this->modules[$module['name']] = $module;
+		while ($module = $stmt->fetch()) {
+			$this->modules[$module['name']] = array(
+				'name'  => $module['name'],
+				'title' => $module['title'],
+				'ctype' => $module['ctype'],
+				'entities' => array()
+			);
+		}
+		foreach ($this->modules as $module) {
 			try {
 				$className = 'Fuga\\CommonBundle\\Model\\'.ucfirst($module['name']);
 				$model = new $className();
@@ -119,13 +161,8 @@ class Container
 		return $tables;
 	}
 	
-	public function getPrev($table, $id, $linkName = 'parent_id') {
-		$ret = null;
-		if ($node = $this->getItem($table, $id)) {
-			$ret = $this->getPrev($table, $node[$linkName], $linkName);
-			$ret[] = $node;
-		}
-		return $ret;
+	public function getPrev($table, $id, $link = 'parent_id') {
+		return $this->getTable($table)->getPrev($id, $link);
 	}
 
 	public function getItem($table, $criteria = 0, $sort = null, $select = null) {
@@ -179,11 +216,7 @@ class Container
 	}
 
 	public function updateItem($table, $values, $criteria) {
-		if (is_numeric($criteria)) {
-			return $this->getTable($table)->update($values, $criteria);
-		} else {
-			return $this->getTable($table)->update($values, $criteria);
-		}
+		return $this->getTable($table)->update($values, $criteria);
 	}
 
 	public function deleteItem($table, $query) {
@@ -196,26 +229,26 @@ class Container
 
 	public function delRel($table, $items = array()) {
 		$ids0 = '';
-		foreach ($items as $a) {
-			if ($this->tables[$table]->params['is_system']) {
+		foreach ($items as $item) {
+			if ($this->getTable($table)->params['is_system']) {
 				foreach ($this->tables as $t) {
 					if ($t->moduleName != 'user' && $t->moduleName != 'template' && $t->moduleName != 'page') {
-						foreach ($t->fields as $f) {
-							$ft = $t->createFieldType($f);
+						foreach ($t->fields as $field) {
+							$ft = $t->createFieldType($field);
 							if (stristr($ft->params['type'], 'select') && $ft->params['l_table'] == $table) {
-								$this->deleteItem($t->dbName(), $ft->getName().'='.$a['id']);
+								$this->deleteItem($t->dbName(), $ft->getName().'='.$item['id']);
 							}
 							$ft->free();
 						}
 					}
 				}
 			}
-			foreach ($this->tables[$table]->fields as $f) {
-				$ft = $this->tables[$table]->createFieldType($f, $a);
+			foreach ($this->getTable($table)->fields as $field) {
+				$ft = $this->getTable($table)->createFieldType($field, $item);
 				if ($ft->params['type'] == 'image' || $ft->params['type'] == 'file' || $ft->params['type'] == 'template') {
-					@unlink($GLOBALS['PRJ_DIR'].$a[$ft->getName()]);
+					@unlink($GLOBALS['PRJ_DIR'].$item[$ft->getName()]);
 					if (isset($ft->params['sizes'])) {
-						$path_parts = pathinfo($GLOBALS['PRJ_DIR'].$a[$ft->getName()]);
+						$path_parts = pathinfo($GLOBALS['PRJ_DIR'].$item[$ft->getName()]);
 						$asizes = explode(',', $ft->params['sizes']);
 						foreach ($asizes as $sz) {
 							$asz = explode('|', $sz);
@@ -227,19 +260,19 @@ class Container
 				}
 				$ft->free();
 			}
-			$ids0 .= ($ids0 ? ',' : '').$a['id'];
+			$ids0 .= ($ids0 ? ',' : '').$item['id'];
 		}
 		return $ids0;
 	}
 
-	public function duplicateItem($table, $id = 0, $times = 1) {
+	public function copyItem($table, $id = 0, $times = 1) {
 		$entity = $this->getItem($table, $id);
 		if ($entity) {
 			for ($i = 1; $i <= $times; $i++)
 				$this->getTable($table)->insertArray($entity);
-			return $this->getItem($table, $this->get('connection1')->lastInsertId());
+			return true;
 		} else {
-			return null;
+			return false;
 		}
 	}
 
@@ -328,18 +361,6 @@ class Container
 					break;
 				case 'templating':
 					$this->services[$name] = new Templating\SmartyTemplating();
-					break;
-				case 'connection':
-					try {
-						$className = 'Fuga\\Component\\DB\\Connector\\'.ucfirst($GLOBALS['DB_TYPE']).'Connector';
-						$this->services[$name] = new $className(
-								$GLOBALS['DB_HOST'], 
-								$GLOBALS['DB_USER'], 
-								$GLOBALS['DB_PASS'], 
-								$GLOBALS['DB_BASE']);
-					} catch (\Exception $e) {
-						throw new \Exception('DB connection type error (DB_TYPE). Possible value: mysql,mysqli. Check DB connection parameters');
-					}
 					break;
 				case 'connection1':
 					$config = new \Doctrine\DBAL\Configuration();

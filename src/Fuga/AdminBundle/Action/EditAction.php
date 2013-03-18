@@ -60,19 +60,9 @@ class EditAction extends Action {
 
 	function getPricesForm() {
 		$entity = $this->item;
-		$sql = "SELECT id,name FROM catalog_size ORDER BY name";
-		$stmt = $this->get('connection1')->prepare($sql);
-		$stmt->execute();
-		$sizes = $stmt->fetchAll();
-		$sql = "SELECT id,name FROM catalog_color ORDER BY name";
-		$stmt = $this->get('connection1')->prepare($sql);
-		$stmt->execute();
-		$colors = $stmt->fetchAll();
-		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.sort, p.publish FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id= :id ORDER BY p.sort, p.price";
-		$stmt = $this->get('connection1')->prepare($sql);
-		$stmt->bindValue("id", $entity['id']);
-		$stmt->execute();
-		$prices = $stmt->fetchAll();
+		$sizes = $this->get('container')->getItems('catalog_size');
+		$colors = $this->get('container')->getItems('catalog_color');
+		$prices = $this->get('container')->getItems('catalog_price', 'product_id='.$entity['id']);
 		$content = '';
 		$content .= '<form method="post" name="frmUpdatePrice" id="frmUpdatePrice" action="">
 <input type="hidden" name="product_id" value="'.$entity['id'].'" />

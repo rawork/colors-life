@@ -46,7 +46,7 @@ class SecurityHandler {
 				$sql = "SELECT login FROM user_user WHERE MD5(CONCAT(password, SUBSTRING(login, 1, 3), :addr )) = :key LIMIT 1";
 				$stmt = $this->container->get('connection1')->prepare($sql);
 				$stmt->bindValue("addr", $_SERVER['REMOTE_ADDR']);
-				$stmt->bindValue("key", $_COOKIE['userkey'].'sff');
+				$stmt->bindValue("key", $_COOKIE['userkey']);
 				$stmt->execute();
 				$user = $stmt->fetch();
 			}

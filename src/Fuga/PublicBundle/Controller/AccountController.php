@@ -60,7 +60,7 @@ class AccountController extends PublicController {
 			header('location: '.$this->get('container')->href('cabinet'));
 			exit;
 		}
-		if ($this->get('connection1')->update('account_user',
+		if ($this->get('container')->updateItem('account_user',
 				array('session_id' => ''),
 				array('login' => $this->getManager('Fuga:Common:Account')->getLogin())
 		)) {
@@ -130,7 +130,7 @@ class AccountController extends PublicController {
 				"birthday"	=> $birthday,
 				"updated"	=> date('Y-m-d H:i:s')
 			);
-			if ($this->get('connection1')->update('account_user', 
+			if ($this->get('container')->update('account_user', 
 					$values,
 					array('id' => $user['id'])
 				)) {
@@ -168,12 +168,11 @@ class AccountController extends PublicController {
 		$user = $this->get('container')->getItem('account_user', "email='$login' OR login='$login'");
 		if ($user) {
 			if ($user['password'] == $password) {
-				$sql = 'UPDATE account_user SET session_id= :id, logindate = :date WHERE login= :login OR email= :login ';
-				$stmt = $this->get('connection1')->prepare($sql);
-				$stmt->bindValue('id', session_id());
-				$stmt->bindValue('date', date('Y-m-d H:i:s'));
-				$stmt->bindValue('login', $login);
-				if ($stmt->execute()) {
+				if ($this->get('container')->updateItem(
+					'account_user', 
+					array('session_id' => session_id(), 'logindate' => date('Y-m-d H:i:s')), 
+					array('email' => $user['email'])
+				)) {
 					header('location: '.($fromPage ? $fromPage : '/'));
 					exit;
 				} else {

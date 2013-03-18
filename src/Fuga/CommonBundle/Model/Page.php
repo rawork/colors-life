@@ -25,14 +25,14 @@ class Page {
 				'name' => 'title',
 				'title' => 'Название',
 				'type' => 'string',
-				'width' => '70%',
+				'width' => '85%',
 				'search' => true
 			),
 			'name' => array (
 				'name' => 'name',
 				'title' => 'Имя (англ.)',
 				'type' => 'string',
-				'width' => '25%',
+				'width' => '10%',
 				'help' => 'англ. буквы без пробелов',
 				'search' => true,
 				'group_update' => true
@@ -53,7 +53,7 @@ class Page {
 			),
 			'module_id' => array (
 				'name' => 'module_id',
-				'title' => 'Компонент',
+				'title' => 'Тип',
 				'type' => 'select',
 				'l_table' => 'config_modules',
 				'l_field' => 'title',

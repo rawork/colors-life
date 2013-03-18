@@ -1,15 +1,9 @@
 <?php
-	/* Path default settings */
 	$PATH_MAINPAGE_TITLE = array('ru' => 'Главная', 'en' => 'Mainpage');
 		
-	/* Template Versions settings */
 	define('__VERSION_QUANTITY', 10);
-	
-	/* CAPTCHA Settings */	
 	define('__CAPTCHA_HASH', 'secretkey');
-	
 	/* Developer user */	
-	//development user name usually 'dev'
-	define('_DEV_USER', '');
+	define('_DEV_USER', 'dev');
 	// md5 hash pass of development user
 	define('_DEV_PASS', '');

@@ -15,7 +15,7 @@ class AdminInterface extends Controller {
 	private $states = array(
 		'content' => 'Структура и контент',
 		'service' => 'Сервисы',
-		'settings' => 'Настройки',
+		'system'  => 'Настройки',
 	);
 	
 	public function __construct() {
@@ -113,13 +113,9 @@ class AdminInterface extends Controller {
 		} elseif ($this->get('router')->hasParam('action') && $this->get('router')->getParam('action') == 'restore') {
 			$this->restoreAction();
 		} else {
-			$sql = 'SELECT name FROM config_locale';
-			$stmt = $this->get('connection1')->prepare($sql);
-			$stmt->execute();
-			$locales = $stmt->fetchAll();
 			$params = array(
 				'user' => $this->get('util')->_sessionVar('user'),
-				'locales' => $locales,
+				'locales' => $this->get('router')->getLocales(),
 				'currentLocale' => $this->get('router')->getParam('locale'),
 				'module' => $this->currentModuleName,
 				'modules' => $this->modules,

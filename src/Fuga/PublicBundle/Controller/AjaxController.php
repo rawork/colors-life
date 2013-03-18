@@ -32,11 +32,7 @@ class AjaxController extends Controller {
 	}
 	
 	public function sendStuffExist($productId, $email) {
-		$sql = 'SELECT id,name FROM catalog_product WHERE id= :id ';
-		$stmt = $this->get('connection1')->prepare($sql);
-		$stmt->bindValue("id", $productId);
-		$stmt->execute();
-		$product = $stmt->fetch();
+		$product = $this->get('container')->getItem('catalog_product', $productId);
 		$name = isset($product['name']) ? $product['name'] : 'Товар не определен';
 		$letterText = "
 			Пользователь с электронной почтой $email просит оповестить о наличии товара на складе.\n\n

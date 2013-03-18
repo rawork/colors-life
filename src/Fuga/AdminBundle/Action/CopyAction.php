@@ -10,7 +10,7 @@ class CopyAction extends Action {
 	
 	function getText() {
 		set_time_limit(0);
-		$this->messageAction($this->get('container')->duplicateItem($this->dataTable->dbName(), $this->get('router')->getParam('id'), $this->get('util')->_getVar('quantity', true, 1)) ? 'Скопировано' : 'Ошибка копирования');
+		$this->messageAction($this->get('container')->copyItem($this->dataTable->dbName(), $this->get('router')->getParam('id'), $this->get('util')->_getVar('quantity', true, 1)) ? 'Скопировано' : 'Ошибка копирования');
 	}
 
 }
