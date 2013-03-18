@@ -117,7 +117,6 @@ function subscribe(formId) {
 	fields = $('#frm'+formId).serialize();
 	$.post("/subscribe", {formdata: fields},
 	function(data){
-		alert('fwf');
 		$('#subscribe_form').html(data.content);
 	}, "json");
 }
