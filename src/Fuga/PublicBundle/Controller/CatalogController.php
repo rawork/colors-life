@@ -73,6 +73,23 @@ class CatalogController extends PublicController {
 		return $this->render('catalog/cats.tpl', compact('items'));
 	}
 	
+	public function existAction() {
+		$productId = $this->get('util')->_postVar('product_id');
+		$email = $this->get('util')->_postVar('email');		
+		$product = $this->get('container')->getItem('catalog_product', $productId);
+		$name = isset($product['name']) ? $product['name'] : 'Товар не определен';
+		$letterText = "
+			Пользователь с электронной почтой $email просит оповестить о наличии товара на складе.\n\n
+			Запрошен товар $name [ID=$productId]
+		";
+		$this->get('mailer')->send(
+			'Цвета жизни - заявка на оповещение о наличии товара на складе от '.date('d.m.Y H:i'),
+			nl2br($letterText),
+			array('content@colors-life.ru', 'rawork@yandex.ru')
+		);
+		return json_encode(array('content' => 'Ваша заявка принята. Мы будем рады помочь Вам.'));
+	}
+	
 	public function hitAction($params) {
 		$hits = null;
 		if ('stuff' == $this->get('router')->getParam('action')) {

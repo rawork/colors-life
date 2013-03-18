@@ -30,7 +30,7 @@ class MaillistManager extends ModelManager {
 	
 	public function getSubscriber($email) {
 		$sql = "SELECT * FROM ".$this->subscriberTable." WHERE email = :email LIMIT 1";
-		$stmt = $this->container->get('connection1')->prepare($sql);
+		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->bindValue("email", $email);
 		$stmt->execute();
 		return $stmt->fetch();

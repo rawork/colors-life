@@ -115,8 +115,7 @@ class PageController extends Controller {
 
 	public function indexAction() {
 		if ($this->get('container')->isXmlHttpRequest()) {
-			echo $this->getContent();
-			exit;
+			return $this->getContent();
 		}
 		
 		$node = $this->getManager('Fuga:Common:Page')->getCurrentNode();
@@ -136,7 +135,7 @@ class PageController extends Controller {
 				$this->getManager('Fuga:Common:Template')->getByNode($node['name']), 
 				$this->get('container')->getVars()
 		);
-		echo $content;
+		return $content;
 	}
 
 	public function handle() {
@@ -144,20 +143,22 @@ class PageController extends Controller {
 			echo $this->render('page.notice.tpl', array('order' => str_replace('/notice/', '', $_SERVER['REQUEST_URI'])));
 			exit;
 		}
-		
 		if (preg_match('/^\/fileupload/', $_SERVER['REQUEST_URI'])) {
 			echo $this->fileuploadAction();
 			exit;
 		}
-		
 		if ('subscribe' == $this->get('router')->getParam('node')) {
-			$key = $this->get('util')->_getVar('key');
-			$_SESSION['subscribe_message'] = $this->getManager('Fuga:Common:Maillist')->activate($key);
-			header('location: '.$this->get('container')->href('subscribe-process'));
-			exit;
+			if ($this->get('container')->isXmlHttpRequest()) {
+				echo $this->get('container')->callAction('Fuga:Public:Common:subscriberesult');
+				exit;
+			} elseif ($key = $this->get('util')->_getVar('key')) {
+				$_SESSION['subscribe_message'] = $this->getManager('Fuga:Common:Maillist')->activate($key);
+				header('location: '.$this->get('container')->href('subscribe-process'));
+				exit;
+			}
 		}
 		
-		return $this->indexAction();
+		echo $this->indexAction();
 	}
 	
 }

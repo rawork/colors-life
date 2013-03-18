@@ -13,10 +13,8 @@ class CommonController extends Controller {
 	}
 	
 	public function breadcrumbAction() {
-		
 		$node = $this->getManager('Fuga:Common:Page')->getCurrentNode();
 		$nodes = $this->getManager('Fuga:Common:Page')->getPathNodes($node['id']);
-		//TODO add category block
 		$action = $this->get('router')->getParam('action');	
 		$params = $this->get('router')->getParam('params');
 		if ($node['name'] == 'catalog' && $action == 'index' && isset($params[0])) {
@@ -50,8 +48,7 @@ class CommonController extends Controller {
 		return $this->render('breadcrumb.tpl', compact('nodes', 'action'));
 	}
 	
-	/* Map */
-	function getMapList($uri = 0) {
+	public function getMapList($uri = 0) {
 		
 		function getMapList($id = 0) {
 			$nodes = array();
@@ -94,6 +91,23 @@ class CommonController extends Controller {
 			$subscribe_message = $_SESSION['subscribe_message'];
 		}
 		return $this->render('subscribe/form.tpl', compact('subscribe_message'));
+	}
+	
+	public function subscriberesultAction() {
+		parse_str($this->get('util')->_postVar('formdata'));
+		if (!$this->get('util')->valid_email($email)) {
+			$message = array(
+				'message' => 'Неправильный E-mail',
+				'success' => false
+			);
+		} else {
+			if ($subscribe_type == 2) {
+				$message = $this->getManager('Fuga:Common:Maillist')->unsubscribe($email);
+			} elseif ($subscribe_type == 1) {
+				$message = $this->getManager('Fuga:Common:Maillist')->subscribe($email, $name, $lastname);
+			}
+		}
+		return json_encode(array('content' => $this->render('subscribe/result.tpl', $message)));
 	}
 	
 	public function formAction($params) {

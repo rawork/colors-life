@@ -94,7 +94,7 @@ class Maillist {
 			),
 			'is_active' => array (
 				'name' => 'is_active',
-				'title' => 'Подписан',
+				'title' => 'Акт.',
 				'type' => 'checkbox',
 				'search' => true,
 				'group_update'  => true,

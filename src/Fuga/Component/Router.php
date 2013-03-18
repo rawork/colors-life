@@ -64,7 +64,7 @@ class Router {
 	
 	public function isPublic($url = null) {
 		$url = $url ?: $this->url;
-		return !preg_match('/^\/(admin|ajax|adminajax|notice|bundles)\//', $url);
+		return !preg_match('/^\/(admin|adminajax|notice|bundles)\//', $url);
 	}
 	
 	public function isAdmin($url = null) {

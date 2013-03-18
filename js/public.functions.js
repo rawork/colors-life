@@ -115,18 +115,19 @@ function showOrderDetail(orderId) {
 	
 function subscribe(formId) {
 	fields = $('#frm'+formId).serialize();
-	$.post("/ajax/", {method: 'showSubscribeResult', formdata: fields},
+	$.post("/subscribe", {formdata: fields},
 	function(data){
+		alert('fwf');
 		$('#subscribe_form').html(data.content);
 	}, "json");
 }
 
 
-function sendStuffExist(productId) {
+function productExist(productId) {
 	email = $('#email'+productId).attr('value');
-	$.post("/ajax/", {method: 'sendStuffExist', productId: productId, email: email},
+	$.post("/catalog/exist", {product_id: productId, email: email},
 	function(data){
-		$('#mailblock'+productId).html(data.status);
+		$('#mailblock'+productId).html(data.content);
 	}, "json");
 }
 	
