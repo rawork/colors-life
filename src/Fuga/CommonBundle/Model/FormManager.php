@@ -9,7 +9,7 @@ class FormManager extends ModelManager {
 	private $params;
 	
 	public function __construct() {
-		$params = $this->getManager('Fuga:Common:Param')->findAll('form');
+		$params = $this->get('container')->getManager('Fuga:Common:Param')->findAll('form');
 		$this->params = array();
 		foreach ($params as $param) {
 			$this->params[$param['name']] = $param['type'] == 'int' ? intval($param['value']) : $param['value'];
