@@ -150,7 +150,7 @@ class PageController extends Controller {
 			exit;
 		}
 		
-		if (preg_match('/^\/subscribe/', $_SERVER['REQUEST_URI'])) {
+		if ('subscribe' == $this->get('router')->getParam('node')) {
 			$key = $this->get('util')->_getVar('key');
 			$_SESSION['subscribe_message'] = $this->getManager('Fuga:Common:Maillist')->activate($key);
 			header('location: '.$this->get('container')->href('subscribe-process'));

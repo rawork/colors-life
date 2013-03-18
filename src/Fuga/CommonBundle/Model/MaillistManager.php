@@ -110,7 +110,7 @@ http://".$_SERVER['SERVER_NAME']."/subscribe?key=".$key;
 		if ($subscriber) {
 			$this->get('container')->updateItem($this->subscriberTable, 
 					array('is_active' => 1, 'hashkey' => ''), 
-					$subscriber['id']
+					array('id' => $subscriber['id'])
 			);
 			$message = 'Адрес '.htmlspecialchars($subscriber['email']).' активирован';
 		} else {
