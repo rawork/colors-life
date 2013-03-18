@@ -341,7 +341,7 @@ EOD;
 		fclose($f);
 	}
 	
-	private function updateNestedSets($table = 'catalog_category' ,$parentId = 0, $level = 1, $leftKey = 1) {
+	private function updateNestedSets($table = 'catalog_category' , $parentId = 0, $level = 1, $leftKey = 1) {
 		$sql = "SELECT id,title,name FROM $table WHERE parent_id= :id ORDER BY sort";
 		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->bindValue('id', $parentId);
@@ -366,6 +366,7 @@ EOD;
 		} else {
 			$right_key = $leftKey;
 		}
+		
 		return $right_key;
 	}
 	
@@ -436,7 +437,7 @@ EOD;
 		$this->checkNestedSets('catalog_category');
 		$this->updateNestedSets('page_page');
 		$this->checkNestedSets('page_page');
-		//$this->updateLinkTables();
+//		$this->updateLinkTables();
 	}
 	
 }

@@ -433,7 +433,7 @@ class Table {
 				$options['order_by'] = $this->params['order_by'] ?: 'id';
 			}
 			if (empty($options['limit'])) {
-				$options['limit'] = '100000';
+				$options['limit'] = '0';
 			}
 			$sql = 'SELECT '.$options['select'].
 				' FROM '.$options['from'].
