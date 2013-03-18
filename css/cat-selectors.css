@@ -15,10 +15,10 @@
 }
 
 .index-category {
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	min-height: 280px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	min-height: 290px;
 	background-position: 96% bottom;
 	background-repeat: no-repeat;
 	padding: 20px;
@@ -34,7 +34,7 @@
 }
 
 .cat50 {
-	border: 5px solid #A1E300;
+	border: 3px solid #A1E300;
 	background-color: #A1E300;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .cat1 {
-	border: 5px solid #37C6F4;
+	border: 3px solid #37C6F4;
 	background-color: #37C6F4;
 }
 
@@ -52,7 +52,7 @@
 }
 
 .cat3 {
-	border: 5px solid #9150A0;
+	border: 3px solid #9150A0;
 	background-color: #9150A0;
 }
 
@@ -61,7 +61,7 @@
 }
 
 .cat5 {
-	border: 5px solid #F13833;
+	border: 3px solid #F13833;
 	background-color: #F13833;
 }
 
@@ -70,7 +70,7 @@
 }
 
 .cat6 {
-	border: 5px solid #E49E18;
+	border: 3px solid #E49E18;
 	background-color: #E49E18;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .cat7 {
-	border: 5px solid #4C4C4D;
+	border: 3px solid #4C4C4D;
 	background-color: #4C4C4D;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .cat25 {
-	border: 5px solid #55A245;
+	border: 3px solid #55A245;
 	background-color: #55A245;
 }
 
@@ -97,7 +97,7 @@
 }
 
 .cat8 {
-	border: 5px solid #0857C1;
+	border: 3px solid #0857C1;
 	background-color: #0857C1;
 }
 

@@ -4,10 +4,10 @@
 	<div class="index-category-back cat{$cat.id}" id="index_cat_{$cat.id}">
 	<div class="index-category" style="background-image: url('{$cat.image}')">
 		<h4 class="cat-item{$cat.id}"><span>{$cat.title}</span></h4>
-		<table class="subcats-block" width="100%" cellpadding="0" cellspacing="0" border="0">
+		<table class="subcats-block" width="100%">
 			<tr>
 			<td class="cat-subcats{$cat.id}">
-				<table width="100%" cellpadding="5" cellspacing="0" border="0">
+				<table width="100%" cellpadding="5">
 				<tr> 
 					{counter assign=cnt start=1}
 					{foreach from=$cat.children item=subcat}
