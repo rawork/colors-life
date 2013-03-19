@@ -10,7 +10,7 @@ class Config {
 
 		$this->tables = array();
 		$this->tables[] = array(
-			'name' => 'modules',
+			'name' => 'module',
 			'component' => 'config',
 			'title' => 'Модули',
 			'order_by' => 'sort,title',
@@ -45,7 +45,7 @@ class Config {
 		));
 
 		$this->tables[] = array(
-			'name' => 'variables',
+			'name' => 'variable',
 			'component' => 'config',
 			'title' => 'Переменные',
 			'order_by' => 'name',

@@ -21,25 +21,69 @@ class Container
 				'name'  => 'user',
 				'title' => 'Пользователи',
 				'ctype' => 'system',
-				'entitites' => array()
+				'entitites' => array(
+					array(
+						'name' => 'user-user',
+						'title' => 'Список пользователей'
+					),
+					array(
+						'name' => 'user-group',
+						'title' => 'Группы пользователей'
+					),
+					array(
+						'name' => 'user-address',
+						'title' => 'Адреса доставки'
+					)
+				)
 			),
 			'template' => array(
 				'name'  => 'template',
 				'title' => 'Шаблоны',
 				'ctype' => 'system',
-				'entitites' => array()
+				'entitites' => array(
+					array(
+						'name' => 'template-template',
+						'title' => 'Шаблоны'
+					),
+					array(
+						'name' => 'template-rule',
+						'title' => 'Правила шаблонов'
+					),
+				)
 			),
 			'config' => array(
 				'name'	=> 'config',
 				'title' => 'Настройки',
 				'ctype' => 'system',
-				'entitites' => array()
+				'entitites' => array(
+					array(
+						'name' => 'config-modules',
+						'title' => 'Модули'
+					),
+					array(
+						'name' => 'config-variables',
+						'title' => 'Переменные'
+					),
+					array(
+						'name' => 'config-backup',
+						'title' => 'Обслуживание'
+					),
+				)
 			),
 			'table' => array(
 				'name'	=> 'table',
 				'title' => 'Таблицы',
 				'ctype' => 'system',
-				'entitites' => array()
+				'entitites' => array(
+					array(
+						'name' => 'table-tables',
+						'title' => 'Таблицы'
+					),
+					array(
+						'name' => 'table-attributes',
+						'title' => 'Поля'
+					),
+				)
 			),
 			'maillist' => array(
 				'name'  => 'maillist',
@@ -84,7 +128,7 @@ class Container
 					unset($this->ownmodules['user'], $this->ownmodules['template'], $this->ownmodules['table']);
 				}
 				$sql = 'SELECT id, sort, name, title, \'content\' AS ctype 
-					FROM config_modules WHERE id IN ('.$user['rules'].') ORDER BY sort, title';
+					FROM config_module WHERE id IN ('.$user['rules'].') ORDER BY sort, title';
 				$stmt = $this->get('connection1')->prepare($sql);
 				$stmt->execute();
 				$this->ownmodules = array_merge($this->ownmodules, $stmt->fetchAll());
@@ -108,7 +152,7 @@ class Container
 	private function getAllTables() {
 		$ret = array();
 		$this->modules = $this->tempmodules;
-		$sql = "SELECT id, sort, name, title, 'content' AS ctype FROM config_modules ORDER BY sort, title";
+		$sql = "SELECT id, sort, name, title, 'content' AS ctype FROM config_module ORDER BY sort, title";
 		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->execute();
 		while ($module = $stmt->fetch()) {
@@ -132,8 +176,8 @@ class Container
 			}
 		}
 		$sql = "SELECT t.*,m.name as component 
-				FROM table_tables t 
-				JOIN config_modules m ON t.module_id=m.id 
+				FROM table_table t 
+				JOIN config_module m ON t.module_id=m.id 
 				WHERE t.publish=1 ORDER BY t.sort";
 		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->execute();
@@ -278,8 +322,8 @@ class Container
 
 	public function dropTable($table, $complex = false) {
 		if ($complex) {
-			$this->get('connection1')->delete('table_attributes', array('table_id' => $this->getTable($table)->id));
-			$this->get('connection1')->delete('table_tables', array('name' => $table));
+			$this->get('connection1')->delete('table_field', array('table_id' => $this->getTable($table)->id));
+			$this->get('connection1')->delete('table_table', array('name' => $table));
 		}
 		return $this->get('connection1')->query('DROP TABLE '.$table);
 	}

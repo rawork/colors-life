@@ -21,7 +21,7 @@
 	
   </head>
   <body>
-	<div class="navbar navbar-fixed-top">
+	<div class="navbar navbar-fixed-top navbar-inverse">
 		<div class="navbar-inner">
 			<div class="container">
 				<a class="brand" style="margin-left: 20px;" href="/" target="_blank">{$prj_name}.{$prj_zone}</a>
@@ -29,6 +29,18 @@
 				<li class="divider-vertical"></li>
 				{foreach from=$states key=stateName item=stateTitle}  
 				<li{if state == stateName} class="active"{/if}><a href="javascript:getComponentList('{$stateName}', '{$module}')">{$stateTitle}</a></li>
+				<!--<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">{$stateTitle} <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						
+						<li class="nav-header">Nav header</li>
+						<li><a href="#">Action</a></li>
+						<li><a href="#">Another action</a></li>
+						<li><a href="#">Something else here</a></li>
+						<li class="divider"></li>
+						
+					</ul>
+				</li>-->
 				<li class="divider-vertical"></li>
 				{/foreach}
 				<li><a href="javascript:fileBrowser('file');" class="context-button">Файловый менеджер</a></li>
@@ -77,7 +89,7 @@
 		</div>
 	</div>
 	</div>
-	<div class="navbar navbar-fixed-bottom admin-copyright">Управление сайтом &copy; 2000-2012</div>	
+	<div class="navbar navbar-fixed-bottom admin-copyright">Fuga CMS &copy; 2005-2013</div>	
 	<div id="waiting" class="closed"><img src="{$theme_ref}/img/loading.gif">Обработка запроса...</div>
 	<div class="modal closed" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="popupTitle" aria-hidden="true">
 		<div class="modal-header admin-modal-header">

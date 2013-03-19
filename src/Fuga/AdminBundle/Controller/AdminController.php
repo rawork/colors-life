@@ -21,7 +21,7 @@ class AdminController extends Controller {
 	}
 	
 	function isAvailable() {
-		return $this->get('security')->isSuperuser() || $this->users[$this->get('util')->_sessionVar('user')] == 1;
+		return $this->get('security')->isSuperuser() || 1 == $this->users[$this->get('util')->_sessionVar('user')];
 	}
 	
 	function getBaseRef() {

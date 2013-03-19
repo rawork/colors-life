@@ -55,7 +55,7 @@ class Page {
 				'name' => 'module_id',
 				'title' => 'Тип',
 				'type' => 'select',
-				'l_table' => 'config_modules',
+				'l_table' => 'config_module',
 				'l_field' => 'title',
 				'query' => "id NOT IN(17)"
 			),
@@ -63,11 +63,6 @@ class Page {
 				'name' => 'content',
 				'title' => 'Текст',
 				'type' => 'html'
-			),
-			'h1_img' => array (
-				'name'  => 'h1_img',
-				'title' => 'Картинка H1',
-				'type' => 'image',
 			),
 			'left_key' => array (
 				'name'  => 'left_key',

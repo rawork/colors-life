@@ -32,7 +32,7 @@ class AddAction extends Action {
 			foreach ($this->dataTable->fields as $field) {
 				if (empty($field['readonly'])) {
 					$vis = '';
-					if ($this->dataTable->dbName() == 'table_attributes' && ($field['name'] == 'select_values' || $field['name'] == 'params')) {
+					if ($this->dataTable->dbName() == 'table_field' && ($field['name'] == 'select_values' || $field['name'] == 'params')) {
 						$vis = ' style="display:none;"';
 					}
 					$fields .= '<tr'.$vis.' id="add_'.$field['name'].'"><td style="width:180px"><strong>'.$field['title'].'</strong>'.$this->getHelpLink($field).$this->getTemplateName($field).'</td><td>';

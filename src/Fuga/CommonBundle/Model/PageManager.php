@@ -10,7 +10,7 @@ class PageManager extends ModelManager {
 		$nodes = $this->get('container')->getItemsRaw(
 			'SELECT t1.*, t3.name as module_id_name, t3.path as module_id_path FROM page_page as t1 '.
 			'LEFT JOIN page_page as t2 ON t1.parent_id=t2.id '.
-			'LEFT JOIN config_modules as t3 ON t1.module_id=t3.id '.
+			'LEFT JOIN config_module as t3 ON t1.module_id=t3.id '.
 			"WHERE t1.publish=1 AND t1.locale='".$this->get('router')->getParam('locale')."' AND ".(is_numeric($uri) ? ($uri == 0 ? ' t1.parent_id=0 ' : 't2.id='.$uri.' ') : "t2.name='".$uri."' ").
 			'ORDER BY t1.sort,t1.name '
 		);

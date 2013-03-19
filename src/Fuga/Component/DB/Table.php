@@ -64,7 +64,7 @@ class Table {
 	}
 
 	private function readDBConfig() {
-		$sql = "SELECT * FROM table_attributes WHERE publish=1 AND table_id= :id ORDER by sort";
+		$sql = "SELECT * FROM table_field WHERE publish=1 AND table_id= :id ORDER by sort";
 		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->bindValue('id', $this->id);
 		$stmt->execute();
@@ -433,7 +433,7 @@ class Table {
 				$options['order_by'] = $this->params['order_by'] ?: 'id';
 			}
 			if (empty($options['limit'])) {
-				$options['limit'] = '0';
+				$options['limit'] = '100000';
 			}
 			$sql = 'SELECT '.$options['select'].
 				' FROM '.$options['from'].

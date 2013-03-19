@@ -11,7 +11,7 @@ class EnumType extends Type {
 		$value = $value ?: $this->dbValue;
 		$class = $class ? 'class="'.$class.'"' : '';
 		$sel = '';
-		if ($this->params['name'] == 'type' && $this->params['table'] == 'table_attributes') {
+		if ($this->params['name'] == 'type' && $this->params['table'] == 'table_field') {
 			$sel = ' onChange="setType(this)"';
 		}
 		$ret = '<select'.$sel.' name="'.$name.'" '.$class.'>';

@@ -85,7 +85,7 @@ class User {
 				'name' => 'rules',
 				'title' => 'Права',
 				'type' => 'select_list',
-				'l_table' => 'config_modules',
+				'l_table' => 'config_module',
 				'l_field' => 'title',
 				'search' => true,
 				'width' => '70%'

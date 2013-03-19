@@ -10,7 +10,7 @@ class Table {
 
 		$this->tables = array();
 		$this->tables[] = array(
-			'name'			=> 'tables',
+			'name'			=> 'table',
 			'component'		=> 'table',
 			'title'			=> 'Таблицы',
 			'order_by'		=> 'module_id,sort,name',
@@ -37,7 +37,7 @@ class Table {
 					'title' => 'Компонент',
 					'type'	=> 'select',
 					'help'	=> 'Модуль таблицы',
-					'l_table' => 'config_modules',
+					'l_table' => 'config_module',
 					'l_field' => 'title',
 					'width' => '20%'//,
 					//'group_update' => true
@@ -117,7 +117,7 @@ class Table {
 		);
 
 	$this->tables[] = array(
-			'name'		=> 'attributes',
+			'name'		=> 'field',
 			'component' => 'table',
 			'title'		=> 'Поля',
 			'order_by'	=> 'table_id,sort',
@@ -144,7 +144,7 @@ class Table {
 				'name'		=> 'table_id',
 				'title'		=> 'Таблица',
 				'type'		=> 'select',
-				'l_table'	=> 'table_tables',
+				'l_table'	=> 'table_table',
 				'l_field'	=> 'title',
 				'width'		=> '21%',
 				'search'	=> true

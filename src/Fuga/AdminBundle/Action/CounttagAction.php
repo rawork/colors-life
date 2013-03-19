@@ -341,7 +341,7 @@ EOD;
 		fclose($f);
 	}
 	
-	private function updateNestedSets($table = 'catalog_category' , $parentId = 0, $level = 1, $leftKey = 1) {
+	private function updateNestedSets($table = 'catalog_category' , $parentId = 0, $level = 1, $left_key = 0) {
 		$sql = "SELECT id,title,name FROM $table WHERE parent_id= :id ORDER BY sort";
 		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->bindValue('id', $parentId);
@@ -349,25 +349,25 @@ EOD;
 		$items = $stmt->fetchAll();
 		if ($items) {
 			foreach ($items as $item) {
-				$right_key = $this->updateNestedSets($table, $item['id'], $level+1, $leftKey+1);
+				$left_key++;
+				$right_key = $this->updateNestedSets($table, $item['id'], $level+1, $left_key);
+				
 				$name = 'catalog_category' == $table ? strtolower($this->get('util')->translitStr(trim($item['title']))) : $item['name'];
 				$this->get('connection1')->update($table,
 					array(
-						'left_key' => $leftKey, 
+						'left_key' => $left_key, 
 						'right_key' => $right_key, 
 						'level' => $level,
 						'name' => $name
 					),	
 					array('id' => $item['id'])
 				);
-				$leftKey = $right_key+1;
+				$left_key = $right_key;
 			}
-			$right_key++;
 		} else {
-			$right_key = $leftKey;
+			$right_key = $left_key;
 		}
-		
-		return $right_key;
+		return ++$right_key;
 	}
 	
 	private function checkNestedSets($tableName = 'catalog_category') {

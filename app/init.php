@@ -81,7 +81,7 @@ $container = new Container();
 
 // инициализация переменных
 $params = array();
-$sql = 'SELECT name, value FROM config_variables';
+$sql = 'SELECT name, value FROM config_variable';
 $stmt = $container->get('connection1')->prepare($sql);
 $stmt->execute();
 $vars = $stmt->fetchAll();
