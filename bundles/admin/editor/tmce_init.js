@@ -3,7 +3,7 @@
 		mode : 'textareas',
 		theme : 'advanced',
 		editor_selector : 'mceEditor',
-		content_css : '/css/style.css',
+		content_css : '/css/default.css',
 		language : 'ru',
 		extended_valid_elements : 'hr[class|width|size|noshade],iframe[src|width|height|name|align|style],div[id|class|align|style]',
 		file_browser_callback : 'fileBrowserCallBack',

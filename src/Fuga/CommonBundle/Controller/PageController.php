@@ -42,8 +42,8 @@ class PageController extends Controller {
 	}
 	
 	public function fileuploadAction() {
-		$error = "";
-		$msg = "";
+		$error = array();
+		$msg = array();
 		$fileElementName = 'fileToUpload';
 		$date = new \Datetime();
 		$upload_ref = $GLOBALS['UPLOAD_REF'].$date->format('/Y/m/d/');
@@ -58,34 +58,34 @@ class PageController extends Controller {
 			if(!empty($_FILES[$fileElementName]['error'][$i])) {
 				switch($_FILES[$fileElementName]['error'][$i]) {
 					case '1':
-						$error = 'Размер загруженного файла превышает размер установленный параметром upload_max_filesize  в php.ini ';
+						$error[] = 'Размер загруженного файла превышает размер установленный параметром upload_max_filesize  в php.ini ';
 						break;
 					case '2':
-						$error = 'Размер загруженного файла превышает размер установленный параметром MAX_FILE_SIZE в HTML форме. ';
+						$error[] = 'Размер загруженного файла превышает размер установленный параметром MAX_FILE_SIZE в HTML форме. ';
 						break;
 					case '3':
-						$error = 'Загружена только часть файла ';
+						$error[] = 'Загружена только часть файла ';
 						break;
 					case '4':
-						$error = 'Файл не был загружен (Пользователь в форме указал неверный путь к файлу). ';
+						$error[] = 'Файл не был загружен (Пользователь в форме указал неверный путь к файлу). ';
 						break;
 					case '6':
-						$error = 'Неверная временная дирректория';
+						$error[] = 'Неверная временная дирректория';
 						break;
 					case '7':
-						$error = 'Ошибка записи файла на диск';
+						$error[] = 'Ошибка записи файла на диск';
 						break;
 					case '8':
-						$error = 'Загрузка файла прервана';
+						$error[] = 'Загрузка файла прервана';
 						break;
 					case '999':
 					default:
-						$error = 'Не известный код ошибки';
+						$error[] = 'Неизвестный код ошибки';
 				}
 			} elseif(empty($_FILES[$fileElementName]['tmp_name'][$i]) || $_FILES[$fileElementName]['tmp_name'][$i] == 'none') {
-				$error = 'Файлы не загружены..';
+				$error[] = 'Файл не загружен...';
 			} else {
-				$msg = " " . $_FILES[$fileElementName]['name'][$i] . "<br/>";
+				$msg[] = " " . $_FILES[$fileElementName]['name'][$i];
 				$file  = $this->get('util')->getNextFileName($upload_ref.$_FILES[$fileElementName]['name'][$i]);
 				move_uploaded_file($_FILES[$fileElementName]['tmp_name'][$i], $GLOBALS['PRJ_DIR'].$file);
 				$name = $_FILES[$fileElementName]['name'][$i];
@@ -109,8 +109,9 @@ class PageController extends Controller {
 					'created' => date('Y-m-d H:i:s')
 				));
 			}
-			return $error ? $error."<br/>" : "Добавлен файл: ".$msg;
 		}
+
+		return count($error) ? implode('<br>', $error) : "Добавлены файлы: ".implode(', ', $msg);
 	}
 
 	public function indexAction() {

@@ -1,7 +1,7 @@
 var imgFolder = new Image();
 var imgFolderSetting = new Image();
 imgFolder.src = theme_ref + '/img/icons/icon_folder.gif';
-imgFolderSetting.src = theme_ref + '/img/icons/icon_folder_settings.gif';
+imgFolderSetting.src = theme_ref + '/img/icons/icon_folder_system.gif';
 
 function setLocale(locale) {
 	$('#locale').attr('value', locale);

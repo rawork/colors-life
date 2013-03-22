@@ -374,36 +374,36 @@ class AdminAjaxController extends Controller {
 	}
 	
 	function getPriceList($productId) {
-		$ret = '<table class="table table-condensed">';
-		$ret .= '<thead><tr>';
-    	$ret .= '<th width="30%">Размер</th>';
-		$ret .= '<th width="30%">Цвет</th>';
-		$ret .= '<th width="30%">Цена</th>';
-		$ret .= '<th width="5%">Порядок</th>';
-		$ret .= '<th width="1%">Акт</th>';
-		$ret .= '<th><i class="icon-align-justify"></i></th>';
-    	$ret .= '</tr></thead>';
+		$content = '<table class="table table-condensed">
+<thead><tr>
+<th width="30%">Размер</th>
+<th width="30%">Цвет</th>
+<th width="30%">Цена</th>
+<th width="5%">Порядок</th>
+<th width="1%">Акт</th>
+<th><i class="icon-align-justify"></i></th>
+</tr></thead>';
 				
 		$sql = "SELECT p.id, s.name as size_id_name, c.name as color_id_name, p.price, p.sort, p.publish 
 			FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id 
 			JOIN catalog_color c ON p.color_id=c.id 
-			WHERE p.product_id= :id ORDER BY p.price";		
+			WHERE p.product_id= :id ORDER BY p.price";
 		$stmt = $this->get('connection1')->prepare($sql);
-		$smtm->bindValue('id', $productId);
+		$stmt->bindValue('id', $productId);
 		$stmt->execute();
 		$items = $stmt->fetchAll();
 		foreach ($items as $item) {
-			$ret .= '<tr id="price_'.$item['id'].'">';
-			$ret .= '<td>'.$item['size_id_name'].'</td>';
-			$ret .= '<td>'.$item['color_id_name'].'</td>';
-			$ret .= '<td><input type="text" class="input-mini right" name="price_'.$item['id'].'" value="'.$item['price'].'" /></td>';
-			$ret .= '<td><input type="text" class="input-mini" name="sort_'.$item['id'].'" value="'.$item['sort'].'" /></td>';
-			$ret .= '<td><input type="checkbox" name="publish_'.$item['id'].'" value="on"'.($item['publish'] ? ' checked' : '').'></td>';
-			$ret .= '<td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$item['id'].')"><i class="icon-trash icon-white"></i></a></td>'."\n";
-			$ret .= '</tr>';	
+			$content .= '<tr id="price_'.$item['id'].'">';
+			$content .= '<td>'.$item['size_id_name'].'</td>';
+			$content .= '<td>'.$item['color_id_name'].'</td>';
+			$content .= '<td><input type="text" class="input-mini right" name="price_'.$item['id'].'" value="'.$item['price'].'" /></td>';
+			$content .= '<td><input type="text" class="input-mini" name="sort_'.$item['id'].'" value="'.$item['sort'].'" /></td>';
+			$content .= '<td><input type="checkbox" name="publish_'.$item['id'].'" value="on"'.($item['publish'] ? ' checked' : '').'></td>';
+			$content .= '<td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$item['id'].')"><i class="icon-trash icon-white"></i></a></td>'."\n";
+			$content .= '</tr>';	
 		}
-		$ret .= '</table>';
-		return $ret;
+		$content .= '</table>';
+		return $content;
 	}
 	
 	function addPrice($formdata) {
@@ -417,9 +417,8 @@ class AdminAjaxController extends Controller {
 			'publish' => isset($publish) ? 1 : 0,
 			'created' => date('Y-m-d H:i:s')
 		));
-		$text = $this->getPriceList($product_id);
-		
-		return json_encode(array('content' => $text));
+
+		return json_encode(array('content' => $this->getPriceList($product_id)));
 	}
 	
 	function delPrice($priceId) {
@@ -447,9 +446,8 @@ class AdminAjaxController extends Controller {
 				array('id' => $item['id'])
 			);
 		}
-		$text = $this->getPriceList($product_id);
 		
-		return json_encode(array('content' => $text));
+		return json_encode(array('content' => $this->getPriceList($product_id)));
 	}
 	
 	function updateRpp($tableName, $rpp = 25) {

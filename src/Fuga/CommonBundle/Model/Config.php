@@ -47,7 +47,7 @@ class Config {
 		$this->tables[] = array(
 			'name' => 'variable',
 			'component' => 'config',
-			'title' => 'Переменные',
+			'title' => 'Общие настройки',
 			'order_by' => 'name',
 			'fieldset' => array (
 			'title' => array (

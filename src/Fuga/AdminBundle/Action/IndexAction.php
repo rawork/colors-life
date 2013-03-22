@@ -97,8 +97,8 @@ class IndexAction extends Action {
 		$where = 'parent_id='.$parentId.' '.($this->search_sql ? ' AND '.$this->search_sql : '');
 		$this->dataTable->select(
 			array(
-				'where'		=> $where,
-				'order_by'	=> $this->dataTable->params['order_by']
+				'where'		=> '1=1',
+				'order_by'	=> 'left_key'
 			)
 		);
 		$nodes = $this->dataTable->getNextArrays();
@@ -109,7 +109,8 @@ class IndexAction extends Action {
 			$tableHtml .= '<td width="1%"><input type="checkbox" class="list-checker" value="'.$node['id'].'"></td><td width="1%">'.$node['id'].'</td>';
 			$num = 0;
 
-			$childrenNodes = $this->getTree($node['id'], $prefixWidth + 20, $styleClass);
+//			$childrenNodes = $this->getTree($node['id'], $prefixWidth + 20, $styleClass);
+			$prefixWidth = 20 * ((int)$node['level']-1);
 			foreach ($this->dataTable->fields as $field) {
 				if (!empty($field['width'])) {
 					$tableHtml .= '<td width="'.$field['width'].'">';
@@ -127,7 +128,7 @@ class IndexAction extends Action {
 						if ($this->dataTable->dbName() == 'page_page' && $node['module_id']) {
 							$module = $this->get('container')->getModule($node['module_id_name']);
 							if ( $module ) {
-								$tableHtml .= ' (тип: '.$module['title'].')';
+								$tableHtml .= ' (тип &mdash; '.$module['title'].')';
 							}
 						}
 						$tableHtml .= '</span>';
@@ -137,7 +138,7 @@ class IndexAction extends Action {
 				$num++;
 			}
 			$tableHtml .= $this->_getUpdateDelete($node['id']).'</tr>';
-			$tableHtml .= $childrenNodes;
+//			$tableHtml .= $childrenNodes;
 		}
 		
 		return $tableHtml;
