@@ -35,7 +35,6 @@ function exception_handler($exception)
 		$controller = new ExceptionController();
 		echo $controller->indexAction($exception->getStatusCode(), $exception->getMessage());
 	} else {
-		echo nl2br($exception->getTraceAsString());
 		$controller = new ExceptionController();
 		echo $controller->indexAction(500, $exception->getMessage());
 	}
