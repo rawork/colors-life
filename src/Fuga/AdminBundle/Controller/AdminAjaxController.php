@@ -336,7 +336,7 @@ class AdminAjaxController extends Controller {
 	function delFile($id) {
 		$sql = "SELECT file FROM system_files WHERE id= :id ";
 		$stmt = $this->get('connection1')->prepare($sql);
-		$smtm->bindValue('id', $id);
+		$stmt->bindValue('id', $id);
 		$stmt->execute();
 		$file = $stmt->fetch();
 		if ($file) {
@@ -431,7 +431,7 @@ class AdminAjaxController extends Controller {
 		parse_str($formdata);
 		$sql = "SELECT p.id, p.product_id FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id= :id ORDER BY p.price";
 		$stmt = $this->get('connection1')->prepare($sql);
-		$smtm->bindValue('id', $product_id);
+		$stmt->bindValue('id', $product_id);
 		$stmt->execute();
 		$items = $stmt->fetchAll();
 		foreach ($items as $item) {
