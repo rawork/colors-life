@@ -351,8 +351,8 @@ class AdminAjaxController extends Controller {
 	function updateFileList($table, $id) {
 		$sql = "SELECT * FROM system_files WHERE table_name= :table AND entity_id= :id ";
 		$stmt = $this->get('connection1')->prepare($sql);
-		$smtm->bindValue('table', $table);
-		$smtm->bindValue('id', $id);
+		$stmt->bindValue('table', $table);
+		$stmt->bindValue('id', $id);
 		$stmt->execute();
 		$items = $stmt->fetchAll();
 		$ret = '';
