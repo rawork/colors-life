@@ -57,9 +57,12 @@
 {if $user}
 <p>Состояние заказа можно  посмотреть в <a target="_blank" href="http://colors-life.ru/cabinet">личном кабинете</a>.</p>
 {/if}
-<p>Дополнительную информацию Вы можете получить по телефону 8 (495) 580-21-68</p>
+<p>Дополнительную информацию Вы можете получить по телефону +7 (495) 771-16-97</p>
 <p>--<br>Спасибо за покупку в Цвета жизни!</p>
 <p>
 <br><br>Это письмо отправлено почтовым роботом. Не отвечайте на это письмо.
-Вы можете задать вопросы через форму <a target="_blank" href="http://colors-life.ru/feedback">обратной связи</a>.
+Вы можете задать вопросы через форму <a target="_blank" href="http://colors-life.ru/feedback">обратной связи</a>.<br>
+Присоединяйтесь к нам в соц сетях<br>
+<a href="http://www.facebook.com/colorslife.ru">http://www.facebook.com/colorslife.ru</a><br>
+<a href="http://vk.com/club21028918">http://vk.com/club21028918</a><br>
 </p>
