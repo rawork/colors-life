@@ -28,11 +28,10 @@ class CounttagAction extends Action {
 		$articles = $stmt->fetchAll();
 		$tags_full = array();
 		foreach ($articles as $article) {
-
 			$tags = $article['tag'];
 			$tags_array = explode(',', $tags);
 			foreach ($tags_array as $tag) {
-				$tag = trim($tag);
+				$tag = strtolower(trim($tag));
 				if (!isset($tags_full[$tag])) {
 					$tags_full[$tag] = array('q' => 1, 'articles' => array($article['id']));
 				} else {
@@ -41,6 +40,9 @@ class CounttagAction extends Action {
 				}
 			}
 		}
+//		print_r($tags_full);
+//		exit;
+//		$this->get('log')->write(json_encode($tags_full));
 		foreach ($tags_full as $tag => $tag_info) {
 			$lastId = $this->get('container')->addItem('article_tag', array(
 				'name' => $tag, 
