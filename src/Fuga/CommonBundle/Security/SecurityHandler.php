@@ -53,7 +53,7 @@ class SecurityHandler {
 			if ($user) {
 				$_SESSION['user'] = $user['login'];
 				$this->user = $_SESSION['ukey'] = $_COOKIE['userkey'];
-				setcookie('userkey', $_COOKIE['userkey'], time()+3600*24*1000);	
+				setcookie('userkey', $_COOKIE['userkey'], time()+3600*24*1000, '/');	
 			}
 		}
 	}
@@ -61,7 +61,8 @@ class SecurityHandler {
 	public function logout() {
 		unset($_SESSION['user']);
 		unset($_SESSION['ukey']);
-		setcookie('userkey', '', time() - 3600);
+		unset($_COOKIE['userkey']);
+		setcookie('userkey', '', 1, '/');
 		session_destroy();
 	}
 
@@ -81,7 +82,7 @@ class SecurityHandler {
 			$_SESSION['user'] = $user['login'];
 			$_SESSION['ukey'] = $this->userHash($login, $password);
 			if ($isRemember) {
-				setcookie('userkey', $this->userHash($login, $password), time()+3600*24*1000);
+				setcookie('userkey', $this->userHash($login, $password), time()+3600*24*1000, '/');
 			}
 			header('Location: '.$_SERVER['HTTP_REFERER']);
 		} else {

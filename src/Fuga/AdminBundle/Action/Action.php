@@ -47,7 +47,7 @@ class Action extends Controller {
 
 	}
 	protected function getTableHeader() {
-		return '<table width="100%" cellpadding="0" cellspacing="0" class="tfields">';
+		return '<table width="100%" class="tfields">';
 	}
 	protected function messageAction($msg) {
 		return $this->uai->messageAction($msg, $this->fullRef);

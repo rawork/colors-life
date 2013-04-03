@@ -57,6 +57,6 @@ class HtmlType extends Type {
 				$text = str_replace($m, 'href="#" onClick="newWinHtml(\''.$tmp.'\','.$width.','.$height.'); return false;"',$text);
 			}
 		}
-		return addslashes(str_replace('&amp;','&',$text));
+		return str_replace('&amp;', '&', $text);
 	}
 }

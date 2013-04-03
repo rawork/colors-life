@@ -57,11 +57,11 @@ class Container
 				'ctype' => 'system',
 				'entitites' => array(
 					array(
-						'name' => 'config-modules',
+						'name' => 'config-module',
 						'title' => 'Модули'
 					),
 					array(
-						'name' => 'config-variables',
+						'name' => 'config-variable',
 						'title' => 'Переменные'
 					),
 					array(
@@ -76,11 +76,11 @@ class Container
 				'ctype' => 'system',
 				'entitites' => array(
 					array(
-						'name' => 'table-tables',
+						'name' => 'table-table',
 						'title' => 'Таблицы'
 					),
 					array(
-						'name' => 'table-attributes',
+						'name' => 'table-field',
 						'title' => 'Поля'
 					),
 				)
