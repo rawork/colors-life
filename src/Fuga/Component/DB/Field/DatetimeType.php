@@ -37,9 +37,10 @@ class DatetimeType extends Type {
 
 	public function getSQLValue($name = '') {
 		if (trim($this->getValue($name))) {
-			return "STR_TO_DATE('".$this->getValue($name)."','%d.%m.%Y %H:%i:%s')";
+			$date = \DateTime::createFromFormat('d.m.Y H:i:s', $this->getValue($name));
+			return $date->format('Y-m-d H:i:s');
 		} else {
-			return "'0000-00-00 00:00:00'";
+			return "0000-00-00 00:00:00";
 		}
 	}
 
