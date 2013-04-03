@@ -325,7 +325,9 @@ EOD;
 			$content .= "<price>".$product['price']."</price>\n";  // стоимость продукта
 			$content .= "<currencyId>RUR</currencyId>\n"; // валюта
 			$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
-			$content .= "<picture>http://colors-life.ru".$product['middle_imagenew']."</picture>\n";  // ссылка на картинку ( полностью )
+			if (isset($product['middle_imagenew'])) {
+				$content .= "<picture>http://colors-life.ru".$product['middle_imagenew']."</picture>\n";  // ссылка на картинку ( полностью )
+			}
 			$content .= "<delivery>true</delivery>\n";
 			$content .= "<name>".$name."</name>\n";  // название товара
 			$content .= "<vendor>".$producer."</vendor>\n";
