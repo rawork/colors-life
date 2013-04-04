@@ -399,7 +399,7 @@ function checkRegForm()
  a = trim(f.newUserFName.value);
  b = trim(f.newUserEmail.value);
  b2 = trim(f.newUserPhone.value);
- c = trim(f.captcha.value);
+ c = '11111';//trim(f.captcha.value);
  ok = trim(f.passOk.value);
  btn.disabled = ((a == '' || b == '' || b2 == '' || c == '') || !isEmail(b) || !isPhone(b2) || c.length < 5 || ok == 'false') ? true : false;
 }
