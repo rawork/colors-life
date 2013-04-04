@@ -6,4 +6,7 @@
 <div style="display: inline-block;" id="vk_like"></div>
 <script type="text/javascript">initVKLike()</script>
 <div class="article-text">{$item.body}</div>
-<div class="fb-comments" data-href="http://{$smarty.server.SERVER_NAME}{raURL node=$item.node_id_name method=read prms=$item.id}" data-num-posts="2" data-width="670"></div>
+<div id="vk_comments"></div>
+<script type="text/javascript">
+	initVKComment();
+</script>
