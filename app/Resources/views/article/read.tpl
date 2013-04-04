@@ -6,6 +6,7 @@
 <div style="display: inline-block;" id="vk_like"></div>
 <script type="text/javascript">initVKLike()</script>
 <div class="article-text">{$item.body}</div>
+<br>
 <div id="vk_comments"></div>
 <script type="text/javascript">
 	initVKComment();
