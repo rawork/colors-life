@@ -73,4 +73,10 @@
 {/foreach} 
 </div>
 {/if}
+<h4>Комментарии</h4>
+<!-- Put this div tag to the place, where the Comments block will be -->
+<div id="vk_comments"></div>
+<script type="text/javascript">
+	initVKComment();
+</script>
 {raMethod path=Fuga:Public:Catalog:hit args="['id':`$item.id`]"}
