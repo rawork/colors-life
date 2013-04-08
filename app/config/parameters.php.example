@@ -1,9 +1,8 @@
 <?php
-	$PATH_MAINPAGE_TITLE = array('ru' => 'Главная', 'en' => 'Mainpage');
-		
-	define('__VERSION_QUANTITY', 10);
-	define('__CAPTCHA_HASH', 'secretkey');
-	/* Developer user */	
-	define('_DEV_USER', 'dev');
-	// md5 hash pass of development user
-	define('_DEV_PASS', '');
+$PATH_MAINPAGE_TITLE = array('ru' => 'Главная', 'en' => 'Mainpage');
+
+define('__VERSION_QUANTITY', 10);
+/* Developer user */	
+define('_DEV_USER', 'dev');
+// md5 hash pass of development user
+define('_DEV_PASS', '');

@@ -208,8 +208,8 @@ class AccountController extends PublicController {
 		$phone = $this->get('util')->_postVar('newUserPhone');
 		$isSubscribe = $this->get('util')->_postVar('newUserSubscribe');
 		$t = $this->get('container')->getTable('account_user');
-		$this->get('log')->write($this->get('util')->_sessionVar('captchaHash').' <> '.md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH));
-		if($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)){
+		$this->get('log')->write($this->get('util')->_sessionVar('captchaHash').' <> '.md5($this->get('util')->_postVar('captcha')));
+		if($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha'))){
 			$errors[] = $this->errors['securecode'];
 		} else {
 			if ($user = $t->getItem("login='".$login."' OR email='".$login."'")) {
@@ -359,7 +359,7 @@ class AccountController extends PublicController {
 			'errors' => array()
 		);
 		$t = $this->get('container')->getTable('account_user');
-		if ($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)) {
+		if ($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha'))) {
 			$messages['errors'][] = $this->errors['incorrect_securecode'];
 		} else {
 			$login = $this->get('util')->_postVar('login');

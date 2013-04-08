@@ -36,7 +36,7 @@ class FormManager extends ModelManager {
 	private function processForm($form, $tableName = null) {
 		$message = array('', '');
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if($form->defense && $this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('securecode').__CAPTCHA_HASH)){
+			if($form->defense && $this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('securecode'))){
 				$message[0] = 'error';
 				$message[1] = $this->params['no_antispam'];
 			} else {
