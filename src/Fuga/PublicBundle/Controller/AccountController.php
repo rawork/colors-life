@@ -208,6 +208,7 @@ class AccountController extends PublicController {
 		$phone = $this->get('util')->_postVar('newUserPhone');
 		$isSubscribe = $this->get('util')->_postVar('newUserSubscribe');
 		$t = $this->get('container')->getTable('account_user');
+		$this->get('log')->write($this->get('util')->_sessionVar('captchaHash').' <> '.md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH));
 		if($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)){
 			$errors[] = $this->errors['securecode'];
 		} else {
