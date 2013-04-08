@@ -191,7 +191,6 @@ class AccountController extends PublicController {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$error_message = $this->_processRegistrationForm();
 		}
-//		print_r($_SESSION);
 		$this->get('container')->setVar('title', 'Регистрация');
 		$this->get('container')->setVar('h1', 'Регистрация');
 		$sessionName = session_name();
