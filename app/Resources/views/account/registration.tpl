@@ -43,8 +43,8 @@
   </div>
   <div class="control-group">
     <label class="control-label required" for="p2">Введите цифры
-		<img id="secure_image" src="/secureimage/?{$smarty.session.name}={$smarty.session.id}">
-		<a href="#" border="0" onclick="document.getElementById('secure_image').src='/secureimage/?rnd='+Math.random()+'&{$smarty.session.name}={$smarty.session.id}';return false"><img src="/img/reload.gif"></a>
+		<img id="secure_image" src="/secureimage/?{$sessionName}={$sessionId}">
+		<a href="#" border="0" onclick="document.getElementById('secure_image').src='/secureimage/?rnd='+Math.random()+'&{$sessionName}={$sessionId}';return false"><img src="/img/reload.gif"></a>
 	</label>
     <div class="controls">
 		<input type="text" maxlength="5" size="5" class="required" name="captcha" />

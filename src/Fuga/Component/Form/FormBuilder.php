@@ -122,9 +122,11 @@ class FormBuilder {
 			$params = array (
 				'action' => $this->action,
 				'dbform' => $this->form,
-				'items' => $this->items,
-				'frmMessage' => $this->message,
+				'items'  => $this->items,
+				'frmMessage'   => $this->message,
 				'pass_postfix' => $this->pass_postfix,
+				'sessionName'  => session_name(),
+				'sessionId'    => session_id(),
 			);
 			try {
 				$ret = $this->get('templating')->render('form/'.$this->form['name'].'.tpl', $params);

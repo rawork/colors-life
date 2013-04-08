@@ -191,10 +191,13 @@ class AccountController extends PublicController {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$error_message = $this->_processRegistrationForm();
 		}
+		print_r($_SESSION);
 		$this->get('container')->setVar('title', 'Регистрация');
 		$this->get('container')->setVar('h1', 'Регистрация');
+		$sessionName = session_name();
+		$sessionId = session_id();
 		
-		return $this->render('account/registration.tpl', compact('error_message'));
+		return $this->render('account/registration.tpl', compact('error_message', 'sessionName', 'sessionId'));
 	}
 
 	private function _processRegistrationForm() {
@@ -349,8 +352,10 @@ class AccountController extends PublicController {
 		}
 		$this->get('container')->setVar('title', 'Восстановление пароля');
 		$this->get('container')->setVar('h1', 'Восстановление пароля');
+		$sessionName = session_name();
+		$sessionId = session_id();
 		
-		return $this->render('account/forget.tpl', compact('error_message', 'info_message'));
+		return $this->render('account/forget.tpl', compact('error_message', 'info_message', 'sessionName', 'sessionId'));
 	}
 
 	private function _processForgetForm() {

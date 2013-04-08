@@ -62,7 +62,7 @@
     <tr>
       <td><div>Введите символы на картинке внизу  <span class="required">*</span></div>
         <p><input type="text" title="Код безопасности" style="width:120px" name="securecode"></p>
-        <p><img id="secure_image" src="/secureimage/?{$smarty.session.name}={$smarty.session.id}"> <a href="#" onclick="document.getElementById('secure_image').src='/secureimage/?rnd='+Math.random()+'&{$smarty.session.name}={$smarty.session.id}';return false">обновить код</a></p>
+        <p><img id="secure_image" src="/secureimage/?{$sessionName}={$sessionId}"> <a href="#" onclick="document.getElementById('secure_image').src='/secureimage/?rnd='+Math.random()+'&{$sessionName}={$sessionId}';return false">обновить код</a></p>
       </td>
     </tr>
     {/if}
