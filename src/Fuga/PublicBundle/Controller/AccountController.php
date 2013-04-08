@@ -208,9 +208,9 @@ class AccountController extends PublicController {
 		$phone = $this->get('util')->_postVar('newUserPhone');
 		$isSubscribe = $this->get('util')->_postVar('newUserSubscribe');
 		$t = $this->get('container')->getTable('account_user');
-//		if($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)){
-//			$errors[] = $this->errors['securecode'];
-//		} else {
+		if($this->get('util')->_sessionVar('captchaHash') != md5($this->get('util')->_postVar('captcha').__CAPTCHA_HASH)){
+			$errors[] = $this->errors['securecode'];
+		} else {
 			if ($user = $t->getItem("login='".$login."' OR email='".$login."'")) {
 				$errors[] = sprintf($this->errors['user_present'], $login);
 			} else {
@@ -243,7 +243,7 @@ class AccountController extends PublicController {
 					$errors = $this->errors['db_error'];
 				}
 			}
-//		}
+		}
 		return implode('<br>', $errors);
 	}
 
