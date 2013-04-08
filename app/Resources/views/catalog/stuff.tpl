@@ -30,7 +30,7 @@
 				<script>initFB()</script>
 				<script type="text/javascript" src="//vk.com/js/api/openapi.js?56"></script>
 				<script type="text/javascript">initVK();</script>	
-				<div class="fb-like" data-href="http://{$smarty.server.SERVER_NAME}{raURL node=news method=read prms=$news.id}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div>
+				<div class="fb-like" data-href="http://{$smarty.server.SERVER_NAME}{raURL node=catalog method=stuff prms=$item.id}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div>
 				<br>
 				<div id="vk_like"></div>
 				<script type="text/javascript">initVKLike()</script>
