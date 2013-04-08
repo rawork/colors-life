@@ -25,6 +25,14 @@
 					$(".product-gallery a").lightBox();
 				</script>
 				{/if}
+				<br>
+				<div id="fb-root"></div>
+				<script>initFB()</script>
+				<script type="text/javascript" src="//vk.com/js/api/openapi.js?56"></script>
+				<script type="text/javascript">initVK();</script>	
+				<div class="fb-like" data-href="http://{$smarty.server.SERVER_NAME}{raURL node=news method=read prms=$news.id}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div>
+				<div id="vk_like"></div>
+				<script type="text/javascript">initVKLike()</script>
 			</div>
 			<div class="product-description pull-left">
 				<div class="product-producer"><a href="{raURL node=catalog method=brand prms=$item.producer_id}">{$item.producer_id_name}</a> ({$item.producer_id_country})</div>
