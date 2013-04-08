@@ -132,7 +132,7 @@
 	<div class="row-fluid">
 		<div class="span40">
 			<div class="partners">{raMethod path=Fuga:Public:Catalog:partners}</div>
-			<div class="footer-content">Copyright &copy; 2010-2012 &laquo;Цвета жизни&raquo; - интернет-магазин экологически чистых товаров</div>
+			<div class="footer-content">Copyright &copy; 2010-2013 &laquo;Цвета жизни&raquo; - интернет-магазин экологически чистых товаров</div>
 		</div>
 	</div>
 </div>	
