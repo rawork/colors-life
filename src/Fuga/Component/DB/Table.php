@@ -351,56 +351,60 @@ class Table {
 	}
 	
 	function insertArray($entity) {
-		$values = array();
-		foreach ($entity as $key => $v) {
-			foreach ($this->fields as $field) {
-				if ($key && $field['name'] == $key) {
-					$fieldType = $this->createFieldType($field);
-					if ($entity[$field['name']] && ($field['type'] == 'image' || $field['type'] == 'file' || $field['type'] == 'template')) {
-						$dest = $this->get('util')->getNextFileName($v);
-						@copy($GLOBALS['PRJ_DIR'].$v, $GLOBALS['PRJ_DIR'].$dest);
-						$values[$fieldType->getName()] = $dest;
+		try {
+			$values = array();
+			foreach ($entity as $key => $v) {
+				foreach ($this->fields as $field) {
+					if ($key && $field['name'] == $key) {
+						$fieldType = $this->createFieldType($field);
+						if ($entity[$field['name']] && ($field['type'] == 'image' || $field['type'] == 'file' || $field['type'] == 'template')) {
+							$dest = $this->get('util')->getNextFileName($v);
+							@copy($GLOBALS['PRJ_DIR'].$v, $GLOBALS['PRJ_DIR'].$dest);
+							$values[$fieldType->getName()] = $dest;
 
-						if ($field['type'] == 'image' && isset($fieldType->params['sizes'])) {
-							$pathParts0 = pathinfo($v);
-							$pathParts = pathinfo($dest);
-							$sizes = explode(',', $fieldType->params['sizes']);
-							foreach ($sizes as $sizeData) {
-								$sizeParams = explode('|', $sizeData);
-								if (count($sizeParams) == 2) {
-									$source = $pathParts0['dirname'].'/'.$pathParts0['filename'].'_'.$sizeParams[0].'.'.$pathParts0['extension'];
-									$dest = $pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension'];
-									@copy($GLOBALS['PRJ_DIR'].$source, $GLOBALS['PRJ_DIR'].$dest);
+							if ($field['type'] == 'image' && isset($fieldType->params['sizes'])) {
+								$pathParts0 = pathinfo($v);
+								$pathParts = pathinfo($dest);
+								$sizes = explode(',', $fieldType->params['sizes']);
+								foreach ($sizes as $sizeData) {
+									$sizeParams = explode('|', $sizeData);
+									if (count($sizeParams) == 2) {
+										$source = $pathParts0['dirname'].'/'.$pathParts0['filename'].'_'.$sizeParams[0].'.'.$pathParts0['extension'];
+										$dest = $pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension'];
+										@copy($GLOBALS['PRJ_DIR'].$source, $GLOBALS['PRJ_DIR'].$dest);
+									}
 								}
 							}
+						} else {
+							$values[$fieldType->getName()] = $v;
 						}
-					} else {
-						$values[$fieldType->getName()] = $v;
+						break;
 					}
-					break;
 				}
 			}
-		}
-		$lastId = $this->insert($values);
-		if ($this->params['multifile']) {
-			$sql = "SELECT * FROM system_files WHERE entity_id= :id AND table_name= :table";
-			$stmt = $this->get('connection1')->prepare($sql);
-			$stmt->bindValue('id', $entity['id']);
-			$stmt->bindValue('table', $this->dbName());
-			$stmt->execute();
-			$photos = $stmt->fetchAll();
-			foreach ($photos as $photo) {
-				$filepath = $photo['file'];
-				$dest = $this->get('util')->getNextFileName($filepath);
-				@copy($GLOBALS['PRJ_DIR'].$filepath,$GLOBALS['PRJ_DIR'].$dest);
-				unset($photo['id']);
-				$photo['file'] 		= $dest;
-				$photo['created'] 	= date("Y-m-d H:i:s");
-				$photo['entity_id'] = $lastId;
-				$this->get('connection1')->insert('system_files', $photo);
+			$lastId = $this->insert($values);
+			if ($this->params['multifile']) {
+				$sql = "SELECT * FROM system_files WHERE entity_id= :id AND table_name= :table";
+				$stmt = $this->get('connection1')->prepare($sql);
+				$stmt->bindValue('id', $entity['id']);
+				$stmt->bindValue('table', $this->dbName());
+				$stmt->execute();
+				$photos = $stmt->fetchAll();
+				foreach ($photos as $photo) {
+					$filepath = $photo['file'];
+					$dest = $this->get('util')->getNextFileName($filepath);
+					@copy($GLOBALS['PRJ_DIR'].$filepath,$GLOBALS['PRJ_DIR'].$dest);
+					unset($photo['id']);
+					$photo['file'] 		= $dest;
+					$photo['created'] 	= date("Y-m-d H:i:s");
+					$photo['entity_id'] = $lastId;
+					$this->get('connection1')->insert('system_files', $photo);
+				}
 			}
+			return true;
+		} catch (\Exception $e) {
+			return false;
 		}
-		return $ret;
 	}
 
 	public function update($values, $criteria) {
