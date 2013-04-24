@@ -60,7 +60,7 @@ class Type {
 	}
 
 	public function getSQLValue($name='') {
-		return addslashes($this->getValue($name));
+		return $this->getValue($name);
 	}
 
 	public function getStatic() {
