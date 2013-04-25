@@ -163,8 +163,9 @@ class CatalogController extends PublicController {
 			$products = implode(',', array_keys($this->get('container')->getItemsRaw(
 				'SELECT product_id as id FROM catalog_products_categories WHERE category_id='.$cat['id'] 
 			)));
+			var_dump($products);
 			if ($products) {
-				$products = ' OR id IN('.$products;
+				$products = ' OR id IN('.$products.')';
 			}
 
 			$page = $this->get('util')->_getVar('page', true, 1);
