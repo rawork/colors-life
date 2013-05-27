@@ -38,12 +38,16 @@ class ImageStorageDecorator implements StorageInterface {
 	
 	public function remove($filename) {
 		if ($this->hasOption('sizes') && $filename) {
-			$pathParts = pathinfo($filename);
+			$pathInfo = pathinfo($filename);
 			$sizes = explode(',', $this->getOption('sizes'));
 			foreach ($sizes as $size) {
 				$sizeParams = explode('|', $size);
 				if (count($sizeParams) == 2) {
-					$this->storageEngine->remove($pathParts['dirname'].'/'.$pathParts['filename'].'_'.$sizeParams[0].'.'.$pathParts['extension']);
+					$this->storageEngine->remove($pathInfo['dirname']
+							.DIRECTORY_SEPARATOR.$pathInfo['filename']
+							.'_'.$sizeParams[0]
+							.(isset($pathInfo['extension']) ? '.'.$pathInfo['extension'] : '')
+					);
 				}
 			}
 
