@@ -130,7 +130,7 @@ class AccountController extends PublicController {
 				"birthday"	=> $birthday,
 				"updated"	=> date('Y-m-d H:i:s')
 			);
-			if ($this->get('container')->update('account_user', 
+			if ($this->get('container')->updateItem('account_user', 
 					$values,
 					array('id' => $user['id'])
 				)) {
