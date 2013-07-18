@@ -48,22 +48,7 @@ class CommonController extends Controller {
 		return $this->render('breadcrumb.tpl', compact('nodes', 'action'));
 	}
 	
-	public function getMapList($uri = 0) {
-		
-		function getMapList($id = 0) {
-			$nodes = array();
-			$items = $this->get('container')->getItems('catalog_category', "publish=1 AND parent_id=".$id);
-			$block ='_sub';
-			if (count($items) > 0) {
-				foreach ($items as $node) {
-					$node['ref'] = $this->get('container')->href('catalog', 'index', array($node['id']));
-					$node['sub'] = $this->getMapList($node['id']);
-					$nodes[] = $node;
-				}
-			}
-			return $this->render('map.tpl', compact('nodes', 'block'));
-		}
-
+	private function getMapList($uri = 0) {
 		$nodes = array();
 		$items = $this->getManager('Fuga:Common:Page')->getNodes($uri);
 		$block = strval($uri) == '0' ? '' :  '_sub';
@@ -72,7 +57,7 @@ class CommonController extends Controller {
 				$node['sub'] = '';
 				if ($node['module_id']) {
 					$controller = $this->get('container')->createController($node['module_id_path']);
-					$node['sub'] = $controller->getMap();
+					$node['sub'] = $controller->mapAction();
 				}
 				$node['sub'] .= $this->getMapList($node['id']);
 				$nodes[] = $node;

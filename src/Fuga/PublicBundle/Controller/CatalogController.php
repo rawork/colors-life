@@ -341,5 +341,23 @@ class CatalogController extends PublicController {
 		return $this->render('catalog/stuff.tpl', compact('item', 'cat0', 'prices', 'fotos', 'articles'));
 	}
 	
+	public function getMapList($id = 0) {
+		$nodes = array();
+		$items = $this->get('container')->getItems('catalog_category', "publish=1 AND parent_id=".$id);
+		$block ='_sub';
+		if (count($items) > 0) {
+			foreach ($items as $node) {
+				$node['ref'] = $this->get('container')->href('catalog', 'index', array($node['id']));
+				$node['sub'] = $this->getMapList($node['id']);
+				$nodes[] = $node;
+			}
+		}
+		return $this->render('map.tpl', compact('nodes', 'block'));
+	}
+	
+	public function mapAction() {
+		
+		return $this->getMapList();
+	}
 	
 }
