@@ -69,9 +69,10 @@ class EditAction extends Action {
 <div id="pricelist">
 <table class="table table-condensed">
 <thead><tr>
-<th width="30%">Размер</th>
-<th width="30%">Цвет</th>
-<th width="30%">Цена</th>
+<th width="22%">Артикул</th>
+<th width="22%">Размер</th>
+<th width="22%">Цвет</th>
+<th width="22%">Цена</th>
 <th width="5%">Порядок</th>
 <th width="1%">Акт</th>
 <th><i class="icon-align-justify"></i></th>
@@ -79,10 +80,11 @@ class EditAction extends Action {
 		
 		foreach ($prices as $priceitem) {
 			$content .= '<tr id="price_'.$priceitem['id'].'">
+<td><input type="text" class="input-block-level" name="articul_'.$priceitem['id'].'" value="'.$priceitem['articul'].'" /></td>
 <td>'.$priceitem['size_id_name'].'</td>
 <td>'.$priceitem['color_id_name'].'</td>
-<td><input type="text" class="input-mini right" name="price_'.$priceitem['id'].'" value="'.$priceitem['price'].'" /></td>
-<td><input type="text" class="input-mini" name="sort_'.$priceitem['id'].'" value="'.$priceitem['sort'].'" /></td>
+<td><input type="text" class="input-block-level right" name="price_'.$priceitem['id'].'" value="'.$priceitem['price'].'" /></td>
+<td><input type="text" class="input-block-level" name="sort_'.$priceitem['id'].'" value="'.$priceitem['sort'].'" /></td>
 <td><input type="checkbox" name="publish_'.$priceitem['id'].'" value="on"'.($priceitem['publish'] ? ' checked' : '').'></td>
 <td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$priceitem['id'].')"><i class="icon-trash icon-white"></i></a></td>
 </tr>';	
@@ -98,6 +100,7 @@ class EditAction extends Action {
 <input name="product_id" value="'.$entity['id'].'" type="hidden">
 <table class="table table-condensed">
 <thead><tr><td><strong>Добавить</strong></td><th></th></tr></thead>
+<tr id="add_sort"><td width="180"><strong>Артикул</strong> <span>{articul}</span></td><td><input name="articul" value="" type="text"></td></tr>
 <tr id="add_size_id"><td width="180"><b>Размер</b> <span class="sfnt">{size_id}</span></td>
 <td><select name="size_id" style="width: 100%;"><option value="0">...</option>';
 		foreach ($sizes as $size) {
