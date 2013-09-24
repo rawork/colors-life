@@ -17,9 +17,9 @@
 </thead>
 {foreach from=$items item=item}
 <tr>
-	<td><a target="_blank" href="{raURL node=catalog method=stuff prms=$item.stuff.id}">{$item.stuff.name}</a>
+	<td><a target="_blank" href="{raURL node=catalog method=stuff prms=$item.stuff.id}">{$item.stuff.name}, Арт. {$item.stuff.articul}</a>
 	{if $item.priceEntity.id} 
-	<div class="stuff-sizes"><strong>Размер:</strong> {$item.priceEntity.size_id_name}, <strong>цвет:</strong> {$item.priceEntity.color_id_name}</div>
+	<div class="stuff-sizes"><strong>Размер:</strong> {$item.priceEntity.size_id_name}, <strong>цвет:</strong> {$item.priceEntity.color_id_name}{if $item.priceEntity.articul}, Арт. {$item.priceEntity.articul}{/if}</div>
 	{/if}
 	</td>
 	<td class="quantity">{$item.counter}</td>
@@ -61,6 +61,10 @@
 <dl class="dl-horizontal">
   <dt>Адрес доставки:</dt>
   <dd>{$smarty.session.deliveryAddress}</dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt>Вес заказа:</dt>
+  <dd>{$smarty.session.orderWeight} кг.</dd>
 </dl>
 <dl class="dl-horizontal">
   <dt>Комментарий к заказу:</dt>

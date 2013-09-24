@@ -23,52 +23,52 @@ class CartManager extends ModelManager {
 					"stuff" => $product,
 					"price" => $price,
 					"priceEntity" => $priceData,
-					"counter" => $quantity
+					"counter" => $quantity,
+					"weight" => $product['weight'] * $quantity
 				);
 			}
-			$_SESSION['number'] = $_SESSION['number'] + $quantity;
+			$_SESSION['number']	= $this->getTotalQuantity();
 			$_SESSION['summa'] = $this->getTotalPriceRus();
+			$_SESSION['orderWeight'] = $this->getTotalWeight();
 			
 			return $product;
 		}
 	}
 	
 	public function delete($GUID) {
-		$product		 = $_SESSION['cart'][$GUID];
-		$quantity		 = $_SESSION['number'];
-		$sum			 = preg_replace('/(\s|,00)+/i', '', $_SESSION['summa']);
-		$productQuantity = $product['counter'];
-		$productSum		 = $product['price'] * $productQuantity;
-		$_SESSION['number'] = $quantity - $productQuantity;
-		$_SESSION['summa']	= number_format($sum - $productSum, 2, ',', ' ');
 		unset($_SESSION['cart'][$GUID]);
+		$_SESSION['number']	= $this->getTotalQuantity();
+		$_SESSION['summa']	= $this->getTotalPriceRus();
+		$_SESSION['orderWeight'] = $this->getTotalWeight();
+		
 	}
 	
 	public function update() {
 		$new_cart = array();
 		$number = 0;
-		foreach ($_SESSION['cart'] as $id => $stuffitem) {
+		foreach ($_SESSION['cart'] as $id => $orderItem) {
 			if (isset($_POST['amount_'.$id])) {
-				$stuffitem['counter'] = $_POST['amount_'.$id];
+				$orderItem['counter'] = $_POST['amount_'.$id];
 			}
 			if (!empty($_POST['price_'.$id])) {
 				$aPriceEntity = $this->get('container')->getItem('catalog_price', $_POST['price_'.$id]);
-				$stuffitem['priceEntity'] = $aPriceEntity;
-				$stuffitem['price'] = $aPriceEntity['price'];
+				$orderItem['priceEntity'] = $aPriceEntity;
+				$orderItem['price'] = $aPriceEntity['price'];
 			}
-			$new_guid = md5($stuffitem['stuff']['id'].$stuffitem['price']);
-			if ($stuffitem['counter']) {
+			$new_guid = md5($orderItem['stuff']['id'].$orderItem['price']);
+			if ($orderItem['counter']) {
 				if (isset($new_cart[$new_guid])) {
-					$new_cart[$new_guid]['counter'] += $stuffitem['counter'];
+					$new_cart[$new_guid]['counter'] += $orderItem['counter'];
 				} else {
-					$new_cart[$new_guid] = $stuffitem;
+					$new_cart[$new_guid] = $orderItem;
 				}
 			}
-			$number += $stuffitem['counter'];
+			$number += $orderItem['counter'];
 		}
-		$_SESSION['number'] = $number;
 		$_SESSION['cart'] = $new_cart;
+		$_SESSION['number'] = $this->getTotalQuantity();
 		$_SESSION['summa'] = $this->getTotalPriceRus();
+		$_SESSION['orderWeight'] = $this->getTotalWeight();
 	}
 	
 	public function isEmpty() {
@@ -84,26 +84,43 @@ class CartManager extends ModelManager {
 	public function getOrderText() {
 		$content = '';
 		foreach ($_SESSION['cart'] as $item) {
-			$content .= "[".$item['stuff']['id']."] ".
+			$content .= "[".$item['stuff']['id'].", Арт. ".$item['stuff']['articul']."] ".
 				$item['stuff']['name']." ".
-				(!isset($item['priceEntity']['id']) ? '' : "(Вариант исполнения:{$item['priceEntity']['size_id_name']} - {$item['priceEntity']['color_id_name']})").
+				(!isset($item['priceEntity']['id']) ? '' : "(Вариант исполнения:{$item['priceEntity']['size_id_name']} - {$item['priceEntity']['color_id_name']}, Арт. {$item['priceEntity']['articul']})").
 				(isset($item['stuff']['producer_id_name']) ? " \tПроизводитель: ".$item['stuff']['producer_id_name'] : '').
 				"\t".number_format((float)$item['price'], 2, ',', ' ')." руб.\t".$item['counter']."\n";
 		}
 		return $content;
 	}
 	
-	public function getTotalQuantity() {
-		return $this->get('util')->_sessionVar('number', true, 0);
-	}
-
 	public function getTotalPrice() {
-		$cartItems = $_SESSION['cart'];
-		$totalPrice = 0.0;
-		foreach ($cartItems as $item) {
-			$totalPrice += $item["price"] * $item["counter"];
+		$orderItems = $_SESSION['cart'];
+		$price = 0.0;
+		foreach ($orderItems as $item) {
+			$price += $item["price"] * $item["counter"];
 		}
-		return $totalPrice;
+		
+		return $price;
+	}
+	
+	public function getTotalWeight() {
+		$cartItems = $_SESSION['cart'];
+		$weight = 0.0;
+		foreach ($cartItems as $item) {
+			$weight += $item["stuff"]["weight"] * $item["counter"];
+		}
+		
+		return $weight;
+	}
+	
+	public function getTotalQuantity() {
+		$cartItems = $_SESSION['cart'];
+		$quantity = 0;
+		foreach ($cartItems as $item) {
+			$quantity += $item["counter"];
+		}
+		
+		return $quantity;
 	}
 	
 	public function getDiscount() 

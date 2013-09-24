@@ -94,6 +94,7 @@ class CartController extends PublicController {
 			'counter' => $_SESSION['number'], 
 			'summa'   => $manager->getTotalPriceDiscount(),
 			'discount'=> $manager->getDiscount(),
+			'weight'  => $manager->getTotalWeight(),
 			'status'  => 'Новый',
 			'fio'     => $this->get('util')->_sessionVar('deliveryPerson'),
 			'email'   => $this->getManager('Fuga:Common:Account')->getLogin(),
@@ -117,6 +118,7 @@ class CartController extends PublicController {
 			'discount' => $manager->getDiscount(),
 			'totalPrice' => $manager->getTotalPriceRus(),
 			'totalPriceDiscount' => $manager->getTotalPriceDiscount(),
+			'orderWeight' => $this->get('util')->_sessionVar('orderWeight'),
 			'deliveryPhone' => $this->get('util')->_sessionVar('deliveryPhone'),
 			'deliveryEmail' => $this->get('util')->_sessionVar('deliveryEmail'),
 			'deliveryComment' => $this->get('util')->_postVar('deliveryComment'),
@@ -151,11 +153,12 @@ class CartController extends PublicController {
 			$_SESSION['cart'] = array();
 			$_SESSION['number'] = 0;
 			$_SESSION['summa'] = 0;
-			unset($_SESSION['deliveryAddress']);
-			unset($_SESSION['deliveryEmail']);
-			unset($_SESSION['deliveryPhone']);
-			unset($_SESSION['deliveryPhoneAdd']);
-			unset($_SESSION['deliveryPerson']);
+			$_SESSION['orderWeight'] = 0.0;
+			$_SESSION['deliveryAddress'];
+			$_SESSION['deliveryEmail'];
+			$_SESSION['deliveryPhone'];
+			$_SESSION['deliveryPhoneAdd'];
+			$_SESSION['deliveryPerson'];
 			$this->get('container')->setVar('title', 'Заказ отправлен');
 			$this->get('container')->setVar('h1', 'Заказ отправлен');
 			

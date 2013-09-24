@@ -23,7 +23,8 @@
 {foreach from=$cart item=item}
 <tr>
 <td>
-<p>[{$item.stuff.id}] {$item.stuff.name} {if isset($item.priceEntity.id)}(Вариант исполнения:{$item.priceEntity.size_id_name} - {$item.priceEntity.color_id_name}){/if}<br>
+<p>[{$item.stuff.id}, Арт. {$item.stuff.articul}] {$item.stuff.name} 
+{if isset($item.priceEntity.id)}(Вариант исполнения:{$item.priceEntity.size_id_name} - {$item.priceEntity.color_id_name}){/if}<br>
 Производитель: {$item.stuff.producer_id_name}
 </p>
 </td>
@@ -42,6 +43,7 @@
 <tr><td></td></tr>
 </tbody>
 </table>
+<p>Вес заказа: {$orderWeight}, кг.
 </div>
 <p><b>Параметры заказа:</b></p>
 <p>Получение товара: {$deliveryType.name}, {$deliveryAddress}
