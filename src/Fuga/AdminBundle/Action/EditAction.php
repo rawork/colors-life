@@ -160,6 +160,7 @@ class EditAction extends Action {
 </fieldset>
 <div id="uploadOutput"></div>';
 		}
+		
 		return $content;
 	}
 

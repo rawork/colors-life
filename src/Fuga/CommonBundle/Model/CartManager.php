@@ -181,6 +181,14 @@ class CartManager extends ModelManager {
 		return $stmt->fetch();
 	}
 	
+	public function getDeliveryPoint() {
+		$sql = 'SELECT id,name,address FROM cart_delivery_point WHERE id= :id ';
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->bindValue('id', $this->get('util')->_sessionVar('deliveryPoint'));
+		$stmt->execute();
+		return $stmt->fetch();
+	}
+	
 	public function getPay() {
 		$sql = 'SELECT id,name FROM cart_pay_type WHERE id= :id ';
 		$stmt = $this->get('connection1')->prepare($sql);
@@ -191,6 +199,13 @@ class CartManager extends ModelManager {
 	
 	public function getDeliveries() {
 		$sql = "SELECT id,name,description FROM cart_delivery_type WHERE publish=1 ORDER BY sort";
+		$stmt = $this->get('connection1')->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+	
+	public function getDeliveryPoints() {
+		$sql = "SELECT id,name,address FROM cart_delivery_point WHERE publish=1 ORDER BY sort";
 		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll();

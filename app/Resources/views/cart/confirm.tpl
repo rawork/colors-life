@@ -56,7 +56,7 @@
 </dl>
 <dl class="dl-horizontal">
   <dt>Получение товара:</dt>
-  <dd>{$deliveryType.name}</dd>
+  <dd>{$deliveryType.name}{if $deliveryType.id == 5}, {$deliveryPoint.name} ({$deliveryPoint.address}){/if}</dd>
 </dl>
 <dl class="dl-horizontal">
   <dt>Адрес доставки:</dt>

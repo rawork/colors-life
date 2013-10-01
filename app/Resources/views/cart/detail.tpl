@@ -11,10 +11,20 @@
     <label class="control-label">Получение товара</label>
     <div class="controls">
 		{foreach from=$deliveryTypes item=deliveryType name=delivery}
-		<input onclick="setDeliveryType({$deliveryType.id})" value="{$deliveryType.id}" name="deliveryType"{if $smarty.foreach.delivery.index == 0} checked="checked"{/if} id="deliveryType{$deliveryType.id}" type="radio">&nbsp;{$deliveryType.name} &nbsp;
+		<input onclick="setDeliveryType({$deliveryType.id})" value="{$deliveryType.id}" name="deliveryType"{if $deliveryType.id == $smarty.session.deliveryType} checked="checked"{/if} id="deliveryType{$deliveryType.id}" type="radio">&nbsp;{$deliveryType.name} &nbsp;
 		{/foreach}
 		{foreach from=$deliveryTypes key=iKey item=deliveryType name="delivery"}
-		<div class="delivery-text cut{if $smarty.foreach.delivery.index > 0} closed{/if}" id="deliveryDescr{$deliveryType.id}">{$deliveryType.description}</div>
+		<div class="delivery-text cut{if $deliveryType.id != $smarty.session.deliveryType} closed{/if}" id="deliveryDescr{$deliveryType.id}">{$deliveryType.description}
+			{if $deliveryType.id == 5}
+			<div>
+				<select name="deliveryPoint" class="">
+				{foreach from=$deliveryPoints item=deliveryPoint}
+				<option value="{$deliveryPoint.id}"{if $deliveryPoint.id == $smarty.session.deliveryPoint} selected="selected"{/if}>{$deliveryPoint.name} ({$deliveryPoint.address})</option>
+				{/foreach}
+				</select>	
+			</div>
+			{/if}
+		</div>
 		{/foreach}
     </div>
   </div>
@@ -22,7 +32,7 @@
     <label class="control-label">Способ оплаты</label>
     <div class="controls">
 		{foreach from=$payTypes item=payType name=pay}
-		<input onclick="setPayType({$payType.id})" value="{$payType.id}" name="payType"{if $smarty.foreach.pay.index == 0} checked="true"{/if} id="payType{$payType.id}" type="radio"> {$payType.name}
+		<input onclick="setPayType({$payType.id})" value="{$payType.id}" name="payType"{if $payType.id == $smarty.session.payType} checked="true"{/if} id="payType{$payType.id}" type="radio"> {$payType.name}
 		{/foreach}
 		<p class="cut closed" id="payDescr2">Для жителей городов России временно доступен только один вид оплаты: квитанция банка.</p>
     </div>

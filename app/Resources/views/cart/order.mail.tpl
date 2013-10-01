@@ -46,7 +46,7 @@
 <p>Вес заказа: {$orderWeight}, кг.
 </div>
 <p><b>Параметры заказа:</b></p>
-<p>Получение товара: {$deliveryType.name}, {$deliveryAddress}
+<p>Получение товара: {$deliveryType.name}, {if $deliveryType.id == 5}{$deliveryPoint.name} ({$deliveryPoint.address}){else}{$deliveryAddress}{/if}
 <br>Способ оплаты: {$payType.name}	
 <br>Контактное лицо: {$deliveryPerson}
 <br>Эл. почта: {$deliveryEmail}

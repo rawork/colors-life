@@ -87,6 +87,7 @@ class CartController extends PublicController {
 		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
 		$payType		= $manager->getPay();
 		$deliveryType	= $manager->getDelivery();
+		$deliveryPoint	= $manager->getDeliveryPoint();
 		
 		$orderText = $manager->getOrderText();
 		$lastId = $this->get('container')->addItem('cart_order',array(
@@ -101,7 +102,7 @@ class CartController extends PublicController {
 			'phone'   => $this->get('util')->_sessionVar('deliveryPhone'),
 			'phone2'  => $this->get('util')->_sessionVar('deliveryPhoneAdd'),
 			'pay_type'=> $payType['name'],
-			'delivery_type' => $deliveryType['name'],
+			'delivery_type' => $deliveryType['name'].($deliveryType['id'] == 5 ? ' '.$deliveryPoint['name'] : ''),
 			'address' => $this->get('util')->_sessionVar('deliveryAddress'),
 			'additions' => $this->get('util')->_postVar('deliveryComment'),
 			'order_txt' => $orderText,
@@ -128,6 +129,7 @@ class CartController extends PublicController {
 			'cart' => $cart,
 			'payType' => $payType,
 			'deliveryType' => $deliveryType,
+			'deliveryPoint' => $deliveryPoint,
 			'orderNumber' => $orderNumber,
 			'user' => $user
 		);
@@ -175,7 +177,8 @@ class CartController extends PublicController {
 			'totalPriceDiscount' => $manager->getTotalPriceDiscount(),
 			'user' => $this->getManager('Fuga:Common:Account')->getCurrentUser(),
 			'payType' => $manager->getPay(),
-			'deliveryType' => $manager->getDelivery()
+			'deliveryType' => $manager->getDelivery(),
+			'deliveryPoint' => $manager->getDeliveryPoint()
 		);
 		$this->get('container')->setVar('title', 'Подтверждение заказа');
 		
@@ -203,6 +206,7 @@ class CartController extends PublicController {
 			$_SESSION['deliveryEmail'] = $this->get('util')->_postVar('deliveryEmail');
 			$_SESSION['deliveryPhone'] = $this->get('util')->_postVar('deliveryPhone');
 			$_SESSION['deliveryPhoneAdd'] = $this->get('util')->_postVar('deliveryPhoneAdd');
+			$_SESSION['deliveryPoint'] = $this->get('util')->_postVar('deliveryPoint');
 			header('location: '.$this->get('container')->href('cart', 'confirm'));
 		}
 		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
@@ -211,11 +215,18 @@ class CartController extends PublicController {
 		}
 		$manager = $this->getManager('Fuga:Common:Cart');
 		$payTypes = $manager->getPays();
+		if (empty($_SESSION['payType']) && isset($payTypes[0])) {
+			$_SESSION['payType'] = $payTypes[0]['id'];
+		}
 		$deliveryTypes = $manager->getDeliveries();
+		if (empty($_SESSION['deliveryType']) && isset($deliveryTypes[0])) {
+			$_SESSION['deliveryType'] = $deliveryTypes[0]['id'];
+		}
+		$deliveryPoints = $manager->getDeliveryPoints();
 		$this->get('container')->setVar('title', 'Оплата и доставка');
 		$this->get('container')->setVar('h1', 'Оплата и доставка');
 		
-		return $this->render('cart/detail.tpl', compact('payTypes', 'deliveryTypes', 'user'));
+		return $this->render('cart/detail.tpl', compact('payTypes', 'deliveryTypes', 'deliveryPoints', 'user'));
 	}
 	
 	public function widgetAction() {
