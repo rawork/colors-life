@@ -67,7 +67,7 @@ http://".$_SERVER['SERVER_NAME']."/subscribe?key=".$key;
 			$this->get('mailer')->send(
 				'Оповещение о подписке на рассылку на сайте '.$_SERVER['SERVER_NAME'],
 				nl2br($letterText),
-				array('content@colors-life.ru', 'rawork@yandex.ru')
+				array('content@colors-life.ru')
 			);
 			$message = array(
 				'message' => 'Адрес '.htmlspecialchars($email).' занесен в список рассылки',
