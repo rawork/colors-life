@@ -17,6 +17,9 @@ use Fuga\Component\Registry;
 use Fuga\Component\Exception\AutoloadException;
 use Fuga\CommonBundle\Controller\SecurityController;
 use Fuga\CommonBundle\Controller\ExceptionController;
+use Doctrine\DBAL\Types\Type;
+
+Type::addType('money', 'Fuga\Component\DBAL\Types\MoneyType');
 
 $se_mask = "/(Yandex|Googlebot|StackRambler|Yahoo Slurp|WebAlta|msnbot)/";
 if (preg_match($se_mask,$_SERVER['HTTP_USER_AGENT']) > 0) {
