@@ -417,6 +417,7 @@ class Container
 						'charset'	=> 'utf8'
 					);
 					$this->services[$name] = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+					$this->services[$name]->getDatabasePlatform()->registerDoctrineTypeMapping('DECIMAL(14,2)', 'money');
 					break;
 				case 'filestorage':
 					$this->services[$name] = new Storage\FileStorage();

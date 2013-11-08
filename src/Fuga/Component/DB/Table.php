@@ -14,7 +14,7 @@ class Table {
 	private $dbname;
 	private $stmt;
 	private $realTypes = array (
-			'html' => 'text', 'checkbox' => 'boolean', 'currency' => 'decimal', 'select' => 'integer',
+			'html' => 'text', 'checkbox' => 'boolean', 'currency' => 'money', 'select' => 'integer',
 			'select_tree' => 'integer', 'select_list' => 'string', 'date' => 'date', 'datetime' => 'datetime',
 			'text' => 'text', 'password' => 'string', 'enum' => 'string', 'image' => 'string',
 			'string' => 'string', 'file' => 'string', 'number' => 'integer', 'template' => 'string'

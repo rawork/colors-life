@@ -78,7 +78,7 @@ function voteProcess(voteName, isProcess) {
 }
 
 function addCartItem(productId) {
-	quantity = $('#amount_'+productId).attr('value');
+	quantity = $('#amount_'+productId).val();
 	price = $('#price_'+productId).html();
 	priceId = $('#product_price_'+productId+' option:selected').val();
 	$.post('/cart/add', {productId: productId, quantity: quantity, price: price, priceId: priceId},
@@ -87,6 +87,20 @@ function addCartItem(productId) {
 		$('#popup_content').html(data.popup_content);
 		popUp('popup');
 	}, "json");
+}
+
+function downQuantity(productId) {
+	quantity = parseInt($('#amount_'+productId).val());
+	if (quantity > 1) {
+		$('#amount_'+productId).val(quantity-1);
+	}
+}
+
+function upQuantity(productId) {
+	quantity = parseInt($('#amount_'+productId).val());
+	if (quantity < 99) {
+		$('#amount_'+productId).val(quantity+1);
+	}
 }
 
 function deleteCartItem(productGUID) {
