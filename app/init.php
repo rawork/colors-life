@@ -41,9 +41,9 @@ function exception_handler($exception)
 
 function autoloader($className)
 {
-//	if ($className == 'Smarty') {
-//		require_once(__DIR__.'/../vendor/smarty2/Smarty.class.php');
-//	} else {
+	if ($className == 'Smarty') {
+		require_once(__DIR__.'/../vendor/smarty2/Smarty.class.php');
+	} else {
 		$basePath = __DIR__.'/../src/';
 		$className = ltrim($className, '\\');
 		$fileName  = '';
@@ -60,7 +60,7 @@ function autoloader($className)
 			// TODO LOG + nice error text
 			throw new AutoloadException('Не возможно загрузить класс "'.$fileName.'"');
 		}
-//	}	
+	}	
 }
 
 set_exception_handler('exception_handler');
