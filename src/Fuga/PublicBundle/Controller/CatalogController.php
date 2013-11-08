@@ -85,7 +85,7 @@ class CatalogController extends PublicController {
 		$this->get('mailer')->send(
 			'Цвета жизни - заявка на оповещение о наличии товара на складе от '.date('d.m.Y H:i'),
 			nl2br($letterText),
-			array('content@colors-life.ru')
+			array('content@'.$_SERVER['SERVER_NAME'])
 		);
 		return json_encode(array('content' => 'Ваша заявка принята. Мы будем рады помочь Вам.'));
 	}

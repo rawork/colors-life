@@ -24,7 +24,7 @@
 <tr>
 <td>
 <p>[{$item.stuff.id}, Арт. {$item.stuff.articul}] {$item.stuff.name} 
-{if isset($item.priceEntity.id)}(Вариант исполнения:{$item.priceEntity.size_id_name} - {$item.priceEntity.color_id_name}){/if}<br>
+{if isset($item.priceEntity.id)}(Заказ:{$item.priceEntity.size_id_name} - {$item.priceEntity.color_id_name}){/if}<br>
 Производитель: {$item.stuff.producer_id_name}
 </p>
 </td>
@@ -55,15 +55,15 @@
 {if $deliveryComment}<br>Комментарий к заказу: {$deliveryComment}</span>{/if}
 </p>
 <br>
-{if $payType.id == 2}<p>Пожалуйста, <a target="_blank" href="http://colors-life.ru/notice/{$orderNumber}">распечатайте</a> бланк квитанции.</p>{/if}
+{if $payType.id == 2}<p>Пожалуйста, <a target="_blank" href="http://{$smarty.server.SERVER_NAME}/notice/{$orderNumber}">распечатайте</a> бланк квитанции.</p>{/if}
 {if $user}
-<p>Состояние заказа можно  посмотреть в <a target="_blank" href="http://colors-life.ru/cabinet">личном кабинете</a>.</p>
+<p>Состояние заказа можно  посмотреть в <a target="_blank" href="http://{$smarty.server.SERVER_NAME}/cabinet">личном кабинете</a>.</p>
 {/if}
-<p>Дополнительную информацию Вы можете получить по телефону +7 (495) 771-16-97</p>
+<p>Дополнительную информацию Вы можете получить по телефону +7 (495) 580-21-68</p>
 <p>--<br>Спасибо за покупку в Цвета жизни!</p>
 <p>
 <br><br>Это письмо отправлено почтовым роботом. Не отвечайте на это письмо.
-Вы можете задать вопросы через форму <a target="_blank" href="http://colors-life.ru/feedback">обратной связи</a>.<br>
+Вы можете задать вопросы через форму <a target="_blank" href="http://{$smarty.server.SERVER_NAME}/feedback">обратной связи</a>.<br>
 Присоединяйтесь к нам в соц сетях<br>
 <a href="http://www.facebook.com/colorslife.ru">http://www.facebook.com/colorslife.ru</a><br>
 <a href="http://vk.com/club21028918">http://vk.com/club21028918</a><br>
