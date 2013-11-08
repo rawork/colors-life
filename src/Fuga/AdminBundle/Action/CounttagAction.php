@@ -207,7 +207,7 @@ class CounttagAction extends Action {
 
 		$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru/</loc>
+	<loc>http://{$_SERVER['SERVER_NAME']}/</loc>
 	<lastmod>$date</lastmod>
 	<changefreq>$period</changefreq>
 	<priority>0.8</priority>
@@ -220,7 +220,7 @@ EOD;
 			$url = $this->get('container')->href($node['name']);
 			$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru$url</loc>
+	<loc>http://{$_SERVER['SERVER_NAME']}$url</loc>
 	<lastmod>$date</lastmod>
 	<changefreq>$period</changefreq>
 </url>
@@ -232,7 +232,7 @@ EOD;
 			$url = $this->get('container')->href('catalog', 'index', array($category['id']));
 			$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru$url</loc>
+	<loc>http://{$_SERVER['SERVER_NAME']}$url</loc>
 	<lastmod>$date</lastmod>
 	<changefreq>$period</changefreq>
 </url>
@@ -245,7 +245,7 @@ EOD;
 			$url = $this->get('container')->href('articles', 'read', array($item['id']));
 			$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru$url</loc>
+	<loc>http://{$_SERVER['SERVER_NAME']}$url</loc>
 	<lastmod>$date</lastmod>
 	<changefreq>$period</changefreq>
 </url>
@@ -258,7 +258,7 @@ EOD;
 			$url = $this->get('container')->href('catalog', 'stuff', array($item['id']));
 			$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru$url</loc>
+	<loc>http://{$_SERVER['SERVER_NAME']}$url</loc>
 	<lastmod>$date</lastmod>
 	<changefreq>$period</changefreq>
 </url>
@@ -271,7 +271,7 @@ EOD;
 			$url = $this->get('container')->href('news', 'read', array($item['id']));
 			$link = <<<EOD
 <url>
-	<loc>http://www.colors-life.ru$url</loc>
+	<loc>http://{$_SERVER['SERVER_NAME']}$url</loc>
 	<lastmod>$date</lastmod>
 	<changefreq>$period</changefreq>
 </url>
@@ -297,7 +297,7 @@ EOD;
 		$content .= "<shop>\n";    // начинаем описывать структуру. Основа структуры файла - элемент shop
 		$content .= "<name>Цвета жизни</name>\n";  //  название магазина
 		$content .= "<company>Цвета жизни</company>\n";  // title  - заголовок вашего магазина
-		$content .= "<url>http://colors-life.ru/</url>\n"; // url адрес магазина
+		$content .= "<url>http://{$_SERVER['SERVER_NAME']}/</url>\n"; // url адрес магазина
 		$content .= "<currencies><currency id=\"RUR\" rate=\"1\"/></currencies>\n";   // список валют, в нашем случае только рубли
 		$content .= "<categories>\n";  // описываем категории продукции, у каждой категории свой уникальный ID
 		foreach ($categories as $category) {
@@ -316,7 +316,7 @@ EOD;
 			$producer		= htmlspecialchars(strip_tags((isset($product['producer_id_name']) ? $product['producer_id_name'] : '')));
 			$description	= str_replace('&laquo;', '&quot;', htmlspecialchars(strip_tags($product['description'])));
 			$description	= str_replace('&raquo;', '&quot;', $description);
-			$url			= 'http://colors-life.ru'.$this->get('container')->href('catalog', 'stuff', array($product['id']));
+			$url			= 'http://'.$_SERVER['SERVER_NAME'].$this->get('container')->href('catalog', 'stuff', array($product['id']));
 			
 			$is_exist		= $product['is_exist'] ? 'true' : 'false';
 
@@ -326,7 +326,7 @@ EOD;
 			$content .= "<currencyId>RUR</currencyId>\n"; // валюта
 			$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
 			if (isset($product['middle_imagenew'])) {
-				$content .= "<picture>http://colors-life.ru".$product['middle_imagenew']."</picture>\n";  // ссылка на картинку ( полностью )
+				$content .= "<picture>http://".$_SERVER['SERVER_NAME'].$product['middle_imagenew']."</picture>\n";  // ссылка на картинку ( полностью )
 			}
 			$content .= "<delivery>true</delivery>\n";
 			$content .= "<name>".$name."</name>\n";  // название товара

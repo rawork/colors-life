@@ -1,5 +1,5 @@
 <p>Здравствуйте. </p>
-<p>Вы изменили свой пароль на сайте <a target="_blank" href="http://colors-life.ru">www.colors-life.ru</a>.</p>
+<p>Вы изменили свой пароль на сайте <a target="_blank" href="http://{$smarty.server.SERVER_NAME}">{$smarty.server.SERVER_NAME}</a>.</p>
 <p>Новые параметры вашей учётной записи: </p>
 <p>----------------------------<br>
  Электронный адрес (для авторизации на сайте): {$login}</a><br>
