@@ -42,7 +42,7 @@
     <div class="controls">
 		<dl class="dl-horizontal">
 			<dt class="required">Адрес доставки</dt>
-			<dd><textarea class="required2" rows="4" name="deliveryAddress" maxlength="500">{$smarty.session.deliveryAddress}</textarea></dd>
+			<dd><textarea class="required2" rows="4" id="deliveryAddress" name="deliveryAddress" maxlength="500">{$smarty.session.deliveryAddress}</textarea></dd>
 		</dl>
 		<dl class="dl-horizontal">
 			<dt class="required">ФИО получателя</dt>
