@@ -86,7 +86,7 @@ class CartManager extends ModelManager {
 		foreach ($_SESSION['cart'] as $item) {
 			$content .= "[".$item['stuff']['id'].", Арт. ".$item['stuff']['articul']."] ".
 				$item['stuff']['name']." ".
-				(!isset($item['priceEntity']['id']) ? '' : "(Вариант исполнения:{$item['priceEntity']['size_id_name']} - {$item['priceEntity']['color_id_name']}, Арт. {$item['priceEntity']['articul']})").
+				(!isset($item['priceEntity']['id']) ? '' : "(Заказ:{$item['priceEntity']['size_id_name']} - {$item['priceEntity']['color_id_name']}, Арт. {$item['priceEntity']['articul']})").
 				(isset($item['stuff']['producer_id_name']) ? " \tПроизводитель: ".$item['stuff']['producer_id_name'] : '').
 				"\t".number_format((float)$item['price'], 2, ',', ' ')." руб.\t".$item['counter']."\n";
 		}

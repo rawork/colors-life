@@ -10,7 +10,6 @@ mb_internal_encoding("UTF-8");
 require_once 'config/config.php';
 $loader = require __DIR__.'/../vendor/autoload.php';
 $loader->add('Fuga', __DIR__.'/../src/');
-$loader->add('Smarty', __DIR__.'/../vendor/smarty/');
 
 use Fuga\Component\Container;
 use Fuga\Component\Registry;
@@ -46,7 +45,7 @@ function exception_handler($exception)
 function autoloader($className)
 {
 	if ($className == 'Smarty') {
-		require_once(__DIR__.'/../vendor/smarty/Smarty.class.php');
+		require_once(__DIR__.'/../vendor/smarty2/Smarty.class.php');
 	} else {
 		$basePath = __DIR__.'/../src/';
 		$className = ltrim($className, '\\');
@@ -70,8 +69,8 @@ function autoloader($className)
 set_exception_handler('exception_handler');
 spl_autoload_register('autoloader');
 
-if ($_SERVER['SCRIPT_NAME'] != '/restore.php' && file_exists($PRJ_DIR.'/restore.php')) {
-	throw new \Exception('Удалите файл restore.php в корне сайта');
+if ($_SERVER['SCRIPT_NAME'] != '/restore.php' && file_exists(__DIR__.'../restore.php')) {
+	throw new \Exception('Требуется удалить файл restore.php в корне сайта');
 }
 
 // ID запрашиваемой страницы

@@ -17,8 +17,12 @@
 				{else}
 				<div class="product-price">{if count($prices)}от {/if}<span id="price_{$item.id}">{$item.price}</span> руб.</div>
 				{/if}
-				<input type="hidden" id="amount_{$item.id}" value="1">
 				<a class="btn btn-warning btn-large" href="javascript:addCartItem({$item.id})">Купить</a>
+				<span class="plusminus">
+					<a href="javascript:void(0);" class="btn" onclick="downQuantity({$item.id})">&minus;</a>
+					<input class="input-mini" id="amount_{$item.id}" type="text" readonly="readonly" value="1">
+					<a href="javascript:void(0);" class="btn" onclick="upQuantity({$item.id})">&plus;</a>
+				</span>
 				{if count($prices)}
 				<div class="product-sizes">
 				<h5>Размерный ряд</h5> 

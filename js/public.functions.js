@@ -489,9 +489,25 @@ function setPayType(pay_id) {
 	
 }
 
+var temp_delivery = '';
+var is_samo = false;
+
 function setDeliveryType(delivery_id) {
 	$('.delivery-text').css('display', 'none');
 	$('#deliveryDescr'+delivery_id).css('display', 'block');
+	if (delivery_id == 5) {
+		temp_delivery = $('#deliveryAddress').val();
+		$('#deliveryAddress').empty();
+		$('#deliveryAddress').val('Самовывоз');
+		$('#deliveryAddress').attr('readonly', true);
+		is_samo = true;
+	} else {
+		if (is_samo) {
+			$('#deliveryAddress').val(temp_delivery);
+			is_samo = false;
+		}
+		$('#deliveryAddress').attr('readonly', false);
+	}
 	if (delivery_id == 2) {
 		$('#payType2').attr('checked', true);
 		$('#payType1').attr('disabled', true);
