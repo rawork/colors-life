@@ -3,6 +3,17 @@ var imgFolderSetting = new Image();
 imgFolder.src = theme_ref + '/img/icons/icon_folder.gif';
 imgFolderSetting.src = theme_ref + '/img/icons/icon_folder_system.gif';
 
+function startAddPrice(){
+    showDiv('waiting', 0, -100);
+	return true;
+}
+
+function stopAddPrice(){
+	updatePrices('UpdatePrice', false);
+	$('#frmAddPrice')[0].reset();
+	return true;   
+}
+
 function setLocale(locale) {
 	$('#locale').attr('value', locale);
 	$('#formLocale').submit();
@@ -388,10 +399,11 @@ function delPrice(priceId) {
 	}, "json");
 }
 
-function updatePrices(formId) {
+function updatePrices(formId, newdata) {
+	newdata = typeof newdata !== 'undefined' ? newdata : false;
 	fields = $('#frm'+formId).serialize();
 	showDiv('waiting', 0, -100);
-	$.post("/adminajax/", {method: 'updatePrices', formdata: fields},
+	$.post("/adminajax/", {method: 'updatePrices', formdata: fields, newdata: newdata},
 	function(data){
 		$('#pricelist').html(data.content);
 		hideDiv('waiting');
