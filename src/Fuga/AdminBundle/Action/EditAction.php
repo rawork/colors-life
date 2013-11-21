@@ -21,7 +21,7 @@ class EditAction extends Action {
 				$this->messageAction($this->dataTable->updateGlobals() ? 'Обновлено' : 'Ошибка обновления');
 			}
 		}
-		$ret = '';
+		$content = '';
 		$entity = $this->item;
 		if (count($entity)) {
 			$svalues = explode(';', 'Строка|string;Текст|text;Булево|checkbox;Файл|file;Выбор|select');
@@ -34,28 +34,28 @@ class EditAction extends Action {
 			);
 			$template = 'admin/components/'.$this->get('router')->getParam('module').'.'.$this->get('router')->getParam('table').'.tpl';
 			if ($text = $this->render($template, $params, true)) {
-				return $ret.$text;
+				return $content.$text;
 			} else {
-				$ret .= '<form enctype="multipart/form-data" method="post" name="frmInsert" id="frmInsert" action="'.$this->fullRef.'/edit">';
-				$ret .= '<input type="hidden" name="id" value="'.$entity['id'].'">';
-				$ret .= '<input type="hidden" id="utype" name="utype" value="0">';
-				$ret .= '<table class="table table-condensed">';
-				$ret .= '<thead><tr>';
-				$ret .= '<th>Редактирование</th>';
-				$ret .= '<th>Запись: '.$entity['id'].'</th></tr></thead>';
+				$content .= '<form enctype="multipart/form-data" method="post" name="frmInsert" id="frmInsert" action="'.$this->fullRef.'/edit">';
+				$content .= '<input type="hidden" name="id" value="'.$entity['id'].'">';
+				$content .= '<input type="hidden" id="utype" name="utype" value="0">';
+				$content .= '<table class="table table-condensed">';
+				$content .= '<thead><tr>';
+				$content .= '<th>Редактирование</th>';
+				$content .= '<th>Запись: '.$entity['id'].'</th></tr></thead>';
 				foreach ($this->dataTable->fields as $k => $v) {
 					$ft = $this->dataTable->createFieldType($v, $entity);
-					$ret .= '<tr><td align="left" width=150><strong>'.$v['title'].'</strong>'.$this->getHelpLink($v).$this->getTemplateName($v).'</td><td>';
-					$ret .= !empty($v['readonly']) ? $ft->getStatic() : $ft->getInput();
-					$ret .= '</td></tr>';
+					$content .= '<tr><td align="left" width=150><strong>'.$v['title'].'</strong>'.$this->getHelpLink($v).$this->getTemplateName($v).'</td><td>';
+					$content .= !empty($v['readonly']) ? $ft->getStatic() : $ft->getInput();
+					$content .= '</td></tr>';
 				}
-				$ret .= '</table>
+				$content .= '</table>
 <input type="button" class="btn btn-success" onClick="preSubmit(\'frmInsert\', 0)" value="Сохранить">
 <input type="button" class="btn" onClick="preSubmit(\'frmInsert\', 1)" value="Применить">
 <input type="button" class="btn" onClick="window.location = \''.$this->fullRef.'\'" value="Отменить"></form>';
 			}
 		}
-		return $ret;
+		return $content;
 	}
 
 	function getPricesForm() {
@@ -69,24 +69,28 @@ class EditAction extends Action {
 <div id="pricelist">
 <table class="table table-condensed">
 <thead><tr>
-<th width="22%">Артикул</th>
-<th width="22%">Размер</th>
-<th width="22%">Цвет</th>
-<th width="22%">Цена</th>
+<th width="10%">Фото</th>
+<th width="18%">Артикул</th>
+<th width="18%">Размер</th>
+<th width="18%">Цвет</th>
+<th width="18%">Цена</th>
+<th width="3%">В наличии</th>
 <th width="5%">Порядок</th>
-<th width="1%">Акт</th>
+<th width="3%">Акт</th>
 <th><i class="icon-align-justify"></i></th>
 </tr></thead>';
 		
-		foreach ($prices as $priceitem) {
-			$content .= '<tr id="price_'.$priceitem['id'].'">
-<td><input type="text" class="input-block-level" name="articul_'.$priceitem['id'].'" value="'.$priceitem['articul'].'" /></td>
-<td>'.$priceitem['size_id_name'].'</td>
-<td>'.$priceitem['color_id_name'].'</td>
-<td><input type="text" class="input-block-level right" name="price_'.$priceitem['id'].'" value="'.$priceitem['price'].'" /></td>
-<td><input type="text" class="input-block-level" name="sort_'.$priceitem['id'].'" value="'.$priceitem['sort'].'" /></td>
-<td><input type="checkbox" name="publish_'.$priceitem['id'].'" value="on"'.($priceitem['publish'] ? ' checked' : '').'></td>
-<td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$priceitem['id'].')"><i class="icon-trash icon-white"></i></a></td>
+		foreach ($prices as $item) {
+			$content .= '<tr id="price_'.$item['id'].'">
+<td></td>
+<td><input type="text" class="input-block-level" name="articul_'.$item['id'].'" value="'.$item['articul'].'" /></td>
+<td>'.$item['size_id_name'].'</td>
+<td>'.$item['color_id_name'].'</td>
+<td><input type="text" class="input-block-level right" name="price_'.$item['id'].'" value="'.$item['price'].'" /></td>
+<td><input type="checkbox" name="is_exist_'.$item['id'].'" value="1"'.($item['is_exist'] ? ' checked' : '').'></td>	
+<td><input type="text" class="input-block-level" name="sort_'.$item['id'].'" value="'.$item['sort'].'" /></td>
+<td><input type="checkbox" name="publish_'.$item['id'].'" value="1"'.($item['publish'] ? ' checked' : '').'></td>
+<td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$item['id'].')"><i class="icon-trash icon-white"></i></a></td>
 </tr>';	
 		}
 		$content .= '</table>
