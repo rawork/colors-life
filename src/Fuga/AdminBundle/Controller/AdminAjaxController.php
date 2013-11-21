@@ -376,12 +376,14 @@ class AdminAjaxController extends Controller {
 	function getPriceList($productId) {
 		$content = '<table class="table table-condensed">
 <thead><tr>
-<th width="22%">Артикул</th>
-<th width="22%">Размер</th>
-<th width="22%">Цвет</th>
-<th width="22%">Цена</th>
+<th width="10%">Фото</th>
+<th width="18%">Артикул</th>
+<th width="18%">Размер</th>
+<th width="18%">Цвет</th>
+<th width="18%">Цена</th>
+<th width="3%">В наличии</th>
 <th width="5%">Порядок</th>
-<th width="1%">Акт</th>
+<th width="3%">Акт</th>
 <th><i class="icon-align-justify"></i></th>
 </tr></thead>';
 				
@@ -395,12 +397,14 @@ class AdminAjaxController extends Controller {
 		$items = $stmt->fetchAll();
 		foreach ($items as $item) {
 			$content .= '<tr id="price_'.$item['id'].'">';
+			$content .= '<td></td>';
 			$content .= '<td><input type="text" class="input-block-level" name="articul_'.$item['id'].'" value="'.$item['articul'].'" /></td>';
 			$content .= '<td>'.$item['size_id_name'].'</td>';
 			$content .= '<td>'.$item['color_id_name'].'</td>';
 			$content .= '<td><input type="text" class="input-block-level right" name="price_'.$item['id'].'" value="'.$item['price'].'" /></td>';
+			$content .= '<td><input type="checkbox" name="is_exist_'.$item['id'].'" value="1"'.($item['is_exist'] ? ' checked' : '').'></td>';
 			$content .= '<td><input type="text" class="input-block-level" name="sort_'.$item['id'].'" value="'.$item['sort'].'" /></td>';
-			$content .= '<td><input type="checkbox" name="publish_'.$item['id'].'" value="on"'.($item['publish'] ? ' checked' : '').'></td>';
+			$content .= '<td><input type="checkbox" name="publish_'.$item['id'].'" value="1"'.($item['publish'] ? ' checked' : '').'></td>';
 			$content .= '<td><a href="javascript:void(0)" class="btn btn-small btn-danger" onClick="delPrice('.$item['id'].')"><i class="icon-trash icon-white"></i></a></td>'."\n";
 			$content .= '</tr>';	
 		}
@@ -417,6 +421,7 @@ class AdminAjaxController extends Controller {
 			'color_id' => $color_id,
 			'price' => $price,
 			'sort' => $sort,
+			'is_exist' => isset($is_exist) ? 1 : 0,
 			'publish' => isset($publish) ? 1 : 0,
 			'created' => date('Y-m-d H:i:s')
 		));
@@ -442,12 +447,14 @@ class AdminAjaxController extends Controller {
 			$priceName = 'price_'.$item['id'];
 			$sortName = 'sort_'.$item['id'];
 			$publishName = 'publish_'.$item['id'];
+			$isExistName = 'is_exist_'.$item['id'];
 			$articul = isset($$articulName) ? $$articulName : 0;
 			$price = isset($$priceName) ? $$priceName : 0;
 			$sort = isset($$sortName) ? $$sortName : 0;
+			$is_exist = isset($$isExistName) ? 1 : 0;
 			$publish = isset($$publishName) ? 1 : 0;
 			$this->get('connection1')->update('catalog_price', 
-				array('articul' => $articul, 'price' => $price, 'sort' => $sort, 'publish' => $publish),
+				array('articul' => $articul, 'price' => $price, 'sort' => $sort, 'is_exist' => $is_exist, 'publish' => $publish),
 				array('id' => $item['id'])
 			);
 		}
