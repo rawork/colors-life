@@ -82,7 +82,7 @@ class EditAction extends Action {
 		
 		foreach ($prices as $item) {
 			$content .= '<tr id="price_'.$item['id'].'">
-<td></td>
+<td>'.($item['foto'] ? '<img width="50" src="'.$item['default_foto'].'">' : '').'</td>
 <td><input type="text" class="input-block-level" name="articul_'.$item['id'].'" value="'.$item['articul'].'" /></td>
 <td>'.$item['size_id_name'].'</td>
 <td>'.$item['color_id_name'].'</td>
@@ -97,14 +97,16 @@ class EditAction extends Action {
 </div>
 </form>
 <div class="form-inline" id="control">
-<a class="btn btn-small btn-success" title="Сохранить" onclick="updatePrices(\'UpdatePrice\')"><i class="icon-film icon-white"></i></a>
+<a class="btn btn-small btn-success" title="Сохранить" onclick="updatePrices(\'UpdatePrice\', true)"><i class="icon-film icon-white"></i></a>
 </div>
 <br>
-<form method="post" name="frmAddPrice" id="frmAddPrice" action="">
+<form enctype="multipart/form-data" method="post" name="frmAddPrice" id="frmAddPrice" target="upload_target" onsubmit="return startAddPrice()" action="/adminajax/">
+<input name="method" value="addPrice" type="hidden">
 <input name="product_id" value="'.$entity['id'].'" type="hidden">
 <table class="table table-condensed">
 <thead><tr><td><strong>Добавить</strong></td><th></th></tr></thead>
-<tr id="add_sort"><td width="180"><strong>Артикул</strong> <span>{articul}</span></td><td><input name="articul" value="" type="text"></td></tr>
+<tr id="add_foto"><td width="180"><strong>Фото</strong> <span>{foto}</span></td><td><input name="foto" type="file"></td></tr>
+<tr id="add_articul"><td width="180"><strong>Артикул</strong> <span>{articul}</span></td><td><input name="articul" value="" type="text"></td></tr>
 <tr id="add_size_id"><td width="180"><b>Размер</b> <span class="sfnt">{size_id}</span></td>
 <td><select name="size_id" style="width: 100%;"><option value="0">...</option>';
 		foreach ($sizes as $size) {
@@ -118,9 +120,10 @@ class EditAction extends Action {
 		}
 		$content .= '</select></td></tr>
 <tr id="add_price"><td width="180"><strong>Цена</strong> <span>{price}</span></td><td><input name="price" style="text-align: right;" value="" type="text"></td></tr>
+<tr id="add_is_exist"><td width="180"><strong>В наличии</strong> <span>{is_exist}</span></td><td><input type="checkbox" value="1" name="is_exist"></td></tr>
 <tr id="add_sort"><td width="180"><strong>Порядок</strong> <span>{sort}</span></td><td><input name="sort" style="text-align: right;" value="" type="text"></td></tr>
-<tr id="add_sort"><td width="180"><strong>Акт</strong> <span>{publish}</span></td><td><input type="checkbox" name="publish"></td></tr>
-</table><input class="btn btn-success" onclick="addPrice(\'AddPrice\')" value="Добавить" type="button"></form>';
+<tr id="add_publish"><td width="180"><strong>Акт</strong> <span>{publish}</span></td><td><input type="checkbox" value="1" name="publish"></td></tr>
+</table><input class="btn btn-success" value="Добавить" type="submit"></form>';
 
 		return $content;
 	}

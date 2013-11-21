@@ -99,6 +99,7 @@
 		<div class="modal-body" id="popupContent"></div>
 		<div class="modal-footer admin-modal-footer" id="popupButtons"></div>
 	</div>
+	<iframe id="upload_target" name="upload_target" src="#"></iframe>
 	<script src="/js/jquery.js"></script>
     <script src="/bundles/bootstrap/js/bootstrap.js"></script>
 	<script src="/bundles/treeview/lib/jquery.cookie.js"></script>

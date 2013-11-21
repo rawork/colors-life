@@ -387,17 +387,10 @@ class AdminAjaxController extends Controller {
 <th><i class="icon-align-justify"></i></th>
 </tr></thead>';
 				
-		$sql = "SELECT p.id, p.articul, s.name as size_id_name, c.name as color_id_name, p.price, p.sort, p.publish 
-			FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id 
-			JOIN catalog_color c ON p.color_id=c.id 
-			WHERE p.product_id= :id ORDER BY p.price, p.sort";
-		$stmt = $this->get('connection1')->prepare($sql);
-		$stmt->bindValue('id', $productId);
-		$stmt->execute();
-		$items = $stmt->fetchAll();
+		$items = $this->get('container')->getItems('catalog_price', 'product_id='.$productId);
 		foreach ($items as $item) {
 			$content .= '<tr id="price_'.$item['id'].'">';
-			$content .= '<td></td>';
+			$content .= '<td>'.($item['foto'] ? '<img width="50" src="'.$item['default_foto'].'">' : '').'</td>';
 			$content .= '<td><input type="text" class="input-block-level" name="articul_'.$item['id'].'" value="'.$item['articul'].'" /></td>';
 			$content .= '<td>'.$item['size_id_name'].'</td>';
 			$content .= '<td>'.$item['color_id_name'].'</td>';
@@ -412,21 +405,12 @@ class AdminAjaxController extends Controller {
 		return $content;
 	}
 	
-	function addPrice($formdata) {
-		parse_str($formdata);
-		$this->get('connection1')->insert('catalog_price', array(
-			'articul' => $articul,
-			'product_id' => $product_id,
-			'size_id' => $size_id,
-			'color_id' => $color_id,
-			'price' => $price,
-			'sort' => $sort,
-			'is_exist' => isset($is_exist) ? 1 : 0,
-			'publish' => isset($publish) ? 1 : 0,
-			'created' => date('Y-m-d H:i:s')
-		));
-
-		return json_encode(array('content' => $this->getPriceList($product_id)));
+	function addPrice() {
+		$lastId = $this->get('container')->getTable('catalog_price')->insertGlobals();
+		return '
+<script type="text/javascript">
+   window.top.window.stopAddPrice();
+</script>';
 	}
 	
 	function delPrice($priceId) {
@@ -435,28 +419,38 @@ class AdminAjaxController extends Controller {
 		return json_encode(array('status' => 'ok'));
 	}
 	
-	function updatePrices($formdata){
-		parse_str($formdata);
-		$sql = "SELECT p.id, p.product_id FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id= :id ORDER BY p.price";
-		$stmt = $this->get('connection1')->prepare($sql);
-		$stmt->bindValue('id', $product_id);
-		$stmt->execute();
-		$items = $stmt->fetchAll();
-		foreach ($items as $item) {
-			$articulName = 'articul_'.$item['id'];
-			$priceName = 'price_'.$item['id'];
-			$sortName = 'sort_'.$item['id'];
-			$publishName = 'publish_'.$item['id'];
-			$isExistName = 'is_exist_'.$item['id'];
-			$articul = isset($$articulName) ? $$articulName : 0;
-			$price = isset($$priceName) ? $$priceName : 0;
-			$sort = isset($$sortName) ? $$sortName : 0;
-			$is_exist = isset($$isExistName) ? 1 : 0;
-			$publish = isset($$publishName) ? 1 : 0;
-			$this->get('connection1')->update('catalog_price', 
-				array('articul' => $articul, 'price' => $price, 'sort' => $sort, 'is_exist' => $is_exist, 'publish' => $publish),
-				array('id' => $item['id'])
-			);
+	function updatePrices($formdata, $newdata = true){
+		if ($newdata) {
+			parse_str($formdata);
+			$sql = "SELECT p.id, p.product_id FROM catalog_price p JOIN catalog_size s ON p.size_id=s.id JOIN catalog_color c ON p.color_id=c.id WHERE p.product_id= :id ORDER BY p.price";
+			$stmt = $this->get('connection1')->prepare($sql);
+			$stmt->bindValue('id', $product_id);
+			$stmt->execute();
+			$items = $stmt->fetchAll();
+			foreach ($items as $item) {
+				$articulName = 'articul_'.$item['id'];
+				if (!isset($$articulName)) {
+					continue;
+				}
+				$priceName = 'price_'.$item['id'];
+				$sortName = 'sort_'.$item['id'];
+				$publishName = 'publish_'.$item['id'];
+				$isExistName = 'is_exist_'.$item['id'];
+				$articul = isset($$articulName) ? $$articulName : 0;
+				$price = isset($$priceName) ? $$priceName : 0;
+				$sort = isset($$sortName) ? $$sortName : 0;
+				$is_exist = isset($$isExistName) ? 1 : 0;
+				$publish = isset($$publishName) ? 1 : 0;
+				$this->get('connection1')->update('catalog_price', array(
+						'articul' => $articul, 
+						'price' => $price, 
+						'sort' => $sort, 
+						'is_exist' => $is_exist, 
+						'publish' => $publish
+					),
+					array('id' => $item['id'])
+				);
+			}
 		}
 		
 		return json_encode(array('content' => $this->getPriceList($product_id)));
