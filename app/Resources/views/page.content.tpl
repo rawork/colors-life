@@ -57,7 +57,7 @@
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span7">
-			<div class="head-logo"><a href="/"><img src="/img/logo.gif" width="128"></a></div>
+			<div class="head-logo"><a href="/"><img src="/img/ny_logo.png" width="128"></a></div>
 		</div>
 		<div class="span21">
 			<div class="head-mode"> 

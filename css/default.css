@@ -10,10 +10,10 @@ body {
   width: 100%;
   min-width: 1000px;
   background-color: #ffffff;
-  padding-top: 100px;
-  background-image: url(../img/up_1.gif);
-  background-position: top center;
-  background-repeat: repeat-x;
+  padding-top: 50px;
+  background-image: url(../img/ny_bg.png);
+  background-position: top left;
+  background-repeat: no-repeat;
 }
 
 h4 {
@@ -69,17 +69,23 @@ h4 {
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	border-radius: 6px;
-	background: #9150A0;
-	background: -moz-linear-gradient(top, #d891e8, #9150A0); /* Firefox 3.6+ */
-    /* Chrome 1-9, Safari 4-5 */
-    background: -webkit-gradient(linear, left top, left bottom, 
-                color-stop(0%,#d891e8), color-stop(100%,#9150A0));
-    /* Chrome 10+, Safari 5.1+ */
-    background: -webkit-linear-gradient(top, #d891e8, #9150A0);
-    background: -o-linear-gradient(top, #d891e8, #9150A0); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #d891e8, #9150A0); /* IE10 */
-    background: linear-gradient(top, #d891e8, #9150A0); /* CSS3 */ 
 	padding: 10px 0 3px 0;
+/*	background-color:#9150A0;
+	background-image:-moz-linear-gradient(top, #d891e8, #9150A0);
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#d891e8), to(#9150A0));
+	background-image:-webkit-linear-gradient(top, #d891e8, #9150A0);
+	background-image:-o-linear-gradient(top, #d891e8, #9150A0);
+	background-image:linear-gradient(to bottom, #d891e8, #9150A0);
+	background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd891e8', endColorstr='#ff9150A0', GradientType=0);
+	*background-color:#d891e8;filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);*/
+	background-color:#6dba52;
+	background-image:-moz-linear-gradient(top, #7ccd60, #5aa64e);
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#7ccd60), to(#5aa64e));
+	background-image:-webkit-linear-gradient(top, #7ccd60, #5aa64e);
+	background-image:-o-linear-gradient(top, #7ccd60, #5aa64e);
+	background-image:linear-gradient(to bottom, #7ccd60, #5aa64e);
+	background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff7ccd60', endColorstr='#ff5aa64e', GradientType=0);
+	*background-color:#6dba52;filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 
 .mainmenu ul li{
