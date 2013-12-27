@@ -42,7 +42,7 @@ function startGroupDelete() {
 				ids.push(id);
 			});
 			$('#ids').attr('value', ids.join());
-			$('#frmGroupUpdate').attr('action', location.href + '/groupdelete');
+			$('#frmGroupUpdate').attr('action', url('protocol') + '://' + url('hostname') + url('path') + '/groupdelete');
 			$('#frmGroupUpdate').submit();
 		} else {
 			return false;
@@ -52,7 +52,7 @@ function startGroupDelete() {
 
 function startDelete(id) {
 	if (confirm('Уверены, что хотите удалить запись?')) {
-		window.location = location.href + '/delete/' +id;
+		window.location = url('protocol') + '://' + url('hostname') + url('path') + '/delete/' +id;
 	} else {
 		return false;
 	}
@@ -320,7 +320,7 @@ function goCopy(ref) {
 		$('#copyHelp').html('Введите число от 1 до 10');	
 	} else if (quantity) {
 		hidePopup();
-		window.location = location.href + ref + '?quantity=' + quantity;
+		window.location = url('protocol') + '://' + url('hostname') + url('path') + ref + '?quantity=' + quantity;
 	} else {
 		$('#copyInput').addClass('error');
 		$('#copyHelp').html('Введите число от 1 до 10');	

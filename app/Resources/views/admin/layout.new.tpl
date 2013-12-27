@@ -108,6 +108,7 @@
 	<script src="/bundles/multifile/jquery.MultiFile.js"></script>
 	<script src="/bundles/multifile/jquery.form.js"></script>
 	<script src="/bundles/multifile/jquery.blockUI.js"></script>
+	<script src="{$theme_ref}/js/url.min.js"></script>
 	<script src="{$theme_ref}/js/admin.js"></script>
 	<script src="{$theme_ref}/editor/tiny_mce_gzip.js"></script> 
 	<script src="{$theme_ref}/editor/tmcegzip_init.js"></script> 
