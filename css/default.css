@@ -382,6 +382,26 @@ h4 {
 	padding: 2px 0 10px 0;
 }
 
+.product-sizes ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.product-sizes ul li{
+	display: inline-block;
+	border: 2px solid #ddd;
+	padding: 7px 7px;
+	font-size: 14px;
+	margin-bottom: 5px;
+	margin-right: 5px;
+	float: left;
+}
+
+.product-sizes ul li.active{
+	border: 2px solid #FF6922;
+}
+
 .product-exists {
 	padding: 10px 0;
 }

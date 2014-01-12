@@ -41,7 +41,7 @@
 				<div class="product-price-no">{$item.price} руб.</div>
 				<div class="product-price">Сейчас <span id="price_{$item.id}">{$item.discount_price}</span> руб.</div>
 				{else}
-				<div class="product-price"><span id="price_{$item.id}">{$item.price}</span> руб.</div>
+				<div class="product-price"><span id="price_{$item.id}">{$price0.price}</span> руб.</div>
 				{/if}
 				<a class="btn btn-warning btn-large" href="javascript:addCartItem({$item.id})">Купить</a>
 				<span class="plusminus">
@@ -51,13 +51,14 @@
 				</span>
 				{if count($prices)}
 				<div class="product-sizes">
-				<h5>Размерный ряд</h5> 
-				<select id="product_price_{$item.id}" onchange="setPrice({$item.id})">
-				<option rel="{if $item.discount_price == '0.00'}{$item.price}{else}{$item.discount_price}{/if}" value="0">...</option>
+				<h5>Выберите размер и цвет</h5> 
+				<input type="hidden" id="product_price_{$item.id}" value="{$price0.id}">
+				<ul>
 				{foreach from=$prices item=price}
-				<option rel="{$price.price}" value="{$price.id}">Размер: {$price.size_id_name}{if $price.color_id}, цвет: {$price.color_id_name}{/if} - {$price.price|number_format:2:',':' '} руб.</option>
+				<li{if $price0.id == $price.id} class="active"{/if}><a href="{raURL node=catalog method=stuff prms=$item.id}/{$price.id}">{$price.size_id_name}{if $price.color_id}, {$price.color_id_name}{/if}</a></li>
 				{/foreach}
-				</select>
+				</ul>
+				<div class="clearfix"></div>
 				</div>
 				{else}
 				<input type="hidden" value="0" id="product_price_{$item.id}">                        

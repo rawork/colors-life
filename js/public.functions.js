@@ -80,7 +80,7 @@ function voteProcess(voteName, isProcess) {
 function addCartItem(productId) {
 	quantity = $('#amount_'+productId).val();
 	price = $('#price_'+productId).html();
-	priceId = $('#product_price_'+productId+' option:selected').val();
+	priceId = $('#product_price_'+productId).val();
 	$.post('/cart/add', {productId: productId, quantity: quantity, price: price, priceId: priceId},
 	function(data){
 		$('#cart_info').html(data.widget);

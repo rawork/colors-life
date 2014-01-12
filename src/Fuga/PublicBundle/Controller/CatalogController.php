@@ -155,7 +155,9 @@ class CatalogController extends PublicController {
 			if ($sort != 'sort' && $sort != 'price' && $sort != 'name') {
 				$sort = 'sort';
 			}
+			
 			$rtt = $this->get('util')->_getVar('rtt', true, 6);
+			
 			if ($rtt > 48 || $rtt < 6) {
 				$rtt = 1000;
 			}
@@ -185,6 +187,10 @@ class CatalogController extends PublicController {
 					'is_exist DESC,'.$sort,	
 					$paginator->limit	
 			);
+			
+			foreach ($products as &$product) {
+				$product['price_count'] = $this->get('container')->count('catalog_price', 'product_id='.$product['id']);
+			}
 		}
 		
 		return $this->render('catalog/index.tpl', compact('cats', 'cat', 'per_column', 'products', 'paginator', 'rtt', 'sort', 'params'));
@@ -319,7 +325,9 @@ class CatalogController extends PublicController {
 		if (!isset($params[0])) {
 			throw $this->createNotFoundException('Несуществующая страница');
 		}
+		$priceId = isset($params[1]) ? $params[1] : 0;
 		$item = $this->get('container')->getItem('catalog_product', 'id='.$params[0].' AND publish=1');
+		$price0 = $this->get('container')->getItem('catalog_price', 'id='.$priceId.' AND publish=1');
 		if (!$item) {
 			throw $this->createNotFoundException('Несуществующая страница');
 		}
@@ -331,6 +339,10 @@ class CatalogController extends PublicController {
 			'product_id='.$item['id'].' AND publish=1', 
 			'sort,size_id'
 		);
+		if (!$price0) {
+			$price0 = $this->get('container')->getItem('catalog_price', 'product_id='.$item['id'].' AND publish=1');
+		}
+		
 		$fotos =  $this->get('container')->getItemsRaw("SELECT * FROM system_files 
 			WHERE table_name='catalog_product' AND entity_id=".$item['id']." ORDER BY created");
 		$articles = $this->get('container')->getItemsRaw("SELECT a.id, a.name 
@@ -338,7 +350,7 @@ class CatalogController extends PublicController {
 			WHERE pa.product_id=".$item['id']." 
 			GROUP BY pa.article_id");
 		
-		return $this->render('catalog/stuff.tpl', compact('item', 'cat0', 'prices', 'fotos', 'articles'));
+		return $this->render('catalog/stuff.tpl', compact('item', 'cat0', 'price0', 'prices', 'fotos', 'articles'));
 	}
 	
 	public function getMapList($id = 0) {

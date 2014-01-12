@@ -18,20 +18,13 @@
 	</tr>
 	</thead>
 	{foreach from=$items key=guid item=item}
-	{raItems var=prices table=catalog_price query="product_id=`$item.stuff.id` AND publish=1" sort="sort,size_id"}	
+	{raItem var=price table=catalog_price query="id=`$item.priceEntity.id` AND publish=1" sort="sort,size_id"}	
 	<tr id="stuff_{$guid}">
 		<td>
-			<a href="{raURL node=catalog method=stuff prms=$item.stuff.id}">{$item.stuff.name}, Арт. {$item.stuff.articul}</a> 
-			{if count($prices)}
+			<a href="{raURL node=catalog method=stuff prms=$item.stuff.id}{if $item.priceEntity}/{$item.priceEntity.id}{/if}">{$item.stuff.name}, Арт. {$item.stuff.articul}</a> 
+			{if $item.priceEntity}
 			&nbsp;&nbsp;<br>
-			<select style="height: 24px;width:400px;" name="price_{$guid}" id="price_{$guid}">
-			<option value="0">Стандартное исполнение</option>
-			{foreach from=$prices item=price}
-			<option{if $price.id == $item.priceEntity.id} selected{/if} value="{$price.id}">
-			Размер: {$price.size_id_name}{if $price.color_id}, цвет: {$price.color_id_name}{/if} - {$price.price|number_format:2:',':' '} руб.{if $price.articul}, Арт. {$price.articul}{/if}
-			</option>
-			{/foreach}
-			</select>
+			{$item.priceEntity.size_id_name}{if $item.priceEntity.color_id}, {$item.priceEntity.color_id_name}{/if}{if $item.priceEntity.articul}, Арт. {$item.priceEntity.articul}{/if}
 			{/if}
 		</td>
 		<td>

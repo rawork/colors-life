@@ -528,12 +528,17 @@ class Table {
 	}
 
 	function count($criteria = '') {
-		$sql = 'SELECT COUNT(id) as с FROM '.$this->dbName().' WHERE '.$criteria;
-		$stmt = $this->get('connection1')->prepare($sql);
-		$stmt->execute();
-		$item = $stmt->fetch();
+		try {
+			$this->select(array(
+				'select' => 'COUNT(id) as quantity',
+				'where' => $criteria
+			));
+			$quantity = $this->stmt->fetchColumn();
+		} catch (\Exception $e) {
+			$quantity = 0;
+		}
 		
-		return $item ? (int)$item['c'] : 0;
+		return $quantity ? (int)$quantity : 0;
 	}
 
 	private function setTableFields () {

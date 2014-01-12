@@ -19,7 +19,7 @@
 <tr>
 	<td><a target="_blank" href="{raURL node=catalog method=stuff prms=$item.stuff.id}">{$item.stuff.name}, Арт. {$item.stuff.articul}</a>
 	{if $item.priceEntity.id} 
-	<div class="stuff-sizes"><strong>Размер:</strong> {$item.priceEntity.size_id_name}, <strong>цвет:</strong> {$item.priceEntity.color_id_name}{if $item.priceEntity.articul}, Арт. {$item.priceEntity.articul}{/if}</div>
+	<div class="stuff-sizes">{$item.priceEntity.size_id_name}, {$item.priceEntity.color_id_name}{if $item.priceEntity.articul}, Арт. {$item.priceEntity.articul}{/if}</div>
 	{/if}
 	</td>
 	<td class="quantity">{$item.counter}</td>
