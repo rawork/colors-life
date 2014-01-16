@@ -49,12 +49,12 @@
 					<input class="input-mini" id="amount_{$item.id}" type="text" readonly="readonly" value="1">
 					<a href="javascript:void(0);" class="btn" onclick="upQuantity({$item.id})">&plus;</a>
 				</span>
-				{if count($prices)}
+				{if count($item.prices)}
 				<div class="product-sizes">
 				<h5>Выберите размер и цвет</h5> 
 				<input type="hidden" id="product_price_{$item.id}" value="{$price0.id}">
 				<ul>
-				{foreach from=$prices item=price}
+				{foreach from=$item.prices item=price}
 				<li{if $price0.id == $price.id} class="active"{/if}><a href="{raURL node=catalog method=stuff prms=$item.id}/{$price.id}">{$price.size_id_name}{if $price.color_id}, {$price.color_id_name}{/if}</a></li>
 				{/foreach}
 				</ul>

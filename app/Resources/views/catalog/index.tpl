@@ -126,9 +126,9 @@
 					<div class="product-producer"><a href="{raURL node=catalog method=brand prms=$item.producer_id}">{$item.producer_id_name}</a> ({$item.producer_id_country})</div>
 					{if $item.discount_price != '0.00'}
 					<div class="product-price-no">{$item.price} руб.</div>
-					<div class="product-price">{if count($prices)}от {/if}<span id="price_{$item.id}">{$item.discount_price}</span> руб.</div>
+					<div class="product-price">{if $item.price_count}от {/if}<span id="price_{$item.id}">{$item.discount_price}</span> руб.</div>
 					{else}
-					<div class="product-price">{if count($prices)}от {/if}<span id="price_{$item.id}">{$item.price}</span> руб.</div>
+					<div class="product-price">{if $item.price_count}от {/if}<span id="price_{$item.id}">{$item.price}</span> руб.</div>
 					{/if}
 					{if $item.price_count == 0}
 					<a class="btn btn-warning btn-large" href="javascript:addCartItem({$item.id})">Купить</a>
