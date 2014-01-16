@@ -353,14 +353,16 @@ class CatalogController extends PublicController {
 		if (!isset($params[0])) {
 			throw $this->createNotFoundException('Несуществующая страница');
 		}
-		$priceId = isset($params[1]) ? $params[1] : 0;
+
 		$item = $this->get('container')->getItem('catalog_product', 'id='.$params[0].' AND publish=1');
-		$price0 = $this->get('container')->getItem('catalog_price', 'id='.$priceId.' AND publish=1');
 		if (!$item) {
 			throw $this->createNotFoundException('Несуществующая страница');
 		}
+		
 		$this->get('container')->setVar('title', $item['name']);
 		$this->get('container')->setVar('h1', $item['name']);
+		$priceId = isset($params[1]) ? $params[1] : 0;
+		$price0 = $this->get('container')->getItem('catalog_price', 'id='.$priceId.' AND publish=1');
 		$cat0 = $this->get('container')->getItem('catalog_category', $item['category_id_root_id']);
 		$prices =  $this->get('container')->getItems(
 			'catalog_price', 
