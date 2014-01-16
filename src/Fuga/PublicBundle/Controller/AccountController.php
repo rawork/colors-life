@@ -390,5 +390,21 @@ class AccountController extends PublicController {
 		$user = $this->getManager('Fuga:Common:Account')->getCurrentUser();
 		return $this->render('account/widget.tpl', compact('user'));     
 	}
+	
+	public function noticeAction($params) {
+		if (!$this->getManager('Fuga:Common:Account')->getCurrentUser()) {
+			header('location: '.$this->get('container')->href('cabinet'));
+			exit;
+		}
+		if (empty($params[0])) {
+			$this->createNotFoundException('Несуществующая страница');
+		}
+		
+		$this->get('container')->setVar('title', 'Квитанция');
+		$this->get('container')->setVar('h1', 'Квитанция');
+		$order = $this->get('container')->getItem('cart_order', $params[0]-100000);
+			
+		return $this->render('account/notice.tpl', compact('order'));
+	}
 
 }

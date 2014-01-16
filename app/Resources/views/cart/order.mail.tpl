@@ -1,5 +1,5 @@
 <p>Здравствуйте, {$deliveryPerson}.</p>
-<p>Номер Вашего заказа: <b>{$orderNumber}</b>.</p>
+<p>Номер Вашего заказа: <b>{$orderId+100000}</b>.</p>
 <p><b>Состав заказа:</b></p>
 <div class="tbl">
 <table class="itemList">
@@ -55,7 +55,7 @@
 {if $deliveryComment}<br>Комментарий к заказу: {$deliveryComment}</span>{/if}
 </p>
 <br>
-{if $payType.id == 2}<p>Пожалуйста, <a target="_blank" href="http://{$smarty.server.SERVER_NAME}/notice/{$orderNumber}">распечатайте</a> бланк квитанции.</p>{/if}
+{if $payType.id == 2}<p>Пожалуйста, <a target="_blank" href="http://{$smarty.server.SERVER_NAME}/cabinet/notice/{$orderId+100000}">распечатайте</a> бланк квитанции в личном кабинете.</p>{/if}
 {if $user}
 <p>Состояние заказа можно  посмотреть в <a target="_blank" href="http://{$smarty.server.SERVER_NAME}/cabinet">личном кабинете</a>.</p>
 {/if}

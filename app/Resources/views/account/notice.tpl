@@ -1,9 +1,4 @@
-{if !$order}
-Не выбран номер заказа!
-{else}
-{assign var=iOrder value=$order-100000}
-{raItem var=oOrder table=cart_order query=$iOrder}
-{if count($oOrder)}
+{if $order}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -52,7 +47,7 @@
 	<tr>
 		<td rowspan="9" class="bord_rn" valign="bottom" width="211">&nbsp;&nbsp;&nbsp;Кассир<br><br></td>
 		<td rowspan="9" class="bord_n" valign="bottom" width="11"></td>
-		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$iOrder+100000} от {$oOrder.created|fdate} </td>
+		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$order.id+100000} от {$order.created|fdate} </td>
 	</tr>
 	<tr>
 		<td valign="bottom" width="75"></td>
@@ -62,15 +57,15 @@
 	</tr>
 	<tr>
 		<td colspan="4" valign="bottom" width="151">Ф.И.О.    плательщика</td>
-		<td colspan="12" class="bord_n" valign="bottom" width="364">{$oOrder.fio}</td>
+		<td colspan="12" class="bord_n" valign="bottom" width="364">{$order.fio}</td>
 	</tr>
 	<tr>
 		<td colspan="4" valign="bottom" width="151">Адрес  плательщика</td>
-		<td colspan="12" class="bord_n" valign="bottom" width="364">{$oOrder.address}</td>
+		<td colspan="12" class="bord_n" valign="bottom" width="364">{$order.address}</td>
 	</tr>
 	<tr>
 		<td colspan="4" valign="bottom" width="151">Сумма    платежа</td>
-		<td colspan="11" class="bord_n" valign="bottom" width="75">{$oOrder.summa} руб.</td>
+		<td colspan="11" class="bord_n" valign="bottom" width="75">{$order.summa} руб.</td>
 		<td valign="bottom" width="56"></td>
 	</tr>
 	<tr>
@@ -134,7 +129,7 @@
 	<tr>
 		<td rowspan="9" class="bord_r" valign="bottom" width="211">&nbsp;&nbsp;&nbsp;Кассир<br><br></td>
 		<td rowspan="9" valign="bottom" width="11"></td>
-		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$iOrder+100000} от {$oOrder.created|fdate}</td>
+		<td colspan="16" class="bord_n" valign="bottom" width="515">Оплата товара по счету ИМ-{$order.id+100000} от {$order.created|fdate}</td>
 	</tr>
 	<tr>
 		<td valign="bottom" width="75"></td>
@@ -144,15 +139,15 @@
 	</tr>
 	<tr>
 		<td colspan="4" valign="bottom" width="151">Ф.И.О.    плательщика</td>
-		<td colspan="12" class="bord_n" valign="bottom" width="364">{$oOrder.fio}</td>
+		<td colspan="12" class="bord_n" valign="bottom" width="364">{$order.fio}</td>
 	</tr>
 	<tr>
 		<td colspan="4" valign="bottom" width="151">Адрес  плательщика</td>
-		<td colspan="12" class="bord_n" valign="bottom" width="364">{$oOrder.address}</td>
+		<td colspan="12" class="bord_n" valign="bottom" width="364">{$order.address}</td>
 	</tr>
 	<tr>
 		<td colspan="4" valign="bottom" width="151">Сумма    платежа</td>
-		<td colspan="11" class="bord_n" valign="bottom" width="75">{$oOrder.summa} руб.</td>
+		<td colspan="11" class="bord_n" valign="bottom" width="75">{$order.summa} руб.</td>
 		<td valign="bottom" width="56"></td>
 	</tr>
 	<tr>
@@ -188,5 +183,4 @@
 	</body></html>
 {else}
 Ошибка обращения к форме квитанции!
-{/if}	
-{/if}	
+{/if}

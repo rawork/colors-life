@@ -18,7 +18,6 @@
 	</tr>
 	</thead>
 	{foreach from=$items key=guid item=item}
-	{raItem var=price table=catalog_price query="id=`$item.priceEntity.id` AND publish=1" sort="sort,size_id"}	
 	<tr id="stuff_{$guid}">
 		<td>
 			<a href="{raURL node=catalog method=stuff prms=$item.stuff.id}{if $item.priceEntity}/{$item.priceEntity.id}{/if}">{$item.stuff.name}, Арт. {$item.stuff.articul}</a> 

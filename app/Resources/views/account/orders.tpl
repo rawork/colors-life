@@ -13,8 +13,8 @@ c <input class="input-small" type="text" readonly="readonly" value="" name="date
 </script>
 -->
 {foreach from=$items item=order}
-<h6>Заказ №{$order.id+100000} от {$order.created|fdate}, <span>сумма {$order.summa} руб., cтатус <strong>{$order.status}</strong>
-{if $order.pay_type == 'Квитанция банка'} &mdash; <a href="{raURL node=notice}/{$order.id+100000}" target="_blank">Распечатать квитанцию</a></span>{/if}
+<h6>Заказ №{$order.id} от {$order.created|fdate}, <span>сумма {$order.summa} руб., cтатус <strong>{$order.status}</strong>
+{if $order.pay_type == 'Квитанция банка'} &mdash; <a href="{raURL node=cabinet method=notice prms=$order.id+100000}" target="_blank">Распечатать квитанцию</a></span>{/if}
 </h6>
 <table class="table table-striped table-bordered">
 	<thead>

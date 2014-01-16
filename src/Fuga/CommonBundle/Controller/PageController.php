@@ -140,10 +140,6 @@ class PageController extends Controller {
 	}
 
 	public function handle() {
-		if (preg_match('/^\/notice\/[\d]{6}$/', $_SERVER['REQUEST_URI'])) {
-			echo $this->render('page.notice.tpl', array('order' => str_replace('/notice/', '', $_SERVER['REQUEST_URI'])));
-			exit;
-		}
 		if (preg_match('/^\/fileupload/', $_SERVER['REQUEST_URI'])) {
 			echo $this->fileuploadAction();
 			exit;

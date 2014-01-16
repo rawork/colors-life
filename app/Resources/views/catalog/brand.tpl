@@ -1,8 +1,6 @@
 <div>{$producer.description}</div>
 <table class="product-table" cellpadding="0" cellspacing="0" border="0">
 	{foreach from=$items item=item name=product}
-	{raItem var=cat0 table=catalog_category query=$item.category_id_root_id}
-	{raItems var=prices table=catalog_price query="product_id=`$item.id` AND publish=1" sort="sort,size_id"}
 	{if $smarty.foreach.product.iteration == 1}<tr>{/if}
 		<td class="product-content">
 			<div class="product-image pull-left">

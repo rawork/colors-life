@@ -79,7 +79,6 @@ class Template {
 				'l_field' => 'name',
 				'l_lang' => true,
 				'width' => '31%',
-				'group_update' => true
 			),
 			'type' => array (
 				'name' => 'type',
@@ -87,14 +86,12 @@ class Template {
 				'type' => 'enum',
 				'select_values' => 'Раздел|F;Параметр URL|U;Период времени|T',
 				'width' => '20%',
-				'group_update' => true
 			),
 			'cond' => array (
 				'name' => 'cond',
 				'title' => 'Условие',
 				'type' => 'string',
 				'width' => '20%',
-				'group_update' => true
 			),
 			'date_beg' => array (
 				'name' => 'datefrom',

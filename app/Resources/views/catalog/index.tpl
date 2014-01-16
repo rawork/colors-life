@@ -116,7 +116,6 @@
 	</table>
 	<table class="product-table">
 		{foreach from=$products item=item name=product}
-		{raItem var=cat0 table=catalog_category query=$item.category_id_root_id}
 		{if $smarty.foreach.product.iteration == 1}<tr>{/if}
 			<td class="product-content">
 				<div class="product-image pull-left">

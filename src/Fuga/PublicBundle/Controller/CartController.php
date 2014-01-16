@@ -12,8 +12,6 @@ if (!isset($_SESSION['cart'])) {
 
 class CartController extends PublicController {
 
-	private $baseNumber = 100000;
-
 	public function __construct() {
 		parent::__construct('cart');
 	}
@@ -109,7 +107,6 @@ class CartController extends PublicController {
 			'created' => date('Y-m-d H:i:s')
 		));
 
-		$orderNumber = $this->baseNumber + $lastId;
 		$cart = $this->get('util')->_sessionVar('cart');
 		foreach($cart as &$cartItem) {
 			$cartItem['price'] = number_format($cartItem['price'], 2, ',', ' ');
@@ -130,19 +127,19 @@ class CartController extends PublicController {
 			'payType' => $payType,
 			'deliveryType' => $deliveryType,
 			'deliveryPoint' => $deliveryPoint,
-			'orderNumber' => $orderNumber,
+			'orderId' => $lastId,
 			'user' => $user
 		);
 		$letterText = $this->render('cart/order.mail.tpl', $params);
 		$this->get('mailer')->send(
-			'Заказ №'.$orderNumber.' от '.date('d.m.Y H:i'),
-			"Заказ № $orderNumber от ".date('d.m.Y H:i')."<br>".$letterText,
+			'Заказ №'.($lastId+100000).' от '.date('d.m.Y H:i'),
+			"Заказ № $lastId от ".date('d.m.Y H:i')."<br>".$letterText,
 			$this->getOrderEmail()
 		);		
 		$buyerEmail = $this->get('util')->_sessionVar('deliveryEmail');
 		if ($buyerEmail) {
 			$this->get('mailer')->send(
-				'Цвета жизни - заказ №'.$orderNumber.' принят к обработке',
+				'Цвета жизни - заказ №'.($orderId+100000).' принят к обработке',
 				$letterText,
 				$buyerEmail
 			);

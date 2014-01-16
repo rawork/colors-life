@@ -45,6 +45,12 @@ class CatalogController extends PublicController {
 			null, 
 			$paginator->limit
 		);
+		foreach ($items as &$item) {
+			$item['cat0'] = $this->get('container')->getItem('catalog_category', $item['category_id_root_id']);
+			$item['prices'] = $this->get('container')->getItems('catalog_price', 'publish=1 AND product_id='.$item['id'], 'sort,size_id');
+		}
+		unset($item);
+		
 		$this->get('container')->setVar('title', $producer['name']);
 		$this->get('container')->setVar('h1', $producer['name']);
 		
@@ -132,6 +138,12 @@ class CatalogController extends PublicController {
 			}
 		}
 		if ($hits) {
+			foreach ($hits as &$item) {
+				$item['cat0'] = $this->get('container')->getItem('catalog_category', $item['category_id_root_id']);
+				$item['prices'] = $this->get('container')->getItems('catalog_price', 'publish=1 AND product_id='.$item['id'], 'sort,size_id');
+			}
+			unset($item);
+			
 			return $this->render('catalog/hit.tpl', compact('hits'));
 		} else {
 			return;
@@ -189,6 +201,7 @@ class CatalogController extends PublicController {
 			);
 			
 			foreach ($products as &$product) {
+				$product['cat0'] = $this->get('container')->getItem('catalog_category', $item['category_id_root_id']);
 				$product['price_count'] = $this->get('container')->count('catalog_price', 'product_id='.$product['id']);
 			}
 		}
@@ -203,6 +216,11 @@ class CatalogController extends PublicController {
 			null, 
 			$this->getParam('limit_new')
 		);
+		foreach ($items as &$item) {
+			$item['cat0'] = $this->get('container')->getItem('catalog_category', $item['category_id_root_id']);
+			$item['prices'] = $this->get('container')->getItems('catalog_price', 'publish=1 AND product_id='.$item['id'], 'sort,size_id');
+		}
+		unset($item);
 		
 		return $this->render('catalog/new.tpl', compact('items'));
 	}
@@ -214,6 +232,11 @@ class CatalogController extends PublicController {
 			null, 
 			$this->getParam('limit_spec')
 		);
+		foreach ($items as &$item) {
+			$item['cat0'] = $this->get('container')->getItem('catalog_category', $item['category_id_root_id']);
+			$item['prices'] = $this->get('container')->getItems('catalog_price', 'publish=1 AND product_id='.$item['id'], 'sort,size_id');
+		}
+		unset($item);
 		
 		return $this->render('catalog/offer.tpl', compact('items'));
 	}
@@ -305,6 +328,11 @@ class CatalogController extends PublicController {
 					null,	
 					$paginator->limit	
 			);
+			foreach ($products as &$item) {
+				$item['cat0'] = $this->get('container')->getItem('catalog_category', $item['category_id_root_id']);
+				$item['prices'] = $this->get('container')->getItems('catalog_price', 'publish=1 AND product_id='.$item['id'], 'sort,size_id');
+			}
+			unset($item);
 			$this->get('container')->setVar('title', 'Результаты поиска по запросу '.$text);
 			$this->get('container')->setVar('h1', 'Результаты поиска по запросу &laquo;'.$text.'&raquo;');
 		} else {
