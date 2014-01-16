@@ -201,7 +201,7 @@ class CatalogController extends PublicController {
 			);
 			
 			foreach ($products as &$product) {
-				$product['cat0'] = $this->get('container')->getItem('catalog_category', $item['category_id_root_id']);
+				$product['cat0'] = $this->get('container')->getItem('catalog_category', $product['category_id_root_id']);
 				$product['price_count'] = $this->get('container')->count('catalog_price', 'product_id='.$product['id']);
 			}
 		}
