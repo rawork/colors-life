@@ -39,7 +39,7 @@
 				<div class="product-producer"><a href="{raURL node=catalog method=brand prms=$item.producer_id}">{$item.producer_id_name}</a> ({$item.producer_id_country})</div>
 				{if $item.discount_price != '0.00'}
 				<div class="product-price-no">{$item.price} руб.</div>
-				<div class="product-price">Сейчас <span id="price_{$item.id}">{$item.discount_price}</span> руб.</div>
+				<div class="product-price">Цена для вас <span id="price_{$item.id}">{$item.discount_price}</span> руб.</div>
 				{else}
 				<div class="product-price"><span id="price_{$item.id}">{$price0.price}</span> руб.</div>
 				{/if}
