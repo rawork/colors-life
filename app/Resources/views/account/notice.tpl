@@ -10,16 +10,16 @@
 	<tbody><tr>
 		<td rowspan="8" class="bord_r" valign="top" width="211"><br>&nbsp;&nbsp;&nbsp;Извещение</td>
 		<td rowspan="8" valign="top" width="11"></td>
-		<td colspan="13" class="bord_n" align="center" valign="bottom" width="382"><strong><br>Индивидуальный предприниматель Дарер Александр Григорьевич</strong></td>
+		<td colspan="13" class="bord_n" align="center" valign="bottom" width="382"><strong><br>Индивидуальный предприниматель Дарер Светлана Григорьевьевна</strong></td>
 		<td colspan="3" rowspan="2" valign="bottom" width="133"></td>
 	</tr>
 	<tr>
 		<td colspan="13" align="center" valign="top" width="382"><sup>(наименование    получателя платежа)</sup></td>
 	</tr>
 	<tr>
-		<td colspan="6" class="bord_n" align="center" valign="bottom" width="251">772155915054</td>
+		<td colspan="6" class="bord_n" align="center" valign="bottom" width="251">772125590916</td>
 		<td colspan="3" align="center" valign="bottom" width="26">№</td>
-		<td colspan="7" class="bord_n" align="center" valign="bottom" width="238">40802810860610518601</td>
+		<td colspan="7" class="bord_n" align="center" valign="bottom" width="238">40802810200000004990</td>
 	</tr>
 	<tr>
 		<td colspan="6" align="center" valign="top" width="251"><sup>(ИНН получателя платежа)</sup></td>
@@ -28,7 +28,7 @@
 	</tr>
 	<tr>
 		<td valign="bottom" width="75">в</td>
-		<td colspan="15" class="bord_n" align="center" valign="bottom" width="439">ОАО «Промсвязьбанк» г. Москва</td>
+		<td colspan="15" class="bord_n" align="center" valign="bottom" width="439">ОАО «Промсвязьбанк» гор. Москвы</td>
 	</tr>
 	<tr>
 		<td valign="bottom" width="75"></td>
@@ -92,16 +92,16 @@
 	<tr>
 		<td rowspan="8" class="bord_r" valign="top" width="211"><br>&nbsp;&nbsp;&nbsp;Извещение</td>
 		<td rowspan="8" valign="top" width="11"></td>
-		<td colspan="13" class="bord_n" align="center" valign="bottom" width="382"><strong><br>Индивидуальный предприниматель Дарер Александр Григорьевич</strong></td>
+		<td colspan="13" class="bord_n" align="center" valign="bottom" width="382"><strong><br>Индивидуальный предприниматель Дарер Светлана Григорьевьевна</strong></td>
 		<td colspan="3" rowspan="2" valign="bottom" width="133"></td>
 	</tr>
 	<tr>
 		<td colspan="13" align="center" valign="top" width="382"><sup>(наименование    получателя платежа)</sup></td>
 	</tr>
 	<tr>
-		<td colspan="6" class="bord_n" align="center" valign="bottom" width="251">772155915054 </td>
+		<td colspan="6" class="bord_n" align="center" valign="bottom" width="251">772125590916 </td>
 		<td colspan="3" align="center" valign="bottom" width="26">№</td>
-		<td colspan="7" class="bord_n" align="center" valign="bottom" width="238">40802810860610518601 </td>
+		<td colspan="7" class="bord_n" align="center" valign="bottom" width="238">40802810200000004990 </td>
 	</tr>
 	<tr>
 		<td colspan="6" align="center" valign="top" width="251"><sup>(ИНН получателя платежа)</sup></td>
@@ -110,7 +110,7 @@
 	</tr>
 	<tr>
 		<td valign="bottom" width="75">в</td>
-		<td colspan="15" class="bord_n" align="center" valign="bottom" width="439">ОАО «Промсвязьбанк» г. Москва</td>
+		<td colspan="15" class="bord_n" align="center" valign="bottom" width="439">ОАО «Промсвязьбанк» гор. Москвы</td>
 	</tr>
 	<tr>
 		<td valign="bottom" width="75"></td>
@@ -118,9 +118,9 @@
 	</tr>
 	<tr>
 		<td valign="bottom" width="75">БИК</td>
-		<td colspan="5" class="bord_n" align="center" valign="bottom" width="175">044525555 </td>
+		<td colspan="5" class="bord_n" align="center" valign="bottom" width="175">044525555</td>
 		<td colspan="3" align="center" valign="bottom" width="26">№</td>
-		<td colspan="7" class="bord_n" align="center" valign="bottom" width="238">30101810400000000555 </td>
+		<td colspan="7" class="bord_n" align="center" valign="bottom" width="238">30101810400000000555</td>
 	</tr>
 	<tr>
 		<td colspan="10" valign="bottom" width="278"></td>
