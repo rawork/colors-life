@@ -41,7 +41,7 @@
 				<div class="product-price-no">{$item.price} руб.</div>
 				<div class="product-price">Цена для вас <span id="price_{$item.id}">{$item.discount_price}</span> руб.</div>
 				{else}
-				<div class="product-price"><span id="price_{$item.id}">{$price0.price}</span> руб.</div>
+				<div class="product-price"><span id="price_{$item.id}">{if $price0}{$price0.price}{else}{$item.price}{/if}</span> руб.</div>
 				{/if}
 				<a class="btn btn-warning btn-large" href="javascript:addCartItem({$item.id})">Купить</a>
 				<span class="plusminus">
