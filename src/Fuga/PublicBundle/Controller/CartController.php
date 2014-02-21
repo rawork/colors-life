@@ -139,7 +139,7 @@ class CartController extends PublicController {
 		$buyerEmail = $this->get('util')->_sessionVar('deliveryEmail');
 		if ($buyerEmail) {
 			$this->get('mailer')->send(
-				'Цвета жизни - заказ №'.($orderId+100000).' принят к обработке',
+				'Цвета жизни - заказ №'.($lastId+100000).' принят к обработке',
 				$letterText,
 				$buyerEmail
 			);
