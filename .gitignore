@@ -6,6 +6,7 @@ img/files/*
 !img/files/.gitkeep
 yml/*
 sitemap.xml
+.idea
 
 # Configuration files
 app/config/config.php
