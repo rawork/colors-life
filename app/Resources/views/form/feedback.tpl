@@ -19,7 +19,13 @@
     </tr>
     <tr>
       <td><strong><span class="required">*</span></strong> &#8212; обязательные поля</td>
-    </tr>    
+    </tr>
+      <tr>
+          <td><div>Введите символы на картинке внизу  <span class="required">*</span></div>
+              <p><input type="text" title="Код безопасности" style="width:120px" name="securecode"></p>
+              <p><img id="secure_image" src="/secureimage/?{$sessionName}={$sessionId}"> <a href="#" onclick="document.getElementById('secure_image').src='/secureimage/?rnd='+Math.random()+'&{$sessionName}={$sessionId}';return false">обновить код</a></p>
+          </td>
+      </tr>
 	<tr>
       <td><input type="submit" class="btn" value="Отправить" /></td>
     </tr>
