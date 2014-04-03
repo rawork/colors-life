@@ -140,7 +140,7 @@
 </div>
 {raMethod path=Fuga:Public:Catalog:selectors}
 {literal}
-<script type="text/javascript"> _shcp = []; _shcp.push({widget_id : 592655, widget : "Chat", side : "right", position : "top", template : "purple", title : "Онлайн помощник!", title_offline : "Здравствуйте, чем могу Вам помочь?" }); (function() { var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true; hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://widget.siteheart.com/apps/js/sh.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hcc, s.nextSibling); })(); </script>
+{*<script type="text/javascript"> _shcp = []; _shcp.push({widget_id : 592655, widget : "Chat", side : "right", position : "top", template : "purple", title : "Онлайн помощник!", title_offline : "Здравствуйте, чем могу Вам помочь?" }); (function() { var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true; hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://widget.siteheart.com/apps/js/sh.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hcc, s.nextSibling); })(); </script>*}
 {/literal}
 </body>
 </html>
