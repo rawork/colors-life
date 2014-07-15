@@ -401,5 +401,26 @@ class CatalogController extends PublicController {
 		
 		return $this->getMapList();
 	}
+
+	public function csvAction() {
+		$cats = $this->getManager('Fuga:Common:Category')->getCategoryTree();
+
+		foreach ($cats as $cat) {
+			$name = str_repeat('&nbsp;&nbsp;', $cat['level']).$cat['title'];
+			echo sprintf('%s;%s<br>', $name, $cat['id'])."\n";
+
+			foreach ($cat['children'] as $subcat) {
+				$name2 = str_repeat('&nbsp;&nbsp;', $subcat['level']).$subcat['title'];
+				echo sprintf('%s;%s<br>', $name2, $subcat['id'])."\n";
+
+				foreach ($subcat['children'] as $subcat2) {
+					$name3 = str_repeat('&nbsp;&nbsp;', $subcat2['level']).$subcat2['title'];
+					echo sprintf('%s;%s<br>', $name3, $subcat2['id'])."\n";
+				}
+			}
+		}
+
+		exit;
+	}
 	
 }

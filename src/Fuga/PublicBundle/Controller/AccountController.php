@@ -278,8 +278,8 @@ class AccountController extends PublicController {
 				$item['products'][] = array(
 					'id'		=> $id,
 					'name'		=> $name,
-					'quantity'	=> $product[3],
-					'price'		=> $product[2]
+					'quantity'	=> isset($product[3]) ? $product[3] : '',
+					'price'		=> isset($product[2]) ? $product[2] : '',
 				);
 			}
 		}
