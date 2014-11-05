@@ -145,5 +145,7 @@
 {*{literal}*}
 {*<script type="text/javascript"> _shcp = []; _shcp.push({widget_id : 592655, widget : "Chat", side : "right", position : "top", template : "purple", title : "Онлайн помощник!", title_offline : "Здравствуйте, чем могу Вам помочь?" }); (function() { var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true; hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://widget.siteheart.com/apps/js/sh.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hcc, s.nextSibling); })(); </script>*}
 {*{/literal}*}
+<link rel="stylesheet" href="//chaser.ru/widget/1.1/css/chaser.css" />
+<script src="//chaser.ru/widget/1.1/js/chaser.js?dataTagID=07a81d45ff030b63fe2a0f375b779f09" charset="utf-8"></script>
 </body>
 </html>
