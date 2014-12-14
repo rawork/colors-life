@@ -309,34 +309,64 @@ EOD;
 		$content .= "</categories>\n";
 		$content .= "<offers>\n";
 
-		$products = $this->get('container')->getItems('catalog_product', "publish=1 AND price<>0"); // выбираем все товары
+		$products = $this->get('container')->getItems('catalog_product', "publish=1 AND price>0"); // выбираем все товары
 		foreach ($products as $product) // в цикле обрабатываем каждый товар
 		{
-			$name			= htmlspecialchars(strip_tags($product['name']));
-			$producer		= htmlspecialchars(strip_tags((isset($product['producer_id_name']) ? $product['producer_id_name'] : '')));
-			$description	= str_replace('&laquo;', '&quot;', htmlspecialchars(strip_tags($product['description'])));
-			$description	= str_replace('&raquo;', '&quot;', $description);
-			$url			= 'http://'.$_SERVER['SERVER_NAME'].$this->get('container')->href('catalog', 'stuff', array($product['id']));
-			
-			$is_exist		= $product['is_exist'] ? 'true' : 'false';
+			$offers = $this->get('container')->getItems('catalog_price', 'publish=1 AND product_id='.$product['id']);
+			if ($offers) {
+				foreach ($offers as $offer) {
+					$name			= htmlspecialchars(strip_tags($product['name'].'(Размер - '.$offer['size_id_name'].', Цвет - '.$offer['color_id_name'].')'));
+					$producer		= htmlspecialchars(strip_tags((isset($product['producer_id_name']) ? $product['producer_id_name'] : '')));
+					$description	= str_replace('&laquo;', '&quot;', htmlspecialchars(strip_tags($product['description'])));
+					$description	= str_replace('&raquo;', '&quot;', $description);
+					$url			= 'http://'.$_SERVER['SERVER_NAME'].$this->get('container')->href('catalog', 'stuff', array($product['id'], $offer['id']));
 
-			$content .= "<offer id=\"".$product['id']."\" available=\"".$is_exist."\">\n";  // id товара
-			$content .= "<url>$url</url>\n";  // ссылка на страницу товара ( полностью )
-			$content .= "<price>".$product['price']."</price>\n";  // стоимость продукта
-			$content .= "<currencyId>RUR</currencyId>\n"; // валюта
-			$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
-			if (isset($product['middle_imagenew'])) {
-				$content .= "<picture>http://".$_SERVER['SERVER_NAME'].$product['middle_imagenew']."</picture>\n";  // ссылка на картинку ( полностью )
+					$is_exist		= $offer['is_exist'] ? 'true' : 'false';
+
+					$content .= "<offer id=\"".$product['id'].'v'.$offer['id']."\" available=\"".$is_exist."\">\n";  // id товара
+					$content .= "<url>$url</url>\n";  // ссылка на страницу товара ( полностью )
+					$content .= "<price>".$offer['price']."</price>\n";  // стоимость продукта
+					$content .= "<currencyId>RUR</currencyId>\n"; // валюта
+					$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
+					if (isset($product['middle_imagenew'])) {
+						$content .= "<picture>http://".$_SERVER['SERVER_NAME'].$product['middle_imagenew']."</picture>\n";  // ссылка на картинку ( полностью )
+					}
+					$content .= "<delivery>true</delivery>\n";
+					$content .= "<name>".$name."</name>\n";  // название товара
+					$content .= "<vendor>".$producer."</vendor>\n";
+					$content .= "<vendorCode>".$product['articul']."</vendorCode>\n";
+					$content .= "<description>$description</description>\n"; // описание продукта
+					$content .= "<country_of_origin>".(isset($product['producer_id_country']) ? $product['producer_id_country'] : '')."</country_of_origin>\n";
+					$content .= "</offer>\n";
+				}
+			} else {
+				$name			= htmlspecialchars(strip_tags($product['name']));
+				$producer		= htmlspecialchars(strip_tags((isset($product['producer_id_name']) ? $product['producer_id_name'] : '')));
+				$description	= str_replace('&laquo;', '&quot;', htmlspecialchars(strip_tags($product['description'])));
+				$description	= str_replace('&raquo;', '&quot;', $description);
+				$url			= 'http://'.$_SERVER['SERVER_NAME'].$this->get('container')->href('catalog', 'stuff', array($product['id']));
+
+				$is_exist		= $product['is_exist'] ? 'true' : 'false';
+
+				$content .= "<offer id=\"".$product['id']."\" available=\"".$is_exist."\">\n";  // id товара
+				$content .= "<url>$url</url>\n";  // ссылка на страницу товара ( полностью )
+				$content .= "<price>".$product['price']."</price>\n";  // стоимость продукта
+				$content .= "<currencyId>RUR</currencyId>\n"; // валюта
+				$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
+				if (isset($product['middle_imagenew'])) {
+					$content .= "<picture>http://".$_SERVER['SERVER_NAME'].$product['middle_imagenew']."</picture>\n";  // ссылка на картинку ( полностью )
+				}
+				$content .= "<delivery>true</delivery>\n";
+				$content .= "<name>".$name."</name>\n";  // название товара
+				$content .= "<vendor>".$producer."</vendor>\n";
+				$content .= "<vendorCode>".$product['articul']."</vendorCode>\n";
+				$content .= "<description>$description</description>\n"; // описание продукта
+				$content .= "<country_of_origin>".(isset($product['producer_id_country']) ? $product['producer_id_country'] : '')."</country_of_origin>\n";
+				$content .= "</offer>\n";
 			}
-			$content .= "<delivery>true</delivery>\n";
-			$content .= "<name>".$name."</name>\n";  // название товара
-			$content .= "<vendor>".$producer."</vendor>\n";
-			$content .= "<vendorCode>".$product['articul']."</vendorCode>\n";
-			$content .= "<description>$description</description>\n"; // описание продукта
-			$content .= "<country_of_origin>".(isset($product['producer_id_country']) ? $product['producer_id_country'] : '')."</country_of_origin>\n";
-			$content .= "</offer>\n";
 		}
 		$content .= "</offers>\n";  // дописываем закрывающие тэги
+		$content .= "<cpa>0</cpa>\n";
 		$content .= "</shop>\n";
 		$content .= "</yml_catalog>";
 
