@@ -84,11 +84,11 @@ class CartManager extends ModelManager {
 	public function getOrderText() {
 		$content = '';
 		foreach ($_SESSION['cart'] as $item) {
-			$content .= "[".$item['stuff']['id'].", Арт. ".$item['stuff']['articul']."] ".
+			$content .= "[".$item['stuff']['id']."] ".
 				$item['stuff']['name']." ".
-				(!isset($item['priceEntity']['id']) ? '' : "(Заказ:{$item['priceEntity']['size_id_name']} - {$item['priceEntity']['color_id_name']}, Арт. {$item['priceEntity']['articul']})").
-				(isset($item['stuff']['producer_id_name']) ? " \tПроизводитель: ".$item['stuff']['producer_id_name'] : '').
-				"\t".number_format((float)$item['price'], 2, ',', ' ')." руб.\t".$item['counter']."\n";
+				(!isset($item['priceEntity']['id']) ? ", Арт. ".$item['stuff']['articul'].', ' : "(Заказ:{$item['priceEntity']['size_id_name']} - {$item['priceEntity']['color_id_name']}, Арт. {$item['priceEntity']['articul']}), ")."\t".
+				(isset($item['stuff']['producer_id_name']) ? "Производитель: ".$item['stuff']['producer_id_name'] : "")."\t".
+				number_format((float)$item['price'], 2, ',', ' ')." руб.\t".$item['counter']."\n";
 		}
 		return $content;
 	}
