@@ -333,7 +333,7 @@ EOD;
 					$content .= "<currencyId>RUR</currencyId>\n"; // валюта
 					$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
 					if (isset($product['middle_imagenew']) && file_exists($PRJ_DIR.$product['middle_imagenew'])) {
-						$content .= "<picture>".urlencode("http://".$_SERVER['SERVER_NAME'].$product['middle_imagenew'])."</picture>\n";  // ссылка на картинку ( полностью )
+						$content .= "<picture>"."http://".$_SERVER['SERVER_NAME'].urlencode($product['middle_imagenew'])."</picture>\n";  // ссылка на картинку ( полностью )
 					}
 					$content .= "<delivery>true</delivery>\n";
 					$content .= "<name>".$name."</name>\n";  // название товара
@@ -358,7 +358,7 @@ EOD;
 				$content .= "<currencyId>RUR</currencyId>\n"; // валюта
 				$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
 				if (isset($product['middle_imagenew']) && file_exists($PRJ_DIR.$product['middle_imagenew'])) {
-					$content .= "<picture>".urlencode("http://".$_SERVER['SERVER_NAME'].$product['middle_imagenew'])."</picture>\n";  // ссылка на картинку ( полностью )
+					$content .= "<picture>"."http://".$_SERVER['SERVER_NAME'].urlencode($product['middle_imagenew'])."</picture>\n";  // ссылка на картинку ( полностью )
 				}
 				$content .= "<delivery>true</delivery>\n";
 				$content .= "<name>".$name."</name>\n";  // название товара
