@@ -334,7 +334,7 @@ EOD;
 					$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
 					if (isset($product['middle_imagenew']) && file_exists($PRJ_DIR.$product['middle_imagenew'])) {
 						$imagePath = pathinfo($product['middle_imagenew']);
-						$content .= "<picture>"."http://".$_SERVER['SERVER_NAME'].$imagePath['dirname'].'/'.urlencode($imagePath['filename']).".".$imagePath['extension']."</picture>\n";  // ссылка на картинку ( полностью )
+						$content .= "<picture>"."http://".$_SERVER['SERVER_NAME'].$imagePath['dirname'].'/'.str_replace(' ', '%20', $imagePath['filename']).".".$imagePath['extension']."</picture>\n";  // ссылка на картинку ( полностью )
 					}
 					$content .= "<delivery>true</delivery>\n";
 					$content .= "<name>".$name."</name>\n";  // название товара
@@ -360,7 +360,7 @@ EOD;
 				$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
 				if (isset($product['middle_imagenew']) && file_exists($PRJ_DIR.$product['middle_imagenew'])) {
 					$imagePath = pathinfo($product['middle_imagenew']);
-					$content .= "<picture>"."http://".$_SERVER['SERVER_NAME'].$imagePath['dirname'].'/'.urlencode($imagePath['filename']).".".$imagePath['extension']."</picture>\n";  // ссылка на картинку ( полностью )
+					$content .= "<picture>"."http://".$_SERVER['SERVER_NAME'].$imagePath['dirname'].'/'.str_replace(' ', '%20', $imagePath['filename']).".".$imagePath['extension']."</picture>\n";  // ссылка на картинку ( полностью )
 				}
 				$content .= "<delivery>true</delivery>\n";
 				$content .= "<name>".$name."</name>\n";  // название товара
