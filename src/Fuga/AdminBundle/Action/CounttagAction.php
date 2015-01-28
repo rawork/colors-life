@@ -312,6 +312,10 @@ EOD;
 		$products = $this->get('container')->getItems('catalog_product', "publish=1 AND price>0"); // выбираем все товары
 		foreach ($products as $product) // в цикле обрабатываем каждый товар
 		{
+			$category == $this->get('container')->getItem('catalog_category', 'publish=1 AND id='.$product['category_id']);
+			if (!$category) {
+				continue;
+			}
 			$offers = $this->get('container')->getItems('catalog_price', 'publish=1 AND product_id='.$product['id']);
 			if ($offers) {
 				foreach ($offers as $offer) {
@@ -328,7 +332,7 @@ EOD;
 					$content .= "<price>".$offer['price']."</price>\n";  // стоимость продукта
 					$content .= "<currencyId>RUR</currencyId>\n"; // валюта
 					$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
-					if (isset($product['middle_imagenew'])) {
+					if (isset($product['middle_imagenew']) && file_exists($PRJ_DIR.$product['middle_imagenew'])) {
 						$content .= "<picture>http://".$_SERVER['SERVER_NAME'].$product['middle_imagenew']."</picture>\n";  // ссылка на картинку ( полностью )
 					}
 					$content .= "<delivery>true</delivery>\n";
@@ -353,7 +357,7 @@ EOD;
 				$content .= "<price>".$product['price']."</price>\n";  // стоимость продукта
 				$content .= "<currencyId>RUR</currencyId>\n"; // валюта
 				$content .= "<categoryId>".$product['category_id']."</categoryId>\n"; // ID категории
-				if (isset($product['middle_imagenew'])) {
+				if (isset($product['middle_imagenew']) && file_exists($PRJ_DIR.$product['middle_imagenew'])) {
 					$content .= "<picture>http://".$_SERVER['SERVER_NAME'].$product['middle_imagenew']."</picture>\n";  // ссылка на картинку ( полностью )
 				}
 				$content .= "<delivery>true</delivery>\n";
