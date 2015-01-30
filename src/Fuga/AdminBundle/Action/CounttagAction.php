@@ -184,6 +184,7 @@ class CounttagAction extends Action {
 
 	function getTreeEntities($table, $id = 0) {
 		$entities = array();
+		// todo use left_key check usage of function
 		$sql = "SELECT * FROM $table WHERE publish=1 AND parent_id = $id";
 		$stmt = $this->get('connection1')->prepare($sql);
 		$stmt->execute();
@@ -372,10 +373,8 @@ EOD;
 			}
 		}
 		$content .= "</offers>\n";  // дописываем закрывающие тэги
-		$content .= "<cpa>0</cpa>\n";
 		$content .= "</shop>\n";
 		$content .= "</yml_catalog>";
-
 
 		fputs($f, $content);  // записываем наш контент в файл
 		fclose($f);
