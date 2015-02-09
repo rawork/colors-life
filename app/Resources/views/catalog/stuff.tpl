@@ -1,8 +1,4 @@
-<div id="fb-root"></div>
-<script>initFB()</script>
-<script type="text/javascript" src="//vk.com/js/api/openapi.js?56"></script>
-<script type="text/javascript">initVK();</script>
-<table class="product-table-card" cellpadding="0" cellspacing="0" border="0">
+<table class="product-table-card">
 	<tr>
 		<td class="product-content">
 			<div class="product-image-card pull-left">
