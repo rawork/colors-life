@@ -32,7 +32,9 @@
                             s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
                             var h=d[g]('body')[0];
                             h.appendChild(s);
-                        }})();{/literal}</script>
+                        }})();
+                {/literal}
+                </script>
                 <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,counter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print"></div>
 			</div>
 			<div class="product-description pull-left">
