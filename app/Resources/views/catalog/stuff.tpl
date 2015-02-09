@@ -26,14 +26,16 @@
 				</script>
 				{/if}
 				<br>
-				<div id="fb-root"></div>
-				<script>initFB()</script>
-				<script type="text/javascript" src="//vk.com/js/api/openapi.js?56"></script>
-				<script type="text/javascript">initVK();</script>	
-				<div class="fb-like" data-href="http://{$smarty.server.SERVER_NAME}{raURL node=catalog method=stuff prms=$item.id}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div>
-				<br>
-				<div id="vk_like"></div>
-				<script type="text/javascript">initVKLike()</script>
+                <script type="text/javascript">(function() {
+                        if (window.pluso)if (typeof window.pluso.start == "function") return;
+                        if (window.ifpluso==undefined) { window.ifpluso = 1;
+                            var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+                            s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+                            s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+                            var h=d[g]('body')[0];
+                            h.appendChild(s);
+                        }})();</script>
+                <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,counter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print"></div>
 			</div>
 			<div class="product-description pull-left">
 				<div class="product-producer"><a href="{raURL node=catalog method=brand prms=$item.producer_id}">{$item.producer_id_name}</a> ({$item.producer_id_country})</div>
@@ -70,9 +72,6 @@
 				<div class="product-text">{$item.description}</div>
 				{if $item.discount_description}
 				<div class="product-text">{$item.discount_description}</div>
-				<div class="fb-like" style="display: inline-block;margin:10px 5px;" data-href="http://{$smarty.server.SERVER_NAME}{raURL node=catalog method=stuff prms=$item.id}" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div>
-				<div style="display: inline-block;" id="vk_like"></div>
-				<script type="text/javascript">initVKLike()</script>
 				{/if}
 			</div>
 			<div class="clearfix"></div>
