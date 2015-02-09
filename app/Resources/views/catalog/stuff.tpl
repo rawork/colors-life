@@ -22,9 +22,7 @@
 				</script>
 				{/if}
 				<br>
-                <script type="text/javascript">
-                {literal}
-                    (function() {
+                {literal}<script type="text/javascript">(function() {
                         if (window.pluso)if (typeof window.pluso.start == "function") return;
                         if (window.ifpluso==undefined) { window.ifpluso = 1;
                             var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
@@ -33,8 +31,7 @@
                             var h=d[g]('body')[0];
                             h.appendChild(s);
                         }})();
-                {/literal}
-                </script>
+                </script>{/literal}
                 <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,counter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print"></div>
 			</div>
 			<div class="product-description pull-left">
