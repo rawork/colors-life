@@ -28,10 +28,11 @@
 				</script>
 				{/if}
 				<br>
+                <br>
                 <script type="text/javascript">
                     initPluso();
                 </script>
-                <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,counter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print"></div>
+                <div class="pluso" data-background="transparent" data-options="medium,square,multiline,horizontal,counter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print"></div>
 			</div>
 			<div class="product-description pull-left">
 				<div class="product-producer"><a href="{raURL node=catalog method=brand prms=$item.producer_id}">{$item.producer_id_name}</a> ({$item.producer_id_country})</div>
