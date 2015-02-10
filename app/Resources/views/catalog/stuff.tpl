@@ -1,3 +1,9 @@
+<!-- Put this script tag to the <head> of your page -->
+<script type="text/javascript" src="//vk.com/js/api/openapi.js?116"></script>
+<script type="text/javascript">
+    initVK();
+</script>
+
 <table class="product-table-card">
 	<tr>
 		<td class="product-content">
@@ -22,7 +28,9 @@
 				</script>
 				{/if}
 				<br>
-                
+                <script type="text/javascript">
+                    initPluso();
+                </script>
                 <div class="pluso" data-background="transparent" data-options="medium,square,line,horizontal,counter,theme=04" data-services="vkontakte,odnoklassniki,facebook,twitter,google,moimir,email,print"></div>
 			</div>
 			<div class="product-description pull-left">

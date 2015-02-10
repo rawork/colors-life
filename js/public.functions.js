@@ -643,3 +643,15 @@ function initVKLikebox() {
 	VK.Widgets.Group("vk_groups", {mode: 0, width: "200", height: "290"}, 21028918);
 }
 
+function initPluso() {
+    (function() {
+        if (window.pluso)if (typeof window.pluso.start == "function") return;
+        if (window.ifpluso==undefined) { window.ifpluso = 1;
+            var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+            s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+            s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+            var h=d[g]('body')[0];
+            h.appendChild(s);
+        }})();
+}
+
