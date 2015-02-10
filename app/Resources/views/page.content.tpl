@@ -11,14 +11,6 @@
 <link rel="stylesheet" href="/bundles/lightbox/css/jquery.lightbox-0.5.css" type="text/css">
 <link href=”/favicon.ico” rel=”icon” type=”image/x-icon” />
 <link href=”/favicon.ico” rel=”shortcut icon” type=”image/x-icon” />
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/dimmer.js"></script>
-<script type="text/javascript" src="/bundles/jqzoom/js/jquery.jqzoom-core.js"></script>
-<script type="text/javascript" src="/bundles/lightbox/js/jquery.lightbox-0.5.js"></script>
-<script type="text/javascript" src="/js/public.functions.js"></script>
-<script type="text/javascript" src="/bundles/admin/js/calendar.js" ></script>
-<script type="text/javascript" src="/bundles/admin/js/calendar-ru.js"></script>
-<script type="text/javascript" src="/bundles/admin/js/calendar-setup.js"></script>
 {literal} 
 <script type="text/javascript">
 
@@ -139,6 +131,14 @@
 	<div id="popup_content"></div>
 </div>
 {raMethod path=Fuga:Public:Catalog:selectors}
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/dimmer.js"></script>
+<script type="text/javascript" src="/bundles/jqzoom/js/jquery.jqzoom-core.js"></script>
+<script type="text/javascript" src="/bundles/lightbox/js/jquery.lightbox-0.5.js"></script>
+<script type="text/javascript" src="/js/public.functions.js?2"></script>
+<script type="text/javascript" src="/bundles/admin/js/calendar.js" ></script>
+<script type="text/javascript" src="/bundles/admin/js/calendar-ru.js"></script>
+<script type="text/javascript" src="/bundles/admin/js/calendar-setup.js"></script>
 {*{literal}*}
 {*<script type="text/javascript"> _shcp = []; _shcp.push({widget_id : 592655, widget : "Chat", side : "right", position : "top", template : "purple", title : "Онлайн помощник!", title_offline : "Здравствуйте, чем могу Вам помочь?" }); (function() { var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true; hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://widget.siteheart.com/apps/js/sh.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hcc, s.nextSibling); })(); </script>*}
 {*{/literal}*}
