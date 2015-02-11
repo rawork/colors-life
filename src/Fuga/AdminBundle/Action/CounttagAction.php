@@ -308,6 +308,7 @@ EOD;
 			$content .= "<category id=\"$id\" parentId=\"$parentId\">$name</category>\n";  // у нас всего одна категория
 		}
 		$content .= "</categories>\n";
+		$content .= "\n";
 		$content .= "<offers>\n";
 
 		$products = $this->get('container')->getItems('catalog_product', "publish=1 AND price>0"); // выбираем все товары
@@ -368,6 +369,7 @@ EOD;
 				$content .= "<vendor>".$producer."</vendor>\n";
 				$content .= "<vendorCode>".$product['articul']."</vendorCode>\n";
 				$content .= "<description>$description</description>\n"; // описание продукта
+				$content .= "<sales_notes>Минимальный заказ по Москве - 1500 руб., по России - 3000 руб.</sales_notes>\n";
 				$content .= "<country_of_origin>".(isset($product['producer_id_country']) ? $product['producer_id_country'] : '')."</country_of_origin>\n";
 				$content .= "</offer>\n";
 			}
