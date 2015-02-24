@@ -339,6 +339,7 @@ EOD;
 						$content .= "<picture>"."http://".$_SERVER['SERVER_NAME'].$imagePath['dirname'].'/'.str_replace(' ', '%20', $imagePath['filename']).".".$imagePath['extension']."</picture>\n";  // ссылка на картинку ( полностью )
 					}
 					$content .= "<delivery>true</delivery>\n";
+					$content .= "<local_delivery_cost>350</local_delivery_cost>\n";
 					$content .= "<name>".$name."</name>\n";  // название товара
 					$content .= "<vendor>".$producer."</vendor>\n";
 					$content .= "<vendorCode>".$product['articul']."</vendorCode>\n";
