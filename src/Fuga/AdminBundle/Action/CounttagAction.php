@@ -344,6 +344,7 @@ EOD;
 					$content .= "<vendor>".$producer."</vendor>\n";
 					$content .= "<vendorCode>".$product['articul']."</vendorCode>\n";
 					$content .= "<description>$description</description>\n"; // описание продукта
+					$content .= "<sales_notes>Мин. заказ в Москве и МО 1500 руб, России 3000 руб</sales_notes>\n";
 					$content .= "<country_of_origin>".(isset($product['producer_id_country']) ? $product['producer_id_country'] : '')."</country_of_origin>\n";
 					$content .= "</offer>\n";
 				}
@@ -371,7 +372,7 @@ EOD;
 				$content .= "<vendor>".$producer."</vendor>\n";
 				$content .= "<vendorCode>".$product['articul']."</vendorCode>\n";
 				$content .= "<description>$description</description>\n"; // описание продукта
-				$content .= "<sales_notes>Минимальный заказ по Москве - 1500 руб., по России - 3000 руб.</sales_notes>\n";
+				$content .= "<sales_notes>Мин. заказ в Москве и МО 1500 руб, России 3000 руб</sales_notes>\n";
 				$content .= "<country_of_origin>".(isset($product['producer_id_country']) ? $product['producer_id_country'] : '')."</country_of_origin>\n";
 				$content .= "</offer>\n";
 			}
