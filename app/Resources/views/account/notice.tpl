@@ -28,7 +28,7 @@
 	</tr>
 	<tr>
 		<td valign="bottom" width="75">в</td>
-		<td colspan="15" class="bord_n" align="center" valign="bottom" width="439">ОАО «Промсвязьбанк» гор. Люберцы</td>
+		<td colspan="15" class="bord_n" align="center" valign="bottom" width="439">ПАО «Промсвязьбанк» гор. Люберцы</td>
 	</tr>
 	<tr>
 		<td valign="bottom" width="75"></td>
@@ -110,7 +110,7 @@
 	</tr>
 	<tr>
 		<td valign="bottom" width="75">в</td>
-		<td colspan="15" class="bord_n" align="center" valign="bottom" width="439">ОАО «Промсвязьбанк» гор. Люберцы</td>
+		<td colspan="15" class="bord_n" align="center" valign="bottom" width="439">ПАО «Промсвязьбанк» гор. Люберцы</td>
 	</tr>
 	<tr>
 		<td valign="bottom" width="75"></td>
