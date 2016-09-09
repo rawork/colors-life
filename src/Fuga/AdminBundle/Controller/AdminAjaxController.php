@@ -8,6 +8,9 @@ use Fuga\AdminBundle\Admin\Admin;
 use Fuga\Component\Archive\GZipArchive;
 
 class AdminAjaxController extends Controller {
+
+
+	private  $counter = 0;
 	
 	/** 
 	 * Смена Меню компонентов при выборе группы функций
@@ -174,7 +177,7 @@ class AdminAjaxController extends Controller {
 			if (isset($node[$fieldName]))
 				$vname .= ($vname ? ' ' : '').$node[$fieldName];
 		$text = '<li><a rel="'.$node['id'].'" href="javascript:void(0)" class="popup-item">'.$vname.' ('.$node['id'].')</a>';
-		$this->counter++;
+//		$this->counter++;
 		$children = $nodes[$node['id']]['children'];
 		if (count($children)) {
 			$text .= '<ul>'; 
