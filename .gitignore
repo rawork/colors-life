@@ -3,6 +3,7 @@
 upload/*
 !upload/.htaccess
 img/files/*
+bills/*
 !img/files/.gitkeep
 yml/*
 sitemap.xml
@@ -34,4 +35,6 @@ vendor/composer/*
 vendor/doctrine/*
 vendor/symfony/*
 vendor/phpunit/*
+vendor/phpoffice/*
+vendor/psr/*
 vendor/autoload.php

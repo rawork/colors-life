@@ -18,6 +18,12 @@ class IndexAction extends Action {
 	/* Кнопки управления записью */
 	private function _getUpdateDelete($id) {
 		$ref = explode('?', $this->fullRef);
+
+		$extraButtons = '';
+		if ('order' == $this->dataTable->name) {
+			$extraButtons = '<li><a href="'.$ref[0].'/bill/'.$id.'"><i class="icon-book"></i> Накладная</a></li>';
+		}
+
 		$buttons = '<td>
 <div class="btn-group pull-right">
   <a class="btn btn-small dropdown-toggle admin-dropdown-toggle" id="drop'.$id.'" data-toggle="dropdown" href="#">
@@ -27,7 +33,8 @@ class IndexAction extends Action {
   <ul class="dropdown-menu admin-dropdown-menu">
     <li><a href="'.$ref[0].'/edit/'.$id.'"><i class="icon-pencil"></i> Изменить</a></li>
     <li><a href="javascript: startDelete('.$id.')"><i class="icon-trash"></i> Удалить</a></li>
-    <li><a href="javascript: showCopyDialog('.$id.')"><i class="icon-random"></i> Копировать</a></li>
+    <li><a href="javascript: showCopyDialog('.$id.')"><i class="icon-random"></i> Копировать</a></li>'.
+	$extraButtons.'		
   </ul>
 </div>
 </td>

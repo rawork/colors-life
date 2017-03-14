@@ -178,6 +178,13 @@ class EditAction extends Action {
 				'name' => 'Список элементов'
 			)
 		);
+		if ('order' == $this->dataTable->name) {
+			$links[] = array(
+				'ref' => $this->fullRef.'/bill/'.$this->item['id'],
+				'name' => 'Накладная',
+				'style' => 'btn-warning'
+			);
+		}
 		$content = $this->getOperationsBar($links);
 		if ($this->get('templating')->exists('admin/'.$this->get('router')->getParam('module').'.'.$this->get('router')->getParam('table').'.edit.tpl')){
 			$params = array (
