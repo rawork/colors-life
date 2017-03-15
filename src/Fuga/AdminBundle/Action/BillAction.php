@@ -95,12 +95,14 @@ class BillAction extends Action {
 		$objRichText->createTextRun('Адрес доставки: ')->getFont()->setBold(true)->setSize(14);
 		$objRichText->createTextRun($order['address'])->getFont()->setSize(14);
 		$objPHPExcel->getActiveSheet()->setCellValue('A11', $objRichText);
+		$objPHPExcel->getActiveSheet()->getStyle('A11')->getAlignment()->setWrapText(true);
 
 		$objPHPExcel->getActiveSheet()->getRowDimension(12)->setRowHeight(-1);
 		$objRichText = new \PHPExcel_RichText();
 		$objRichText->createTextRun('Дополнительная информация: ')->getFont()->setBold(true)->setSize(14);
 		$objRichText->createTextRun($order['additions'])->getFont()->setSize(14);
 		$objPHPExcel->getActiveSheet()->setCellValue('A12', $objRichText);
+		$objPHPExcel->getActiveSheet()->getStyle('A12')->getAlignment()->setWrapText(true);
 
 
 		foreach ($products as $product) {
