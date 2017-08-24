@@ -15,7 +15,7 @@
 <script type="text/javascript" src="/js/dimmer.js"></script>
 <script type="text/javascript" src="/bundles/jqzoom/js/jquery.jqzoom-core.js"></script>
 <script type="text/javascript" src="/bundles/lightbox/js/jquery.lightbox-0.5.js"></script>
-<script type="text/javascript" src="/js/public.functions.js?2"></script>
+<script type="text/javascript" src="/js/public.functions.js?2017082401"></script>
 <script type="text/javascript" src="/bundles/admin/js/calendar.js" ></script>
 <script type="text/javascript" src="/bundles/admin/js/calendar-ru.js"></script>
 <script type="text/javascript" src="/bundles/admin/js/calendar-setup.js"></script>
