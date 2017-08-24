@@ -386,12 +386,12 @@ function check_pass_change() {
 
     if(f.passOk) {
       f.passOk.value = ((f.newUserPassword.value == "") || !passComplete ) ? 'false' : 'true';
-      checkForm();
+      //checkForm();
     }
 
     if(f.passOk) {
       f.passOk.value = ((f.newUserPassword.value == "") || !passComplete ) ? 'false' : 'true';
-      checkForm();
+      //checkForm();
     }
 }
 
@@ -406,16 +406,25 @@ function checkPass(f, ffirst) {
     check_pass_change();
 }
 
+function checkSubscribeForm()
+{
+ var f = document.frmSubscribe;
+ var btn = document.getElementById('submitBtn');
+ var accept = f.subsAccept.checked;
+ btn.disabled = !accept;
+}
+
 function checkRegForm()
 {
- f = document.registrationForm;
- btn = document.getElementById('submitBtn');
- a = trim(f.newUserFName.value);
- b = trim(f.newUserEmail.value);
- b2 = trim(f.newUserPhone.value);
- c = trim(f.captcha.value);
- ok = trim(f.passOk.value);
- btn.disabled = ((a == '' || b == '' || b2 == '' || c == '') || !isEmail(b) || !isPhone(b2) || c.length < 5 || ok == 'false') ? true : false;
+    var f = document.registrationForm;
+    var btn = document.getElementById('submitBtn');
+    var a = trim(f.newUserFName.value);
+    var b = trim(f.newUserEmail.value);
+    var b2 = trim(f.newUserPhone.value);
+    var c = trim(f.captcha.value);
+    var ok = trim(f.passOk.value);
+    var accept = f.newUserAccept.checked;
+    btn.disabled = ((a == '' || b == '' || b2 == '' || c == '') || !isEmail(b) || !isPhone(b2) || c.length < 5 || ok == 'false' || !accept) ? true : false;
 }
 
 function trim(str)
@@ -537,10 +546,36 @@ function bindRegistrationForm() {
 			},
 			keyup: function() {
 				checkRegForm()
-			}
+			},
+            click: function() {
+				checkRegForm();
+            }
 		});
 		checkRegForm();
 	});
+}
+
+function bindSubscribeForm() {
+    $(document).ready(function(){
+        $('input.required').bind({
+            blur: function() {
+                checkSubscribeForm()
+            },
+            focus: function() {
+                checkSubscribeForm()
+            },
+            keypress: function() {
+                checkSubscribeForm()
+            },
+            keyup: function() {
+                checkSubscribeForm()
+            },
+            click: function() {
+                checkSubscribeForm();
+            }
+        });
+        checkSubscribeForm();
+    });
 }
 
 function bindDetailForm() {

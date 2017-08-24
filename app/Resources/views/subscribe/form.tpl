@@ -19,9 +19,19 @@
 			<td>
 			<label><input type="radio" name="subscribe_type" value="1" /> Я <strong>хочу</strong> получать новости от компании Цвета жизни</label><br>
 			<label><input type="radio" name="subscribe_type" value="2" /> Я <strong>не хочу</strong> получать новости от компании Цвета жизни</label></td>
-		  </tr>	
+		  </tr>
 		  <tr>
-			<td><input class="btn" type="button" value="Отправить" onClick="subscribe('Subscribe')" />&nbsp;&nbsp;
+			  <td>
+				  <div class="control-group">
+					  <div class="controls">
+						  <p>Нажимая кнопку «Отправить», я подтверждаю свою дееспособность и даю согласие на обработку моих персональных данных в соответствии с <a href="/privacy-policy" target="_blank">политикой безопасности</a> персональных данных. </p>
+						  <input type="checkbox" id="subsAccept" class="required" checked="checked" name="subsAccept" value="1" />
+					  </div>
+				  </div>
+			  </td>
+		  </tr>
+		  <tr>
+			<td><input class="btn" type="button" id="submitBtn" value="Отправить" onClick="subscribe('Subscribe')" />&nbsp;&nbsp;
 			</td>
 		  </tr>
 		  <tr>
@@ -31,3 +41,6 @@
 	  </form>
 	</div>
 </div>
+<script type="text/javascript">
+    bindSubscribeForm();
+</script>

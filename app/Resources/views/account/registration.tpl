@@ -58,6 +58,13 @@
     </div>
   </div>
   <div class="control-group">
+        <label class="control-label required" for="newUserAccept">Согласие</label>
+        <div class="controls">
+            <p>Нажимая кнопку «Продолжить», я подтверждаю свою дееспособность и даю согласие на обработку моих персональных данных в соответствии с <a href="/privacy-policy" target="_blank">политикой безопасности</a> персональных данных. </p>
+            <input type="checkbox" id="newUserAccept" class="required" checked="checked" name="newUserAccept" value="1" />
+        </div>
+  </div>
+  <div class="control-group">
     <div class="controls">
       <input type="submit" class="btn" id="submitBtn" disabled="true" value="Продолжить" />
     </div>
